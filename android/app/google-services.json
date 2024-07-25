@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "890729410482",
+    "project_id": "alipasha-e8c82",
+    "storage_bucket": "alipasha-e8c82.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:890729410482:android:cdc056e86d7e67b7b17eab",
+        "android_client_info": {
+          "package_name": "com.mada.company.ali.basha"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWsvsJcLEnBhCIvAjzRgpL7nz9B_X77ME"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
