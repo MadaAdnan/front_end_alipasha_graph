@@ -4,6 +4,8 @@ import 'package:ali_pasha_graph/pages/create_product/binding.dart';
 import 'package:ali_pasha_graph/pages/create_product/view.dart';
 import 'package:ali_pasha_graph/pages/home/binding.dart';
 import 'package:ali_pasha_graph/pages/home/view.dart';
+import 'package:ali_pasha_graph/pages/login/binding.dart';
+import 'package:ali_pasha_graph/pages/login/view.dart';
 import 'package:ali_pasha_graph/pages/menu/binding.dart';
 import 'package:ali_pasha_graph/pages/menu/view.dart';
 import 'package:ali_pasha_graph/pages/profile/binding.dart';
@@ -35,5 +37,10 @@ class AppPages {
         name: SHIPPING_PAGE,
         page: () => ShippingPage(),
         binding: ShippingBinding()),
+
+    GetPage(
+        name: LOGIN_PAGE,
+        page: () => LoginPage(),
+        binding: LoginBinding()),
   ];
 }

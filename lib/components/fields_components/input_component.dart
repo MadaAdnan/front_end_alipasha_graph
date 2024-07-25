@@ -1,5 +1,6 @@
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -17,6 +18,9 @@ class InputComponent extends StatelessWidget {
     this.height,
     this.fill,
     this.onChanged,
+    this.suffixIcon,
+    this.suffixClick,
+    this.isSecure=false,
   });
 
   final TextEditingController? controller;
@@ -25,11 +29,14 @@ class InputComponent extends StatelessWidget {
   final double width;
   final double? height;
   final bool isRequired;
+  final bool isSecure;
   final Color? fill;
 
   final String? Function(String?)? validation;
   final String? Function()? onEditingComplete;
   final String? Function(String?)? onChanged;
+  IconData? suffixIcon;
+  final String? Function()? suffixClick;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +44,7 @@ class InputComponent extends StatelessWidget {
       width: width,
       height: height ?? 0.08.sh,
       child: TextFormField(
+        obscureText: isSecure,
         onChanged: onChanged,
         onEditingComplete: onEditingComplete,
         controller: controller,
@@ -44,6 +52,12 @@ class InputComponent extends StatelessWidget {
         style: H3BlackTextStyle,
         keyboardType: textInputType,
         decoration: InputDecoration(
+          suffixIcon: suffixIcon != null
+              ? InkWell(
+                  child: Icon(suffixIcon),
+                  onTap: suffixClick,
+                )
+              : null,
           label: RichText(
             text: TextSpan(children: [
               TextSpan(text: "${hint ?? ''}", style: H3GrayTextStyle),
