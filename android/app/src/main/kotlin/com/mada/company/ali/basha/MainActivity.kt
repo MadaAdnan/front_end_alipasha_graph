@@ -1,4 +1,4 @@
-package com.mada.company.ali.basha.ali_pasha_graph
+package com.mada.company.ali.basha
 
 import io.flutter.embedding.android.FlutterActivity
 
