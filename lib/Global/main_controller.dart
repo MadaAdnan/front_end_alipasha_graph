@@ -1,5 +1,9 @@
+import 'dart:io';
+
+import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
 import 'package:ali_pasha_graph/models/category_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
+import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,8 +14,8 @@ import '../helpers/dio_network_manager.dart';
 import '../models/city_model.dart';
 
 class MainController extends GetxController {
-  RxString token =
-      RxString('1|XoDW3fzMyn4aDNe9WclH6wgYObtcuYmucJrfdAqO643da6f4');
+  //'1|XoDW3fzMyn4aDNe9WclH6wgYObtcuYmucJrfdAqO643da6f4'
+  RxnString token = RxnString(null);
   Rxn<UserModel> authUser = Rxn<UserModel>(null);
   NetworkManager dio_manager = NetworkManager();
   GetStorage storage = GetStorage('ali-pasha');
@@ -27,17 +31,15 @@ class MainController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    storage.write('token', token.value);
+
     ever(token, (value) {
-      if (value.isEmpty) {
+      if (value == null) {
         storage.remove('token');
         storage.remove('user');
-      } else {
-        storage.write('token', token.value);
       }
     });
     ever(authUser, (value) {
-      logger.i(value?.toJson());
+      //  logger.i(value?.toJson());
     });
   }
 
@@ -51,14 +53,23 @@ class MainController extends GetxController {
     try {
       dio.Response res = await dio_manager.executeGraphQLQuery(query.value!,
           variables: variables.value);
-
+     /* if (res.data?['errors']!=null) {
+        throw CustomException(
+            errors: res.data?['errors'][0]['extensions'],
+            message:res.data?['errors'][0]['message']);
+      }*/
       loading.value = false;
 
       return res;
+    } on dio.DioException catch (e) {
+      loading.value = false;
+      throw CustomException(errors: {"errors":e}, message: e.message);
+    } on HttpException catch (e) {
+      loading.value = false;
+      throw CustomException(errors: {"errors":e}, message: e.message);
     } catch (e) {
       loading.value = false;
-      throw Exception(e);
-      return null;
+      throw CustomException(errors: {"errors":e}, message: "خطأ بالسيرفر");
     }
   }
 
@@ -67,19 +78,77 @@ class MainController extends GetxController {
       if (storage.hasData('user')) {
         await storage.remove('user');
       }
-      logger.i("BEFOR WRITE");
       await storage.write('user', user.toJson());
-      logger.i("AFTER WRITE");
     }
     authUser.value = user;
+  }
+
+  Future<void> setToken({String? token, bool isWrite = false}) async {
+    if (isWrite) {
+      if (storage.hasData('token')) {
+        await storage.remove('token');
+      }
+      if (token != null) {
+        await storage.write('token', token);
+      }
+    }
   }
 
   getUserFromStorage() {
     if (storage.hasData('user')) {
       var user = storage.read('user');
       authUser.value = UserModel.fromJson(user);
-    }else{
-      logger.i("Does not have user");
+    }
+
+    if (storage.hasData('token')) {
+      String? tokenStored = storage.read('token');
+      token.value = tokenStored;
+    }
+  }
+
+  logout() async {
+    if (storage.hasData('user')) {
+      await storage.remove('user');
+    }
+    if (storage.hasData('token')) {
+      await storage.remove('token');
+    }
+    token.value = null;
+    authUser.value = null;
+    Get.offAndToNamed(HOME_PAGE);
+  }
+
+  loginByGoogle() {}
+
+  handelExceptopn(e) {
+    if (e is Exception && e.toString().contains('Exception: {')) {
+      var errorData = e.toString();
+
+      // استخراج المعلومات من النص
+      RegExp exp = RegExp(r'CustomException: \{(.*)\}');
+      var matches = exp.firstMatch(errorData);
+      var errorMap = matches != null ? matches.group(1) : null;
+
+      // تحويل النص المستخرج إلى Map
+      if (errorMap != null) {
+        Map<String, dynamic> errorDetails = {};
+        errorMap.split(', ').forEach((pair) {
+          var keyVal = pair.split(': ');
+          if (keyVal.length == 2) {
+            var key = keyVal[0];
+            var val = keyVal[1];
+            errorDetails[key] = val;
+          }
+          logger.i(pair);
+        });
+
+        // استخدام المعلومات المستخرجة
+        print("Error: ${errorDetails['message']}");
+        print("Details: ${errorDetails['errors']}");
+      }
+    } else {
+      // إذا كان الاستثناء ليس من النوع المتوقع، يمكن طباعة أو التعامل مع e مباشرةً
+      print("Unexpected error: $e");
     }
   }
 }

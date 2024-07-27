@@ -54,7 +54,7 @@ class InputComponent extends StatelessWidget {
         decoration: InputDecoration(
           suffixIcon: suffixIcon != null
               ? InkWell(
-                  child: Icon(suffixIcon),
+                  child: Icon(suffixIcon,size: 0.05.sw,),
                   onTap: suffixClick,
                 )
               : null,

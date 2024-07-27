@@ -5,3 +5,4 @@ const String PROFILE_PAGE = '/profile_page';
 const String BALANCES_PAGE = '/balances';
 const String SHIPPING_PAGE = '/shipping';
 const String LOGIN_PAGE = '/login';
+const String REGISTER_PAGE='/register';

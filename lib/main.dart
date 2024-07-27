@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
               title: 'علي باشا',
               locale: Locale('ar'),
               getPages: AppPages.pages,
-              initialRoute: LOGIN_PAGE,
+              initialRoute: HOME_PAGE,
               debugShowCheckedModeBanner: false,
               theme: ThemeData(
                 colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

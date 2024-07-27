@@ -195,14 +195,15 @@ MainController mainController =Get.find<MainController>();
                         shape: BoxShape.circle,
                           color: WhiteColor,
                         ),
-                        child: CircleAvatar(
-                          minRadius: 70.r,
-                          maxRadius: 90.r,
-                          backgroundColor: GrayDarkColor,
+                        child: Container(
+                          padding: EdgeInsets.all(0.002.sw),
+                          decoration: BoxDecoration(shape: BoxShape.circle),
                           child: Obx(() {
-                            return Image(
-                              image:mainController.authUser.value?.logo!=null?NetworkImage('${mainController.authUser.value?.logo}'): getUserImage(),
-                              height: 150.h,
+                            return Container(
+                              width: 0.1.sw,
+                              height: 0.1.sw,
+                              decoration: BoxDecoration(shape: BoxShape.circle,image:DecorationImage(image: getLogo()!=null?NetworkImage('${getLogo()}'): getUserImage())),
+
                             );
                           }),
                         ),

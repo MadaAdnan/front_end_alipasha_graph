@@ -39,7 +39,13 @@ class MenuPage extends StatelessWidget {
                 Obx(() {
                   return InkWell(
                     onTap: () {
-                      Get.offAndToNamed(PROFILE_PAGE);
+                      if(isAuth()){
+                        Get.offAndToNamed(PROFILE_PAGE);
+                      }else{
+                        Get.offAndToNamed(LOGIN_PAGE);
+                      }
+
+
                     },
                     child: Container(
                       width: 0.6.sw,
@@ -49,7 +55,7 @@ class MenuPage extends StatelessWidget {
                         children: [
                           Container(
                             padding: EdgeInsets.all(0.005.sw),
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                                 color: GrayDarkColor, shape: BoxShape.circle),
                             child: CircleAvatar(
                               backgroundColor: WhiteColor,
@@ -62,11 +68,9 @@ class MenuPage extends StatelessWidget {
                                     shape: BoxShape.circle,
                                     color: GrayDarkColor,
                                     image: DecorationImage(
-                                      image: logic.mainController.authUser.value
-                                                  ?.logo !=
-                                              null
+                                      image: getLogo() != null
                                           ? NetworkImage(
-                                              '${logic.mainController.authUser.value?.logo}',
+                                              '${getLogo()}',
                                             )
                                           : getUserImage(),
                                     )),
@@ -75,7 +79,7 @@ class MenuPage extends StatelessWidget {
                           ),
                           10.horizontalSpace,
                           Text(
-                            '${logic.mainController.authUser.value?.seller_name}',
+                            '${getName()}',
                             style: H3GrayTextStyle,
                             overflow: TextOverflow.ellipsis,
                           )
@@ -230,7 +234,7 @@ class MenuPage extends StatelessWidget {
                         children: [
                           SizedBox(
                             width: 0.06.sw,
-                            child: Image(
+                            child: const Image(
                               image:
                                   AssetImage('assets/images/png/support.png'),
                             ),
@@ -252,7 +256,7 @@ class MenuPage extends StatelessWidget {
                         children: [
                           SizedBox(
                             width: 0.06.sw,
-                            child: Image(
+                            child: const Image(
                               image: AssetImage(
                                   'assets/images/png/contact_us.png'),
                             ),
@@ -274,7 +278,7 @@ class MenuPage extends StatelessWidget {
                         children: [
                           SizedBox(
                             width: 0.06.sw,
-                            child: Image(
+                            child: const Image(
                               image:
                                   AssetImage('assets/images/png/privacy.png'),
                             ),
@@ -286,15 +290,84 @@ class MenuPage extends StatelessWidget {
                           )
                         ],
                       ),
-                    )
+                    ),
+                    DropdownMenuItem<String>(
+                      value: 'about',
+                      onTap: () {
+                        logic.selectedValue2.value = 'about';
+                      },
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 0.06.sw,
+                            child: const Image(
+                              image: AssetImage('assets/images/png/about.png'),
+                            ),
+                          ),
+                          20.horizontalSpace,
+                          Text(
+                            'من نحن',
+                            style: H3GrayTextStyle,
+                          )
+                        ],
+                      ),
+                    ),
+                    if (isAuth())
+                      DropdownMenuItem<String>(
+                        value: 'settings',
+                        onTap: () {
+                          logic.selectedValue2.value = 'settings';
+                        },
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 0.06.sw,
+                              child: const Image(
+                                image: AssetImage(
+                                    'assets/images/png/settings.png'),
+                              ),
+                            ),
+                            20.horizontalSpace,
+                            Text(
+                              'الإعدادات',
+                              style: H3GrayTextStyle,
+                            )
+                          ],
+                        ),
+                      ),
+                    if (isAuth())
+                      DropdownMenuItem<String>(
+                        value: 'logOut',
+                        onTap: () {
+                          logic.selectedValue2.value = 'logOut';
+                          logic.mainController.logout();
+                        },
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 0.06.sw,
+                              child: const Image(
+                                image:
+                                    AssetImage('assets/images/png/log_out.png'),
+                              ),
+                            ),
+                            20.horizontalSpace,
+                            Text(
+                              'تسجيل الخروج',
+                              style: H3GrayTextStyle,
+                            )
+                          ],
+                        ),
+                      )
                   ],
                 );
               }),
-              Obx(() {
+              /*  Obx(() {
                 return _dropDownButton(
                   img: 'assets/images/png/settings.png',
                   selectedValue: logic.selectedValue2.value,
                   items: [
+
                     DropdownMenuItem<String>(
                       value: 'settings',
                       onTap: () {
@@ -306,7 +379,7 @@ class MenuPage extends StatelessWidget {
                             width: 0.06.sw,
                             child: Image(
                               image:
-                                  AssetImage('assets/images/png/settings.png'),
+                              AssetImage('assets/images/png/settings.png'),
                             ),
                           ),
                           20.horizontalSpace,
@@ -338,10 +411,12 @@ class MenuPage extends StatelessWidget {
                         ],
                       ),
                     ),
+
                     DropdownMenuItem<String>(
                       value: 'logOut',
                       onTap: () {
                         logic.selectedValue2.value = 'logOut';
+                        logic.mainController.logout();
                       },
                       child: Row(
                         children: [
@@ -349,7 +424,7 @@ class MenuPage extends StatelessWidget {
                             width: 0.06.sw,
                             child: Image(
                               image:
-                                  AssetImage('assets/images/png/log_out.png'),
+                              AssetImage('assets/images/png/log_out.png'),
                             ),
                           ),
                           20.horizontalSpace,
@@ -363,7 +438,7 @@ class MenuPage extends StatelessWidget {
                   ],
                   title: 'الإعدادات',
                 );
-              }),
+              }),*/
             ],
           ),
         ),
@@ -417,7 +492,7 @@ class MenuPage extends StatelessWidget {
           isExpanded: true,
           hint: Row(
             children: [
-              SizedBox(
+              const SizedBox(
                 width: 4,
               ),
               Expanded(
@@ -461,7 +536,7 @@ class MenuPage extends StatelessWidget {
             elevation: 2,
           ),
           iconStyleData: IconStyleData(
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_drop_down,
             ),
             iconSize: 0.07.sw,
