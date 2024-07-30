@@ -1,16 +1,27 @@
+import 'package:ali_pasha_graph/Global/main_controller.dart';
+import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
 import 'package:ali_pasha_graph/helpers/enums.dart';
+import 'package:ali_pasha_graph/helpers/queries.dart';
+import 'package:ali_pasha_graph/main.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
+import 'package:ali_pasha_graph/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:get/get.dart';
+import "package:dio/dio.dart" as dio;
+import 'package:get/get_rx/get_rx.dart';
+import 'package:get_storage/get_storage.dart';
 import '../../helpers/colors.dart';
 import '../../helpers/style.dart';
 
 class PostCard extends StatelessWidget {
   final ProductModel? post;
 
-  const PostCard({super.key, this.post});
+  PostCard({super.key, this.post});
+
+  RxBool loading = RxBool(false);
+  MainController mainController = Get.find<MainController>();
 
   @override
   Widget build(BuildContext context) {
@@ -64,29 +75,84 @@ class PostCard extends StatelessWidget {
                         )
                       ],
                     ),
-                    InkWell(
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 0.007.sw, vertical: 0.001.sh),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15.r),
-                            border: Border.all(color: RedColor)),
-                        child: Row(
-                          children: [
-                            Icon(
-                              FontAwesomeIcons.bell,
-                              color: RedColor,
-                              size: 0.05.sw,
-                            ),
-                            3.horizontalSpace,
-                            Text(
-                              "متابعة",
-                              style: H5RedTextStyle,
-                            )
-                          ],
-                        ),
-                      ),
-                    )
+                    Obx(() {
+                      if (mainController.authUser.value != null) {
+                        // Check Is Follower
+                        if (mainController.authUser.value != null &&
+                            mainController.authUser.value!.followers != null &&
+                            post != null &&
+                            post!.user != null &&
+                            post!.user!.id != null) {
+                          int index = mainController.authUser.value!.followers!
+                              .indexWhere(
+                            (el) => el.seller?.id == post?.user?.id,
+                          );
+
+                          if (index > -1) {
+                            return Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 0.007.sw, vertical: 0.001.sh),
+                              decoration: BoxDecoration(
+                                  color: RedColor,
+                                  borderRadius: BorderRadius.circular(15.r),
+                                  border: Border.all(color: RedColor)),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    FontAwesomeIcons.solidBell,
+                                    color: WhiteColor,
+                                    size: 0.05.sw,
+                                  ),
+                                  3.horizontalSpace,
+                                  Text(
+                                    "أتابعه",
+                                    style: H5WhiteTextStyle,
+                                  )
+                                ],
+                              ),
+                            );
+                          } else {
+                            return InkWell(
+                              onTap: () {
+                                follow();
+                              },
+                              child: Obx(() {
+                                return Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 0.007.sw, vertical: 0.001.sh),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15.r),
+                                      border: Border.all(color: RedColor)),
+                                  child: Row(
+                                    children: [
+                                      if (loading.value == true)
+                                        const Center(
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                      if (loading.value == false)
+                                        Icon(
+                                          FontAwesomeIcons.bell,
+                                          color: RedColor,
+                                          size: 0.05.sw,
+                                        ),
+                                      3.horizontalSpace,
+                                      Text(
+                                        "متابعة",
+                                        style: H5RedTextStyle,
+                                      )
+                                    ],
+                                  ),
+                                );
+                              }),
+                            );
+                          }
+                        } else {
+                          return Container();
+                        }
+                      } else {
+                        return Container();
+                      }
+                    })
                   ],
                 ),
                 15.verticalSpace,
@@ -168,8 +234,14 @@ class PostCard extends StatelessWidget {
                             padding: EdgeInsets.symmetric(horizontal: 5.w),
                             child: RichText(
                               text: TextSpan(children: [
-                                TextSpan(text: ' ${post?.price ?? 0} ',style: H2WhiteTextStyle.copyWith(fontWeight: FontWeight.bold)),
-                                TextSpan(text: '\$',style: H2WhiteTextStyle.copyWith(fontWeight: FontWeight.bold)),
+                                TextSpan(
+                                    text: ' ${post?.price ?? 0} ',
+                                    style: H2WhiteTextStyle.copyWith(
+                                        fontWeight: FontWeight.bold)),
+                                TextSpan(
+                                    text: '\$',
+                                    style: H2WhiteTextStyle.copyWith(
+                                        fontWeight: FontWeight.bold)),
                               ]),
                             ),
 
@@ -277,5 +349,30 @@ class PostCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  follow() async {
+    if (post?.user?.id != null) {
+      loading.value = true;
+      try {
+        mainController.query.value = '''
+      mutation FollowAccount {
+    followAccount(id: "${post?.user?.id}") {
+       $AUTH_FIELDS
+    }
+}
+      ''';
+        dio.Response? res = await mainController.fetchData();
+         mainController.logger.e(res?.data);
+        if (res?.data?['data']?['followAccount'] != null) {
+          UserModel user =
+              UserModel.fromJson(res?.data?['data']?['followAccount']);
+          mainController.setUser(user: user, isWrite: true);
+        }
+      } on CustomException catch (e) {
+        mainController.logger.e(e);
+      }
+      loading.value = false;
+    }
   }
 }

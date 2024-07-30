@@ -14,13 +14,13 @@ import 'package:dio/dio.dart' as dio;
 class RegisterLogic extends GetxController {
   MainController mainController = Get.find<MainController>();
   RxBool loading = RxBool(false);
-  TextEditingController nameController = TextEditingController();
+  TextEditingController nameController = TextEditingController(text: 'adnan');
 
   // TextEditingController userNameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
+  TextEditingController emailController = TextEditingController(text: 'mh.shamey@gmail.com');
+  TextEditingController passwordController = TextEditingController(text: 'password');
+  TextEditingController confirmPasswordController = TextEditingController(text: 'password');
+  TextEditingController phoneController = TextEditingController(text: '352681125699');
 
   // TextEditingController addressController=TextEditingController();
   TextEditingController affiliateController = TextEditingController();
@@ -50,6 +50,7 @@ class RegisterLogic extends GetxController {
   }
 
   Future<void> register() async {
+    loading.value = true;
     mainController.query.value = '''
 mutation CreateUser {
     createUser(
@@ -100,7 +101,7 @@ mutation CreateUser {
         UserModel user =
             UserModel.fromJson(res?.data?['data']?['createUser']?['user']);
         await mainController.setUser(user: user, isWrite: true);
-        Get.offAndToNamed(HOME_PAGE);
+        Get.offAndToNamed(VERIFY_EMAIL_PAGE);
       }
       if (res?.data?['errors']?[0]?['extensions']['validation'] != null) {
         (res?.data?['errors'][0]['extensions']['validation']
@@ -127,15 +128,14 @@ mutation CreateUser {
     } on CustomException catch (e) {
       print(e);
     }
+    loading.value = false;
   }
 
-
-  clearError(){
-    errorEmail.value=null;
-    errorName.value=null;
-    errorPassword.value=null;
-    errorPhone.value=null;
-    errorCity.value=null;
-
+  clearError() {
+    errorEmail.value = null;
+    errorName.value = null;
+    errorPassword.value = null;
+    errorPhone.value = null;
+    errorCity.value = null;
   }
 }

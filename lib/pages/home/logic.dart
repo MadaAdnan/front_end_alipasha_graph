@@ -52,6 +52,7 @@ class HomeLogic extends GetxController {
             image
             created_at
             user {
+            id
                 seller_name
                 logo
             }

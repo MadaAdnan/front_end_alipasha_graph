@@ -22,7 +22,7 @@ class UserModel {
   String? customImg;
   String? level;
   List<ProductModel>? products;
-
+  List<FollowerModel>? followers;
   List<PlanModel>? plans;
   CityModel? city;
   bool? is_special;
@@ -53,11 +53,13 @@ class UserModel {
       this.customImg,
       this.totalBalance,
       this.totalPoint,
-      this.level});
+      this.level,
+      this.followers,});
 
   factory UserModel.fromJson(Map<String, dynamic> data) {
     List<ProductModel> listProducts = [];
     List<PlanModel> listPlans = [];
+    List<FollowerModel> listFollowers=[];
     if (data['products'] != null) {
       for (var item in data['products']) {
         listProducts.add(ProductModel.fromJson(item));
@@ -68,31 +70,38 @@ class UserModel {
         listPlans.add(PlanModel.fromJson(item));
       }
     }
+    if (data['followers'] != null) {
+      for (var item in data['followers']) {
+        listFollowers.add(FollowerModel.fromJson(item));
+      }
+    }
+
     return UserModel(
       id: int.tryParse("${data['id']}"),
-      info: "${data['info']??''}",
-      affiliate: "${data['affiliate']??''}",
-      is_special: bool.tryParse("${data['is_special']??false}"),
-      is_restaurant: bool.tryParse("${data['is_restaurant']??false}"),
-      is_delivery: bool.tryParse("${data['is_delivery']??false}"),
-      is_active: bool.tryParse("${data['is_active']??false}"),
-      close_time: "${data['close_time']??''}",
-      open_time: "${data['open_time']??''}",
-      image: "${data['image']??''}",
-      address: "${data['address']??''}",
-      phone: "${data['phone']??''}",
-      email: "${data['email']??''}",
-      seller_name: "${data['seller_name']??''}",
-      name: "${data['name']??''}",
-      logo: "${data['logo']??''}",
-      customImg: "${data['custom']??''}",
+      info: "${data['info'] ?? ''}",
+      affiliate: "${data['affiliate'] ?? ''}",
+      is_special: bool.tryParse("${data['is_special'] ?? false}"),
+      is_restaurant: bool.tryParse("${data['is_restaurant'] ?? false}"),
+      is_delivery: bool.tryParse("${data['is_delivery'] ?? false}"),
+      is_active: bool.tryParse("${data['is_active'] ?? false}"),
+      close_time: "${data['close_time'] ?? ''}",
+      open_time: "${data['open_time'] ?? ''}",
+      image: "${data['image'] ?? ''}",
+      address: "${data['address'] ?? ''}",
+      phone: "${data['phone'] ?? ''}",
+      email: "${data['email'] ?? ''}",
+      seller_name: "${data['seller_name'] ?? ''}",
+      name: "${data['name'] ?? ''}",
+      logo: "${data['logo'] ?? ''}",
+      customImg: "${data['custom'] ?? ''}",
       level: "${data['level']}",
-      totalBalance: double.tryParse("${data['totalBalance']??0}"),
-      totalPoint: double.tryParse("${data['totalPoint']??0}"),
-      email_verified_at: "${data['email_verified_at']??''}",
+      totalBalance: double.tryParse("${data['totalBalance'] ?? 0}"),
+      totalPoint: double.tryParse("${data['totalPoint'] ?? 0}"),
+      email_verified_at: "${data['email_verified_at'] ?? ''}",
       city: data['city'] != null ? CityModel.fromJson(data['city']) : null,
       products: listProducts.toList(),
       plans: listPlans.toList(),
+      followers: listFollowers.toList(),
     );
   }
 
@@ -124,5 +133,19 @@ class UserModel {
       'level': level
     };
     return data;
+  }
+}
+
+class FollowerModel {
+  UserModel? user;
+  UserModel? seller;
+
+  FollowerModel({this.seller, this.user});
+
+  factory FollowerModel.fromJson(Map<String, dynamic> data) {
+    return FollowerModel(
+      user: data['user'] !=null ?UserModel.fromJson(data['user']) : null,
+      seller: data['seller'] !=null ?UserModel.fromJson(data['seller']) : null
+    );
   }
 }

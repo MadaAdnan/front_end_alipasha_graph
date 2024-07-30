@@ -1,7 +1,9 @@
+import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:ali_pasha_graph/pages/profile/tabs/tab_chart.dart';
 import 'package:ali_pasha_graph/pages/profile/tabs/tab_product.dart';
+import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -11,7 +13,7 @@ import 'logic.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({Key? key}) : super(key: key);
-
+  MainController mainController = Get.find<MainController>();
   final ProfileLogic logic = Get.find<ProfileLogic>();
   List<Widget> pages = [
     TabProduct(),
@@ -69,8 +71,7 @@ class ProfilePage extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(15.r)),
                             child: Text(
                               'تعديل الحساب',
-                              style:
-                                 H3WhiteTextStyle,
+                              style: H3WhiteTextStyle,
                             ),
                           ),
                         ))
@@ -87,7 +88,13 @@ class ProfilePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  _buildWidget(title: 'أتابعه', count: 150),
+                  _buildWidget(
+                      title: 'أتابعه',
+                      count:
+                          mainController.authUser.value?.followers?.length ?? 0,
+                      onTap: () {
+                        Get.toNamed(FOLLOWERS_PAGE);
+                      }),
                   _buildWidget(title: 'متابعين', count: 2000),
                   _buildWidget(title: 'تسجيلات الإعجاب', count: 1000),
                 ],
@@ -104,7 +111,10 @@ class ProfilePage extends StatelessWidget {
                       title: 'إعلانات ممولة',
                       icon: FontAwesomeIcons.rectangleAd,
                       index: 1),
-                  _pageButton(title: 'الإحصائيات', index: 2,icon: FontAwesomeIcons.chartBar),
+                  _pageButton(
+                      title: 'الإحصائيات',
+                      index: 2,
+                      icon: FontAwesomeIcons.chartBar),
                 ],
               )
             ],
@@ -163,38 +173,32 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _buildWidget({String? title, int? count}) {
-    return Container(
-      width: 0.3.sw,
-      height: 0.08.sh,
-      decoration: BoxDecoration(
+  Widget _buildWidget({String? title, int? count, Function()? onTap}) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        width: 0.3.sw,
+        height: 0.08.sh,
+        decoration: BoxDecoration(
           border: Border.all(color: GrayDarkColor),
           borderRadius: BorderRadius.circular(15.r),
           color: WhiteColor,
-          boxShadow: [
-            BoxShadow(
-                color: DarkColor.withOpacity(0.3),
-                blurStyle: BlurStyle.outer,
-                blurRadius: 10.r),
-            BoxShadow(
-                color: DarkColor.withOpacity(0.3),
-                blurStyle: BlurStyle.solid,
-                blurRadius: 5.r)
-          ]),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            "$count",
-            style: H3BlackTextStyle,
-          ),
-          15.verticalSpace,
-          Text(
-            "$title",
-            style: H4BlackTextStyle.copyWith(fontWeight: FontWeight.bold),
-          )
-        ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "$count",
+              style: H3BlackTextStyle,
+            ),
+            15.verticalSpace,
+            Text(
+              "$title",
+              style: H4BlackTextStyle.copyWith(fontWeight: FontWeight.bold),
+            )
+          ],
+        ),
       ),
     );
   }

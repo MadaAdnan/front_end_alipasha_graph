@@ -22,33 +22,37 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-backgroundColor: WhiteColor,
-      body:  Container(
+      backgroundColor: WhiteColor,
+      body: Container(
         color: WhiteColor,
-        child: Column(
+        child: Stack(
           children: [
-            Container(
-              padding:
-              EdgeInsets.symmetric(horizontal: 0.07.sw, vertical: 0.02.sh),
-              width: 1.sw,
-              height: 0.2.sh,
-              decoration: BoxDecoration(
-                color: RedColor,
-              ),
-              child: const Image(
-                image: AssetImage(
-                  'assets/images/png/logo-alipasha.png',
+            Positioned(
+              top: 0.0001.sh,
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                    horizontal: 0.07.sw, vertical: 0.02.sh),
+                width: 1.sw,
+                height: 0.2.sh,
+                decoration: BoxDecoration(
+                  color: RedColor,
                 ),
-                fit: BoxFit.fitHeight,
+                child: const Image(
+                  image: AssetImage(
+                    'assets/images/png/logo-alipasha.png',
+                  ),
+                  fit: BoxFit.fitHeight,
+                ),
               ),
             ),
-            15.verticalSpace,
-            Transform.translate(
-              offset: Offset(0,-0.02.sh),
+            Positioned(
+              width: 1.sw,
+              top: 0.13.sh,
               child: Container(
-                height: 0.73.sh,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(50.r),topRight:  Radius.circular(50.r)),
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(70.r),
+                        topRight: Radius.circular(70.r)),
                     color: WhiteColor),
                 padding: EdgeInsets.symmetric(
                     horizontal: 0.05.sw, vertical: 0.02.sh),
@@ -86,21 +90,21 @@ backgroundColor: WhiteColor,
                                 ));
                           }),
                           /*  15.verticalSpace,
-                                          InputComponent(
-                                            fill: WhiteColor,
-                                            width: 1.sw,
-                                            controller: logic.userNameController,
-                                            suffixIcon: FontAwesomeIcons.idCard,
-                                            textInputType: TextInputType.text,
-                                            isRequired: true,
-                                            hint: 'اسم المستخدم',
-                                            validation: (value) {
-                                              if (value?.length == 0) {
-                                                return "اسم المستخدم مطلوب";
-                                              }
-                                              return null;
-                                            },
-                                          ),*/
+                                           InputComponent(
+                                             fill: WhiteColor,
+                                             width: 1.sw,
+                                             controller: logic.userNameController,
+                                             suffixIcon: FontAwesomeIcons.idCard,
+                                             textInputType: TextInputType.text,
+                                             isRequired: true,
+                                             hint: 'اسم المستخدم',
+                                             validation: (value) {
+                                               if (value?.length == 0) {
+                                                 return "اسم المستخدم مطلوب";
+                                               }
+                                               return null;
+                                             },
+                                           ),*/
                           15.verticalSpace,
                           InputComponent(
                             fill: WhiteColor,
@@ -186,8 +190,7 @@ backgroundColor: WhiteColor,
                               isRequired: true,
                               hint: 'تأكد كلمة المرور',
                               validation: (value) {
-                                if (value !=
-                                    logic.passwordController.text) {
+                                if (value != logic.passwordController.text) {
                                   return "كلمة المرور غير متطابقة";
                                 }
                                 return null;
@@ -232,11 +235,9 @@ backgroundColor: WhiteColor,
                               label: 'المدينة',
                               width: 1.sw,
                               onChanged: (values) {
-                                logic.citySelected.value =
-                                    values.firstOrNull;
+                                logic.citySelected.value = values.firstOrNull;
                               },
-                              selectDataController:
-                              logic.citiesController!),
+                              selectDataController: logic.citiesController!),
                           Obx(() {
                             return Visibility(
                                 visible: logic.errorCity.value != null,
@@ -261,7 +262,8 @@ backgroundColor: WhiteColor,
 
                                 if (_form.currentState!.validate()) {
                                   if (logic.citySelected.value == null) {
-                                    logic.errorCity.value = 'يرجى تحديد المدينة';
+                                    logic.errorCity.value =
+                                        'يرجى تحديد المدينة';
                                     return;
                                   }
                                   logic.register();
@@ -284,9 +286,27 @@ backgroundColor: WhiteColor,
                           25.verticalSpace,
                           Container(
                               alignment: Alignment.center,
-                              child: Text(
-                                '- أو -',
-                                style: H1BlackTextStyle,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  SizedBox(
+                                      width: 0.35.sw,
+                                      child: Divider(
+                                        height: 0.07.sh,
+                                        color: GrayDarkColor,
+                                      )),
+                                  Text(
+                                    ' أو ',
+                                    style: H1BlackTextStyle,
+                                  ),
+                                  SizedBox(
+                                      width: 0.35.sw,
+                                      child: Divider(
+                                        height: 0.07.sh,
+                                        color: GrayDarkColor,
+                                      )),
+                                ],
                               )),
                           25.verticalSpace,
                           InkWell(
@@ -300,7 +320,8 @@ backgroundColor: WhiteColor,
                                   color: GrayLightColor,
                                   borderRadius: BorderRadius.circular(15.r)),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   Text(
                                     'التسجيل السريع بإستخدام ',
@@ -335,7 +356,8 @@ backgroundColor: WhiteColor,
                                   TextSpan(
                                       text: ' تسجيل الدخول',
                                       style: H2OrangeTextStyle.copyWith(
-                                          decoration: TextDecoration.underline)),
+                                          decoration:
+                                              TextDecoration.underline)),
                                 ]),
                               ),
                             ),
@@ -348,12 +370,9 @@ backgroundColor: WhiteColor,
                 ),
               ),
             ),
-
           ],
         ),
       ),
-
-
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
+import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
 import 'package:ali_pasha_graph/models/advice_model.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,6 +13,7 @@ import 'package:get_storage/get_storage.dart';
 class ProfileLogic extends GetxController {
   RxInt pageSelected = RxInt(0);
   TextEditingController searchController = TextEditingController();
+  RxBool loading = RxBool(false);
 
   // Data From Api
   //  products Page
@@ -68,43 +70,52 @@ class ProfileLogic extends GetxController {
   }
 
   getProduct() async {
+    loading.value = true;
     if (page.value == 1) {
       products.clear();
     }
     mainController.query('''
-    
     query MyProducts {
-    myProducts(first: 15, page: ${page} ,search:"${search.value ?? ''}") {
-        paginatorInfo {
+      myProducts(first: 15, page: ${page} ,search:"${search.value ?? ''}") {
+         paginatorInfo {
             hasMorePages
-        }
+         }
         data {
             id
+            name
+            expert
+            is_available
+            level
+            active
+            type
+            views_count
+            image
             category {
-                name
+              name
             }
             sub1 {
                 name
             }
-            info
-            user {
-                seller_name
-            }
-            image
         }
-    }
-}
-    ''');
-    dio.Response? res = await mainController.fetchData();
-
-    // mainController.logger.i(res?.data);
-    if (res != null) {
-      hasMorePage(
-          res.data['data']['myProducts']['paginatorInfo']['hasMorePages']);
-      for (var item in res.data['data']['myProducts']['data']) {
-        products.add(ProductModel.fromJson(item));
       }
     }
+
+    ''');
+    try {
+      dio.Response? res = await mainController.fetchData();
+
+      mainController.logger.i(res?.data);
+      if (res?.data?['data']?['myProducts'] != null) {
+        hasMorePage(
+            res?.data['data']?['myProducts']['paginatorInfo']['hasMorePages']);
+        for (var item in res?.data['data']['myProducts']['data']) {
+          products.add(ProductModel.fromJson(item));
+        }
+      }
+    } on CustomException catch (e) {
+      mainController.logger.e(e);
+    }
+    loading.value = false;
   }
 
   getMyAdvice() async {
@@ -129,7 +140,7 @@ class ProfileLogic extends GetxController {
     dio.Response? res = await mainController.fetchData();
 
     if (res != null) {
-     // mainController.logger.i(res.data);
+      // mainController.logger.i(res.data);
       for (var item in res.data['data']['myAdvice']['advices']) {
         myAdvices.add(AdviceModel.fromJson(item));
       }

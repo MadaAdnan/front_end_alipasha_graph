@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/components/fields_components/input_component.dart';
+import 'package:ali_pasha_graph/components/product_components/mini_post_card.dart';
 import 'package:ali_pasha_graph/components/product_components/post_card.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/pages/profile/logic.dart';
@@ -53,7 +54,7 @@ class TabProduct extends StatelessWidget {
             ),
           ),
           Obx(() {
-            if (mainController.loading.value && logic.page.value == 1) {
+            if (logic.loading.value && logic.page.value == 1) {
               return Center(
                 child: CircularProgressIndicator(),
               );
@@ -61,7 +62,7 @@ class TabProduct extends StatelessWidget {
             return Expanded(
               child: ListView.builder(
                 itemBuilder: (context, index) =>
-                    PostCard(
+                    MiniPostCard(
                       post: logic.products[index],
                     ),
                 itemCount: logic.products.length,

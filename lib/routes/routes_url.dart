@@ -6,3 +6,6 @@ const String BALANCES_PAGE = '/balances';
 const String SHIPPING_PAGE = '/shipping';
 const String LOGIN_PAGE = '/login';
 const String REGISTER_PAGE='/register';
+const String VERIFY_EMAIL_PAGE='/verify_email_page';
+
+const String FOLLOWERS_PAGE='/followers_page';

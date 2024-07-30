@@ -19,17 +19,7 @@ class HomeAppBarComponent extends StatelessWidget
   double max_height = 0.115.sh;
   MainController mainController = Get.find<MainController>();
 
-  // final logic = Get.find<HomeAppBarLogic>();
-  // final state = Get.find<HomeAppBarLogic>().state;
-/*
-*
-38.90px
-62.25px
-62.25px
-89.48px
-147.83px
-465.29px
-* */
+
   @override
   Widget build(BuildContext context) {
     return Obx(() {

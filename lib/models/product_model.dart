@@ -19,8 +19,10 @@ class ProductModel {
   String? name;
   String? info;
   String? expert;
+  String? active;
   List<String>? tags;
   bool? is_discount;
+
   bool? is_delivary;
   bool? is_available;
   bool? is_special;
@@ -57,61 +59,66 @@ class ProductModel {
 
   String? created_at;
 
-  ProductModel(
-      {this.type,
-      this.price,
-      this.is_discount,
-      this.discount,
-      this.info,
-      this.name,
-      this.id,
-      this.city,
-      this.image,
-      this.email,
-      this.phone,
-      this.address,
-      this.url,
-      this.code,
-      this.created_at,
-      this.docs,
-      this.end_date,
-      this.expert,
-      this.images,
-      this.is_available,
-      this.is_delivary,
-      this.latitude,
-      this.level,
-      this.liistOfDocs,
-      this.liistOfImages,
-      this.longitude,
-      this.start_date,
-      this.tags,
-      this.user,
-      this.video,
-      this.views_count,
-      this.category,
-      this.sub1,
-      this.sub2,
-      this.sub3,
-      this.sub4,
-      this.is_special});
+  ProductModel({
+    this.type,
+    this.price,
+    this.is_discount,
+    this.discount,
+    this.info,
+    this.name,
+    this.id,
+    this.city,
+    this.image,
+    this.email,
+    this.phone,
+    this.address,
+    this.url,
+    this.code,
+    this.created_at,
+    this.docs,
+    this.end_date,
+    this.expert,
+    this.images,
+    this.is_available,
+    this.is_delivary,
+    this.latitude,
+    this.level,
+    this.liistOfDocs,
+    this.liistOfImages,
+    this.longitude,
+    this.start_date,
+    this.tags,
+    this.user,
+    this.video,
+    this.views_count,
+    this.category,
+    this.sub1,
+    this.sub2,
+    this.sub3,
+    this.sub4,
+    this.is_special,
+    this.active,
+  });
 
   factory ProductModel.fromJson(Map<String, dynamic> data) {
     return ProductModel(
-      name: "${data['name']}",
+      id: int.tryParse("${data['id']}"),
+      name: "${data['name'] ?? ''}",
+      active: "${data['active'] ?? ''}",
       is_special: bool.tryParse("${data['is_special']}") ?? false,
-      views_count: "${data['views_count']}"??"0",
-      expert: "${data['expert']??''}",
-      level: "${data['level']??''}",
-      type: "${data['type']??''}",
-      image: "${data['image']??''}",
+      is_available: bool.tryParse("${data['is_available']}") ?? false,
+      views_count: "${data['views_count'] ?? 0}",
+      expert: "${data['expert'] ?? ''}",
+      level: "${data['level'] ?? ''}",
+      type: "${data['type'] ?? ''}",
+      image: "${data['image'] ?? ''}",
       category: data['category'] != null
           ? CategoryModel.fromJson(data['category'])
           : null,
       sub1: data['sub1'] != null ? CategoryModel.fromJson(data['sub1']) : null,
       sub2: data['sub2'] != null ? CategoryModel.fromJson(data['sub2']) : null,
       sub3: data['sub3'] != null ? CategoryModel.fromJson(data['sub3']) : null,
-      price: double.tryParse("${data['price']}"??'0'),
+      price: double.tryParse("${data['price']}" ?? '0'),
       user: data['user'] != null ? UserModel.fromJson(data['user']) : null,
       city: data['city'] != null ? CityModel.fromJson(data['city']) : null,
     );
