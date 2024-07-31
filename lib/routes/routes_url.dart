@@ -9,3 +9,8 @@ const String REGISTER_PAGE='/register';
 const String VERIFY_EMAIL_PAGE='/verify_email_page';
 
 const String FOLLOWERS_PAGE='/followers_page';
+
+
+const String JOBS_PAGE='/jobs_page';
+
+const String TENDERS_PAGE='/tender_page';

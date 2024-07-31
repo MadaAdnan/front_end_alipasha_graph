@@ -14,10 +14,9 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import 'firebase_options.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
- await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.white, // لون الشريط
@@ -36,20 +35,20 @@ class MyApp extends StatelessWidget {
     return SafeArea(
       child: ScreenUtilInit(
         designSize: Size(1080, 2225),
-        builder: (_, child) =>
-            GetMaterialApp(
-
-              initialBinding: MainBinding(),
-              title: 'علي باشا',
-              locale: Locale('ar'),
-              getPages: AppPages.pages,
-              initialRoute: HOME_PAGE,
-              debugShowCheckedModeBanner: false,
-              theme: ThemeData(
-                colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-                useMaterial3: true,
-              ),
-            ),
+        builder: (_, child) => GetMaterialApp(
+          defaultTransition: Transition.rightToLeftWithFade,
+          transitionDuration: Duration(milliseconds: 900),
+          initialBinding: MainBinding(),
+          title: 'علي باشا',
+          locale: Locale('ar'),
+          getPages: AppPages.pages,
+          initialRoute: HOME_PAGE,
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+          ),
+        ),
       ),
     );
   }

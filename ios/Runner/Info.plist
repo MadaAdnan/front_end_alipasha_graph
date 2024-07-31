@@ -48,6 +48,12 @@
 
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<key>UIBackgroundModes</key>
+
+	<key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>sms</string>
+      <string>tel</string>
+    </array>
 	<true/>
 </dict>
 </plist>

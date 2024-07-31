@@ -9,6 +9,7 @@ import 'package:badges/badges.dart' as badges;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:toast/toast.dart';
 
 import '../../components/drop_down_button_menu/drop_down_button_menu.dart';
 import 'logic.dart';
@@ -20,6 +21,7 @@ class MenuPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ToastContext().init(context);
     return WillPopScope(
       onWillPop: () {
         Get.back();
@@ -161,7 +163,14 @@ class MenuPage extends StatelessWidget {
                   children: [
                     _buildWidget(
                         image: 'assets/images/png/home.png',
-                        title: 'عرض متجري'),
+                        title: 'عرض متجري',onTap: (){
+                      if(isAuth()){
+                        Get.offAndToNamed(PROFILE_PAGE);
+                      }else{
+                        Toast.show('لم تقم بتسجيل الدخول');
+                        Get.offAndToNamed(LOGIN_PAGE);
+                      }
+                    }),
                     _buildWidget(
                         image: 'assets/images/png/cart.png',
                         title: 'سلة المشتريات'),

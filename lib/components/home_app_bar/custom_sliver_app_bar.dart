@@ -11,7 +11,8 @@ import 'package:get/get.dart';
 
 class HomeSliverAppBarComponent extends StatelessWidget {
   HomeSliverAppBarComponent({Key? key}) : super(key: key);
-MainController mainController =Get.find<MainController>();
+  MainController mainController = Get.find<MainController>();
+
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
@@ -21,6 +22,7 @@ MainController mainController =Get.find<MainController>();
       floating: true,
       pinned: false,
       centerTitle: true,
+      leading: Container(),
       primary: true,
       foregroundColor: WhiteColor,
       backgroundColor: WhiteColor,
@@ -97,48 +99,102 @@ MainController mainController =Get.find<MainController>();
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        FontAwesomeIcons.home,
-                        size: 55.w,
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Get.currentRoute == HOME_PAGE
+                            ? Border(
+                                bottom: BorderSide(
+                                  color: RedColor,
+                                  style: BorderStyle.solid,
+                                  width: 0.002.sh,
+                                ),
+                              )
+                            : null,
+                      ),
+                      child: IconButton(
+                        onPressed: () {
+                          Get.offAndToNamed(HOME_PAGE);
+                        },
+                        icon: Icon(
+                          FontAwesomeIcons.home,
+                          size: 55.w,
+                          color:
+                              Get.currentRoute == HOME_PAGE ? RedColor : null,
+                        ),
                       ),
                     ),
                     Container(
                       decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: RedColor,
-                            style: BorderStyle.solid,
-                            width: 0.002.sh,
-                          ),
-                        ),
+                        border: Get.currentRoute == TENDERS_PAGE
+                            ? Border(
+                                bottom: BorderSide(
+                                  color: RedColor,
+                                  style: BorderStyle.solid,
+                                  width: 0.002.sh,
+                                ),
+                              )
+                            : null,
                       ),
                       child: IconButton(
                         onPressed: () {},
                         icon: Icon(
                           FontAwesomeIcons.bookOpen,
                           size: 55.w,
-                          color: RedColor,
+                          //color: RedColor,
                         ),
                       ),
                     ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        FontAwesomeIcons.headset,
-                        size: 55.w,
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Get.currentRoute == JOBS_PAGE
+                            ? Border(
+                                bottom: BorderSide(
+                                  color: RedColor,
+                                  style: BorderStyle.solid,
+                                  width: 0.002.sh,
+                                ),
+                              )
+                            : null,
+                      ),
+                      child: IconButton(
+                        onPressed: () {
+                          Get.toNamed(JOBS_PAGE);
+                        },
+                        icon: Icon(
+                          FontAwesomeIcons.headset,
+                          size: 55.w,
+                          color:
+                              Get.currentRoute == JOBS_PAGE ? RedColor : null,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Get.currentRoute == TENDERS_PAGE
+                            ? Border(
+                                bottom: BorderSide(
+                                  color: RedColor,
+                                  style: BorderStyle.solid,
+                                  width: 0.002.sh,
+                                ),
+                              )
+                            : null,
+                      ),
+                      child: IconButton(
+                        onPressed: () {
+                          Get.toNamed(TENDERS_PAGE);
+                        },
+                        icon: Icon(FontAwesomeIcons.arrowTrendDown,
+                            size: 55.w,
+                            color: Get.currentRoute == TENDERS_PAGE
+                                ? RedColor
+                                : null),
                       ),
                     ),
                     IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        FontAwesomeIcons.arrowTrendDown,
-                        size: 55.w,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+
+                      },
                       icon: Icon(
                         FontAwesomeIcons.comments,
                         size: 55.w,
@@ -174,7 +230,7 @@ MainController mainController =Get.find<MainController>();
               },
               child: Container(
                 padding:
-                EdgeInsets.symmetric(horizontal: 10.w, vertical: 0.013.sh),
+                    EdgeInsets.symmetric(horizontal: 10.w, vertical: 0.013.sh),
                 margin: EdgeInsets.only(top: 108),
                 width: double.infinity,
                 height: 0.071.sh,
@@ -183,16 +239,15 @@ MainController mainController =Get.find<MainController>();
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Container(
-                     padding: EdgeInsets.all(0.002.sw),
+                      padding: EdgeInsets.all(0.002.sw),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: GrayDarkColor,
                       ),
-
                       child: Container(
                         padding: EdgeInsets.all(0.002.sw),
                         decoration: BoxDecoration(
-                        shape: BoxShape.circle,
+                          shape: BoxShape.circle,
                           color: WhiteColor,
                         ),
                         child: Container(
@@ -202,8 +257,12 @@ MainController mainController =Get.find<MainController>();
                             return Container(
                               width: 0.1.sw,
                               height: 0.1.sw,
-                              decoration: BoxDecoration(shape: BoxShape.circle,image:DecorationImage(image: getLogo()!=null?NetworkImage('${getLogo()}'): getUserImage())),
-
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                      image: getLogo() != null
+                                          ? NetworkImage('${getLogo()}')
+                                          : getUserImage())),
                             );
                           }),
                         ),

@@ -28,38 +28,41 @@ class UserModel {
   bool? is_special;
   double? totalBalance;
   double? totalPoint;
+  int? followingCount;
 
-  UserModel(
-      {this.name,
-      this.id,
-      this.seller_name,
-      this.email,
-      this.email_verified_at,
-      this.phone,
-      this.address,
-      this.image,
-      this.logo,
-      this.open_time,
-      this.close_time,
-      this.is_active,
-      this.is_delivery,
-      this.is_restaurant,
-      this.is_special,
-      this.affiliate,
-      this.info,
-      this.city,
-      this.products,
-      this.plans,
-      this.customImg,
-      this.totalBalance,
-      this.totalPoint,
-      this.level,
-      this.followers,});
+  UserModel({
+    this.name,
+    this.id,
+    this.seller_name,
+    this.email,
+    this.email_verified_at,
+    this.phone,
+    this.address,
+    this.image,
+    this.logo,
+    this.open_time,
+    this.close_time,
+    this.is_active,
+    this.is_delivery,
+    this.is_restaurant,
+    this.is_special,
+    this.affiliate,
+    this.info,
+    this.city,
+    this.products,
+    this.plans,
+    this.customImg,
+    this.totalBalance,
+    this.totalPoint,
+    this.level,
+    this.followers,
+    this.followingCount,
+  });
 
   factory UserModel.fromJson(Map<String, dynamic> data) {
     List<ProductModel> listProducts = [];
     List<PlanModel> listPlans = [];
-    List<FollowerModel> listFollowers=[];
+    List<FollowerModel> listFollowers = [];
     if (data['products'] != null) {
       for (var item in data['products']) {
         listProducts.add(ProductModel.fromJson(item));
@@ -78,6 +81,7 @@ class UserModel {
 
     return UserModel(
       id: int.tryParse("${data['id']}"),
+      followingCount: int.tryParse("${data['following_count']}") ?? 0,
       info: "${data['info'] ?? ''}",
       affiliate: "${data['affiliate'] ?? ''}",
       is_special: bool.tryParse("${data['is_special'] ?? false}"),
@@ -130,7 +134,9 @@ class UserModel {
       // this.customImg,
       'totalBalance': totalBalance,
       'totalPoint': totalPoint,
-      'level': level
+      'level': level,
+      'followers': followers?.map((el) => el.tojson()).toList() ?? [],
+      "following_count": followingCount
     };
     return data;
   }
@@ -144,8 +150,16 @@ class FollowerModel {
 
   factory FollowerModel.fromJson(Map<String, dynamic> data) {
     return FollowerModel(
-      user: data['user'] !=null ?UserModel.fromJson(data['user']) : null,
-      seller: data['seller'] !=null ?UserModel.fromJson(data['seller']) : null
-    );
+        user: data['user'] != null ? UserModel.fromJson(data['user']) : null,
+        seller:
+            data['seller'] != null ? UserModel.fromJson(data['seller']) : null);
+  }
+
+  tojson() {
+    Map<String, dynamic> data = {
+      "user": user?.toJson(),
+      "seller": seller?.toJson()
+    };
+    return data;
   }
 }

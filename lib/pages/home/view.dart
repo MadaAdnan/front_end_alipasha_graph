@@ -4,6 +4,7 @@ import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/components/home_app_bar/custom_sliver_app_bar.dart';
 
 import 'package:ali_pasha_graph/components/home_app_bar/view.dart';
+import 'package:ali_pasha_graph/components/product_components/job_card.dart';
 import 'package:ali_pasha_graph/components/product_components/post_card.dart';
 import 'package:ali_pasha_graph/components/sections_components/section_home_card.dart';
 import 'package:ali_pasha_graph/components/seller_component/seller_home_page_card.dart';
@@ -112,7 +113,14 @@ class HomePage extends StatelessWidget {
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
                     if (index < logic.products.length) {
-                      return PostCard(post: logic.products[index]);
+                      switch (logic.products[index].type) {
+                        case 'job':
+                        case 'search_job':
+                        case "tender":
+                          return JobCard(post: logic.products[index]);
+                        default:
+                          return PostCard(post: logic.products[index]);
+                      }
                     }
                     if (logic.mainController.loading.value) {
                       return Center(child: CircularProgressIndicator());
@@ -127,13 +135,12 @@ class HomePage extends StatelessWidget {
                 SliverToBoxAdapter(
                   child: Center(
                       child: Padding(
-
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Text(
-                                            'لا يوجد مزيد من النتائج',
-                                            style: H3GrayTextStyle,
-                                          ),
-                      )),
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Text(
+                      'لا يوجد مزيد من النتائج',
+                      style: H3GrayTextStyle,
+                    ),
+                  )),
                 ),
             ],
           );

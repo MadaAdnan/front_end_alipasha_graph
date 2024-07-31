@@ -42,7 +42,6 @@ mutation Login {
 ''');
       dio.Response? res = await mainController.fetchData();
       if (res?.data?['data']?['login'] != null) {
-         mainController.logger.i(res?.data?['data']?['login']);
         UserModel user =
             UserModel.fromJson(res?.data?['data']?['login']?['user']);
         mainController.setUser(user: user, isWrite: true);

@@ -11,6 +11,7 @@ const AUTH_USER='''
             logo
             total_balance
             total_point
+            following_count
              city {
                 name
             }
@@ -34,6 +35,7 @@ const AUTH_FIELDS='''
             address
             image
             logo
+            following_count
             total_balance
             total_point
              city {

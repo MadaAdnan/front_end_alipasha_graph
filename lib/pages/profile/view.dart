@@ -95,8 +95,8 @@ class ProfilePage extends StatelessWidget {
                       onTap: () {
                         Get.toNamed(FOLLOWERS_PAGE);
                       }),
-                  _buildWidget(title: 'متابعين', count: 2000),
-                  _buildWidget(title: 'تسجيلات الإعجاب', count: 1000),
+                  _buildWidget(title: 'يتابعني', count:  mainController.authUser.value?.followingCount ?? 0),
+                //  _buildWidget(title: 'تسجيلات الإعجاب', count: 1000),
                 ],
               ),
               30.verticalSpace,

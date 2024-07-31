@@ -1,6 +1,8 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
+import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 ImageProvider getUserImage() {
   return AssetImage('assets/images/png/user.png');
@@ -30,11 +32,16 @@ String? getLogo() {
 }
 
 bool isAuth() {
-
   MainController mainController = Get.find<MainController>();
-  if(mainController.storage.hasData('token')){
-    mainController.token.value=mainController.storage.read('token');
+  if (mainController.storage.hasData('token')) {
+    mainController.token.value = mainController.storage.read('token');
   }
   return mainController.token.value != null &&
       mainController.token.value!.length > 10;
+}
+
+Future<void> openUrl({required String url}) async {
+  if (!await launchUrl(Uri.parse(url))) {
+    throw CustomException(message: 'Could not launch $url');
+  }
 }

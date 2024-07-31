@@ -8,6 +8,8 @@ import 'package:ali_pasha_graph/pages/followers/binding.dart';
 import 'package:ali_pasha_graph/pages/followers/view.dart';
 import 'package:ali_pasha_graph/pages/home/binding.dart';
 import 'package:ali_pasha_graph/pages/home/view.dart';
+import 'package:ali_pasha_graph/pages/jobs/binding.dart';
+import 'package:ali_pasha_graph/pages/jobs/view.dart';
 import 'package:ali_pasha_graph/pages/login/binding.dart';
 import 'package:ali_pasha_graph/pages/login/view.dart';
 import 'package:ali_pasha_graph/pages/menu/binding.dart';
@@ -18,6 +20,8 @@ import 'package:ali_pasha_graph/pages/register/binding.dart';
 import 'package:ali_pasha_graph/pages/register/view.dart';
 import 'package:ali_pasha_graph/pages/shipping/binding.dart';
 import 'package:ali_pasha_graph/pages/shipping/view.dart';
+import 'package:ali_pasha_graph/pages/tenders/binding.dart';
+import 'package:ali_pasha_graph/pages/tenders/view.dart';
 import 'package:ali_pasha_graph/pages/verify_email/binding.dart';
 import 'package:ali_pasha_graph/pages/verify_email/view.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
@@ -28,9 +32,11 @@ class AppPages {
   static List<GetPage> pages = [
     GetPage(
         middlewares: [VerifyEmailMiddleware()],
-        name: HOME_PAGE, page: () => HomePage(), binding: HomeBinding()),
+        name: HOME_PAGE,
+        page: () => HomePage(),
+        binding: HomeBinding()),
     GetPage(
-      middlewares: [VerifyEmailMiddleware()],
+        middlewares: [VerifyEmailMiddleware()],
         name: CREATE_PRODUCT_PAGE,
         page: () => CreateProductPage(),
         binding: CreateProductBinding()),
@@ -64,10 +70,14 @@ class AppPages {
         name: VERIFY_EMAIL_PAGE,
         page: () => VerifyEmailPage(),
         binding: VerifyEmailBinding()),
-
     GetPage(
         name: FOLLOWERS_PAGE,
         page: () => FollowersPage(),
         binding: FollowersBinding()),
+    GetPage(name: JOBS_PAGE, page: () => JobsPage(), binding: JobsBinding()),
+    GetPage(
+        name: TENDERS_PAGE,
+        page: () => TendersPage(),
+        binding: TendersBinding()),
   ];
 }

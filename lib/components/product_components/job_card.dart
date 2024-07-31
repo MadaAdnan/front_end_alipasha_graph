@@ -5,26 +5,30 @@ import 'package:ali_pasha_graph/helpers/queries.dart';
 import 'package:ali_pasha_graph/main.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import "package:dio/dio.dart" as dio;
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:toast/toast.dart';
 import '../../helpers/colors.dart';
 import '../../helpers/style.dart';
 
-class PostCard extends StatelessWidget {
+class JobCard extends StatelessWidget {
   final ProductModel? post;
 
-  PostCard({super.key, this.post});
+  JobCard({super.key, this.post});
 
   RxBool loading = RxBool(false);
   MainController mainController = Get.find<MainController>();
 
   @override
   Widget build(BuildContext context) {
+    ToastContext().init(context);
     return Container(
       margin: EdgeInsets.symmetric(vertical: 7.h),
       padding: EdgeInsets.symmetric(vertical: 0.002.sh, horizontal: 0.002.sw),
@@ -184,7 +188,7 @@ class PostCard extends StatelessWidget {
                   color: GrayDarkColor,
                   image: DecorationImage(
                       image: NetworkImage(
-                        "${post?.image}",
+                        "${post?.user?.logo}",
                       ),
                       fit: BoxFit.cover)),
               child: Stack(
@@ -218,52 +222,43 @@ class PostCard extends StatelessWidget {
                       ),
                     ),
                   Visibility(
-                    visible: post?.type == 'product',
+                    visible: post?.type == 'job',
                     child: Positioned(
                       bottom: 20.h,
                       right: 10.w,
-                      child: Row(
-                        children: [
-                          Container(
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color: RedColor,
-                                borderRadius: BorderRadius.circular(15.r)),
-                            height: 90.h,
-                            width: 280.w,
-                            padding: EdgeInsets.symmetric(horizontal: 5.w),
-                            child: RichText(
-                              text: TextSpan(children: [
-                                TextSpan(
-                                    text: ' ${post?.price ?? 0} ',
-                                    style: H2WhiteTextStyle.copyWith(
-                                        fontWeight: FontWeight.bold)),
-                                TextSpan(
-                                    text: '\$',
-                                    style: H2WhiteTextStyle.copyWith(
-                                        fontWeight: FontWeight.bold)),
-                              ]),
-                            ),
+                      child: InkWell(
+                        onTap: () async {
+                          Clipboard.setData(
+                              await ClipboardData(text: post?.code ?? ''));
+                          Toast.show('تم النسخ إلى الحافظة',
+                              duration: Toast.lengthLong,
+                              gravity: Toast.center);
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              color: RedColor,
+                              borderRadius: BorderRadius.circular(15.r)),
+                          height: 90.h,
+                          padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
+                          child: RichText(
+                            text: TextSpan(children: [
+                              TextSpan(
+                                  text: ' كود الوظيفة : ',
+                                  style: H2WhiteTextStyle.copyWith(
+                                      fontWeight: FontWeight.bold)),
+                              TextSpan(
+                                  text: '${post!.code ?? ''}',
+                                  style: H2WhiteTextStyle.copyWith(
+                                      fontWeight: FontWeight.bold)),
+                            ]),
+                          ),
 
-                            /*  Text(
-                              ,
-                              style: H3WhiteTextStyle,
-                            ),*/
-                          ),
-                          20.horizontalSpace,
-                          Container(
-                            decoration: BoxDecoration(
-                                color: RedColor,
-                                borderRadius: BorderRadius.circular(10.w)),
-                            height: 90.h,
-                            width: 120.w,
-                            padding: EdgeInsets.symmetric(horizontal: 5.w),
-                            child: Icon(
-                              FontAwesomeIcons.cartShopping,
-                              color: WhiteColor,
-                            ),
-                          ),
-                        ],
+                          /*  Text(
+                            ,
+                            style: H3WhiteTextStyle,
+                          ),*/
+                        ),
                       ),
                     ),
                   )
@@ -296,13 +291,13 @@ class PostCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                MaterialButton(
+              /*  MaterialButton(
                   onPressed: () {},
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Icon(FontAwesomeIcons.comment,size: 0.05.sw,),
+                      Icon(FontAwesomeIcons.comment),
                       10.horizontalSpace,
                       Text(
                         'تعليق',
@@ -318,7 +313,7 @@ class PostCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Icon(
-                        FontAwesomeIcons.headset,size: 0.05.sw,
+                        FontAwesomeIcons.headset,
                       ),
                       10.horizontalSpace,
                       Text(
@@ -327,6 +322,12 @@ class PostCard extends StatelessWidget {
                       )
                     ],
                   ),
+                ),*/
+                Row(
+                  children: [
+                    Icon(FontAwesomeIcons.calendar,size: 0.05.sw,),
+                    Text("${post?.end_date}",style: H4BlackTextStyle,)
+                  ],
                 ),
                 MaterialButton(
                   onPressed: () {},
@@ -363,7 +364,7 @@ class PostCard extends StatelessWidget {
 }
       ''';
         dio.Response? res = await mainController.fetchData();
-         mainController.logger.e(res?.data);
+        mainController.logger.e(res?.data);
         if (res?.data?['data']?['followAccount'] != null) {
           UserModel user =
               UserModel.fromJson(res?.data?['data']?['followAccount']);

@@ -50,6 +50,7 @@ class MainController extends GetxController {
 
   Future<dio.Response?> fetchData() async {
     loading.value = true;
+    DateTime startDate=DateTime.now();
     try {
       dio.Response res = await dio_manager.executeGraphQLQuery(query.value!,
           variables: variables.value);
@@ -59,7 +60,10 @@ class MainController extends GetxController {
             message:res.data?['errors'][0]['message']);
       }*/
       loading.value = false;
-
+      DateTime endDate=DateTime.now();
+      Duration responseTime = endDate.difference(startDate);
+      logger.i("Duration Response : ${responseTime.inMilliseconds/1000} Seconds");
+      logger.i("Response Size: ${res.data.toString().length} Byte");
       return res;
     } on dio.DioException catch (e) {
       loading.value = false;
