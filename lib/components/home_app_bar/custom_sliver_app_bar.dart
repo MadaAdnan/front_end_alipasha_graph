@@ -61,10 +61,15 @@ class HomeSliverAppBarComponent extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Icon(
-                            FontAwesomeIcons.search,
-                            size: 55.w,
-                            color: RedColor,
+                          InkWell(
+                            onTap: () {
+                              Get.toNamed(FILTER_PAGE);
+                            },
+                            child: Icon(
+                              FontAwesomeIcons.search,
+                              size: 55.w,
+                              color: RedColor,
+                            ),
                           ),
                           20.horizontalSpace,
                           MaterialButton(
@@ -192,9 +197,7 @@ class HomeSliverAppBarComponent extends StatelessWidget {
                       ),
                     ),
                     IconButton(
-                      onPressed: () {
-
-                      },
+                      onPressed: () {},
                       icon: Icon(
                         FontAwesomeIcons.comments,
                         size: 55.w,

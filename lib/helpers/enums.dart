@@ -1,11 +1,11 @@
-
 import 'dart:ui';
 
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-extension CategoryTypeEnum on String{
+
+extension CategoryTypeEnum on String {
   String toCategoryTypeLabel() {
     switch (this) {
       case "product":
@@ -80,9 +80,22 @@ extension CategoryTypeEnum on String{
         return this;
     }
   }
+
+  String toLevelProduct() {
+    switch (this) {
+      case "news":
+        return "جديد";
+      case "special":
+        return "مميز";
+      case "normal":
+        return "عادي";
+      default:
+        return this;
+    }
+  }
 }
 
-extension FormatNumber on String{
+extension FormatNumber on String {
   String toFormatNumber() {
     double number = double.tryParse(this) ?? 0;
     if (number >= 1000000) {
@@ -94,8 +107,9 @@ extension FormatNumber on String{
     }
   }
 }
+
 extension ProductActiveEnum on String {
- String active2Arabic() {
+  String active2Arabic() {
     switch (this) {
       case "active":
         return "مفعل";
@@ -161,7 +175,6 @@ extension IsActiveEnum on bool {
     }
     return FontAwesomeIcons.lock;
   }
-
 
   Color booleanToColor() {
     if (this) {

@@ -1,3 +1,5 @@
+
+
 class CategoryModel {
   int? id;
   String? name;
@@ -39,5 +41,17 @@ class CategoryModel {
         id: int.tryParse("${data['id']}"),
         children: listChildren.toList(),
         parent: listParent.toList());
+  }
+
+  toJson(){
+    return {
+      'id':id,
+      'name':name,
+      'image':img,
+      'type':type,
+      'color':color,
+      "children":children!=null?children!.map((el)=>el.toJson()):[],
+      "parent":children!=null?parent!.map((el)=>el.toJson()):[],
+    };
   }
 }

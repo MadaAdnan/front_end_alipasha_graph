@@ -14,13 +14,14 @@ class ProductModel {
   CategoryModel? sub3;
   CategoryModel? sub4;
 
-  /*colors
-  comments*/
+  List<ColorModel>?colors;
+
+  /*comments*/
   String? name;
   String? info;
   String? expert;
   String? active;
-  List<String>? tags;
+  List<dynamic>? tags;
   bool? is_discount;
 
   bool? is_delivary;
@@ -50,11 +51,11 @@ class ProductModel {
   String? image;
 
   String? video;
-  List<String>? images;
+  List<String> images;
 
-  List<String>? docs;
+  List<String> docs;
   List<DataImageModel>? liistOfImages;
-
+  TurkeyPrice? turkey_price;
   List<DataImageModel>? liistOfDocs;
 
   String? created_at;
@@ -75,10 +76,10 @@ class ProductModel {
     this.url,
     this.code,
     this.created_at,
-    this.docs,
+    this.docs = const <String>[],
     this.end_date,
     this.expert,
-    this.images,
+    this.images = const <String>[],
     this.is_available,
     this.is_delivary,
     this.latitude,
@@ -98,47 +99,63 @@ class ProductModel {
     this.sub4,
     this.is_special,
     this.active,
+    this.turkey_price,
+    this.colors
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> data) {
+    List<ColorModel> listColor=[];
+    if(data['colors']!=null){
+      for(var item in data['colors']){
+        listColor.add(ColorModel.fromJson(item));
+      }
+    }
     return ProductModel(
-      id: int.tryParse("${data['id']}"),
-      name: "${data['name'] ?? ''}",
-      active: "${data['active'] ?? ''}",
-      is_special: bool.tryParse("${data['is_special']}") ?? false,
-      is_available: bool.tryParse("${data['is_available']}") ?? false,
-      views_count: "${data['views_count'] ?? 0}",
-      expert: "${data['expert'] ?? ''}",
-      level: "${data['level'] ?? ''}",
-      type: "${data['type'] ?? ''}",
-      image: "${data['image'] ?? ''}",
-      category: data['category'] != null
-          ? CategoryModel.fromJson(data['category'])
-          : null,
-      sub1: data['sub1'] != null ? CategoryModel.fromJson(data['sub1']) : null,
-      sub2: data['sub2'] != null ? CategoryModel.fromJson(data['sub2']) : null,
-      sub3: data['sub3'] != null ? CategoryModel.fromJson(data['sub3']) : null,
-      price: double.tryParse("${data['price']}") ?? 0,
-      user: data['user'] != null ? UserModel.fromJson(data['user']) : null,
-      city: data['city'] != null ? CityModel.fromJson(data['city']) : null,
-      info: "${data['info'] ?? ''}",
-      url: "${data['url'] ?? ''}",
-      is_discount: bool.tryParse("${data['is_discount']}") ?? false,
-      discount: double.tryParse("${data['discount']}") ?? 0,
-      address: "${data['address'] ?? ''}",
-      code: "${data['code'] ?? ''}",
-      created_at: "${data['created_at'] ?? ''}",
-      docs: data['docs'] ?? [],
-      email: "${data['email'] ?? ''}",
-      end_date: "${data['end_date'] ?? ''}",
-      start_date: "${data['start_date'] ?? ''}",
-      is_delivary: bool.tryParse("${data['is_delivary']}") ?? false,
-      latitude: "${data['latitude'] ?? ''}",
-      longitude: "${data['longitude'] ?? ''}",
-      phone: "${data['phone'] ?? ''}",
-      tags: data['tags'] ?? [],
-      sub4: data['sub4'] != null ? CategoryModel.fromJson(data['sub4']) : null,
+        id: int.tryParse("${data['id']}"),
+        images: List.from(data['images'] ?? []),
+        name: "${data['name'] ?? ''}",
+        active: "${data['active'] ?? ''}",
+        is_special: bool.tryParse("${data['is_special']}") ?? false,
+        is_available: bool.tryParse("${data['is_available']}") ?? false,
+        views_count: "${data['views_count'] ?? 0}",
+        expert: "${data['expert'] ?? ''}",
+        level: "${data['level'] ?? ''}",
+        type: "${data['type'] ?? ''}",
+        image: "${data['image'] ?? ''}",
+        category: data['category'] != null
+            ? CategoryModel.fromJson(data['category'])
+            : null,
+        colors:listColor,
+        sub1: data['sub1'] != null ?
+        CategoryModel.fromJson(data['sub1']) : null,
+    sub2: data['sub2'] != null ? CategoryModel.fromJson(data['sub2']) : null,
+    sub3: data['sub3'] != null ? CategoryModel.fromJson(data['sub3']) : null,
+    price: double.tryParse("${data['price']}") ?? 0,
+    user: data['user'] != null ? UserModel.fromJson(data['user']) : null,
+    city: data['city'] != null ? CityModel.fromJson(data['city']) : null,
+    info: "${data['info'] ?? ''}",
+    url: "${data['url'] ?? ''}",
+    is_discount: bool.tryParse("${data['is_discount']}") ?? false,
+    discount: double.tryParse("${data['discount']}") ?? 0,
+    address: "${data['address'] ?? ''}",
+    code: "${data['code'] ?? ''}",
+    created_at: "${data['created_at'] ?? ''}",
+    docs: List.from(data['docs'] ?? []),
+    email: "${data['email'] ?? ''}",
+    end_date: "${data['end_date'] ?? ''}",
+    start_date: "${data['start_date'] ?? ''}",
+    is_delivary: bool.tryParse("${data['is_delivary']}") ?? false,
+    latitude: "${data['latitude'] ?? ''}",
+    longitude: "${data['longitude'] ?? ''}",
+    phone: "${data['phone'] ?? ''}",
+    tags: data['tags'] ?? [],
+    sub4: data['sub4'] != null ? CategoryModel.fromJson(data['sub4']) : null,
+    turkey_price: data['turkey_price']!=null ?TurkeyPrice.fromJson(data['turkey_price']):null,
     );
+    }
+
+  toJson() {
+    return {'images': images};
   }
 }
 
@@ -152,3 +169,30 @@ class DataImageModel {
     return DataImageModel(id: data['id'], url: data['url']);
   }
 }
+
+class TurkeyPrice {
+  double? price;
+  double? discount;
+
+  TurkeyPrice({this.price, this.discount});
+
+  factory TurkeyPrice.fromJson(Map<String, dynamic> data) {
+    return TurkeyPrice(
+        discount: double.tryParse("${data['discount'] ?? 0}"),
+        price: double.tryParse("${data['price'] ?? 0}"));
+  }
+}
+
+class ColorModel {
+  int? id;
+  String? code;
+
+  ColorModel({this.id, this.code});
+
+  factory ColorModel.fromJson(Map<String, dynamic> data) {
+    return ColorModel(
+        id: int.tryParse("${data['id']}"),
+        code: "${data['code']}");
+  }
+}
+

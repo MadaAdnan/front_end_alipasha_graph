@@ -12,6 +12,7 @@ import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/enums.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
+import 'package:ali_pasha_graph/routes/routes_url.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -151,42 +152,47 @@ class HomePage extends StatelessWidget {
 
   Widget _viewMoreButton(
       {required Color color, required String title, String? img}) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 0.001.sw),
-      height: 0.096.sh,
-      width: 0.185.sw,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(150.r),
-      ),
-      margin: EdgeInsets.symmetric(horizontal: 0.0059.sw),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            // padding: EdgeInsets.all(0.007.sw),
-            height: 0.150.sw,
-            width: 0.150.sw,
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(150.r),
-            ),
-            child: Container(
+    return InkWell(
+      onTap: (){
+        Get.toNamed(SECTIONS_PAGE);
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 0.001.sw),
+        height: 0.096.sh,
+        width: 0.185.sw,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(150.r),
+        ),
+        margin: EdgeInsets.symmetric(horizontal: 0.0059.sw),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              // padding: EdgeInsets.all(0.007.sw),
+              height: 0.150.sw,
+              width: 0.150.sw,
               decoration: BoxDecoration(
+                color: color,
                 borderRadius: BorderRadius.circular(150.r),
-                image: DecorationImage(
-                  image: AssetImage("${img}"),
-                  fit: BoxFit.fitHeight,
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(150.r),
+                  image: DecorationImage(
+                    image: AssetImage("${img}"),
+                    fit: BoxFit.fitHeight,
+                  ),
                 ),
               ),
             ),
-          ),
-          Text(
-            title!,
-            overflow: TextOverflow.ellipsis,
-            style: H4BlackTextStyle,
-          )
-        ],
+            Text(
+              title!,
+              overflow: TextOverflow.ellipsis,
+              style: H4BlackTextStyle,
+            )
+          ],
+        ),
       ),
     );
   }

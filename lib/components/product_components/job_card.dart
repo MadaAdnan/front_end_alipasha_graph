@@ -5,6 +5,7 @@ import 'package:ali_pasha_graph/helpers/queries.dart';
 import 'package:ali_pasha_graph/main.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
+import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -33,7 +34,7 @@ class JobCard extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: 7.h),
       padding: EdgeInsets.symmetric(vertical: 0.002.sh, horizontal: 0.002.sw),
       width: double.infinity,
-      height: 0.556.sh,
+      height: 1.sw+0.19.sh,
       color: GrayLightColor,
       child: Column(
         children: [
@@ -180,10 +181,12 @@ class JobCard extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Get.toNamed(PRODUCT_PAGE,arguments: post?.id);
+            },
             child: Container(
-              width: double.infinity,
-              height: 0.38.sh,
+              width:1.sw,
+              height:1.sw,
               decoration: BoxDecoration(
                   color: GrayDarkColor,
                   image: DecorationImage(
@@ -277,7 +280,9 @@ class JobCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 MaterialButton(
-                  onPressed: () {},
+                  onPressed: () {
+
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,

@@ -5,6 +5,7 @@ import 'package:ali_pasha_graph/helpers/queries.dart';
 import 'package:ali_pasha_graph/main.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
+import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -29,7 +30,7 @@ class PostCard extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: 7.h),
       padding: EdgeInsets.symmetric(vertical: 0.002.sh, horizontal: 0.002.sw),
       width: double.infinity,
-      height: 0.556.sh,
+      height: 1.sw+0.19.sh,
       color: GrayLightColor,
       child: Column(
         children: [
@@ -176,10 +177,12 @@ class PostCard extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Get.toNamed(PRODUCT_PAGE, arguments: post!.id);
+            },
             child: Container(
-              width: double.infinity,
-              height: 0.38.sh,
+              width: 1.sw,
+              height: 1.sw,
               decoration: BoxDecoration(
                   color: GrayDarkColor,
                   image: DecorationImage(
@@ -218,6 +221,43 @@ class PostCard extends StatelessWidget {
                       ),
                     ),
                   Visibility(
+                    child: Positioned(
+                      bottom: 100.h,
+                      right: 40.w,
+                      child: Transform.rotate(
+                        angle: 270,
+                        child: Container(
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              color: GrayDarkColor,
+                              borderRadius: BorderRadius.circular(15.r)),
+                          height: 90.h,
+                          width: 280.w,
+                          padding: EdgeInsets.symmetric(horizontal: 5.w),
+                          child: RichText(
+                            text: TextSpan(children: [
+                              TextSpan(
+                                  text: ' ${post?.price ?? 0}',
+                                  style: H2BlackTextStyle.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      decoration: TextDecoration.lineThrough)),
+                              TextSpan(
+                                  text: '\$',
+                                  style: H2BlackTextStyle.copyWith(
+                                      fontWeight: FontWeight.bold)),
+                            ]),
+                          ),
+
+                          /*  Text(
+                                      ,
+                                      style: H3WhiteTextStyle,
+                                    ),*/
+                        ),
+                      ),
+                    ),
+                    visible: post?.is_discount == true,
+                  ),
+                  Visibility(
                     visible: post?.type == 'product',
                     child: Positioned(
                       bottom: 20.h,
@@ -235,7 +275,8 @@ class PostCard extends StatelessWidget {
                             child: RichText(
                               text: TextSpan(children: [
                                 TextSpan(
-                                    text: ' ${post?.price ?? 0} ',
+                                    text:
+                                        ' ${post?.is_discount == true ? post?.discount : post?.price ?? 0} ',
                                     style: H2WhiteTextStyle.copyWith(
                                         fontWeight: FontWeight.bold)),
                                 TextSpan(
@@ -250,7 +291,7 @@ class PostCard extends StatelessWidget {
                               style: H3WhiteTextStyle,
                             ),*/
                           ),
-                          20.horizontalSpace,
+                          40.horizontalSpace,
                           Container(
                             decoration: BoxDecoration(
                                 color: RedColor,
@@ -287,7 +328,10 @@ class PostCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Icon(FontAwesomeIcons.eye,size: 0.05.sw,),
+                      Icon(
+                        FontAwesomeIcons.eye,
+                        size: 0.05.sw,
+                      ),
                       10.horizontalSpace,
                       Text(
                         '${post?.views_count ?? 0}'.toFormatNumber(),
@@ -302,7 +346,10 @@ class PostCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Icon(FontAwesomeIcons.comment,size: 0.05.sw,),
+                      Icon(
+                        FontAwesomeIcons.comment,
+                        size: 0.05.sw,
+                      ),
                       10.horizontalSpace,
                       Text(
                         'تعليق',
@@ -318,7 +365,8 @@ class PostCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Icon(
-                        FontAwesomeIcons.headset,size: 0.05.sw,
+                        FontAwesomeIcons.headset,
+                        size: 0.05.sw,
                       ),
                       10.horizontalSpace,
                       Text(
@@ -334,7 +382,10 @@ class PostCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Icon(FontAwesomeIcons.share,size: 0.05.sw,),
+                      Icon(
+                        FontAwesomeIcons.share,
+                        size: 0.05.sw,
+                      ),
                       10.horizontalSpace,
                       Text(
                         'مشاركة',
@@ -363,7 +414,7 @@ class PostCard extends StatelessWidget {
 }
       ''';
         dio.Response? res = await mainController.fetchData();
-         mainController.logger.e(res?.data);
+        //  mainController.logger.e(res?.data);
         if (res?.data?['data']?['followAccount'] != null) {
           UserModel user =
               UserModel.fromJson(res?.data?['data']?['followAccount']);

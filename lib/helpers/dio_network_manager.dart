@@ -4,6 +4,8 @@ import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 
 import 'package:get_storage/get_storage.dart';
 
+//Exchange // https://northsoftit.com/ER
+
 class NetworkManager {
   static final NetworkManager _instance = NetworkManager._internal();
 

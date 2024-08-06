@@ -4,6 +4,8 @@ import 'package:ali_pasha_graph/pages/balance/binding.dart';
 import 'package:ali_pasha_graph/pages/balance/view.dart';
 import 'package:ali_pasha_graph/pages/create_product/binding.dart';
 import 'package:ali_pasha_graph/pages/create_product/view.dart';
+import 'package:ali_pasha_graph/pages/filter/binding.dart';
+import 'package:ali_pasha_graph/pages/filter/view.dart';
 import 'package:ali_pasha_graph/pages/followers/binding.dart';
 import 'package:ali_pasha_graph/pages/followers/view.dart';
 import 'package:ali_pasha_graph/pages/home/binding.dart';
@@ -14,10 +16,14 @@ import 'package:ali_pasha_graph/pages/login/binding.dart';
 import 'package:ali_pasha_graph/pages/login/view.dart';
 import 'package:ali_pasha_graph/pages/menu/binding.dart';
 import 'package:ali_pasha_graph/pages/menu/view.dart';
+import 'package:ali_pasha_graph/pages/product/binding.dart';
+import 'package:ali_pasha_graph/pages/product/view.dart';
 import 'package:ali_pasha_graph/pages/profile/binding.dart';
 import 'package:ali_pasha_graph/pages/profile/view.dart';
 import 'package:ali_pasha_graph/pages/register/binding.dart';
 import 'package:ali_pasha_graph/pages/register/view.dart';
+import 'package:ali_pasha_graph/pages/sections/binding.dart';
+import 'package:ali_pasha_graph/pages/sections/view.dart';
 import 'package:ali_pasha_graph/pages/shipping/binding.dart';
 import 'package:ali_pasha_graph/pages/shipping/view.dart';
 import 'package:ali_pasha_graph/pages/tenders/binding.dart';
@@ -27,6 +33,9 @@ import 'package:ali_pasha_graph/pages/verify_email/view.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 
 import 'package:get/get.dart';
+
+import '../pages/section/binding.dart';
+import '../pages/section/view.dart';
 
 class AppPages {
   static List<GetPage> pages = [
@@ -79,5 +88,24 @@ class AppPages {
         name: TENDERS_PAGE,
         page: () => TendersPage(),
         binding: TendersBinding()),
+    GetPage(
+        name: SECTIONS_PAGE,
+        page: () => SectionsPage(),
+        binding: SectionsBinding()),
+
+    GetPage(
+        name: SECTION_PAGE,
+        page: () => SectionPage(),
+        binding: SectionBinding()),
+
+    GetPage(
+        name: PRODUCT_PAGE,
+        page: () => ProductPage(),
+        binding: ProductBinding()),
+
+    GetPage(
+        name: FILTER_PAGE,
+        page: () => FilterPage(),
+        binding: FilterBinding()),
   ];
 }
