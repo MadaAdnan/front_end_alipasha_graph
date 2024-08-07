@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
 import 'package:ali_pasha_graph/models/category_model.dart';
+import 'package:ali_pasha_graph/models/product_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:dio/dio.dart' as dio;
@@ -25,6 +26,7 @@ class MainController extends GetxController {
   RxList<Map<String, dynamic>> errors = RxList<Map<String, dynamic>>([]);
   RxList<CategoryModel> categories = RxList<CategoryModel>([]);
   RxList<CityModel> cities = RxList<CityModel>([]);
+  RxList<ColorModel> colors = RxList<ColorModel>([]);
   RxBool is_show_home_appbar = RxBool(true);
   Logger logger = Logger();
 

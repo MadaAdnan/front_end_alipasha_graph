@@ -13,7 +13,10 @@ const String SECTIONS_PAGE = '/sections_page';
 const String SECTION_PAGE = '/section_page';
 
 const String PRODUCT_PAGE = '/product_page';
-const String FILTER_PAGE = '/filter_page';
+
 const String JOBS_PAGE = '/jobs_page';
 
 const String TENDERS_PAGE = '/tender_page';
+
+const String FILTER_PAGE = '/filter_page';
+const String SEARCH_PAGE = '/search_page';

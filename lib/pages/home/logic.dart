@@ -1,4 +1,5 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
+import 'package:ali_pasha_graph/main.dart';
 import 'package:ali_pasha_graph/models/category_model.dart';
 import 'package:ali_pasha_graph/models/city_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
@@ -76,8 +77,25 @@ class HomeLogic extends GetxController {
     mainCategories{
     name
     color
+    type
+    has_color
     id
     image
+    children{
+      id
+      name
+      children{
+      id
+      name
+      children{
+      id
+      name
+      
+      }
+      }
+      }
+    
+    
     }
     specialSeller{
     id
@@ -93,11 +111,15 @@ class HomeLogic extends GetxController {
     image
     city_id
     }
+    colors{
+    name
+    id
+    }
    ''' : ''}
 }
     ''');
     dio.Response? res = await mainController.fetchData();
-
+    //mainController.logger.e(res?.data);
     if (res != null) {
       hasMorePage(
           res.data['data']['products']['paginatorInfo']['hasMorePages']);
@@ -114,6 +136,13 @@ class HomeLogic extends GetxController {
           mainController.cities.add(CityModel.fromJson(item));
         }
       }
+
+      if (res.data['data']['colors'] != null) {
+        for (var item in res.data['data']['colors']) {
+          mainController.colors.add(ColorModel.fromJson(item));
+        }
+      }
+
       if (res.data['data']['specialSeller'] != null) {
         for (var item in res.data['data']['specialSeller']) {
           sellers.add(UserModel.fromJson(item));

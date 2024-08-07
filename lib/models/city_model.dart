@@ -20,4 +20,10 @@ class CityModel {
     Map<String, dynamic> data = {'id': id, 'name': name, 'image': image,'city_id':cityId,'is_delivery':isDelivery};
     return data;
   }
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    return "$name";
+  }
 }

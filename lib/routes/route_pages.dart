@@ -22,6 +22,8 @@ import 'package:ali_pasha_graph/pages/profile/binding.dart';
 import 'package:ali_pasha_graph/pages/profile/view.dart';
 import 'package:ali_pasha_graph/pages/register/binding.dart';
 import 'package:ali_pasha_graph/pages/register/view.dart';
+import 'package:ali_pasha_graph/pages/search/binding.dart';
+import 'package:ali_pasha_graph/pages/search/view.dart';
 import 'package:ali_pasha_graph/pages/sections/binding.dart';
 import 'package:ali_pasha_graph/pages/sections/view.dart';
 import 'package:ali_pasha_graph/pages/shipping/binding.dart';
@@ -107,5 +109,10 @@ class AppPages {
         name: FILTER_PAGE,
         page: () => FilterPage(),
         binding: FilterBinding()),
+
+    GetPage(
+        name: SEARCH_PAGE,
+        page: () => SearchPage(),
+        binding: SearchBinding()),
   ];
 }

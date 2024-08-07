@@ -1,5 +1,3 @@
-
-
 class CategoryModel {
   int? id;
   String? name;
@@ -8,6 +6,7 @@ class CategoryModel {
   String? type;
   List<CategoryModel>? parent;
   List<CategoryModel>? children;
+  bool? hasColor;
 
   CategoryModel({
     this.name,
@@ -17,7 +16,14 @@ class CategoryModel {
     this.parent,
     this.color,
     this.type,
+    this.hasColor,
   });
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    return "$name";
+  }
 
   factory CategoryModel.fromJson(Map<String, dynamic> data) {
     List<CategoryModel> listParent = [];
@@ -36,6 +42,7 @@ class CategoryModel {
     return CategoryModel(
         name: "${data['name']}",
         img: "${data['image']}",
+        hasColor: bool.tryParse("${data['has_color']}") ?? false,
         color: "${data['color']}",
         type: "${data['type']}",
         id: int.tryParse("${data['id']}"),
@@ -43,15 +50,15 @@ class CategoryModel {
         parent: listParent.toList());
   }
 
-  toJson(){
+  toJson() {
     return {
-      'id':id,
-      'name':name,
-      'image':img,
-      'type':type,
-      'color':color,
-      "children":children!=null?children!.map((el)=>el.toJson()):[],
-      "parent":children!=null?parent!.map((el)=>el.toJson()):[],
+      'id': id,
+      'name': name,
+      'image': img,
+      'type': type,
+      'color': color,
+      "children": children != null ? children!.map((el) => el.toJson()) : [],
+      "parent": children != null ? parent!.map((el) => el.toJson()) : [],
     };
   }
 }
