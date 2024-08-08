@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
+import 'package:ali_pasha_graph/pages/product/tabs/comment_page.dart';
 import 'package:ali_pasha_graph/pages/product/tabs/product_detailes.dart';
 import 'package:dio/dio.dart';
 
@@ -165,74 +166,77 @@ class ProductPage extends StatelessWidget {
                 ),
               ),
               Obx(() {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        pageController.animateToPage(0,
-                            duration: Duration(milliseconds: 500),
-                            curve: Curves.easeInCirc);
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: 0.3.sw,
-                        height: 0.05.sh,
-                        decoration: BoxDecoration(
-                            color:pageIndex.value==0? RedColor:GrayLightColor,
-                            borderRadius: BorderRadius.circular(15.r)),
-                        child: Text(
-                          'التفاصيل',
-                          style:pageIndex.value==0? H3WhiteTextStyle:H3BlackTextStyle,
+                return Container(
+                  height: 0.08.sh,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          pageController.animateToPage(0,
+                              duration: Duration(milliseconds: 500),
+                              curve: Curves.easeInCirc);
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: 0.3.sw,
+                          height: 0.05.sh,
+                          decoration: BoxDecoration(
+                              color:pageIndex.value==0? RedColor:GrayLightColor,
+                              borderRadius: BorderRadius.circular(15.r)),
+                          child: Text(
+                            'التفاصيل',
+                            style:pageIndex.value==0? H3WhiteTextStyle:H3BlackTextStyle,
+                          ),
                         ),
                       ),
-                    ),
-                    if(logic.product.value?.type=='product')
-                    InkWell(
-                      onTap: () {
-                        pageController.animateToPage(1,
-                            duration: Duration(milliseconds: 500),
-                            curve: Curves.easeInCirc);
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: 0.3.sw,
-                        height: 0.05.sh,
-                        decoration: BoxDecoration(
-                            color:pageIndex.value==1? RedColor:GrayLightColor,
-                            borderRadius: BorderRadius.circular(15.r)),
-                        child: Text(
-                          'التعليقات',
-                          style:pageIndex.value==1? H3WhiteTextStyle:H3BlackTextStyle,
+                      if(logic.product.value?.type=='product')
+                      InkWell(
+                        onTap: () {
+                          pageController.animateToPage(1,
+                              duration: Duration(milliseconds: 500),
+                              curve: Curves.easeInCirc);
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: 0.3.sw,
+                          height: 0.05.sh,
+                          decoration: BoxDecoration(
+                              color:pageIndex.value==1? RedColor:GrayLightColor,
+                              borderRadius: BorderRadius.circular(15.r)),
+                          child: Text(
+                            'التعليقات',
+                            style:pageIndex.value==1? H3WhiteTextStyle:H3BlackTextStyle,
+                          ),
                         ),
                       ),
-                    ),
-                    if(logic.product.value?.type=='product')
-                    InkWell(
-                      onTap: () {
-                        pageController.animateToPage(2,
-                            duration: Duration(milliseconds: 500),
-                            curve: Curves.easeInCirc);
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: 0.3.sw,
-                        height: 0.05.sh,
-                        decoration: BoxDecoration(
-                            color:pageIndex.value==2? RedColor:GrayLightColor,
-                            borderRadius: BorderRadius.circular(15.r)),
-                        child: Text(
-                          'الموقع',
-                          style:pageIndex.value==2? H3WhiteTextStyle:H3BlackTextStyle,
+                      if(logic.product.value?.type=='product')
+                      InkWell(
+                        onTap: () {
+                          pageController.animateToPage(2,
+                              duration: Duration(milliseconds: 500),
+                              curve: Curves.easeInCirc);
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: 0.3.sw,
+                          height: 0.05.sh,
+                          decoration: BoxDecoration(
+                              color:pageIndex.value==2? RedColor:GrayLightColor,
+                              borderRadius: BorderRadius.circular(15.r)),
+                          child: Text(
+                            'الموقع',
+                            style:pageIndex.value==2? H3WhiteTextStyle:H3BlackTextStyle,
+                          ),
                         ),
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 );
               }),
               Container(
                 width: 1.sw,
-                height: 0.6.sh,
+                height: 0.52.sh,
                 padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
                 child: PageView(
                   onPageChanged: (index) {
@@ -249,7 +253,7 @@ class ProductPage extends StatelessWidget {
                     ),
                     if(logic.product.value?.type=='product')
                     Container(
-                      child: Text('Page2'),
+                      child: CommentPage(),
                     ),
                     if(logic.product.value?.type=='product')
                     Container(

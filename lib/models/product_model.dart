@@ -1,5 +1,6 @@
 import 'package:ali_pasha_graph/models/category_model.dart';
 import 'package:ali_pasha_graph/models/city_model.dart';
+import 'package:ali_pasha_graph/models/comment_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
 
 class ProductModel {
@@ -16,7 +17,7 @@ class ProductModel {
 
   List<ColorModel>? colors;
 
-  /*comments*/
+  List<CommentModel>? comments;
   String? name;
   String? info;
   String? expert;
@@ -60,47 +61,49 @@ class ProductModel {
 
   String? created_at;
 
-  ProductModel(
-      {this.type,
-      this.price,
-      this.is_discount,
-      this.discount,
-      this.info,
-      this.name,
-      this.id,
-      this.city,
-      this.image,
-      this.email,
-      this.phone,
-      this.address,
-      this.url,
-      this.code,
-      this.created_at,
-      this.docs = const <String>[],
-      this.end_date,
-      this.expert,
-      this.images = const <String>[],
-      this.is_available,
-      this.is_delivary,
-      this.latitude,
-      this.level,
-      this.liistOfDocs,
-      this.liistOfImages,
-      this.longitude,
-      this.start_date,
-      this.tags,
-      this.user,
-      this.video,
-      this.views_count,
-      this.category,
-      this.sub1,
-      this.sub2,
-      this.sub3,
-      this.sub4,
-      this.is_special,
-      this.active,
-      this.turkey_price,
-      this.colors});
+  ProductModel({
+    this.type,
+    this.price,
+    this.is_discount,
+    this.discount,
+    this.info,
+    this.name,
+    this.id,
+    this.city,
+    this.image,
+    this.email,
+    this.phone,
+    this.address,
+    this.url,
+    this.code,
+    this.created_at,
+    this.docs = const <String>[],
+    this.end_date,
+    this.expert,
+    this.images = const <String>[],
+    this.is_available,
+    this.is_delivary,
+    this.latitude,
+    this.level,
+    this.liistOfDocs,
+    this.liistOfImages,
+    this.longitude,
+    this.start_date,
+    this.tags,
+    this.user,
+    this.video,
+    this.views_count,
+    this.category,
+    this.sub1,
+    this.sub2,
+    this.sub3,
+    this.sub4,
+    this.is_special,
+    this.active,
+    this.turkey_price,
+    this.colors,
+    this.comments,
+  });
 
   factory ProductModel.fromJson(Map<String, dynamic> data) {
     List<ColorModel> listColor = [];
@@ -109,7 +112,14 @@ class ProductModel {
         listColor.add(ColorModel.fromJson(item));
       }
     }
+    List<CommentModel> listComments = [];
+   /* if (data['comments'] != null) {
+      for (var item in data['comments']) {
+        listComments.add(CommentModel.fromJson(item));
+      }
+    }*/
     return ProductModel(
+      comments: listComments,
       id: int.tryParse("${data['id']}"),
       images: List.from(data['images'] ?? []),
       name: "${data['name'] ?? ''}",
@@ -203,5 +213,4 @@ class ColorModel {
     // TODO: implement toString
     return "$name";
   }
-
 }
