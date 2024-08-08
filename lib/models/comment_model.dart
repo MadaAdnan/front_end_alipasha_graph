@@ -11,9 +11,9 @@ class CommentModel {
   factory CommentModel.fromJson(Map<String, dynamic> data) {
     return CommentModel(
       user: data['user'] != null ? UserModel.fromJson(data['user']) : null,
-      comment: "${data['comment']}" ?? '',
+      comment: "${data['comment']??''}",
       id: int.tryParse("${data['id']}"),
-      createdAt: "${data['created_at']}" ?? '',
+      createdAt: "${data['created_at']??''}",
     );
   }
 }

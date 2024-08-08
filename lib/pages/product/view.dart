@@ -5,7 +5,7 @@ import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:ali_pasha_graph/pages/product/tabs/comment_page.dart';
 import 'package:ali_pasha_graph/pages/product/tabs/product_detailes.dart';
-import 'package:dio/dio.dart';
+
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
