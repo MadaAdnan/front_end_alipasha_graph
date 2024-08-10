@@ -39,6 +39,11 @@ dependencies:
   toast: ^0.3.0
   url_launcher: ^6.3.0
   animated_custom_dropdown: ^3.1.1
+  laravel_flutter_pusher_plus:
+    git:
+      url: https://github.com/MohanadAlShamey/ali-pash-pusher-lib.git
+      ref: main
+      #path: packages/my_package
 
 
 

@@ -6,12 +6,14 @@ import 'package:ali_pasha_graph/models/product_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:dio/dio.dart' as dio;
-import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:laravel_flutter_pusher_plus/laravel_flutter_pusher_plus.dart';
 import 'package:logger/logger.dart';
 
 import '../helpers/dio_network_manager.dart';
+import '../helpers/pusher_service.dart';
 import '../models/city_model.dart';
 
 class MainController extends GetxController {
@@ -29,11 +31,11 @@ class MainController extends GetxController {
   RxList<ColorModel> colors = RxList<ColorModel>([]);
   RxBool is_show_home_appbar = RxBool(true);
   Logger logger = Logger();
-
+late LaravelFlutterPusher pusher;
   @override
   void onInit() {
     super.onInit();
-
+   pusher= PusherService.init();
     ever(token, (value) {
       if (value == null) {
         storage.remove('token');
@@ -48,34 +50,38 @@ class MainController extends GetxController {
   @override
   void onReady() {
     getUserFromStorage();
+
+    pusher.connect(onConnectionStateChange: (p0) => logger.e("STATE NOW: "+p0.currentState),);
+
   }
 
   Future<dio.Response?> fetchData() async {
     loading.value = true;
-    DateTime startDate=DateTime.now();
+    DateTime startDate = DateTime.now();
     try {
       dio.Response res = await dio_manager.executeGraphQLQuery(query.value!,
           variables: variables.value);
-     /* if (res.data?['errors']!=null) {
+      /* if (res.data?['errors']!=null) {
         throw CustomException(
             errors: res.data?['errors'][0]['extensions'],
             message:res.data?['errors'][0]['message']);
       }*/
       loading.value = false;
-      DateTime endDate=DateTime.now();
+      DateTime endDate = DateTime.now();
       Duration responseTime = endDate.difference(startDate);
-      logger.i("Duration Response : ${responseTime.inMilliseconds/1000} Seconds");
+      logger.i(
+          "Duration Response : ${responseTime.inMilliseconds / 1000} Seconds");
       logger.i("Response Size: ${res.data.toString().length} Byte");
       return res;
     } on dio.DioException catch (e) {
       loading.value = false;
-      throw CustomException(errors: {"errors":e}, message: e.message);
+      throw CustomException(errors: {"errors": e}, message: e.message);
     } on HttpException catch (e) {
       loading.value = false;
-      throw CustomException(errors: {"errors":e}, message: e.message);
+      throw CustomException(errors: {"errors": e}, message: e.message);
     } catch (e) {
       loading.value = false;
-      throw CustomException(errors: {"errors":e}, message: "خطأ بالسيرفر");
+      throw CustomException(errors: {"errors": e}, message: "خطأ بالسيرفر");
     }
   }
 
