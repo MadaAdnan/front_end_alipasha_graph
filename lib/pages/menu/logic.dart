@@ -13,7 +13,7 @@ RxString selectedValue2=RxString('settings');
     // TODO: implement onInit
     super.onInit();
     mainController. pusher
-        .subscribe('chat')
-        .bind('sent', (event) => mainController.logger.e('event =>' + event.toString()));
+        .subscribe('private-community.${mainController.authUser.value?.id}')
+        .bind('message.create', (event) => mainController.logger.e('event =>' + event.toString()));
   }
 }

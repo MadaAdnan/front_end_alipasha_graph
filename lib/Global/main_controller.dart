@@ -35,8 +35,11 @@ late LaravelFlutterPusher pusher;
   @override
   void onInit() {
     super.onInit();
-   pusher= PusherService.init();
+
+  // pusher= PusherService.init(token:"$token");
     ever(token, (value) {
+      logger.e(token.value);
+      pusher= PusherService.init(token:"$token");
       if (value == null) {
         storage.remove('token');
         storage.remove('user');
