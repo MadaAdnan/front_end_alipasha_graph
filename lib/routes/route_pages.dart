@@ -1,7 +1,12 @@
 import 'package:ali_pasha_graph/middlewares/guest_middleware.dart';
+import 'package:ali_pasha_graph/middlewares/is_logged_in.dart';
 import 'package:ali_pasha_graph/middlewares/verify_email_middleware.dart';
 import 'package:ali_pasha_graph/pages/balance/binding.dart';
 import 'package:ali_pasha_graph/pages/balance/view.dart';
+import 'package:ali_pasha_graph/pages/chat/binding.dart';
+import 'package:ali_pasha_graph/pages/chat/view.dart';
+import 'package:ali_pasha_graph/pages/communities/binding.dart';
+import 'package:ali_pasha_graph/pages/communities/view.dart';
 import 'package:ali_pasha_graph/pages/create_product/binding.dart';
 import 'package:ali_pasha_graph/pages/create_product/view.dart';
 import 'package:ali_pasha_graph/pages/filter/binding.dart';
@@ -42,28 +47,27 @@ import '../pages/section/view.dart';
 class AppPages {
   static List<GetPage> pages = [
     GetPage(
-        middlewares: [VerifyEmailMiddleware()],
         name: HOME_PAGE,
         page: () => HomePage(),
         binding: HomeBinding()),
     GetPage(
-        middlewares: [VerifyEmailMiddleware()],
+        middlewares: [IsLoggedIn(),VerifyEmailMiddleware()],
         name: CREATE_PRODUCT_PAGE,
         page: () => CreateProductPage(),
         binding: CreateProductBinding()),
     GetPage(name: MENU_PAGE, page: () => MenuPage(), binding: MenuBinding()),
     GetPage(
-        middlewares: [VerifyEmailMiddleware()],
+        middlewares: [IsLoggedIn(),VerifyEmailMiddleware()],
         name: PROFILE_PAGE,
         page: () => ProfilePage(),
         binding: ProfileBinding()),
     GetPage(
-        middlewares: [VerifyEmailMiddleware()],
+        middlewares: [IsLoggedIn(),VerifyEmailMiddleware()],
         name: BALANCES_PAGE,
         page: () => BalancePage(),
         binding: BalanceBinding()),
     GetPage(
-        middlewares: [VerifyEmailMiddleware()],
+        middlewares: [IsLoggedIn(),VerifyEmailMiddleware()],
         name: SHIPPING_PAGE,
         page: () => ShippingPage(),
         binding: ShippingBinding()),
@@ -82,6 +86,7 @@ class AppPages {
         page: () => VerifyEmailPage(),
         binding: VerifyEmailBinding()),
     GetPage(
+        middlewares: [IsLoggedIn(),VerifyEmailMiddleware()],
         name: FOLLOWERS_PAGE,
         page: () => FollowersPage(),
         binding: FollowersBinding()),
@@ -114,5 +119,17 @@ class AppPages {
         name: SEARCH_PAGE,
         page: () => SearchPage(),
         binding: SearchBinding()),
+
+    GetPage(
+        middlewares: [IsLoggedIn(),VerifyEmailMiddleware()],
+        name: COMMUNITIES_PAGE,
+        page: () => CommunitiesPage(),
+        binding: CommunitiesBinding()),
+
+    GetPage(
+        middlewares: [IsLoggedIn(),VerifyEmailMiddleware()],
+        name: CHAT_PAGE,
+        page: () => ChatPage(),
+        binding: ChatBinding()),
   ];
 }

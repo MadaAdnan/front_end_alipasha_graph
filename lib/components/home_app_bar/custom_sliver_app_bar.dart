@@ -196,11 +196,27 @@ class HomeSliverAppBarComponent extends StatelessWidget {
                                 : null),
                       ),
                     ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        FontAwesomeIcons.comments,
-                        size: 55.w,
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Get.currentRoute == TENDERS_PAGE
+                            ? Border(
+                                bottom: BorderSide(
+                                  color: RedColor,
+                                  style: BorderStyle.solid,
+                                  width: 0.002.sh,
+                                ),
+                              )
+                            : null,
+                      ),
+                      child: IconButton(
+                        onPressed: () {
+                          Get.toNamed(COMMUNITIES_PAGE);
+                        },
+                        icon: Icon(FontAwesomeIcons.comments,
+                            size: 55.w,
+                            color: Get.currentRoute == COMMUNITIES_PAGE
+                                ? RedColor
+                                : null),
                       ),
                     ),
                     IconButton(

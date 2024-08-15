@@ -67,4 +67,16 @@ class NetworkManager {
       throw e;
     }
   }
+
+  Future<Response> executeHttp({required String endPoint,data}) async {
+    try {
+      final response = await dio.post(
+        'api/$endPoint',
+        data: data,
+      );
+      return response;
+    } catch (e) {
+      throw e;
+    }
+  }
 }

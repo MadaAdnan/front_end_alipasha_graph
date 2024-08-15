@@ -20,3 +20,6 @@ const String TENDERS_PAGE = '/tender_page';
 
 const String FILTER_PAGE = '/filter_page';
 const String SEARCH_PAGE = '/search_page';
+
+const String COMMUNITIES_PAGE='/communities_page';
+const String CHAT_PAGE='/chat_page';

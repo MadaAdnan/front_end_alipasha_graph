@@ -12,8 +12,8 @@ RxString selectedValue2=RxString('settings');
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    mainController. pusher
+   /* mainController. pusher
         .subscribe('private-community.${mainController.authUser.value?.id}')
-        .bind('message.create', (event) => mainController.logger.e('event =>' + event.toString()));
+        .bind('message.create', (event) => mainController.logger.e('event =>' + event.toString()));*/
   }
 }
