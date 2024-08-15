@@ -68,12 +68,14 @@ class CommunitiesLogic extends GetxController {
             last_change
             not_seen_count
             user {
+            id
                 name
                 seller_name
                 image
                 logo
             }
             seller {
+            id
                 name
                 seller_name
                 image
@@ -90,7 +92,7 @@ class CommunitiesLogic extends GetxController {
 
     try {
       dio.Response? res = await mainController.fetchData();
-      mainController.logger.e(res?.data);
+     // mainController.logger.e(res?.data);
       if (res?.data?['data']?['communities']?['paginatorInfo'] != null) {
         hasMorePage.value = res?.data?['data']?['communities']?['paginatorInfo']
             ['hasMorePages'];

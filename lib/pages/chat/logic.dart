@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/models/community_model.dart';
 import 'package:ali_pasha_graph/models/message_community_model.dart';
@@ -6,12 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:get_storage/get_storage.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ChatLogic extends GetxController {
   MainController mainController = Get.find<MainController>();
   RxBool loadingSend = RxBool(false);
   TextEditingController messageController = TextEditingController();
-
+  Rxn<XFile> file = Rxn<XFile>(null);
   RxBool loading = RxBool(false);
   RxBool hasMorePage = RxBool(false);
   RxInt page = RxInt(1);
@@ -91,6 +94,9 @@ query Messages {
   }
 
   sendTextMessage() async {
+    if (file.value == null) {
+      return;
+    }
     loadingSend.value = true;
     int? sellerId = mainController.authUser.value?.id == communityModel.user?.id
         ? communityModel.seller?.id
@@ -99,6 +105,7 @@ query Messages {
     mutation CreateMessage2 {
     createMessage(userId: ${mainController.authUser.value?.id}, sellerId: $sellerId, message: "${messageController.text}") {
     message
+    attach
     created_at
         user {
             name
@@ -128,14 +135,63 @@ query Messages {
     ''';
     try {
       dio.Response? res = await mainController.fetchData();
-     // mainController.logger.e(res?.data);
+      // mainController.logger.e(res?.data);
       if (res?.data?['data']['createMessage'] != null) {
         messageController.clear();
-        messages.insert(0,MessageCommunityModel.fromJson(
-            res?.data?['data']['createMessage']));
+        messages.insert(
+            0,
+            MessageCommunityModel.fromJson(
+                res?.data?['data']['createMessage']));
       }
     } catch (e) {
       mainController.logger.e("Error Send ${e}");
+    }
+  }
+
+  uploadFileMessage() async {
+    loadingSend.value = true;
+    int? sellerId = mainController.authUser.value?.id == communityModel.user?.id
+        ? communityModel.seller?.id
+        : communityModel.user?.id;
+    Map<String,dynamic> datajson={
+      "query":"mutation CreateMessage(\$userId: Int!, \$sellerId: Int!, \$message: String!, \$attach: Upload!) { createMessage(userId: \$userId, sellerId: \$sellerId, message: \$message, attach: \$attach) { user {   id name seller_name image logo } message attach created_at }}",
+   "variables":<String,dynamic>{
+     "userId":mainController.authUser.value?.id,
+     "sellerId": sellerId,
+     "message": "",
+     "attach": null
+   }
+    };
+    String map = '''
+    {
+  "attach": ["variables.attach"]
+}
+    ''';
+
+    Map<String, XFile?> data = {
+      'attach':file.value
+    };
+try{
+  dio.Response res=await mainController.dio_manager.executeGraphQLQueryWithFile(json.encode(datajson),map: map,files: data);
+  if(res.data?['data']?['createMessage']!=null){
+    mainController.logger.e(res.data?['data']?['createMessage']);
+    messages.insert(
+        0,
+        MessageCommunityModel.fromJson(
+            res.data?['data']['createMessage']));
+  }
+}catch(e){
+  mainController.logger.e('Error Upload $e');
+}
+
+  }
+
+  Future<void> pickImage({required ImageSource imagSource}) async {
+    file.value = null;
+    XFile? selected = await ImagePicker().pickImage(source: imagSource);
+    if (selected != null) {
+      file.value = selected;
+      await uploadFileMessage();
     }
   }
 }

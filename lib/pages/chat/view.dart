@@ -2,12 +2,14 @@ import 'package:ali_pasha_graph/components/fields_components/input_component.dar
 import 'package:ali_pasha_graph/helpers/components.dart';
 import 'package:ali_pasha_graph/models/message_community_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../Global/main_controller.dart';
 import '../../helpers/colors.dart';
@@ -91,7 +93,7 @@ class ChatPage extends StatelessWidget {
                   ...List.generate(logic.messages.length, (index) {
                     bool isIam = mainController.authUser.value?.id ==
                         logic.messages[index].user?.id;
-                    return _buildMessage(
+                    return _buildMessage(context,
                         isIam: isIam, message: logic.messages[index]);
                   }),
                   if (logic.loading.value)
@@ -125,7 +127,9 @@ class ChatPage extends StatelessWidget {
                     width: 0.85.sw,
                     controller: logic.messageController,
                     suffixIcon: FontAwesomeIcons.paperclip,
-                    suffixClick: () {},
+                    suffixClick: () {
+                      logic.pickImage(imagSource: ImageSource.gallery);
+                    },
                   ),
                   InkWell(
                     onTap: () {
@@ -166,7 +170,7 @@ class ChatPage extends StatelessWidget {
     return urlRegExp.hasMatch(text);
   }
 
-  Widget _buildMessage(
+  Widget _buildMessage(context,
       {required bool isIam, required MessageCommunityModel message}) {
     return Container(
       width: 1.sw,
@@ -191,7 +195,8 @@ class ChatPage extends StatelessWidget {
               color: isIam ? OrangeColor : GrayLightColor,
               borderRadius: BorderRadius.circular(15.r),
             ),
-            child: RichText(
+            child:(message.message!.length>0)?
+            RichText(
               softWrap: true,
               text: TextSpan(children: [
                 ..."${message.message}".split(' ').map((el) {
@@ -211,7 +216,50 @@ class ChatPage extends StatelessWidget {
                   }
                 })
               ]),
-            ),
+            ):
+          InkWell(child:   Container(
+              constraints: BoxConstraints(maxHeight: 0.2.sh),
+              child: CachedNetworkImage(imageUrl: '${message.attach}',imageBuilder: (context, imageProvider) => Container(
+                child: Image(image: imageProvider,),
+              ),
+                useOldImageOnUrlChange: true,
+                placeholder: (context, url) => Center(child: CircularProgressIndicator(),),
+                errorWidget: (context, url, error) => Icon(Icons.error),)
+
+          ),onTap: (){
+            showDialog(context: context,  builder: (context) => Dialog(
+              insetPadding: EdgeInsets.zero, // إزالة الهوامش
+              backgroundColor: Colors.transparent, // خلفية شفافة
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  CachedNetworkImage(imageUrl: '${message.attach}',imageBuilder: (context, imageProvider) => Container(
+                    child: Image(image: imageProvider,),
+                  )),
+                  Positioned(
+                    top: 40,
+                    right: 20,
+                    child: IconButton(
+                      icon: Icon(Icons.close, color: Colors.white, size: 30),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 20,
+                    left: 20,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      color: Colors.black.withOpacity(0.7),
+                      child: Text(
+                        'Image Description', // وصف الصورة
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ), );
+          },)
           ),
           Container(
             child: Text(
