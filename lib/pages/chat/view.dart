@@ -1,9 +1,11 @@
+import 'package:ali_pasha_graph/components/fields_components/input_component.dart';
 import 'package:ali_pasha_graph/helpers/components.dart';
 import 'package:ali_pasha_graph/models/message_community_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -29,7 +31,7 @@ class ChatPage extends StatelessWidget {
         onNotification: (ScrollNotification scrollInfo) {
 // mainController.logger.w();
           if (logic.scrollController.position.atEdge &&
-              scrollInfo.metrics.pixels==scrollInfo.metrics.maxScrollExtent &&
+              scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent &&
               !mainController.loading.value &&
               logic.hasMorePage.value) {
             logic.nextPage();
@@ -86,9 +88,7 @@ class ChatPage extends StatelessWidget {
                 padding: EdgeInsets.symmetric(
                     vertical: 0.01.sh, horizontal: 0.02.sw),
                 children: [
-
                   ...List.generate(logic.messages.length, (index) {
-
                     bool isIam = mainController.authUser.value?.id ==
                         logic.messages[index].user?.id;
                     return _buildMessage(
@@ -113,23 +113,61 @@ class ChatPage extends StatelessWidget {
                     ),
                 ],
               );
-            }))
+            })),
+            Container(
+              width: 1.sw,
+              height: 0.07.sh,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  InputComponent(
+                    width: 0.85.sw,
+                    controller: logic.messageController,
+                    suffixIcon: FontAwesomeIcons.paperclip,
+                    suffixClick: () {},
+                  ),
+                  InkWell(
+                    onTap: () {
+                      if (logic.messageController.text.length > 0) {
+                        logic.sendTextMessage();
+                      }
+                    },
+                    child: Container(
+                      height: 0.065.sh,
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 0.03.sw, vertical: 0.02.sw),
+                      decoration: BoxDecoration(
+                        color: OrangeColor,
+                        borderRadius: BorderRadius.circular(15.r),
+                      ),
+                      child: Text(
+                        'إرسال',
+                        style: H4WhiteTextStyle,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
           ],
         ),
       ),
     );
   }
+
   bool isURL(String text) {
-    final RegExp urlRegExp = RegExp(
-        r'^(https?:\/\/)?' //  بدء الرابط بـ "http://" أو "https://"
-        r'([a-zA-Z0-9\-_]+\.)+[a-zA-Z]{2,}' // النطاق مثل "example.com"
-        r'(:\d+)?(\/[^\s]*)?$' // اختياري: المنفذ والمسار
-    );
+    final RegExp urlRegExp =
+        RegExp(r'^(https?:\/\/)?' //  بدء الرابط بـ "http://" أو "https://"
+            r'([a-zA-Z0-9\-_]+\.)+[a-zA-Z]{2,}' // النطاق مثل "example.com"
+            r'(:\d+)?(\/[^\s]*)?$' // اختياري: المنفذ والمسار
+            );
     return urlRegExp.hasMatch(text);
   }
+
   Widget _buildMessage(
       {required bool isIam, required MessageCommunityModel message}) {
-    
     return Container(
       width: 1.sw,
       child: Column(
@@ -155,19 +193,21 @@ class ChatPage extends StatelessWidget {
             ),
             child: RichText(
               softWrap: true,
-              text: TextSpan(
-
-                  children: [
+              text: TextSpan(children: [
                 ..."${message.message}".split(' ').map((el) {
                   if (isURL("$el")) {
                     return TextSpan(
                       recognizer: TapGestureRecognizer()
                         ..onTap = () async => await openUrl(url: '$el'),
                       text: ' $el ',
-                      style: !isIam ? H3OrangeTextStyle.copyWith(height: 1.5):H3WhiteTextStyle.copyWith(height: 1.5),
+                      style: !isIam
+                          ? H3OrangeTextStyle.copyWith(height: 1.5)
+                          : H3WhiteTextStyle.copyWith(height: 1.5),
                     );
                   } else {
-                    return TextSpan(text: ' $el ', style: H3BlackTextStyle.copyWith(height: 1.5));
+                    return TextSpan(
+                        text: ' $el ',
+                        style: H3BlackTextStyle.copyWith(height: 1.5));
                   }
                 })
               ]),
