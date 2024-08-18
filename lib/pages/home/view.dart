@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:ali_pasha_graph/Global/main_controller.dart';
+import 'package:ali_pasha_graph/components/advice_component/view.dart';
 import 'package:ali_pasha_graph/components/home_app_bar/custom_sliver_app_bar.dart';
 
 import 'package:ali_pasha_graph/components/home_app_bar/view.dart';
@@ -12,7 +13,9 @@ import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/enums.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
+import 'package:ali_pasha_graph/models/user_model.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -92,7 +95,7 @@ class HomePage extends StatelessWidget {
                     children: [
                       if (logic.sellers.length == 0)
                         ...List.generate(6, (i) {
-                          return _buildSellr();
+                          return _buildSeller();
                         })
                       else
                         ...List.generate(logic.sellers.length, (index) {
@@ -113,14 +116,33 @@ class HomePage extends StatelessWidget {
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
+                    int i = 0;
+                    if (mainController.advices.length > 0) {
+                      i = index % mainController.advices.length;
+                    }
+
                     if (index < logic.products.length) {
                       switch (logic.products[index].type) {
                         case 'job':
                         case 'search_job':
                         case "tender":
-                          return JobCard(post: logic.products[index]);
+                          return Column(
+                            children: [
+                              JobCard(post: logic.products[index]),
+                              if (index % 5 == 0 &&
+                                  i < mainController.advices.length)
+                                AdviceComponent(advice: mainController.advices[i],)
+                            ],
+                          );
                         default:
-                          return PostCard(post: logic.products[index]);
+                          return Column(
+                            children: [
+                              PostCard(post: logic.products[index]),
+                              if (index % 5 == 0 &&
+                                  i < mainController.advices.length)
+                              AdviceComponent(advice: mainController.advices[i],)
+                            ],
+                          );
                       }
                     }
                     if (logic.mainController.loading.value) {
@@ -153,7 +175,7 @@ class HomePage extends StatelessWidget {
   Widget _viewMoreButton(
       {required Color color, required String title, String? img}) {
     return InkWell(
-      onTap: (){
+      onTap: () {
         Get.toNamed(SECTIONS_PAGE);
       },
       child: Container(
@@ -226,7 +248,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildSellr({String? seller}) {
+  Widget _buildSeller({String? seller}) {
     return InkWell(
       onTap: () {},
       child: Container(

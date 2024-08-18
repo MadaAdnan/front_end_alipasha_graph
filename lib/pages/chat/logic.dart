@@ -94,9 +94,9 @@ query Messages {
   }
 
   sendTextMessage() async {
-    if (file.value == null) {
-      return;
-    }
+if(messageController.text.length==0){
+  return;
+}
     loadingSend.value = true;
     int? sellerId = mainController.authUser.value?.id == communityModel.user?.id
         ? communityModel.seller?.id
@@ -108,6 +108,7 @@ query Messages {
     attach
     created_at
         user {
+        id
             name
             seller_name
             image
@@ -135,7 +136,7 @@ query Messages {
     ''';
     try {
       dio.Response? res = await mainController.fetchData();
-      // mainController.logger.e(res?.data);
+    //   mainController.logger.e(res?.data);
       if (res?.data?['data']['createMessage'] != null) {
         messageController.clear();
         messages.insert(
@@ -146,9 +147,13 @@ query Messages {
     } catch (e) {
       mainController.logger.e("Error Send ${e}");
     }
+loadingSend.value = false;
   }
 
   uploadFileMessage() async {
+    if (file.value == null) {
+      return;
+    }
     loadingSend.value = true;
     int? sellerId = mainController.authUser.value?.id == communityModel.user?.id
         ? communityModel.seller?.id
@@ -183,7 +188,7 @@ try{
 }catch(e){
   mainController.logger.e('Error Upload $e');
 }
-
+    loadingSend.value = false;
   }
 
   Future<void> pickImage({required ImageSource imagSource}) async {

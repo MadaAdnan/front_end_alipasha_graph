@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
+import 'package:ali_pasha_graph/models/advice_model.dart';
 import 'package:ali_pasha_graph/models/category_model.dart';
+import 'package:ali_pasha_graph/models/community_model.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
@@ -29,17 +31,19 @@ class MainController extends GetxController {
   RxList<CategoryModel> categories = RxList<CategoryModel>([]);
   RxList<CityModel> cities = RxList<CityModel>([]);
   RxList<ColorModel> colors = RxList<ColorModel>([]);
+  RxList<AdviceModel> advices = RxList<AdviceModel>([]);
   RxBool is_show_home_appbar = RxBool(true);
   Logger logger = Logger();
-late LaravelFlutterPusher pusher;
+  late LaravelFlutterPusher pusher;
+
   @override
   void onInit() {
     super.onInit();
-
-  // pusher= PusherService.init(token:"$token");
+    getAdvices();
+    // pusher= PusherService.init(token:"$token");
     ever(token, (value) {
       logger.e(token.value);
-      pusher= PusherService.init(token:"$token");
+      pusher = PusherService.init(token: "$token");
       if (value == null) {
         storage.remove('token');
         storage.remove('user');
@@ -54,8 +58,10 @@ late LaravelFlutterPusher pusher;
   void onReady() {
     getUserFromStorage();
 
-    pusher.connect(onConnectionStateChange: (p0) => logger.e("STATE NOW: "+p0.currentState),);
-
+    pusher.connect(
+      onConnectionStateChange: (p0) =>
+          logger.e("STATE NOW: " + p0.currentState),
+    );
   }
 
   Future<dio.Response?> fetchData() async {
@@ -64,6 +70,7 @@ late LaravelFlutterPusher pusher;
     try {
       dio.Response res = await dio_manager.executeGraphQLQuery(query.value!,
           variables: variables.value);
+     // logger.e(res.data);
       /* if (res.data?['errors']!=null) {
         throw CustomException(
             errors: res.data?['errors'][0]['extensions'],
@@ -164,6 +171,74 @@ late LaravelFlutterPusher pusher;
     } else {
       // إذا كان الاستثناء ليس من النوع المتوقع، يمكن طباعة أو التعامل مع e مباشرةً
       print("Unexpected error: $e");
+    }
+  }
+
+  createCommunity({required int sellerId}) async {
+    if (authUser.value == null) return;
+    query.value = '''
+    mutation CreateCommunity {
+    createCommunity(userId: ${authUser.value?.id}, sellerId: $sellerId) {
+        id
+        last_change
+        not_seen_count
+        created_at
+        user {
+            id
+            name
+            seller_name
+            image
+            logo
+        }
+        seller {
+            id
+            name
+            seller_name
+            image
+            logo
+        }
+    }
+}
+
+     ''';
+    try {
+      dio.Response? res = await fetchData();
+      logger.w(res?.data);
+      if (res?.data?['data']['createCommunity'] != null) {
+        CommunityModel community =
+            CommunityModel.fromJson(res?.data?['data']['createCommunity']);
+        Get.toNamed(CHAT_PAGE, arguments: community);
+      }
+    } catch (e) {
+      logger.e("Error Create Community $e");
+    }
+  }
+
+  getAdvices() async {
+    query.value = '''
+    query Advices {
+    advices {
+        name
+        user {
+            id
+            name
+            seller_name
+        }
+        url
+        image
+        id
+    }
+}
+    ''';
+    try {
+      dio.Response? res = await fetchData();
+      if (res?.data?['data']['advices'] != null) {
+        for (var item in res?.data?['data']['advices']) {
+          advices.add(AdviceModel.fromJson(item));
+        }
+      }
+    } catch (e) {
+      logger.e("Error GetAdvices $e");
     }
   }
 }

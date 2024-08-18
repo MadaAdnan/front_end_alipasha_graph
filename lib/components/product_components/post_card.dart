@@ -1,5 +1,6 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
+import 'package:ali_pasha_graph/helpers/components.dart';
 import 'package:ali_pasha_graph/helpers/enums.dart';
 import 'package:ali_pasha_graph/helpers/queries.dart';
 import 'package:ali_pasha_graph/main.dart';
@@ -22,17 +23,21 @@ class PostCard extends StatelessWidget {
   PostCard({super.key, this.post});
 
   RxBool loading = RxBool(false);
+  RxBool loadingCommunity = RxBool(false);
   MainController mainController = Get.find<MainController>();
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 7.h),
+      key: key,
+
       padding: EdgeInsets.symmetric(vertical: 0.002.sh, horizontal: 0.002.sw),
       width: double.infinity,
-      height: 1.sw+0.19.sh,
+      height: 1.sw + 0.177.sh,
       color: GrayLightColor,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
             padding:
@@ -45,36 +50,41 @@ class PostCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: GrayLightColor,
-                          backgroundImage: NetworkImage("${post?.user?.logo}"),
-                          minRadius: 0.018.sh,
-                          maxRadius: 0.023.sh,
-                        ),
-                        10.horizontalSpace,
-                        Column(
-                          children: [
-                            Container(
-                              width: 0.6.sw,
-                              child: Text(
-                                "${post?.user?.seller_name}",
-                                style: H1BlackTextStyle,
-                                overflow: TextOverflow.ellipsis,
+                    InkWell(
+                      onTap: (){
+                        Get.toNamed(PRODUCTS_PAGE,arguments: post?.user);
+                      },
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: GrayLightColor,
+                            backgroundImage: NetworkImage("${post?.user?.logo}"),
+                            minRadius: 0.018.sh,
+                            maxRadius: 0.023.sh,
+                          ),
+                          10.horizontalSpace,
+                          Column(
+                            children: [
+                              Container(
+                                width: 0.6.sw,
+                                child: Text(
+                                  "${post?.user?.seller_name}",
+                                  style: H1BlackTextStyle,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
-                            ),
-                            Container(
-                              width: 0.6.sw,
-                              child: Text(
-                                '${post?.city?.name ?? ''} - ${post?.category?.name ?? ''} - ${post?.sub1?.name ?? ''}',
-                                style: H4GrayOpacityTextStyle,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            )
-                          ],
-                        )
-                      ],
+                              Container(
+                                width: 0.6.sw,
+                                child: Text(
+                                  '${post?.city?.name ?? ''} - ${post?.category?.name ?? ''} - ${post?.sub1?.name ?? ''}',
+                                  style: H4GrayOpacityTextStyle,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                     Obx(() {
                       if (mainController.authUser.value != null) {
@@ -358,8 +368,14 @@ class PostCard extends StatelessWidget {
                     ],
                   ),
                 ),
+                if(isAuth())
                 MaterialButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    loadingCommunity.value = true;
+                    await mainController.createCommunity(
+                        sellerId: post!.user!.id!);
+                    loadingCommunity.value = false;
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -369,10 +385,16 @@ class PostCard extends StatelessWidget {
                         size: 0.05.sw,
                       ),
                       10.horizontalSpace,
-                      Text(
-                        'محادثة',
-                        style: H4BlackTextStyle,
-                      )
+                      Obx(() {
+                        return loadingCommunity.value
+                            ? Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : Text(
+                                'محادثة',
+                                style: H4BlackTextStyle,
+                              );
+                      })
                     ],
                   ),
                 ),

@@ -25,9 +25,9 @@ class ChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UserModel? frind =
-        mainController.authUser.value?.id == logic.communityModel.user?.id
-            ? logic.communityModel.seller
-            : logic.communityModel.user;
+    mainController.authUser.value?.id == logic.communityModel.user?.id
+        ? logic.communityModel.seller
+        : logic.communityModel.user;
     return Scaffold(
       body: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollInfo) {
@@ -131,27 +131,31 @@ class ChatPage extends StatelessWidget {
                       logic.pickImage(imagSource: ImageSource.gallery);
                     },
                   ),
-                  InkWell(
-                    onTap: () {
-                      if (logic.messageController.text.length > 0) {
-                        logic.sendTextMessage();
-                      }
-                    },
-                    child: Container(
-                      height: 0.065.sh,
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 0.03.sw, vertical: 0.02.sw),
-                      decoration: BoxDecoration(
-                        color: OrangeColor,
-                        borderRadius: BorderRadius.circular(15.r),
+                  Obx(() {
+                    if(logic.loadingSend.value)
+                      return Center(child: CircularProgressIndicator(),);
+                    return InkWell(
+                      onTap: () {
+                        if (logic.messageController.text.length > 0) {
+                          logic.sendTextMessage();
+                        }
+                      },
+                      child: Container(
+                        height: 0.065.sh,
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 0.03.sw, vertical: 0.02.sw),
+                        decoration: BoxDecoration(
+                          color: OrangeColor,
+                          borderRadius: BorderRadius.circular(15.r),
+                        ),
+                        child: Text(
+                          'إرسال',
+                          style: H4WhiteTextStyle,
+                        ),
                       ),
-                      child: Text(
-                        'إرسال',
-                        style: H4WhiteTextStyle,
-                      ),
-                    ),
-                  )
+                    );
+                  })
                 ],
               ),
             ),
@@ -163,10 +167,10 @@ class ChatPage extends StatelessWidget {
 
   bool isURL(String text) {
     final RegExp urlRegExp =
-        RegExp(r'^(https?:\/\/)?' //  بدء الرابط بـ "http://" أو "https://"
-            r'([a-zA-Z0-9\-_]+\.)+[a-zA-Z]{2,}' // النطاق مثل "example.com"
-            r'(:\d+)?(\/[^\s]*)?$' // اختياري: المنفذ والمسار
-            );
+    RegExp(r'^(https?:\/\/)?' //  بدء الرابط بـ "http://" أو "https://"
+    r'([a-zA-Z0-9\-_]+\.)+[a-zA-Z]{2,}' // النطاق مثل "example.com"
+    r'(:\d+)?(\/[^\s]*)?$' // اختياري: المنفذ والمسار
+    );
     return urlRegExp.hasMatch(text);
   }
 
@@ -177,7 +181,7 @@ class ChatPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment:
-            isIam ? CrossAxisAlignment.start : CrossAxisAlignment.end,
+        isIam ? CrossAxisAlignment.start : CrossAxisAlignment.end,
         children: [
           Container(
             alignment: Alignment.centerRight,
@@ -189,77 +193,95 @@ class ChatPage extends StatelessWidget {
                     image: NetworkImage('${message.user?.image}'))),
           ),
           Container(
-            width: 0.75.sw,
-            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 4),
-            decoration: BoxDecoration(
-              color: isIam ? OrangeColor : GrayLightColor,
-              borderRadius: BorderRadius.circular(15.r),
-            ),
-            child:(message.message!.length>0)?
-            RichText(
-              softWrap: true,
-              text: TextSpan(children: [
-                ..."${message.message}".split(' ').map((el) {
-                  if (isURL("$el")) {
-                    return TextSpan(
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () async => await openUrl(url: '$el'),
-                      text: ' $el ',
-                      style: !isIam
-                          ? H3OrangeTextStyle.copyWith(height: 1.5)
-                          : H3WhiteTextStyle.copyWith(height: 1.5),
-                    );
-                  } else {
-                    return TextSpan(
+              width: 0.75.sw,
+              padding: EdgeInsets.symmetric(vertical: 6, horizontal: 4),
+              decoration: BoxDecoration(
+                color: isIam ? OrangeColor : GrayLightColor,
+                borderRadius: BorderRadius.circular(15.r),
+              ),
+              child: (message.message!.length > 0) ?
+              RichText(
+                softWrap: true,
+                text: TextSpan(children: [
+                  ..."${message.message}".split(' ').map((el) {
+                    if (isURL("$el")) {
+                      return TextSpan(
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () async => await openUrl(url: '$el'),
                         text: ' $el ',
-                        style: H3BlackTextStyle.copyWith(height: 1.5));
-                  }
-                })
-              ]),
-            ):
-          InkWell(child:   Container(
-              constraints: BoxConstraints(maxHeight: 0.2.sh),
-              child: CachedNetworkImage(imageUrl: '${message.attach}',imageBuilder: (context, imageProvider) => Container(
-                child: Image(image: imageProvider,),
-              ),
-                useOldImageOnUrlChange: true,
-                placeholder: (context, url) => Center(child: CircularProgressIndicator(),),
-                errorWidget: (context, url, error) => Icon(Icons.error),)
+                        style: !isIam
+                            ? H3OrangeTextStyle.copyWith(height: 1.5)
+                            : H3WhiteTextStyle.copyWith(height: 1.5),
+                      );
+                    } else {
+                      return TextSpan(
+                          text: ' $el ',
+                          style: H3BlackTextStyle.copyWith(height: 1.5));
+                    }
+                  })
+                ]),
+              ) :
+              InkWell(child: Container(
+                  constraints: BoxConstraints(maxHeight: 0.2.sh),
+                  child: CachedNetworkImage(
+                    imageUrl: '${message.attach}',
+                    imageBuilder: (context, imageProvider) =>
+                        Container(
+                          child: Image(image: imageProvider,),
+                        ),
+                    useOldImageOnUrlChange: true,
+                    placeholder: (context, url) =>
+                        Center(child: CircularProgressIndicator(),),
+                    errorWidget: (context, url, error) => Icon(Icons.error),)
 
-          ),onTap: (){
-            showDialog(context: context,  builder: (context) => Dialog(
-              insetPadding: EdgeInsets.zero, // إزالة الهوامش
-              backgroundColor: Colors.transparent, // خلفية شفافة
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  CachedNetworkImage(imageUrl: '${message.attach}',imageBuilder: (context, imageProvider) => Container(
-                    child: Image(image: imageProvider,),
-                  )),
-                  Positioned(
-                    top: 40,
-                    right: 20,
-                    child: IconButton(
-                      icon: Icon(Icons.close, color: Colors.white, size: 30),
-                      onPressed: () => Navigator.of(context).pop(),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 20,
-                    left: 20,
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                      color: Colors.black.withOpacity(0.7),
-                      child: Text(
-                        'Image Description', // وصف الصورة
-                        style: TextStyle(color: Colors.white, fontSize: 16),
+              ), onTap: () {
+                showDialog(context: context, builder: (context) =>
+                    Dialog(
+                      insetPadding: EdgeInsets.zero,
+                      backgroundColor: Colors.transparent,
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          CachedNetworkImage(imageUrl: '${message.attach}',
+                              imageBuilder: (context, imageProvider) =>
+                                  Container(
+                                    child: Image(image: imageProvider,),
+                                  )),
+                          Positioned(
+                            top: 10,
+                            right: 10,
+                            child: IconButton(
+                              icon: Container(
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: WhiteColor,
+                                  shape: BoxShape.circle,
+                                  boxShadow: [BoxShadow(color: DarkColor,blurRadius: 0.02.sw)]
+                                ),
+                                child: Icon(
+                                    Icons.close, color: RedColor, size: 30),
+                              ),
+                              onPressed: () => Get.back(),
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 20,
+                            left: 20,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              color: Colors.black.withOpacity(0.7),
+                              child: Text(
+                                'Image Description', // وصف الصورة
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ),
-                ],
-              ),
-            ), );
-          },)
+                    ),);
+              },)
           ),
           Container(
             child: Text(

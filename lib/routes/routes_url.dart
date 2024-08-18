@@ -13,6 +13,7 @@ const String SECTIONS_PAGE = '/sections_page';
 const String SECTION_PAGE = '/section_page';
 
 const String PRODUCT_PAGE = '/product_page';
+const String PRODUCTS_PAGE = '/products_page';
 
 const String JOBS_PAGE = '/jobs_page';
 

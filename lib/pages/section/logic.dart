@@ -1,5 +1,6 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
+import 'package:ali_pasha_graph/models/advice_model.dart';
 import 'package:ali_pasha_graph/models/category_model.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
 import 'package:get/get.dart';
@@ -14,6 +15,7 @@ class SectionLogic extends GetxController {
   RxnInt mainCategory = RxnInt(null);
   RxnInt subCategoryId = RxnInt(null);
   RxList<ProductModel> products = RxList<ProductModel>([]);
+  RxList<AdviceModel> advices = RxList<AdviceModel>([]);
   Rxn<CategoryModel> category = Rxn<CategoryModel>(null);
 
   nextPage() {
@@ -28,8 +30,8 @@ class SectionLogic extends GetxController {
     super.onInit();
     ever(categoryId, (value) {
       products.clear();
-      page.value=1;
-        getPosts();
+      page.value = 1;
+      getPosts();
     });
     ever(page, (value) {
       getPosts();
@@ -45,10 +47,11 @@ class SectionLogic extends GetxController {
   }
 
   Future<void> getPosts() async {
+    print(categoryId.value);
     loading.value = true;
     mainController.query.value = '''
     query Products {
-    products(category_id: ${categoryId.value ?? mainCategory.value}, page: ${page.value}, first: 15) {
+    products(category_id: ${ mainCategory.value??null},sub1_id:${categoryId.value??null}, page: ${page.value}, first: 15) {
         paginatorInfo {
             hasMorePages
         }
@@ -92,7 +95,21 @@ class SectionLogic extends GetxController {
             type
             image
         }
-    }''' : ''}
+    }
+    
+    advices (category_id: ${mainCategory.value ?? mainCategory.value}) {
+        name
+        user {
+            id
+            name
+            seller_name
+        }
+        url
+        image
+        id
+    }
+    
+    ''' : ''}
 }
 
     ''';
@@ -100,7 +117,7 @@ class SectionLogic extends GetxController {
     try {
       dio.Response? res = await mainController.fetchData();
       loading.value = false;
-
+     // mainController.logger.e(res?.data);
       if (res?.data?['data']?['products']['paginatorInfo'] != null) {
         hasMorePage.value =
             res?.data?['data']?['products']['paginatorInfo']['hasMorePages'];
@@ -113,12 +130,23 @@ class SectionLogic extends GetxController {
       }
 
       if (res?.data?['data']?['category'] != null) {
-
-        category.value = CategoryModel.fromJson(
-            res?.data?['data']?['category']);
-        category.value?.children?.insert(0,CategoryModel(name: 'الكل',));
+        category.value =
+            CategoryModel.fromJson(res?.data?['data']?['category']);
+        category.value?.children?.insert(
+            0,
+            CategoryModel(
+              name: 'الكل',
+            ));
       }
 
+      if (res?.data?['data']?['advices'] != null) {
+        advices.clear();
+        for (var item in res?.data?['data']?['advices']) {
+          advices.add(AdviceModel.fromJson(item));
+        }
+      } else {
+        advices.addAll(mainController.advices);
+      }
     } on CustomException catch (e) {
       mainController.logger.e(e.message);
     }

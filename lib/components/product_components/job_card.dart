@@ -34,9 +34,11 @@ class JobCard extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: 7.h),
       padding: EdgeInsets.symmetric(vertical: 0.002.sh, horizontal: 0.002.sw),
       width: double.infinity,
-      height: 1.sw+0.19.sh,
+      height: 1.sw+0.177.sh,
       color: GrayLightColor,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
             padding:

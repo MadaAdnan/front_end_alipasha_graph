@@ -54,6 +54,7 @@ class HomeLogic extends GetxController {
             created_at
             user {
             id
+            name
                 seller_name
                 logo
             }
@@ -100,6 +101,7 @@ class HomeLogic extends GetxController {
     specialSeller{
     id
     name
+    seller_name
     logo
     custom
     }

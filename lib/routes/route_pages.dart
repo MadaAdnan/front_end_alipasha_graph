@@ -41,33 +41,32 @@ import 'package:ali_pasha_graph/routes/routes_url.dart';
 
 import 'package:get/get.dart';
 
+import '../pages/products/binding.dart';
+import '../pages/products/view.dart';
 import '../pages/section/binding.dart';
 import '../pages/section/view.dart';
 
 class AppPages {
   static List<GetPage> pages = [
+    GetPage(name: HOME_PAGE, page: () => HomePage(), binding: HomeBinding()),
     GetPage(
-        name: HOME_PAGE,
-        page: () => HomePage(),
-        binding: HomeBinding()),
-    GetPage(
-        middlewares: [IsLoggedIn(),VerifyEmailMiddleware()],
+        middlewares: [IsLoggedIn(), VerifyEmailMiddleware()],
         name: CREATE_PRODUCT_PAGE,
         page: () => CreateProductPage(),
         binding: CreateProductBinding()),
     GetPage(name: MENU_PAGE, page: () => MenuPage(), binding: MenuBinding()),
     GetPage(
-        middlewares: [IsLoggedIn(),VerifyEmailMiddleware()],
+        middlewares: [IsLoggedIn(), VerifyEmailMiddleware()],
         name: PROFILE_PAGE,
         page: () => ProfilePage(),
         binding: ProfileBinding()),
     GetPage(
-        middlewares: [IsLoggedIn(),VerifyEmailMiddleware()],
+        middlewares: [IsLoggedIn(), VerifyEmailMiddleware()],
         name: BALANCES_PAGE,
         page: () => BalancePage(),
         binding: BalanceBinding()),
     GetPage(
-        middlewares: [IsLoggedIn(),VerifyEmailMiddleware()],
+        middlewares: [IsLoggedIn(), VerifyEmailMiddleware()],
         name: SHIPPING_PAGE,
         page: () => ShippingPage(),
         binding: ShippingBinding()),
@@ -86,7 +85,7 @@ class AppPages {
         page: () => VerifyEmailPage(),
         binding: VerifyEmailBinding()),
     GetPage(
-        middlewares: [IsLoggedIn(),VerifyEmailMiddleware()],
+        middlewares: [IsLoggedIn(), VerifyEmailMiddleware()],
         name: FOLLOWERS_PAGE,
         page: () => FollowersPage(),
         binding: FollowersBinding()),
@@ -99,35 +98,29 @@ class AppPages {
         name: SECTIONS_PAGE,
         page: () => SectionsPage(),
         binding: SectionsBinding()),
-
     GetPage(
         name: SECTION_PAGE,
         page: () => SectionPage(),
         binding: SectionBinding()),
-
     GetPage(
         name: PRODUCT_PAGE,
         page: () => ProductPage(),
         binding: ProductBinding()),
-
     GetPage(
-        name: FILTER_PAGE,
-        page: () => FilterPage(),
-        binding: FilterBinding()),
-
+        name: PRODUCTS_PAGE,
+        page: () => ProductsPage(),
+        binding: ProductsBinding()),
     GetPage(
-        name: SEARCH_PAGE,
-        page: () => SearchPage(),
-        binding: SearchBinding()),
-
+        name: FILTER_PAGE, page: () => FilterPage(), binding: FilterBinding()),
     GetPage(
-        middlewares: [IsLoggedIn(),VerifyEmailMiddleware()],
+        name: SEARCH_PAGE, page: () => SearchPage(), binding: SearchBinding()),
+    GetPage(
+        middlewares: [IsLoggedIn(), VerifyEmailMiddleware()],
         name: COMMUNITIES_PAGE,
         page: () => CommunitiesPage(),
         binding: CommunitiesBinding()),
-
     GetPage(
-        middlewares: [IsLoggedIn(),VerifyEmailMiddleware()],
+        middlewares: [IsLoggedIn(), VerifyEmailMiddleware()],
         name: CHAT_PAGE,
         page: () => ChatPage(),
         binding: ChatBinding()),

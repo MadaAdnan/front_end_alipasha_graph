@@ -19,17 +19,14 @@ class AdviceModel {
       this.expired_date});
 
   factory AdviceModel.fromJson(Map<String, dynamic> data) {
-    dynamic dataUser = null;
-    if (data['user'] != null) {
-      dataUser = UserModel.fromJson(data['user']);
-    }
     return AdviceModel(
-        id: int.tryParse("${data['id']}"),
-        image: "${data['image'] ?? ''}",
-        name: "${data['name'] ?? ''}",
-        url: "${data['url'] ?? ''}",
-        expired_date: "${data['expired_date'] ?? ''}",
-        views_count: int.tryParse("${data['views_count'] ?? ''}"),
-        user: dataUser);
+      id: int.tryParse("${data['id']}"),
+      image: "${data['image'] ?? ''}",
+      name: "${data['name'] ?? ''}",
+      url: "${data['url'] ?? ''}",
+      expired_date: "${data['expired_date'] ?? ''}",
+      views_count: int.tryParse("${data['views_count'] ?? ''}"),
+      user: data['user'] != null ? UserModel.fromJson(data['user']) : null,
+    );
   }
 }

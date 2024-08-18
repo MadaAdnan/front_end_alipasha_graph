@@ -1,4 +1,5 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
+import 'package:ali_pasha_graph/components/advice_component/view.dart';
 import 'package:ali_pasha_graph/components/product_components/job_card.dart';
 import 'package:ali_pasha_graph/components/product_components/post_card.dart';
 import 'package:ali_pasha_graph/models/category_model.dart';
@@ -47,8 +48,7 @@ class SectionPage extends StatelessWidget {
               margin: EdgeInsets.symmetric(vertical: 0.01.sh),
               color: WhiteColor,
               child: Obx(() {
-
-                if (logic.loading.value && logic.category.value==null) {
+                if (logic.loading.value && logic.category.value == null) {
                   return Center(
                     child: CircularProgressIndicator(),
                   );
@@ -61,13 +61,10 @@ class SectionPage extends StatelessWidget {
                 return ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
-                    ...List.generate(logic.category.value!.children!.length ,
+                    ...List.generate(logic.category.value!.children!.length,
                         (index) {
-
-                        return _buildSubSection(
-                            category: logic.category.value!.children![index]);
-
-
+                      return _buildSubSection(
+                          category: logic.category.value!.children![index]);
                     })
                   ],
                 );
@@ -79,13 +76,21 @@ class SectionPage extends StatelessWidget {
                   return Column(
                     children: [
                       ...List.generate(logic.products.length, (index) {
-                        if (logic.products[index].type == 'product') {
-                          return PostCard(
-                            post: logic.products[index],
-                          );
-                        }
-                        return JobCard(
-                          post: logic.products[index],
+                        return Column(
+                          children: [
+                            if (logic.products[index].type == 'product')
+                              PostCard(
+                                post: logic.products[index],
+                              )
+                            else
+                              JobCard(
+                                post: logic.products[index],
+                              ),
+                            if (logic.advices.length > 0 && index % 5 == 0)
+                              AdviceComponent(
+                                  advice: logic.advices[int.parse(
+                                      "${index % logic.advices.length}")])
+                          ],
                         );
                       }),
                       if (logic.loading.value)
@@ -115,21 +120,24 @@ class SectionPage extends StatelessWidget {
 
   _buildSubSection({required CategoryModel category}) {
     return InkWell(
-      onTap: (){
-        logic.categoryId.value=category.id;
+      onTap: () {
+        logic.categoryId.value = category.id;
       },
       child: Container(
-        width: 1.sw/4.5,
+        width: 1.sw / 4.5,
         margin: EdgeInsets.symmetric(horizontal: 0.02.sw),
         alignment: Alignment.center,
-        padding: EdgeInsets.symmetric(vertical: 0.001
-            .sh, horizontal: 0.02.sw),
+        padding: EdgeInsets.symmetric(vertical: 0.001.sh, horizontal: 0.02.sw),
         decoration: BoxDecoration(
-            color: logic.categoryId.value == category.id ? RedColor : GrayLightColor,
+            color: logic.categoryId.value == category.id
+                ? RedColor
+                : GrayLightColor,
             borderRadius: BorderRadius.circular(15.r)),
         child: Text(
           "${category.name}",
-          style: logic.categoryId.value != category.id ?  H3BlackTextStyle:H3WhiteTextStyle,
+          style: logic.categoryId.value != category.id
+              ? H3BlackTextStyle
+              : H3WhiteTextStyle,
           overflow: TextOverflow.ellipsis,
         ),
       ),
