@@ -1,8 +1,13 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
+import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'colors.dart';
 
 ImageProvider getUserImage() {
   return AssetImage('assets/images/png/user.png');
@@ -44,4 +49,23 @@ Future<void> openUrl({required String url}) async {
   if (!await launchUrl(Uri.parse(url))) {
     throw CustomException(message: 'Could not launch $url');
   }
+}
+
+messageBox({String? title, String? message, bool isError = false}) {
+  Get.snackbar('$title', "$message",
+      backgroundColor:
+          isError ? RedColor.withOpacity(0.7) : Colors.green.withOpacity(0.7),
+      snackStyle: SnackStyle.FLOATING,
+      titleText: Text(
+        '$title',
+        style: H4WhiteTextStyle,
+      ),
+      messageText: Text(
+        "$message",
+        style: H3WhiteTextStyle,
+      ),
+      icon: Icon(
+       isError? FontAwesomeIcons.ban:FontAwesomeIcons.checkCircle,
+        color: WhiteColor,
+      ));
 }

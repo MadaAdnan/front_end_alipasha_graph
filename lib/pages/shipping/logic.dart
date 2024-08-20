@@ -244,10 +244,8 @@ class ShippingLogic extends GetxController {
       mainController.logger.i(res?.data);
 
       if (res?.data?['data']?['createOrder'] != null) {
-        UserModel user =
-            UserModel.fromJson(res?.data?['data']?['createOrder']['user']);
-        mainController.logger.e(res?.data?['data']?['createOrder']['user']);
-        mainController.setUser(user: user, isWrite: true);
+
+        mainController.setUserJson(json:res?.data?['data']?['createOrder']['user'] );
       }
     } catch (e) {
       mainController.logger.i("Error =>");

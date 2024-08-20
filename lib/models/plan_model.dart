@@ -35,14 +35,28 @@ class PlanModel {
       }
     }
     return PlanModel(
-        id: int.tryParse("${data['id']}"),
-        name: "${data['name']}",
-        discount: double.tryParse("${data['discount']}"),
-        info: "${data['info']}",
-        is_discount: bool.tryParse("${data['is_discount']}"),
-        items: listItem.toList(),
-        options: PlanOption.fromJson(data['options']),
-        pivot: PlanUserPivot.fromJson(data['pivot']));
+      id: int.tryParse("${data['id']}"),
+      name: "${data['name']}",
+      discount: double.tryParse("${data['discount']}") ?? 0,
+      price: double.tryParse("${data['price']}") ?? 0,
+      info: "${data['info']}",
+      is_discount: bool.tryParse("${data['is_discount']}"),
+      items: listItem.toList(),
+      options:
+          data['options'] != null ? PlanOption.fromJson(data['options']) : null,
+      pivot:
+          data['pivot'] != null ? PlanUserPivot.fromJson(data['pivot']) : null,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> data = {};
+    data['id'] = id;
+    data['name'] = name;
+    data['info'] = info;
+    data['pivot'] = pivot?.toJson();
+
+    return data;
   }
 }
 
@@ -55,6 +69,14 @@ class PlanItem {
   factory PlanItem.fromJson(Map<String, dynamic> data) {
     return PlanItem(
         active: bool.tryParse("${data['active']}"), item: "${data['item']}");
+  }
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> data = {};
+    data['active'] = active;
+    data['item'] = item;
+
+    return data;
   }
 }
 
@@ -72,6 +94,15 @@ class PlanOption {
       special: int.tryParse("${data['special']}"),
     );
   }
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> data = {};
+    data['ads'] = ads;
+    data['slider'] = slider;
+    data['special'] = special;
+
+    return data;
+  }
 }
 
 class PlanUserPivot {
@@ -85,5 +116,13 @@ class PlanUserPivot {
       subscription_date: "${data['subscription_date']}",
       expired_date: "${data['expired_date']}",
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> data = {};
+    data['subscription_date'] = subscription_date;
+    data['expired_date'] = expired_date;
+
+    return data;
   }
 }

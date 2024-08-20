@@ -21,6 +21,8 @@ import 'package:ali_pasha_graph/pages/login/binding.dart';
 import 'package:ali_pasha_graph/pages/login/view.dart';
 import 'package:ali_pasha_graph/pages/menu/binding.dart';
 import 'package:ali_pasha_graph/pages/menu/view.dart';
+import 'package:ali_pasha_graph/pages/plan/binding.dart';
+import 'package:ali_pasha_graph/pages/plan/view.dart';
 import 'package:ali_pasha_graph/pages/product/binding.dart';
 import 'package:ali_pasha_graph/pages/product/view.dart';
 import 'package:ali_pasha_graph/pages/profile/binding.dart';
@@ -124,5 +126,10 @@ class AppPages {
         name: CHAT_PAGE,
         page: () => ChatPage(),
         binding: ChatBinding()),
+    GetPage(
+        middlewares: [IsLoggedIn(), VerifyEmailMiddleware()],
+        name: PLAN_PAGE,
+        page: () => PlanPage(),
+        binding: PlanBinding()),
   ];
 }

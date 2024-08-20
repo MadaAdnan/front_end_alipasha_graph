@@ -60,9 +60,7 @@ class VerifyEmailLogic extends GetxController {
       }
       if (res?.data?['data']?['verifyEmail'] != null) {
         if (res?.data?['data']?['verifyEmail']?['email_verified_at'] != null) {
-          mainController.setUser(
-              user: UserModel.fromJson(res?.data?['data']?['verifyEmail']),
-              isWrite: true);
+          mainController.setUserJson(json: res?.data?['data']?['verifyEmail']);
           Get.offAndToNamed(HOME_PAGE);
         }
       }

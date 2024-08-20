@@ -98,9 +98,8 @@ mutation CreateUser {
       if (res?.data?['data']?['createUser']?['token'] != null) {
         await mainController.setToken(
             token: res?.data?['data']?['createUser']?['token'], isWrite: true);
-        UserModel user =
-            UserModel.fromJson(res?.data?['data']?['createUser']?['user']);
-        await mainController.setUser(user: user, isWrite: true);
+
+        await mainController.setUserJson(json: res?.data?['data']?['createUser']?['user']);
         Get.offAndToNamed(VERIFY_EMAIL_PAGE);
       }
       if (res?.data?['errors']?[0]?['extensions']['validation'] != null) {

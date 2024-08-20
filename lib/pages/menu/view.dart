@@ -220,6 +220,9 @@ class MenuPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     _buildWidget(
+                      onTap: (){
+                        Get.offAndToNamed(PLAN_PAGE);
+                      },
                         image: 'assets/images/png/upgrade.png',
                         title: 'ترقية الحساب'),
                     _buildWidget(

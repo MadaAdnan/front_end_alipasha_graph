@@ -22,6 +22,7 @@ class NetworkManager {
 
   NetworkManager._internal() {
     dio = dioo.Dio(dioo.BaseOptions(
+      // baseUrl: "https://alipasha.mazaya-online.com/graphql/api",
       baseUrl: "http://192.168.11.200:8000/graphql/api",
       connectTimeout: const Duration(seconds: 20),
       receiveTimeout: const Duration(seconds: 20),

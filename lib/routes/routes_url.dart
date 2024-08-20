@@ -24,3 +24,4 @@ const String SEARCH_PAGE = '/search_page';
 
 const String COMMUNITIES_PAGE='/communities_page';
 const String CHAT_PAGE='/chat_page';
+const String PLAN_PAGE='/plan_page';

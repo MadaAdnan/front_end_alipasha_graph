@@ -12,6 +12,12 @@ const AUTH_USER='''
             total_balance
             total_point
             following_count
+            plans{
+            id
+            pivot{
+             expired_date
+            }
+            }
              city {
                 name
             }
@@ -38,6 +44,13 @@ const AUTH_FIELDS='''
             following_count
             total_balance
             total_point
+            plans{
+            id
+            pivot{
+             expired_date
+            }
+            }
+            
              city {
                 name
             }

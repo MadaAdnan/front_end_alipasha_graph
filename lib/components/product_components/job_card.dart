@@ -373,9 +373,7 @@ class JobCard extends StatelessWidget {
         dio.Response? res = await mainController.fetchData();
         mainController.logger.e(res?.data);
         if (res?.data?['data']?['followAccount'] != null) {
-          UserModel user =
-              UserModel.fromJson(res?.data?['data']?['followAccount']);
-          mainController.setUser(user: user, isWrite: true);
+          mainController.setUserJson(json: res?.data?['data']?['followAccount']);
         }
       } on CustomException catch (e) {
         mainController.logger.e(e);

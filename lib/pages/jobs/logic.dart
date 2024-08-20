@@ -43,6 +43,7 @@ class JobsLogic extends GetxController {
         data {
             id
             user {
+            id
                 seller_name
                 logo
             }
@@ -73,6 +74,7 @@ class JobsLogic extends GetxController {
     try {
 
       dio.Response? res = await mainController.fetchData();
+      mainController.logger.e(res?.data);
       if (res?.data?['data']?['products']?['paginatorInfo'] != null) {
         hasMorePage.value = bool.tryParse(
                 "${res?.data?['data']?['products']?['paginatorInfo']?['hasMorePages']}") ??

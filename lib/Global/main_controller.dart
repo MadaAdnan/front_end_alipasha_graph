@@ -70,7 +70,7 @@ class MainController extends GetxController {
     try {
       dio.Response res = await dio_manager.executeGraphQLQuery(query.value!,
           variables: variables.value);
-     // logger.e(res.data);
+      // logger.e(res.data);
       /* if (res.data?['errors']!=null) {
         throw CustomException(
             errors: res.data?['errors'][0]['extensions'],
@@ -95,7 +95,7 @@ class MainController extends GetxController {
     }
   }
 
-  setUser({required UserModel user, bool isWrite = false}) async {
+/*  setUser({required UserModel user, bool isWrite = false}) async {
     if (isWrite) {
       if (storage.hasData('user')) {
         await storage.remove('user');
@@ -103,6 +103,26 @@ class MainController extends GetxController {
       await storage.write('user', user.toJson());
     }
     authUser.value = user;
+  }*/
+  getUser() {
+    if (storage.hasData('user')) {
+      var json = storage.read('user');
+      authUser.value = UserModel.fromJson(json);
+    }
+  }
+
+  setUserJson({required Map<String, dynamic> json}) async {
+   try{
+     if (storage.hasData('user')) {
+       await storage.remove('user');
+     }
+     await storage.write('user', json);
+
+     authUser.value = UserModel.fromJson(json);
+   }catch(e){
+     logger.e("Error Write Storage : $e");
+   }
+
   }
 
   Future<void> setToken({String? token, bool isWrite = false}) async {

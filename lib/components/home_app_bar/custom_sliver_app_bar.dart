@@ -145,6 +145,7 @@ class HomeSliverAppBarComponent extends StatelessWidget {
                         icon: Icon(
                           FontAwesomeIcons.bookOpen,
                           size: 55.w,
+                          color: Get.currentRoute == TENDERS_PAGE? RedColor : null,
                           //color: RedColor,
                         ),
                       ),
@@ -163,7 +164,7 @@ class HomeSliverAppBarComponent extends StatelessWidget {
                       ),
                       child: IconButton(
                         onPressed: () {
-                          Get.toNamed(JOBS_PAGE);
+                          Get.offAndToNamed(JOBS_PAGE);
                         },
                         icon: Icon(
                           FontAwesomeIcons.headset,
@@ -187,7 +188,7 @@ class HomeSliverAppBarComponent extends StatelessWidget {
                       ),
                       child: IconButton(
                         onPressed: () {
-                          Get.toNamed(TENDERS_PAGE);
+                          Get.offAndToNamed(TENDERS_PAGE);
                         },
                         icon: Icon(FontAwesomeIcons.arrowTrendDown,
                             size: 55.w,
@@ -198,7 +199,7 @@ class HomeSliverAppBarComponent extends StatelessWidget {
                     ),
                     Container(
                       decoration: BoxDecoration(
-                        border: Get.currentRoute == TENDERS_PAGE
+                        border: Get.currentRoute == COMMUNITIES_PAGE
                             ? Border(
                                 bottom: BorderSide(
                                   color: RedColor,
