@@ -19,7 +19,7 @@ import '../helpers/pusher_service.dart';
 import '../models/city_model.dart';
 
 class MainController extends GetxController {
-  //'1|XoDW3fzMyn4aDNe9WclH6wgYObtcuYmucJrfdAqO643da6f4'
+
   RxnString token = RxnString(null);
   Rxn<UserModel> authUser = Rxn<UserModel>(null);
   NetworkManager dio_manager = NetworkManager();
@@ -71,11 +71,6 @@ class MainController extends GetxController {
       dio.Response res = await dio_manager.executeGraphQLQuery(query.value!,
           variables: variables.value);
       // logger.e(res.data);
-      /* if (res.data?['errors']!=null) {
-        throw CustomException(
-            errors: res.data?['errors'][0]['extensions'],
-            message:res.data?['errors'][0]['message']);
-      }*/
       loading.value = false;
       DateTime endDate = DateTime.now();
       Duration responseTime = endDate.difference(startDate);
@@ -95,15 +90,7 @@ class MainController extends GetxController {
     }
   }
 
-/*  setUser({required UserModel user, bool isWrite = false}) async {
-    if (isWrite) {
-      if (storage.hasData('user')) {
-        await storage.remove('user');
-      }
-      await storage.write('user', user.toJson());
-    }
-    authUser.value = user;
-  }*/
+
   getUser() {
     if (storage.hasData('user')) {
       var json = storage.read('user');

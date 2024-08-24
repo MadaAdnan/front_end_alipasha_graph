@@ -130,7 +130,7 @@ class HomeSliverAppBarComponent extends StatelessWidget {
                     ),
                     Container(
                       decoration: BoxDecoration(
-                        border: Get.currentRoute == TENDERS_PAGE
+                        border: Get.currentRoute == SERVICES_PAGE
                             ? Border(
                                 bottom: BorderSide(
                                   color: RedColor,
@@ -141,11 +141,13 @@ class HomeSliverAppBarComponent extends StatelessWidget {
                             : null,
                       ),
                       child: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.toNamed(SERVICES_PAGE);
+                        },
                         icon: Icon(
                           FontAwesomeIcons.bookOpen,
                           size: 55.w,
-                          color: Get.currentRoute == TENDERS_PAGE? RedColor : null,
+                          color: Get.currentRoute == SERVICES_PAGE? RedColor : null,
                           //color: RedColor,
                         ),
                       ),

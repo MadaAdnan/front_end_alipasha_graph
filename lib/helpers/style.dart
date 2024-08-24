@@ -32,7 +32,8 @@ final H2BlackTextStyle = GoogleFonts.alexandria(
     color: DarkColor, fontWeight: FontWeight.bold, fontSize: 35.sp);
 final H2WhiteTextStyle = GoogleFonts.alexandria(
     color: WhiteColor, fontWeight: FontWeight.bold, fontSize: 35.sp);
-
+final H2RegularDark=GoogleFonts.alexandria(
+    color: DarkColor, fontWeight: FontWeight.w400, fontSize: 35.sp);
 /// H3 Style
 final H3GrayOpacityTextStyle = GoogleFonts.alexandria(
     color: SubTitleColor, fontWeight: FontWeight.bold, fontSize: 30.sp);
