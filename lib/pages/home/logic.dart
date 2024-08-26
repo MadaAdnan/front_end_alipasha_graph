@@ -2,6 +2,7 @@ import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/main.dart';
 import 'package:ali_pasha_graph/models/category_model.dart';
 import 'package:ali_pasha_graph/models/city_model.dart';
+import 'package:ali_pasha_graph/models/slider_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
@@ -117,9 +118,23 @@ class HomeLogic extends GetxController {
     name
     id
     }
+    
+    
    ''' : ''}
+   
+  
 }
     ''');
+  /*  ${mainController.sliders.length == 0 ? '''
+    sliders {
+        category {
+            type
+        }
+        url
+        image
+    }
+
+   ''' : ''}*/
     dio.Response? res = await mainController.fetchData();
     //mainController.logger.e(res?.data);
     if (res != null) {
@@ -150,6 +165,13 @@ class HomeLogic extends GetxController {
           sellers.add(UserModel.fromJson(item));
         }
       }
+
+     /* mainController.logger.i(res.data['data']['sliders']);
+      if (res.data['data']['sliders'] != null) {
+        for (var item in res.data['data']['sliders']) {
+          mainController.sliders.add(SliderModel.fromJson(item));
+        }
+      }*/
     }
   }
 }

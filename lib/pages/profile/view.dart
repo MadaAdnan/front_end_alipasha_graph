@@ -4,6 +4,7 @@ import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:ali_pasha_graph/pages/profile/tabs/tab_chart.dart';
 import 'package:ali_pasha_graph/pages/profile/tabs/tab_product.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -49,11 +50,10 @@ class ProfilePage extends StatelessWidget {
                         maxRadius: 0.12.sw,
                         child: Container(
                           padding: EdgeInsets.all(0.008.sw),
-                          child: Image(
-                            image: AssetImage('assets/images/png/user.png'),
-                          ),
                           decoration: BoxDecoration(
-                              color: GrayDarkColor, shape: BoxShape.circle),
+                              color: GrayDarkColor, shape: BoxShape.circle,
+                          image: DecorationImage(image:CachedNetworkImageProvider('${mainController.authUser.value?.logo}' ,),)
+                          ),
                         ),
                       ),
                     ),
@@ -61,7 +61,9 @@ class ProfilePage extends StatelessWidget {
                         top: 0.004.sh,
                         left: 0.01.sw,
                         child: InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            Get.toNamed(Edit_PROFILE_PAGE);
+                          },
                           child: Container(
                             alignment: Alignment.center,
                             width: 0.35.sw,
@@ -79,7 +81,7 @@ class ProfilePage extends StatelessWidget {
                 ),
               ),
               Text(
-                'مجموعة شيبان التجارية',
+                '${mainController.authUser.value?.seller_name}',
                 style: H1BlackTextStyle,
                 overflow: TextOverflow.ellipsis,
               ),

@@ -5,6 +5,8 @@ import 'package:ali_pasha_graph/models/advice_model.dart';
 import 'package:ali_pasha_graph/models/category_model.dart';
 import 'package:ali_pasha_graph/models/community_model.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
+import 'package:ali_pasha_graph/models/setting_model.dart';
+import 'package:ali_pasha_graph/models/slider_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:dio/dio.dart' as dio;
@@ -32,6 +34,8 @@ class MainController extends GetxController {
   RxList<CityModel> cities = RxList<CityModel>([]);
   RxList<ColorModel> colors = RxList<ColorModel>([]);
   RxList<AdviceModel> advices = RxList<AdviceModel>([]);
+  RxList<SliderModel> sliders = RxList<SliderModel>([]);
+  Rx<SettingModel> settings=Rx(SettingModel(weather_api: '531cff51e64e4a3aa0f130751242408'));
   RxBool is_show_home_appbar = RxBool(true);
   Logger logger = Logger();
   late LaravelFlutterPusher pusher;
@@ -39,11 +43,17 @@ class MainController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    try{
+      pusher= PusherService.init(token:"$token");
+    }catch(e){}
+
     getAdvices();
-    // pusher= PusherService.init(token:"$token");
+
     ever(token, (value) {
       logger.e(token.value);
-      pusher = PusherService.init(token: "$token");
+      try{
+        pusher= PusherService.init(token:"$token");
+      }catch(e){}
       if (value == null) {
         storage.remove('token');
         storage.remove('user');

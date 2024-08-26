@@ -48,7 +48,7 @@ class PrayerPage extends StatelessWidget {
           ),
           Container(
             width: 0.9.sw,
-            height: 0.15.sh,
+            height: 0.1.sh,
             child: Column(
               children: [
                 Obx(() {
@@ -132,6 +132,13 @@ class PrayerPage extends StatelessWidget {
 
             alignment: Alignment.center,
             child: Container(
+              alignment: Alignment.center,
+              width: 0.96.sw,
+              height: 0.07.sh,
+              decoration: BoxDecoration(
+                  border: Border.all(color: DarkColor,),
+                  borderRadius: BorderRadius.circular(15.r),
+                  color: GrayWhiteColor),
               child: RichText(
                 text: TextSpan(children: [
                   TextSpan(
@@ -398,7 +405,14 @@ class PrayerPage extends StatelessWidget {
             width: 1.sw,
             height: 0.15.sh,
             alignment: Alignment.center,
-            child: Container(
+            child:Container(
+              alignment: Alignment.center,
+              width: 0.96.sw,
+              height: 0.07.sh,
+              decoration: BoxDecoration(
+                border: Border.all(color: DarkColor,),
+                  borderRadius: BorderRadius.circular(15.r),
+                  color: GrayWhiteColor),
               child: RichText(
                 text: TextSpan(children: [
                   TextSpan(

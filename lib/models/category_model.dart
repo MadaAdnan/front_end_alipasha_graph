@@ -7,6 +7,7 @@ class CategoryModel {
   List<CategoryModel>? parent;
   List<CategoryModel>? children;
   bool? hasColor;
+  int? products2Count;
 
   CategoryModel({
     this.name,
@@ -17,6 +18,7 @@ class CategoryModel {
     this.color,
     this.type,
     this.hasColor,
+    this.products2Count,
   });
 
   @override
@@ -46,6 +48,7 @@ class CategoryModel {
         color: "${data['color']}",
         type: "${data['type']}",
         id: int.tryParse("${data['id']}"),
+        products2Count: int.tryParse("${data['products2_count']}"),
         children: listChildren.toList(),
         parent: listParent.toList());
   }

@@ -2,6 +2,7 @@ import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
 import 'package:ali_pasha_graph/models/advice_model.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
+import 'package:ali_pasha_graph/models/slider_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
@@ -21,6 +22,7 @@ class ProfileLogic extends GetxController {
 
 // chart page
   RxList<AdviceModel> myAdvices = RxList<AdviceModel>([]);
+  RxList<SliderModel> sliders = RxList<SliderModel>([]);
   RxInt adviceCount = RxInt(0);
   RxInt views = RxInt(0);
   RxInt sliderCount = RxInt(0);
@@ -129,21 +131,39 @@ class ProfileLogic extends GetxController {
         views
         slider_count
         advices {
-            name
+            image
             id
             expired_date
             views_count
         }
+      
     }
+      mySliders {
+            id
+            url
+            image
+            expired_date
+            views_count
+        }
+    
 }
     ''');
     dio.Response? res = await mainController.fetchData();
 
     if (res != null) {
-      // mainController.logger.i(res.data);
-      for (var item in res.data['data']['myAdvice']['advices']) {
-        myAdvices.add(AdviceModel.fromJson(item));
+
+      if (res.data['data']['myAdvice']['advices'] != null) {
+        for (var item in res.data['data']['myAdvice']['advices']) {
+          myAdvices.add(AdviceModel.fromJson(item));
+        }
       }
+
+      if (res.data['data']['mySliders'] != null) {
+        for (var item in res.data['data']['mySliders']) {
+          sliders.add(SliderModel.fromJson(item));
+        }
+      }
+
       views.value =
           int.tryParse("${res.data['data']['myAdvice']['views']}") ?? 0;
       sliderCount.value =

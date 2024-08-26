@@ -9,6 +9,8 @@ import 'package:ali_pasha_graph/pages/communities/binding.dart';
 import 'package:ali_pasha_graph/pages/communities/view.dart';
 import 'package:ali_pasha_graph/pages/create_product/binding.dart';
 import 'package:ali_pasha_graph/pages/create_product/view.dart';
+import 'package:ali_pasha_graph/pages/edit_profile/binding.dart';
+import 'package:ali_pasha_graph/pages/edit_profile/view.dart';
 
 
 import 'package:ali_pasha_graph/pages/filter/binding.dart';
@@ -40,6 +42,9 @@ import 'package:ali_pasha_graph/pages/search/binding.dart';
 import 'package:ali_pasha_graph/pages/search/view.dart';
 import 'package:ali_pasha_graph/pages/sections/binding.dart';
 import 'package:ali_pasha_graph/pages/sections/view.dart';
+import 'package:ali_pasha_graph/pages/service/view.dart';
+import 'package:ali_pasha_graph/pages/service_details/binding.dart';
+import 'package:ali_pasha_graph/pages/service_details/view.dart';
 import 'package:ali_pasha_graph/pages/services/binding.dart';
 import 'package:ali_pasha_graph/pages/services/view.dart';
 import 'package:ali_pasha_graph/pages/shipping/binding.dart';
@@ -48,6 +53,8 @@ import 'package:ali_pasha_graph/pages/tenders/binding.dart';
 import 'package:ali_pasha_graph/pages/tenders/view.dart';
 import 'package:ali_pasha_graph/pages/verify_email/binding.dart';
 import 'package:ali_pasha_graph/pages/verify_email/view.dart';
+import 'package:ali_pasha_graph/pages/weather/binding.dart';
+import 'package:ali_pasha_graph/pages/weather/view.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 
 import 'package:get/get.dart';
@@ -56,6 +63,7 @@ import '../pages/products/binding.dart';
 import '../pages/products/view.dart';
 import '../pages/section/binding.dart';
 import '../pages/section/view.dart';
+import '../pages/service/binding.dart';
 
 class AppPages {
   static List<GetPage> pages = [
@@ -154,6 +162,15 @@ class AppPages {
       binding: PlanBinding(),
     ),
     GetPage(
+      middlewares: [IsLoggedIn(), VerifyEmailMiddleware()],
+      name: Edit_PROFILE_PAGE,
+      page: () => EditProfilePage(),
+      binding: EditProfileBinding(),
+    ),
+
+
+
+    GetPage(
       name: GOLD_PAGE,
       page: () => GoldPage(),
       binding: GoldBinding(),
@@ -169,5 +186,24 @@ class AppPages {
       page: () => ServicesPage(),
       binding: ServicesBinding(),
     ),
+
+    GetPage(
+      name: WEATHER_PAGE,
+      page: () => WeatherPage(),
+      binding: WeatherBinding(),
+    ),
+
+    GetPage(
+      name: SERVICE_PAGE,
+      page: () => ServicePage(),
+      binding: ServiceBinding(),
+    ),
+
+    GetPage(
+      name: SERVICE_DETAILS,
+      page: () => ServiceDetailsPage(),
+      binding: ServiceDetailsBinding(),
+    ),
   ];
 }
+//https://api.weatherapi.com/v1/current.json?key=b0eaa5c40b5d4334802113456242408&q=Aazaz

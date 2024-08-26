@@ -17,6 +17,7 @@ class UserModel {
   bool? is_delivery;
   bool? is_restaurant;
   bool? is_active;
+  bool? is_seller;
   String? affiliate;
   String? info;
   String? customImg;
@@ -57,6 +58,7 @@ class UserModel {
     this.level,
     this.followers,
     this.followingCount,
+    this.is_seller
   });
 
   factory UserModel.fromJson(Map<String, dynamic> data) {
@@ -88,6 +90,7 @@ class UserModel {
       is_restaurant: bool.tryParse("${data['is_restaurant'] ?? false}"),
       is_delivery: bool.tryParse("${data['is_delivery'] ?? false}"),
       is_active: bool.tryParse("${data['is_active'] ?? false}"),
+      is_seller: bool.tryParse("${data['is_seller'] ?? false}"),
       close_time: "${data['close_time'] ?? ''}",
       open_time: "${data['open_time'] ?? ''}",
       image: "${data['image'] ?? ''}",

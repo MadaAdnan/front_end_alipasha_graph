@@ -5,8 +5,10 @@ import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/enums.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:ali_pasha_graph/models/advice_model.dart';
+import 'package:ali_pasha_graph/models/slider_model.dart';
 import 'package:ali_pasha_graph/pages/profile/logic.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -70,6 +72,8 @@ class TabChart extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                Text('الإعلانات بين المنتجات',style: H4GrayTextStyle,),
+                15.verticalSpace,
                 /// Header
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -139,11 +143,8 @@ class TabChart extends StatelessWidget {
                                 width: 0.33.sw,
                                 height: 0.04.sh,
                                 decoration: BoxDecoration(
-                                    border: Border.all(color: DarkColor)),
-                                child: Text(
-                                  '${advice.name}',
-                                  style: H2BlackTextStyle,
-                                  overflow: TextOverflow.ellipsis,
+                                  border: Border.all(color: DarkColor),
+                                  image: DecorationImage(image: CachedNetworkImageProvider('${advice.image}',),fit: BoxFit.cover)
                                 ),
                               ),
                               Container(
@@ -155,6 +156,57 @@ class TabChart extends StatelessWidget {
                                     border: Border.all(color: DarkColor)),
                                 child: Text(
                                   '${advice.views_count}'.toFormatNumber(),
+                                  style: H2BlackTextStyle,
+                                ),
+                              ),
+                              Container(
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.only(bottom: 0.001.sh),
+                                width: 0.33.sw,
+                                height: 0.04.sh,
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: DarkColor)),
+                                child: Text(
+                                  '${expired_date != null ? format.format(expired_date) : ''}',
+                                  style: H2BlackTextStyle,
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                      15.verticalSpace,
+                      Text('إعلانات السلايدر',style: H4GrayTextStyle,),
+                      15.verticalSpace,
+                      ...List.generate(
+                        logic.sliders.length,
+                            (index) {
+                          var format = DateFormat.yMd();
+                          SliderModel slider = logic.sliders[index];
+                          var expired_date =
+                          DateTime.tryParse("${slider.expired_date}");
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(bottom: 0.001.sh),
+                                alignment: Alignment.center,
+                                width: 0.33.sw,
+                                height: 0.04.sh,
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: DarkColor),
+                                    image: DecorationImage(image: CachedNetworkImageProvider('${slider.image}',),fit: BoxFit.cover)
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(bottom: 0.001.sh),
+                                alignment: Alignment.center,
+                                width: 0.33.sw,
+                                height: 0.04.sh,
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: DarkColor)),
+                                child: Text(
+                                  '${slider.views_count}'.toFormatNumber(),
                                   style: H2BlackTextStyle,
                                 ),
                               ),

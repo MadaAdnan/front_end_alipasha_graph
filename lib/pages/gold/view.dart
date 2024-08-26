@@ -9,10 +9,10 @@ import 'logic.dart';
 
 class GoldPage extends StatelessWidget {
   GoldPage({Key? key}) : super(key: key);
-  RxInt index = RxInt(0);
+  RxInt index = RxInt(Get.arguments??0);
   final logic = Get.find<GoldLogic>();
   PageController pageController = PageController(
-    initialPage: 0,
+    initialPage: Get.arguments??0,
     viewportFraction: 1,
   );
   List<Widget> pages = [];
@@ -30,7 +30,7 @@ class GoldPage extends StatelessWidget {
             color: RedColor,
             child: Obx(() {
               return Text(
-                '${this.index.value == 0 ? 'أسعار الذهب والفضة' : this.index.value == 1 ? 'أسعار العملات' : "أسعار المواد"}',
+                '${this.index.value == 0 ? 'أسعار الذهب والفضة' : this.index.value == 1 ? 'أسعار العملات' : "أسعار المحروقات"}',
                 style: H3WhiteTextStyle,
               );
             }),

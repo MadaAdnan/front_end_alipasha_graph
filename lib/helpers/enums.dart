@@ -93,6 +93,43 @@ extension CategoryTypeEnum on String {
         return this;
     }
   }
+
+  String weatherType() {
+    switch (this) {
+      case "Sunny":
+      case "Clear":
+        return "مشمس";
+      case "Partly Cloudy":
+        return "غائم جزئيا";
+      case "":
+        return "صحو";
+      case "Cloudy":
+      case "Overcast":
+      case "Light drizzl":
+        return "غائم";
+      case "Patchy rain nearby":
+      case "Patchy rain possible":
+      case "Light rain":
+      case "Light rain shower":
+        return "أمطار متفرقة";
+      case "Moderate rain":
+      case "Light freezing rain":
+        return "ممطر";
+
+      case "Light snow showers":
+      case "Light snow":
+        return "ثلوج خفيفة";
+      case "Heavy snow":
+      case "Moderate snow":
+      case "Moderate or heavy snow showers":
+        return "مثلج";
+      case "Light sleet":
+        return "صقيع";
+      default:
+        print(this);
+        return this;
+    }
+  }
 }
 
 extension FormatNumber on String {

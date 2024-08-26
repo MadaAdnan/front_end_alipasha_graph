@@ -21,6 +21,8 @@ class InputComponent extends StatelessWidget {
     this.suffixIcon,
     this.suffixClick,
     this.isSecure=false,
+    this.radius,
+    this.maxLine,
   });
 
   final TextEditingController? controller;
@@ -31,6 +33,8 @@ class InputComponent extends StatelessWidget {
   final bool isRequired;
   final bool isSecure;
   final Color? fill;
+  final double? radius;
+  final int? maxLine;
 
   final String? Function(String?)? validation;
   final String? Function()? onEditingComplete;
@@ -51,6 +55,7 @@ class InputComponent extends StatelessWidget {
         validator: validation,
         style: H3BlackTextStyle,
         keyboardType: textInputType,
+        maxLines: maxLine,
         decoration: InputDecoration(
           suffixIcon: suffixIcon != null
               ? InkWell(
@@ -66,7 +71,7 @@ class InputComponent extends StatelessWidget {
           ),
           errorStyle: H4RedTextStyle,
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15.r),
+            borderRadius: BorderRadius.circular(radius==null ? 15.r : radius!),
             borderSide: BorderSide(
               color: GrayDarkColor,
             ),
@@ -75,7 +80,7 @@ class InputComponent extends StatelessWidget {
           filled: true,
           fillColor: fill,
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15.r),
+            borderRadius: BorderRadius.circular(radius==null ? 15.r : radius!),
             borderSide: BorderSide(
               color: GrayDarkColor,
             ),
