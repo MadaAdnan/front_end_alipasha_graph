@@ -45,6 +45,7 @@ dependencies:
       ref: main
   cached_network_image: ^3.4.0
   flutter_image_compress: ^2.3.0
+  flutter_widget_from_html_core: ^0.15.2
       #path: packages/my_package
 
 

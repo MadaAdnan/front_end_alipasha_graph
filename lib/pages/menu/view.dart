@@ -289,6 +289,7 @@ class MenuPage extends StatelessWidget {
                       value: 'privacy',
                       onTap: () {
                         logic.selectedValue1.value = 'privacy';
+
                       },
                       child: Row(
                         children: [
@@ -504,6 +505,7 @@ class MenuPage extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 0.01.sw, vertical: 0.002.sh),
       width: 1.sw,
       child: DropdownButtonHideUnderline(
+
         child: DropdownButton2<String>(
           isExpanded: true,
           hint: Row(
@@ -536,7 +538,10 @@ class MenuPage extends StatelessWidget {
           items: items,
           value: selectedValue,
           onChanged: (value) {
-            print(value);
+            if(value!=null){
+              logic.changeSelectedValue1(value!);
+            }
+
           },
           buttonStyleData: ButtonStyleData(
             height: 50,

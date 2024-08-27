@@ -17,6 +17,7 @@ class PrivacyLogic extends GetxController {
   void onReady() {
     // TODO: implement onReady
     super.onReady();
+    getPrivacy();
   }
 
   getPrivacy() async {
