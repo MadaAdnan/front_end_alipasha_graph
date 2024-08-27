@@ -65,6 +65,7 @@ class PostCard extends StatelessWidget {
                           10.horizontalSpace,
                           Column(
                             children: [
+                              if(post?.user?.seller_name != null)
                               Container(
                                 width: 0.6.sw,
                                 child: Text(

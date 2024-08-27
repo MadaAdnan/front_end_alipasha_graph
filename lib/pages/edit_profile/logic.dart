@@ -1,4 +1,9 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:ali_pasha_graph/Global/main_controller.dart';
+import 'package:ali_pasha_graph/helpers/components.dart';
+import 'package:ali_pasha_graph/helpers/queries.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -104,6 +109,42 @@ class EditProfileLogic extends GetxController {
 
   saveData() async {
     loading.value = true;
+    Map<String, dynamic> datajson = {
+      "query":
+          r" mutation UpdateUser($name:String!,$email:String!,$password:String,$phone:String,$seller_name:String,$address:String,$close_time:String,$open_time:String,$info:String,$image:Upload,$logo:Upload) { "
+          r"updateUser(input:{ name:$name,email:$email,password:$password,phone:$phone,seller_name:$seller_name,address:$address,close_time:$close_time,open_time:$open_time,info:$info,image:$image,logo:$logo }) "
+          "  {$AUTH_FIELDS }"
+          r"}",
+      "variables": <String, dynamic>{
+    "name": nameController.value.text??'',
+    "email": emailController.value.text??'',
+    "password": passwordController.value.text??'',
+    "phone": phoneController.value.text??'',
+    /*"city_id": 1,*/
+    "seller_name": sellerNameController.value.text??'',
+    "address": addressController.value.text??'',
+    "close_time": closeTimeController.value.text??'',
+    "open_time": openTimeController.value.text??'',
+    "info": infoController.value.text??'',
+    "image": null,
+    "logo": null,
+    "is_delivery": true,
+      }
+    };
+    mainController.logger.i(datajson['variables']);
+
+    String map = '''
+    {
+  "image": ["variables.image"],
+  "logo": ["variables.logo"]
+}
+    ''';
+
+    Map<String, XFile?> data = {
+      if (avatar.value != null) 'image': avatar.value,
+      if (logo.value != null) 'logo': logo.value,
+    };
+
     mainController.query.value = '''
     mutation UpdateUser {
     updateUser(
@@ -159,30 +200,37 @@ class EditProfileLogic extends GetxController {
     
     ''';
     try {
-      dio.Response? res = await mainController.fetchData();
-      if (res?.data?['data']?['me'] != null) {
-        user.value = UserModel.fromJson(res?.data?['data']?['me']);
-      }
+      dio.Response res=await mainController.dio_manager.executeGraphQLQueryWithFile(json.encode(datajson),map: map,files: data);
+ if(res.data['data']['updateUser']!=null){
+   mainController.setUserJson(json: res.data['data']['updateUser']);
+   messageBox(title: 'نجاح العملية', message: 'تم تعديل الملف الشخصي بنجاح', isError: false);
+  // mainController.authUser.value=UserModel.fromJson(res.data['data']['updateUser']);
+ }
     } catch (e) {
       mainController.logger.e("Error get Profile $e");
     }
     loading.value = false;
   }
 
-  Future<void> pickAvatar({required ImageSource imagSource}) async {
-    avatar.value = null;
+  Future<void> pickAvatar(
+      {required ImageSource imagSource,
+      required Function(XFile? file, int? fileSize) onChange}) async {
     XFile? selected = await ImagePicker().pickImage(source: imagSource);
     if (selected != null) {
-      avatar.value = selected;
-      cropAvatar();
+      XFile? response = await cropAvatar(selected);
+      if (response != null) {
+        File compressedFile = File(response.path);
+        int fileSize = await compressedFile.length();
+        onChange(response, fileSize);
+      }
     }
   }
 
-  Future<void> cropAvatar() async {
+  Future<XFile?> cropAvatar(XFile file) async {
     try {
       CroppedFile? cropped = await ImageCropper().cropImage(
         compressFormat: ImageCompressFormat.png,
-        sourcePath: avatar.value!.path,
+        sourcePath: file.path,
         maxWidth: 300,
         maxHeight: 300,
         compressQuality: 80,
@@ -204,12 +252,11 @@ class EditProfileLogic extends GetxController {
         ],
       );
       if (cropped != null) {
-        avatar.value = XFile(cropped.path);
+        return await mainController.commpressImage(file: XFile(cropped.path));
       }
+      return null;
     } catch (e) {
-      // Handle the error appropriately
-      print('Error cropping image: $e');
-      Get.snackbar('Error', 'Failed to crop image');
+      return file;
     }
   }
 }

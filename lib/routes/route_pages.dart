@@ -1,6 +1,9 @@
 import 'package:ali_pasha_graph/middlewares/guest_middleware.dart';
 import 'package:ali_pasha_graph/middlewares/is_logged_in.dart';
 import 'package:ali_pasha_graph/middlewares/verify_email_middleware.dart';
+import 'package:ali_pasha_graph/pages/about/binding.dart';
+import 'package:ali_pasha_graph/pages/about/view.dart';
+
 import 'package:ali_pasha_graph/pages/balance/binding.dart';
 import 'package:ali_pasha_graph/pages/balance/view.dart';
 import 'package:ali_pasha_graph/pages/chat/binding.dart';
@@ -32,6 +35,8 @@ import 'package:ali_pasha_graph/pages/plan/binding.dart';
 import 'package:ali_pasha_graph/pages/plan/view.dart';
 import 'package:ali_pasha_graph/pages/prayer/binding.dart';
 import 'package:ali_pasha_graph/pages/prayer/view.dart';
+import 'package:ali_pasha_graph/pages/privacy/binding.dart';
+import 'package:ali_pasha_graph/pages/privacy/view.dart';
 import 'package:ali_pasha_graph/pages/product/binding.dart';
 import 'package:ali_pasha_graph/pages/product/view.dart';
 import 'package:ali_pasha_graph/pages/profile/binding.dart';
@@ -59,6 +64,8 @@ import 'package:ali_pasha_graph/routes/routes_url.dart';
 
 import 'package:get/get.dart';
 
+import '../pages/news/binding.dart';
+import '../pages/news/view.dart';
 import '../pages/products/binding.dart';
 import '../pages/products/view.dart';
 import '../pages/section/binding.dart';
@@ -175,6 +182,29 @@ class AppPages {
       page: () => GoldPage(),
       binding: GoldBinding(),
     ),
+
+
+    GetPage(
+      name: NEWS_PAGE,
+      page: () => NewsPage(),
+      binding: NewsBinding(),
+    ),
+
+    GetPage(
+      name: PRIVACY_PAGE,
+      page: () => PrivacyPage(),
+      binding: PrivacyBinding(),
+    ),
+
+    GetPage(
+      name: ABOUT_PAGE,
+      page: () => AboutPage(),
+      binding: AboutBinding(),
+    ),
+
+
+
+
     GetPage(
       name: PRAYER_PAGE,
       page: () => PrayerPage(),

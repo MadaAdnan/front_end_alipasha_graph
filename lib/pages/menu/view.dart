@@ -2,6 +2,7 @@ import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/components.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,13 +42,11 @@ class MenuPage extends StatelessWidget {
                 Obx(() {
                   return InkWell(
                     onTap: () {
-                      if(isAuth()){
+                      if (isAuth()) {
                         Get.offAndToNamed(PROFILE_PAGE);
-                      }else{
+                      } else {
                         Get.offAndToNamed(LOGIN_PAGE);
                       }
-
-
                     },
                     child: Container(
                       width: 0.6.sw,
@@ -67,15 +66,16 @@ class MenuPage extends StatelessWidget {
                                 width: 0.15.sw,
                                 height: 0.13.sw,
                                 decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: GrayDarkColor,
-                                    image: DecorationImage(
+                                  shape: BoxShape.circle,
+                                  color: GrayDarkColor,
+                                  image: DecorationImage(
                                       image: getLogo() != null
-                                          ? NetworkImage(
+                                          ? CachedNetworkImageProvider(
                                               '${getLogo()}',
                                             )
                                           : getUserImage(),
-                                    )),
+                                      fit: BoxFit.cover),
+                                ),
                               ),
                             ),
                           ),
@@ -163,14 +163,15 @@ class MenuPage extends StatelessWidget {
                   children: [
                     _buildWidget(
                         image: 'assets/images/png/home.png',
-                        title: 'عرض متجري',onTap: (){
-                      if(isAuth()){
-                        Get.offAndToNamed(PROFILE_PAGE);
-                      }else{
-                        Toast.show('لم تقم بتسجيل الدخول');
-                        Get.offAndToNamed(LOGIN_PAGE);
-                      }
-                    }),
+                        title: 'عرض متجري',
+                        onTap: () {
+                          if (isAuth()) {
+                            Get.offAndToNamed(PROFILE_PAGE);
+                          } else {
+                            Toast.show('لم تقم بتسجيل الدخول');
+                            Get.offAndToNamed(LOGIN_PAGE);
+                          }
+                        }),
                     _buildWidget(
                         image: 'assets/images/png/cart.png',
                         title: 'سلة المشتريات'),
@@ -220,12 +221,15 @@ class MenuPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     _buildWidget(
-                      onTap: (){
-                        Get.offAndToNamed(PLAN_PAGE);
-                      },
+                        onTap: () {
+                          Get.offAndToNamed(PLAN_PAGE);
+                        },
                         image: 'assets/images/png/upgrade.png',
                         title: 'ترقية الحساب'),
                     _buildWidget(
+                        onTap: () {
+                          Get.offAndToNamed(NEWS_PAGE);
+                        },
                         image: 'assets/images/png/last_news.png',
                         title: 'آخر الأخبار'),
                   ],

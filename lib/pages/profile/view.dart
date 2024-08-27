@@ -52,7 +52,12 @@ class ProfilePage extends StatelessWidget {
                           padding: EdgeInsets.all(0.008.sw),
                           decoration: BoxDecoration(
                               color: GrayDarkColor, shape: BoxShape.circle,
-                          image: DecorationImage(image:CachedNetworkImageProvider('${mainController.authUser.value?.logo}' ,),)
+                              image: DecorationImage(
+                                image: CachedNetworkImageProvider(
+                                  '${mainController.authUser.value?.logo}',
+                                ),
+                                fit: BoxFit.cover,
+                              )
                           ),
                         ),
                       ),

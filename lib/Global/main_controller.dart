@@ -10,9 +10,11 @@ import 'package:ali_pasha_graph/models/slider_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:laravel_flutter_pusher_plus/laravel_flutter_pusher_plus.dart';
 import 'package:logger/logger.dart';
 
@@ -21,7 +23,6 @@ import '../helpers/pusher_service.dart';
 import '../models/city_model.dart';
 
 class MainController extends GetxController {
-
   RxnString token = RxnString(null);
   Rxn<UserModel> authUser = Rxn<UserModel>(null);
   NetworkManager dio_manager = NetworkManager();
@@ -35,7 +36,8 @@ class MainController extends GetxController {
   RxList<ColorModel> colors = RxList<ColorModel>([]);
   RxList<AdviceModel> advices = RxList<AdviceModel>([]);
   RxList<SliderModel> sliders = RxList<SliderModel>([]);
-  Rx<SettingModel> settings=Rx(SettingModel(weather_api: '531cff51e64e4a3aa0f130751242408'));
+  Rx<SettingModel> settings =
+      Rx(SettingModel(weather_api: '531cff51e64e4a3aa0f130751242408'));
   RxBool is_show_home_appbar = RxBool(true);
   Logger logger = Logger();
   late LaravelFlutterPusher pusher;
@@ -43,17 +45,17 @@ class MainController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    try{
-      pusher= PusherService.init(token:"$token");
-    }catch(e){}
+    try {
+      pusher = PusherService.init(token: "$token");
+    } catch (e) {}
 
     getAdvices();
 
     ever(token, (value) {
       logger.e(token.value);
-      try{
-        pusher= PusherService.init(token:"$token");
-      }catch(e){}
+      try {
+        pusher = PusherService.init(token: "$token");
+      } catch (e) {}
       if (value == null) {
         storage.remove('token');
         storage.remove('user');
@@ -100,7 +102,6 @@ class MainController extends GetxController {
     }
   }
 
-
   getUser() {
     if (storage.hasData('user')) {
       var json = storage.read('user');
@@ -109,17 +110,16 @@ class MainController extends GetxController {
   }
 
   setUserJson({required Map<String, dynamic> json}) async {
-   try{
-     if (storage.hasData('user')) {
-       await storage.remove('user');
-     }
-     await storage.write('user', json);
+    try {
+      if (storage.hasData('user')) {
+        await storage.remove('user');
+      }
+      await storage.write('user', json);
 
-     authUser.value = UserModel.fromJson(json);
-   }catch(e){
-     logger.e("Error Write Storage : $e");
-   }
-
+      authUser.value = UserModel.fromJson(json);
+    } catch (e) {
+      logger.e("Error Write Storage : $e");
+    }
   }
 
   Future<void> setToken({String? token, bool isWrite = false}) async {
@@ -245,6 +245,8 @@ class MainController extends GetxController {
         image
         id
     }
+    
+    
 }
     ''';
     try {
@@ -256,6 +258,26 @@ class MainController extends GetxController {
       }
     } catch (e) {
       logger.e("Error GetAdvices $e");
+    }
+  }
+
+  Future<XFile?> commpressImage(
+      {required XFile? file, int? width, int? height}) async {
+    if (file != null) {
+      print("COMPRESSOR");
+      // Compress and convert to WebP
+      final compressedFile = await FlutterImageCompress.compressAndGetFile(
+          file.path, file.path + '.webp',
+          format: CompressFormat.webp,
+          quality: 80,
+          minHeight: height ?? 100,
+          minWidth: width ?? 100,rotate: 0,numberOfRetries: 10);
+
+
+      if (compressedFile != null) {
+        return XFile(compressedFile.path);
+      }
+      return null;
     }
   }
 }

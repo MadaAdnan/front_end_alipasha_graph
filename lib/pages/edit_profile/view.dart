@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ali_pasha_graph/components/fields_components/input_component.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
@@ -6,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'logic.dart';
 
@@ -227,18 +230,113 @@ class EditProfilePage extends StatelessWidget {
                       ),
                     ),
                     25.verticalSpace,
-                    Container(
-                      child: InkWell(
-                        onTap: () {
-
-                        },
-                        child: Container(
-                          width: 0.3.sw,
-                          height: 0.3.sw,
-
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Column(
+                          children: [
+                            Text(
+                              "صورة الحساب",
+                              style: H4BlackTextStyle,
+                            ),
+                            Container(
+                              child: InkWell(
+                                onTap: () {
+                                  logic.pickAvatar(
+                                      imagSource: ImageSource.gallery,
+                                      onChange: (file, size) {
+                                        logic.avatar.value = file;
+                                        print(
+                                            "Size: ${size! / (1024 * 1024)} MB");
+                                      });
+                                },
+                                child: Obx(() {
+                                  return Container(
+                                    width: 0.25.sw,
+                                    height: 0.25.sw,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        image: DecorationImage(
+                                          image: logic.avatar.value == null
+                                              ? NetworkImage(
+                                              '${logic.mainController.authUser.value?.image}')
+                                                  as ImageProvider
+                                              : FileImage(
+                                                  File.fromUri(
+                                                    Uri.file(
+                                                        "${logic.avatar.value!.path}"),
+                                                  ),
+                                                ),
+                                          fit: BoxFit.cover,
+                                        )),
+                                  );
+                                }),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
+                        if (logic.user.value?.is_seller == true)
+                          Column(
+                            children: [
+                              Text(
+                                "لوغو المتجر",
+                                style: H4BlackTextStyle,
+                              ),
+                              Container(
+                                child: InkWell(
+                                  onTap: () {
+                                    logic.pickAvatar(
+                                        imagSource: ImageSource.gallery,
+                                        onChange: (file, size) {
+                                          logic.logo.value = file;
+                                          print(
+                                              "Size: ${size! / (1024 * 1024)} MB");
+                                        });
+                                  },
+                                  child: Obx(() {
+                                    return Container(
+                                      width: 0.25.sw,
+                                      height: 0.25.sw,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          image: DecorationImage(
+                                            image: logic.logo.value == null
+                                                ? NetworkImage(
+                                                        '${logic.mainController.authUser.value?.logo}')
+                                                    as ImageProvider
+                                                : FileImage(
+                                                    File.fromUri(
+                                                      Uri.file(
+                                                          "${logic.logo.value!.path}"),
+                                                    ),
+                                                  ),
+                                            fit: BoxFit.cover,
+                                          )),
+                                    );
+                                  }),
+                                ),
+                              ),
+                            ],
+                          )
+                      ],
                     ),
+                    25.verticalSpace,
+                    InkWell(
+                      onTap:() => logic.saveData(),
+                      child: Container(
+                          width: 1.sw,
+                          height: 0.04.sh,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15.r),
+                              color: RedColor),
+                          child: Center(
+                            child: Text(
+                              "حفظ التغييرات",
+                              style: H4WhiteTextStyle,
+                            ),
+                          )),
+                    ),
+                    25.verticalSpace,
                   ],
                 ),
               ),
