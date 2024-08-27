@@ -1,9 +1,12 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:get_storage/get_storage.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 
 class EditProfileLogic extends GetxController {
   MainController mainController = Get.find<MainController>();
@@ -24,7 +27,14 @@ class EditProfileLogic extends GetxController {
   Rx<TextEditingController> closeTimeController =
       Rx<TextEditingController>(TextEditingController());
   Rx<TextEditingController> infoController =
-  Rx<TextEditingController>(TextEditingController());
+      Rx<TextEditingController>(TextEditingController());
+  Rx<TextEditingController> passwordController =
+      Rx<TextEditingController>(TextEditingController());
+  Rx<TextEditingController> confirmPasswordController =
+      Rx<TextEditingController>(TextEditingController());
+
+  Rxn<XFile> avatar = Rxn<XFile>(null);
+  Rxn<XFile> logo = Rxn<XFile>(null);
 
   @override
   void onReady() {
@@ -50,11 +60,14 @@ class EditProfileLogic extends GetxController {
             TextEditingController(text: user.value!.open_time);
         closeTimeController.value =
             TextEditingController(text: user.value!.close_time);
-        infoController.value =
-            TextEditingController(text: user.value!.info);
+        infoController.value = TextEditingController(text: user.value!.info);
+        passwordController.value = TextEditingController();
+        confirmPasswordController.value = TextEditingController();
       }
     });
   }
+
+  clearData() {}
 
   getUser() async {
     loading.value = true;
@@ -89,9 +102,9 @@ class EditProfileLogic extends GetxController {
     loading.value = false;
   }
 
-  saveData()async{
+  saveData() async {
     loading.value = true;
-    mainController.query.value = ''' 
+    mainController.query.value = '''
     mutation UpdateUser {
     updateUser(
         input: {
@@ -154,5 +167,49 @@ class EditProfileLogic extends GetxController {
       mainController.logger.e("Error get Profile $e");
     }
     loading.value = false;
+  }
+
+  Future<void> pickAvatar({required ImageSource imagSource}) async {
+    avatar.value = null;
+    XFile? selected = await ImagePicker().pickImage(source: imagSource);
+    if (selected != null) {
+      avatar.value = selected;
+      cropAvatar();
+    }
+  }
+
+  Future<void> cropAvatar() async {
+    try {
+      CroppedFile? cropped = await ImageCropper().cropImage(
+        compressFormat: ImageCompressFormat.png,
+        sourcePath: avatar.value!.path,
+        maxWidth: 300,
+        maxHeight: 300,
+        compressQuality: 80,
+        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+        uiSettings: [
+          AndroidUiSettings(
+            toolbarTitle: 'قص الصورة',
+            cropStyle: CropStyle.rectangle,
+            activeControlsWidgetColor: Colors.red,
+            backgroundColor: Colors.grey.withOpacity(0.4),
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: true,
+          ),
+          IOSUiSettings(
+            minimumAspectRatio: 1.0,
+          ),
+        ],
+      );
+      if (cropped != null) {
+        avatar.value = XFile(cropped.path);
+      }
+    } catch (e) {
+      // Handle the error appropriately
+      print('Error cropping image: $e');
+      Get.snackbar('Error', 'Failed to crop image');
+    }
   }
 }

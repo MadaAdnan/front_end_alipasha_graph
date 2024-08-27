@@ -54,8 +54,63 @@ class InputComponent extends StatelessWidget {
         controller: controller,
         validator: validation,
         style: H3BlackTextStyle,
-        keyboardType: textInputType,
-        maxLines: maxLine,
+        keyboardType: textInputType == TextInputType.multiline && isSecure ? TextInputType.text : textInputType,
+        maxLines: isSecure ? 1 : maxLine, // Ensure maxLines is 1 when isSecure is true
+        decoration: InputDecoration(
+          suffixIcon: suffixIcon != null
+              ? InkWell(
+            child: Icon(suffixIcon, size: 0.05.sw),
+            onTap: suffixClick,
+          )
+              : null,
+          label: RichText(
+            text: TextSpan(children: [
+              TextSpan(text: "${hint ?? ''}", style: H3GrayTextStyle),
+              if (isRequired) TextSpan(text: "*", style: H4RedTextStyle),
+            ]),
+          ),
+          errorStyle: H4RedTextStyle,
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(radius == null ? 15.r : radius!),
+            borderSide: BorderSide(
+              color: GrayDarkColor,
+            ),
+          ),
+          contentPadding: EdgeInsets.all(20.h),
+          filled: true,
+          fillColor: fill,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(radius == null ? 15.r : radius!),
+            borderSide: BorderSide(
+              color: GrayDarkColor,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+
+
+
+
+
+
+/*
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: width,
+      height: height ?? 0.08.sh,
+      child: TextFormField(
+        obscureText: isSecure,
+        onChanged: onChanged,
+        onEditingComplete: onEditingComplete,
+        controller: controller,
+        validator: validation,
+        style: H3BlackTextStyle,
+        keyboardType: textInputType==TextInputType.multiline && isSecure ? TextInputType.text : textInputType,
+        maxLines: maxLine!=null  && isSecure ?1 : maxLine,
         decoration: InputDecoration(
           suffixIcon: suffixIcon != null
               ? InkWell(
@@ -88,5 +143,5 @@ class InputComponent extends StatelessWidget {
         ),
       ),
     );
-  }
+  }*/
 }

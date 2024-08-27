@@ -3,6 +3,7 @@ import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -13,6 +14,8 @@ class EditProfilePage extends StatelessWidget {
 
   final logic = Get.find<EditProfileLogic>();
   GlobalKey<FormState> state = GlobalKey<FormState>();
+  RxBool isScure = true.obs;
+  RxBool isScureConfirm = true.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -157,6 +160,85 @@ class EditProfilePage extends StatelessWidget {
                         fill: GrayWhiteColor,
                         textInputType: TextInputType.multiline,
                       ),
+                    25.verticalSpace,
+                    Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15.r),
+                        border: Border.all(color: GrayDarkColor),
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            'يمكنك ترك حقل كلمة المرور فارغاً إذا كنت لا تريد تغييرها',
+                            style: H5RedTextStyle,
+                          ),
+                          InputComponent(
+                              suffixIcon: isScure.value
+                                  ? FontAwesomeIcons.eyeSlash
+                                  : FontAwesomeIcons.eye,
+                              suffixClick: () {
+                                isScure.value = !isScure.value;
+                                return "";
+                              },
+                              isSecure: isScure.value,
+                              width: 1.sw,
+                              radius: 150.r,
+                              hint: 'كلمة المرور',
+                              controller: logic.passwordController.value,
+                              fill: GrayWhiteColor,
+                              textInputType: TextInputType.text,
+                              validation: (text) {
+                                if (text == '' || text == null) {
+                                  return "رقم الهاتف مطلوب";
+                                } else if (text.startsWith('+')) {
+                                  return 'يرجى عدم إدخال اي رمز غير الأرقام';
+                                } else if (text.startsWith('00')) {
+                                  return 'يرجى حذف 00  من بداية الرقم';
+                                }
+                                return null;
+                              }),
+                          InputComponent(
+                              suffixIcon: isScureConfirm.value
+                                  ? FontAwesomeIcons.eyeSlash
+                                  : FontAwesomeIcons.eye,
+                              suffixClick: () {
+                                isScureConfirm.value = !isScureConfirm.value;
+                                return "";
+                              },
+                              isSecure: isScureConfirm.value,
+                              width: 1.sw,
+                              radius: 150.r,
+                              hint: 'تأكيد كلمة المرور',
+                              controller: logic.confirmPasswordController.value,
+                              fill: GrayWhiteColor,
+                              textInputType: TextInputType.text,
+                              validation: (text) {
+                                if (text == '' || text == null) {
+                                  return "رقم الهاتف مطلوب";
+                                } else if (text.startsWith('+')) {
+                                  return 'يرجى عدم إدخال اي رمز غير الأرقام';
+                                } else if (text.startsWith('00')) {
+                                  return 'يرجى حذف 00  من بداية الرقم';
+                                }
+                                return null;
+                              }),
+                        ],
+                      ),
+                    ),
+                    25.verticalSpace,
+                    Container(
+                      child: InkWell(
+                        onTap: () {
+
+                        },
+                        child: Container(
+                          width: 0.3.sw,
+                          height: 0.3.sw,
+
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
