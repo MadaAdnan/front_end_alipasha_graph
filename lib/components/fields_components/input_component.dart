@@ -23,6 +23,8 @@ class InputComponent extends StatelessWidget {
     this.isSecure=false,
     this.radius,
     this.maxLine,
+    this.minLine
+
   });
 
   final TextEditingController? controller;
@@ -35,6 +37,7 @@ class InputComponent extends StatelessWidget {
   final Color? fill;
   final double? radius;
   final int? maxLine;
+  final int? minLine;
 
   final String? Function(String?)? validation;
   final String? Function()? onEditingComplete;
@@ -48,6 +51,7 @@ class InputComponent extends StatelessWidget {
       width: width,
       height: height ?? 0.08.sh,
       child: TextFormField(
+        minLines: minLine,
         obscureText: isSecure,
         onChanged: onChanged,
         onEditingComplete: onEditingComplete,

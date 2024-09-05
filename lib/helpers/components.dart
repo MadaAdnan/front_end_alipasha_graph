@@ -3,6 +3,7 @@ import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -65,7 +66,60 @@ messageBox({String? title, String? message, bool isError = false}) {
         style: H3WhiteTextStyle,
       ),
       icon: Icon(
-       isError? FontAwesomeIcons.ban:FontAwesomeIcons.checkCircle,
+        isError ? FontAwesomeIcons.ban : FontAwesomeIcons.checkCircle,
         color: WhiteColor,
       ));
+}
+
+void showAutoCloseDialog(
+    {String title = "نجاح العملية",
+    required String message,
+    bool isSuccess = true}) {
+  Get.dialog(
+    AlertDialog(
+      title: Container(
+        alignment: Alignment.center,
+        child: Text(
+          '$title',
+          style: H3OrangeTextStyle,
+        ),
+      ),
+      content:Container(
+        width: 0.7.sw,
+        height: 0.2.sh,
+        child:  Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+           isSuccess? Icon(
+              FontAwesomeIcons.circleCheck,
+              size: 0.3.sw,
+              color: Colors.green,
+            ): Icon(
+             FontAwesomeIcons.circleXmark,
+             size: 0.3.sw,
+             color: Colors.red,
+           ),
+            30.verticalSpace,
+            Text('$message',style: H3GrayTextStyle,),
+          ],
+        ),
+      ),
+      /* actions: [
+        TextButton(
+          onPressed: () {
+            Get.back(); // إغلاق النافذة يدويًا
+          },
+          child: Text('إغلاق'),
+        ),
+      ],*/
+    ),
+  );
+
+  // إغلاق النافذة تلقائيًا بعد 3 ثواني
+  Future.delayed(Duration(seconds: 3), () {
+    if (Get.isDialogOpen ?? false) {
+      Get.back();
+    }
+  });
 }

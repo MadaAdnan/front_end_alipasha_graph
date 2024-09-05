@@ -1,6 +1,7 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
+import 'package:ali_pasha_graph/pages/profile/tabs/advice_tab.dart';
 import 'package:ali_pasha_graph/pages/profile/tabs/tab_chart.dart';
 import 'package:ali_pasha_graph/pages/profile/tabs/tab_product.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
@@ -18,14 +19,14 @@ class ProfilePage extends StatelessWidget {
   final ProfileLogic logic = Get.find<ProfileLogic>();
   List<Widget> pages = [
     TabProduct(),
-    TabChart(),
+    AdviceTab(),
     TabChart(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: GrayLightColor,
+      backgroundColor: WhiteColor,
       appBar: PreferredSize(
         preferredSize: Size(1.sw, 0.35.sh),
         child: Container(

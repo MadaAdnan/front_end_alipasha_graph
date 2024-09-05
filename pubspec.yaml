@@ -46,6 +46,9 @@ dependencies:
   cached_network_image: ^3.4.0
   flutter_image_compress: ^2.3.0
   flutter_widget_from_html_core: ^0.15.2
+  flutter_form_builder: ^9.3.0
+  form_builder_validators: ^11.0.0
+  youtube_player_flutter: ^9.0.3
       #path: packages/my_package
 
 

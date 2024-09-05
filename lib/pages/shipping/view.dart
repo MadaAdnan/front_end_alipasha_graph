@@ -1,8 +1,11 @@
 import 'package:ali_pasha_graph/components/fields_components/input_component.dart';
 import 'package:ali_pasha_graph/components/fields_components/select2_component.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
+import 'package:ali_pasha_graph/helpers/components.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cherry_toast/cherry_toast.dart';
+import 'package:flutter/gestures.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -37,7 +40,7 @@ class ShippingPage extends StatelessWidget {
                   SizedBox(
                     width: 0.55.sw,
                     child: Text(
-                      'مجموعة شيبان التجارية',
+                      '${logic.mainController.authUser.value?.seller_name ?? logic.mainController.authUser.value?.name}',
                       style: H2GrayTextStyle,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -72,24 +75,13 @@ class ShippingPage extends StatelessWidget {
                     width: 0.22.sw,
                     height: 0.22.sw,
                     decoration: BoxDecoration(
-                        color: WhiteColor,
-                        borderRadius: BorderRadius.circular(150.r),
-                        border:
-                            Border.all(color: GrayLightColor, width: 0.01.sw)),
-                    padding: EdgeInsets.all(0.01.sw),
-                    child: CircleAvatar(
-                      backgroundColor: WhiteColor,
-                      minRadius: 90.r,
-                      maxRadius: 100.r,
-                      child: Container(
-                        padding: EdgeInsets.all(0.01.sw),
-                        decoration: BoxDecoration(
-                          color: GrayLightColor,
-                          borderRadius: BorderRadius.circular(150.r),
-                        ),
-                        child: Image(
-                          image: AssetImage('assets/images/png/user.png'),
-                        ),
+                      color: WhiteColor,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: GrayLightColor, width: 0.01.sw),
+                      image: DecorationImage(
+                        image: CachedNetworkImageProvider(
+                            '${logic.mainController.authUser.value?.logo}'),
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
@@ -107,7 +99,8 @@ class ShippingPage extends StatelessWidget {
                               TextSpan(
                                   text: 'العنوان : ', style: H4GrayTextStyle),
                               TextSpan(
-                                text: 'العنوان : ',
+                                text:
+                                    '${logic.mainController.authUser.value?.address}',
                                 style: H4GrayTextStyle,
                               ),
                             ],
@@ -122,7 +115,18 @@ class ShippingPage extends StatelessWidget {
                                   text: 'رقم الهاتف : ',
                                   style: H4GrayTextStyle),
                               TextSpan(
-                                  text: 'رقم الهاتف : ',
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      if (logic.mainController.authUser.value
+                                              ?.phone !=
+                                          null) {
+                                        openUrl(
+                                            url:
+                                                "https://wa.me/${logic.mainController.authUser.value?.phone}");
+                                      }
+                                    },
+                                  text:
+                                      '${logic.mainController.authUser.value?.phone}',
                                   style: H4GrayTextStyle),
                             ],
                           ),

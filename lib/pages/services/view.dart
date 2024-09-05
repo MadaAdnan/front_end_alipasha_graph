@@ -340,7 +340,9 @@ class ServicesPage extends StatelessWidget {
                   ),
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Get.toNamed(SELLERS_PAGE);
+                  },
                   child: Container(
                     alignment: Alignment.center,
                     padding: EdgeInsets.symmetric(

@@ -161,11 +161,12 @@ class ProductModel {
       turkey_price: data['turkey_price'] != null
           ? TurkeyPrice.fromJson(data['turkey_price'])
           : null,
+      video:  "${data['video'] ?? ''}"
     );
   }
 
   toJson() {
-    return {'images': images};
+    return {'video': video,"expert":expert};
   }
 }
 

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
+
 import 'package:ali_pasha_graph/models/advice_model.dart';
 import 'package:ali_pasha_graph/models/category_model.dart';
 import 'package:ali_pasha_graph/models/community_model.dart';
@@ -10,14 +10,19 @@ import 'package:ali_pasha_graph/models/slider_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+
+
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:laravel_flutter_pusher_plus/laravel_flutter_pusher_plus.dart';
 import 'package:logger/logger.dart';
 
+import '../exceptions/custom_exception.dart';
 import '../helpers/dio_network_manager.dart';
 import '../helpers/pusher_service.dart';
 import '../models/city_model.dart';
@@ -159,37 +164,6 @@ class MainController extends GetxController {
 
   loginByGoogle() {}
 
-  handelExceptopn(e) {
-    if (e is Exception && e.toString().contains('Exception: {')) {
-      var errorData = e.toString();
-
-      // استخراج المعلومات من النص
-      RegExp exp = RegExp(r'CustomException: \{(.*)\}');
-      var matches = exp.firstMatch(errorData);
-      var errorMap = matches != null ? matches.group(1) : null;
-
-      // تحويل النص المستخرج إلى Map
-      if (errorMap != null) {
-        Map<String, dynamic> errorDetails = {};
-        errorMap.split(', ').forEach((pair) {
-          var keyVal = pair.split(': ');
-          if (keyVal.length == 2) {
-            var key = keyVal[0];
-            var val = keyVal[1];
-            errorDetails[key] = val;
-          }
-          logger.i(pair);
-        });
-
-        // استخدام المعلومات المستخرجة
-        print("Error: ${errorDetails['message']}");
-        print("Details: ${errorDetails['errors']}");
-      }
-    } else {
-      // إذا كان الاستثناء ليس من النوع المتوقع، يمكن طباعة أو التعامل مع e مباشرةً
-      print("Unexpected error: $e");
-    }
-  }
 
   createCommunity({required int sellerId}) async {
     if (authUser.value == null) return;
@@ -278,6 +252,54 @@ class MainController extends GetxController {
         return XFile(compressedFile.path);
       }
       return null;
+    }
+  }
+
+  Future<void> pickImage(
+      {required ImageSource imagSource,
+        required Function(XFile? file, int? fileSize) onChange}) async {
+    XFile? selected = await ImagePicker().pickImage(source: imagSource);
+    if (selected != null) {
+      XFile? response = await cropImage(selected);
+      if (response != null) {
+        File compressedFile = File(response.path);
+        int fileSize = await compressedFile.length();
+        onChange(response, fileSize);
+      }
+    }
+  }
+
+  Future<XFile?> cropImage(XFile file) async {
+    try {
+      CroppedFile? cropped = await ImageCropper().cropImage(
+        compressFormat: ImageCompressFormat.png,
+        sourcePath: file.path,
+        maxWidth: 300,
+        maxHeight: 300,
+        compressQuality: 80,
+        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+        uiSettings: [
+          AndroidUiSettings(
+            toolbarTitle: 'قص الصورة',
+            cropStyle: CropStyle.rectangle,
+            activeControlsWidgetColor: Colors.red,
+            backgroundColor: Colors.grey.withOpacity(0.4),
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: true,
+          ),
+          IOSUiSettings(
+            minimumAspectRatio: 1.0,
+          ),
+        ],
+      );
+      if (cropped != null) {
+        return await commpressImage(file: XFile(cropped.path));
+      }
+      return null;
+    } catch (e) {
+      return file;
     }
   }
 }

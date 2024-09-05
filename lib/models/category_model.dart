@@ -1,3 +1,5 @@
+import 'attribute_model.dart';
+
 class CategoryModel {
   int? id;
   String? name;
@@ -8,6 +10,7 @@ class CategoryModel {
   List<CategoryModel>? children;
   bool? hasColor;
   int? products2Count;
+  List<AttributeModel>? attributes;
 
   CategoryModel({
     this.name,
@@ -19,6 +22,7 @@ class CategoryModel {
     this.type,
     this.hasColor,
     this.products2Count,
+    this.attributes,
   });
 
   @override
@@ -28,8 +32,15 @@ class CategoryModel {
   }
 
   factory CategoryModel.fromJson(Map<String, dynamic> data) {
+    List<AttributeModel> listAttribute = [];
     List<CategoryModel> listParent = [];
     List<CategoryModel> listChildren = [];
+
+    if (data['attributes'] != null) {
+      for (var item in data['attributes']) {
+        listAttribute.add(AttributeModel.fromJson(item));
+      }
+    }
     if (data['parents'] != null) {
       for (var item in data['parents']) {
         listParent.add(CategoryModel.fromJson(item));
@@ -42,15 +53,17 @@ class CategoryModel {
       }
     }
     return CategoryModel(
-        name: "${data['name']}",
-        img: "${data['image']}",
-        hasColor: bool.tryParse("${data['has_color']}") ?? false,
-        color: "${data['color']}",
-        type: "${data['type']}",
-        id: int.tryParse("${data['id']}"),
-        products2Count: int.tryParse("${data['products2_count']}"),
-        children: listChildren.toList(),
-        parent: listParent.toList());
+      name: "${data['name']}",
+      img: "${data['image']}",
+      hasColor: bool.tryParse("${data['has_color']}") ?? false,
+      color: "${data['color']}",
+      type: "${data['type']}",
+      id: int.tryParse("${data['id']}"),
+      products2Count: int.tryParse("${data['products2_count']}"),
+      children: listChildren.toList(),
+      parent: listParent.toList(),
+      attributes: listAttribute,
+    );
   }
 
   toJson() {
@@ -62,6 +75,7 @@ class CategoryModel {
       'color': color,
       "children": children != null ? children!.map((el) => el.toJson()) : [],
       "parent": children != null ? parent!.map((el) => el.toJson()) : [],
+      "attributes":attributes!=null? attributes!.map((el) => el.toJson()) : []
     };
   }
 }

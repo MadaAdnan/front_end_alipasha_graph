@@ -1,8 +1,11 @@
+import 'package:ali_pasha_graph/middlewares/complete_profile_middleware.dart';
 import 'package:ali_pasha_graph/middlewares/guest_middleware.dart';
 import 'package:ali_pasha_graph/middlewares/is_logged_in.dart';
 import 'package:ali_pasha_graph/middlewares/verify_email_middleware.dart';
 import 'package:ali_pasha_graph/pages/about/binding.dart';
 import 'package:ali_pasha_graph/pages/about/view.dart';
+import 'package:ali_pasha_graph/pages/asks/binding.dart';
+import 'package:ali_pasha_graph/pages/asks/view.dart';
 
 import 'package:ali_pasha_graph/pages/balance/binding.dart';
 import 'package:ali_pasha_graph/pages/balance/view.dart';
@@ -10,11 +13,12 @@ import 'package:ali_pasha_graph/pages/chat/binding.dart';
 import 'package:ali_pasha_graph/pages/chat/view.dart';
 import 'package:ali_pasha_graph/pages/communities/binding.dart';
 import 'package:ali_pasha_graph/pages/communities/view.dart';
+import 'package:ali_pasha_graph/pages/contact/binding.dart';
+import 'package:ali_pasha_graph/pages/contact/view.dart';
 import 'package:ali_pasha_graph/pages/create_product/binding.dart';
 import 'package:ali_pasha_graph/pages/create_product/view.dart';
 import 'package:ali_pasha_graph/pages/edit_profile/binding.dart';
 import 'package:ali_pasha_graph/pages/edit_profile/view.dart';
-
 
 import 'package:ali_pasha_graph/pages/filter/binding.dart';
 import 'package:ali_pasha_graph/pages/filter/view.dart';
@@ -31,6 +35,8 @@ import 'package:ali_pasha_graph/pages/login/view.dart';
 
 import 'package:ali_pasha_graph/pages/menu/binding.dart';
 import 'package:ali_pasha_graph/pages/menu/view.dart';
+import 'package:ali_pasha_graph/pages/partner/binding.dart';
+import 'package:ali_pasha_graph/pages/partner/view.dart';
 import 'package:ali_pasha_graph/pages/plan/binding.dart';
 import 'package:ali_pasha_graph/pages/plan/view.dart';
 import 'package:ali_pasha_graph/pages/prayer/binding.dart';
@@ -47,6 +53,8 @@ import 'package:ali_pasha_graph/pages/search/binding.dart';
 import 'package:ali_pasha_graph/pages/search/view.dart';
 import 'package:ali_pasha_graph/pages/sections/binding.dart';
 import 'package:ali_pasha_graph/pages/sections/view.dart';
+import 'package:ali_pasha_graph/pages/sellers/binding.dart';
+import 'package:ali_pasha_graph/pages/sellers/view.dart';
 import 'package:ali_pasha_graph/pages/service/view.dart';
 import 'package:ali_pasha_graph/pages/service_details/binding.dart';
 import 'package:ali_pasha_graph/pages/service_details/view.dart';
@@ -64,6 +72,8 @@ import 'package:ali_pasha_graph/routes/routes_url.dart';
 
 import 'package:get/get.dart';
 
+import '../pages/ask/binding.dart';
+import '../pages/ask/view.dart';
 import '../pages/news/binding.dart';
 import '../pages/news/view.dart';
 import '../pages/products/binding.dart';
@@ -74,48 +84,62 @@ import '../pages/service/binding.dart';
 
 class AppPages {
   static List<GetPage> pages = [
-    GetPage(name: HOME_PAGE, page: () => HomePage(), binding: HomeBinding()),
     GetPage(
-        middlewares: [IsLoggedIn(), VerifyEmailMiddleware()],
+      name: HOME_PAGE,
+      page: () => HomePage(),
+      binding: HomeBinding(),
+      middlewares: [],
+    ),
+    GetPage(
+        middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
         name: CREATE_PRODUCT_PAGE,
         page: () => CreateProductPage(),
         binding: CreateProductBinding()),
     GetPage(name: MENU_PAGE, page: () => MenuPage(), binding: MenuBinding()),
     GetPage(
-        middlewares: [IsLoggedIn(), VerifyEmailMiddleware()],
+        middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
         name: PROFILE_PAGE,
         page: () => ProfilePage(),
         binding: ProfileBinding()),
     GetPage(
-        middlewares: [IsLoggedIn(), VerifyEmailMiddleware()],
+        middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
         name: BALANCES_PAGE,
         page: () => BalancePage(),
         binding: BalanceBinding()),
     GetPage(
-        middlewares: [IsLoggedIn(), VerifyEmailMiddleware()],
-        name: SHIPPING_PAGE,
-        page: () => ShippingPage(),
-        binding: ShippingBinding(),),
+      middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+      name: SHIPPING_PAGE,
+      page: () => ShippingPage(),
+      binding: ShippingBinding(),
+    ),
     GetPage(
-        middlewares: [GuestMiddleware()],
-        name: LOGIN_PAGE,
-        page: () => LoginPage(),
-        binding: LoginBinding(),),
+      middlewares: [GuestMiddleware()],
+      name: LOGIN_PAGE,
+      page: () => LoginPage(),
+      binding: LoginBinding(),
+    ),
     GetPage(
-        middlewares: [GuestMiddleware()],
-        name: REGISTER_PAGE,
-        page: () => RegisterPage(),
-        binding: RegisterBinding(),),
+      middlewares: [GuestMiddleware()],
+      name: REGISTER_PAGE,
+      page: () => RegisterPage(),
+      binding: RegisterBinding(),
+    ),
     GetPage(
-        name: VERIFY_EMAIL_PAGE,
-        page: () => VerifyEmailPage(),
-        binding: VerifyEmailBinding(),),
+      name: VERIFY_EMAIL_PAGE,
+      page: () => VerifyEmailPage(),
+      binding: VerifyEmailBinding(),
+    ),
     GetPage(
-        middlewares: [IsLoggedIn(), VerifyEmailMiddleware()],
-        name: FOLLOWERS_PAGE,
-        page: () => FollowersPage(),
-        binding: FollowersBinding(),),
-    GetPage(name: JOBS_PAGE, page: () => JobsPage(), binding: JobsBinding(),),
+      middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+      name: FOLLOWERS_PAGE,
+      page: () => FollowersPage(),
+      binding: FollowersBinding(),
+    ),
+    GetPage(
+      name: JOBS_PAGE,
+      page: () => JobsPage(),
+      binding: JobsBinding(),
+    ),
     GetPage(
         name: TENDERS_PAGE,
         page: () => TendersPage(),
@@ -151,19 +175,19 @@ class AppPages {
       binding: SearchBinding(),
     ),
     GetPage(
-      middlewares: [IsLoggedIn(), VerifyEmailMiddleware()],
+      middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
       name: COMMUNITIES_PAGE,
       page: () => CommunitiesPage(),
       binding: CommunitiesBinding(),
     ),
     GetPage(
-      middlewares: [IsLoggedIn(), VerifyEmailMiddleware()],
+      middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
       name: CHAT_PAGE,
       page: () => ChatPage(),
       binding: ChatBinding(),
     ),
     GetPage(
-      middlewares: [IsLoggedIn(), VerifyEmailMiddleware()],
+      middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
       name: PLAN_PAGE,
       page: () => PlanPage(),
       binding: PlanBinding(),
@@ -174,61 +198,71 @@ class AppPages {
       page: () => EditProfilePage(),
       binding: EditProfileBinding(),
     ),
-
-
-
     GetPage(
       name: GOLD_PAGE,
       page: () => GoldPage(),
       binding: GoldBinding(),
     ),
-
-
     GetPage(
       name: NEWS_PAGE,
       page: () => NewsPage(),
       binding: NewsBinding(),
     ),
-
     GetPage(
       name: PRIVACY_PAGE,
       page: () => PrivacyPage(),
       binding: PrivacyBinding(),
     ),
-
     GetPage(
       name: ABOUT_PAGE,
       page: () => AboutPage(),
       binding: AboutBinding(),
     ),
-
-
-
-
+    GetPage(
+      name: ASKS_PAGE,
+      page: () => AsksPage(),
+      binding: AsksBinding(),
+    ),
+    GetPage(
+      name: ASK_PAGE,
+      page: () => AskPage(),
+      binding: AskBinding(),
+    ),
+    GetPage(
+      name: CONTACT_US_PAGE,
+      page: () => ContactPage(),
+      binding: ContactBinding(),
+    ),
+    GetPage(
+      name: PARTNER_PAGE,
+      page: () => PartnerPage(),
+      binding: PartnerBinding(),
+    ),
+    GetPage(
+      name: SELLERS_PAGE,
+      page: () => SellersPage(),
+      binding: SellersBinding(),
+    ),
     GetPage(
       name: PRAYER_PAGE,
       page: () => PrayerPage(),
       binding: PrayerBinding(),
     ),
-
     GetPage(
       name: SERVICES_PAGE,
       page: () => ServicesPage(),
       binding: ServicesBinding(),
     ),
-
     GetPage(
       name: WEATHER_PAGE,
       page: () => WeatherPage(),
       binding: WeatherBinding(),
     ),
-
     GetPage(
       name: SERVICE_PAGE,
       page: () => ServicePage(),
       binding: ServiceBinding(),
     ),
-
     GetPage(
       name: SERVICE_DETAILS,
       page: () => ServiceDetailsPage(),

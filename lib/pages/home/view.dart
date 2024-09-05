@@ -145,13 +145,13 @@ class HomePage extends StatelessWidget {
                           );
                       }
                     }
-                    if (logic.mainController.loading.value) {
+                    if (logic.loading.value) {
                       return Center(child: CircularProgressIndicator());
                     }
                     return null;
                   },
                   childCount: logic.products.length +
-                      (logic.mainController.loading.value ? 1 : 0),
+                      (logic.loading.value ? 1 : 0),
                 ),
               ),
               if (!logic.hasMorePage.value)

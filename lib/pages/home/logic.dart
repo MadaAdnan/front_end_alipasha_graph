@@ -1,4 +1,6 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
+import 'package:ali_pasha_graph/helpers/components.dart';
+import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:ali_pasha_graph/main.dart';
 import 'package:ali_pasha_graph/models/category_model.dart';
 import 'package:ali_pasha_graph/models/city_model.dart';
@@ -15,6 +17,7 @@ class HomeLogic extends GetxController {
   MainController mainController = Get.find<MainController>();
   RxList<ProductModel> products = RxList([]);
   RxBool hasMorePage = RxBool(false);
+  RxBool loading = RxBool(false);
   RxList<UserModel> sellers = RxList<UserModel>([]);
 
   int page = 1;
@@ -24,6 +27,14 @@ class HomeLogic extends GetxController {
     super.onInit();
     page = 1;
     getProduct();
+
+  }
+
+  @override
+  void onReady() {
+    // TODO: implement onReady
+    super.onReady();
+   
   }
 
   nextPage() {
@@ -32,6 +43,7 @@ class HomeLogic extends GetxController {
   }
 
   getProduct() async {
+    loading.value = true;
     if (page == 1) {
       products.clear();
     }
@@ -52,6 +64,7 @@ class HomeLogic extends GetxController {
             type
             level
             image
+            video
             created_at
             user {
             id
@@ -173,5 +186,8 @@ class HomeLogic extends GetxController {
         }
       }*/
     }
+    loading.value = false;
   }
+
+
 }

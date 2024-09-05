@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
         designSize: Size(1080, 2225),
         builder: (_, child) => GetMaterialApp(
           defaultTransition: Transition.rightToLeftWithFade,
-          transitionDuration: Duration(milliseconds: 900),
+          transitionDuration: Duration(milliseconds: 200),
           initialBinding: MainBinding(),
           title: 'علي باشا',
           locale: Locale('ar'),

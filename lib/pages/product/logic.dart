@@ -142,7 +142,7 @@ class ProductLogic extends GetxController {
 
       loading.value = false;
       if (res?.data?['data']?['product']['product'] != null) {
-        // mainController.logger.e(res?.data?['data']?['product']);
+         mainController.logger.e(res?.data?['data']?['product']);
         product.value =
             ProductModel.fromJson(res?.data?['data']?['product']['product']);
       }

@@ -1,4 +1,5 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
+import 'package:ali_pasha_graph/components/youtube_player/view.dart';
 import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
 import 'package:ali_pasha_graph/helpers/components.dart';
 import 'package:ali_pasha_graph/helpers/enums.dart';
@@ -28,6 +29,7 @@ class PostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    mainController.logger.i(post!.toJson());
     return Container(
       key: key,
 
@@ -191,7 +193,7 @@ class PostCard extends StatelessWidget {
             onTap: () {
               Get.toNamed(PRODUCT_PAGE, arguments: post!.id);
             },
-            child: Container(
+            child: /*Container(
               width: 1.sw,
               height: 1.sw,
               decoration: BoxDecoration(
@@ -259,10 +261,10 @@ class PostCard extends StatelessWidget {
                             ]),
                           ),
 
-                          /*  Text(
+                          *//*  Text(
                                       ,
                                       style: H3WhiteTextStyle,
-                                    ),*/
+                                    ),*//*
                         ),
                       ),
                     ),
@@ -297,10 +299,10 @@ class PostCard extends StatelessWidget {
                               ]),
                             ),
 
-                            /*  Text(
+                            *//*  Text(
                               ,
                               style: H3WhiteTextStyle,
-                            ),*/
+                            ),*//*
                           ),
                           40.horizontalSpace,
                           Container(
@@ -319,6 +321,59 @@ class PostCard extends StatelessWidget {
                       ),
                     ),
                   )
+                ],
+              ),
+            )*/Container(
+              width: 1.sw,
+              height: 1.sw,
+              decoration: BoxDecoration(
+                color: GrayDarkColor,
+                image: post!.video!.length==0
+                    ? DecorationImage(
+                  image: NetworkImage("${post?.image}"),
+                  fit: BoxFit.cover,
+                )
+                    : null,
+              ),
+              child: Stack(
+                children: [
+                  Text(post!.video!.length.toString()),
+                  if (post!.video!.length > 0)
+                    Visibility(
+                      visible: post!.video!.length > 0,
+                      child: Center(
+                        child: YoutubePlayerComponent(vedioUrl: post!.video!,),
+                      ),
+                    ),
+                  if (post?.level == 'special')
+                    Positioned(
+                      top: 20.h,
+                      left: 10.w,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: OrangeColor,
+                          borderRadius: BorderRadius.circular(15.r),
+                        ),
+                        height: 70.h,
+                        width: 150.w,
+                        padding: EdgeInsets.symmetric(horizontal: 5.w),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                              'مميز',
+                              style: H4WhiteTextStyle,
+                            ),
+                            10.horizontalSpace,
+                            Icon(
+                              FontAwesomeIcons.solidStar,
+                              color: GoldColor,
+                              size: 50.h,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),

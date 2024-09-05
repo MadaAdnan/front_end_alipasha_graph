@@ -10,11 +10,8 @@ class VerifyEmailMiddleware extends GetMiddleware {
 
   RouteSettings? redirect(String? route) {
     bool hasUser = box.hasData('user') && box.read('user') != null;
-  //  Get.find<MainController>().logger.e("Middlewaare");
-    //Get.find<MainController>().logger.e(hasUser);
     if (hasUser) {
       UserModel user = UserModel.fromJson(box.read('user'));
-     // Get.find<MainController>().logger.e(user.email_verified_at);
       if(user.email_verified_at==null || user.email_verified_at==''){
         return RouteSettings(name: VERIFY_EMAIL_PAGE);
       }

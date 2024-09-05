@@ -7,6 +7,8 @@ const AUTH_USER='''
             email
             level
             address
+            phone
+            is_seller
             image
             logo
             total_balance
@@ -39,11 +41,13 @@ const AUTH_FIELDS='''
             email
             level
             address
+            phone
             image
             logo
             following_count
             total_balance
             total_point
+            is_seller
             plans{
             id
             pivot{

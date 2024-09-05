@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:ali_pasha_graph/components/fields_components/input_component.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/components.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
@@ -29,6 +32,7 @@ class MenuPage extends StatelessWidget {
         return Future.value(true);
       },
       child: Scaffold(
+        backgroundColor: WhiteColor,
         appBar: PreferredSize(
           preferredSize: Size(1.sw, 0.4.sh),
           child: Container(
@@ -105,55 +109,252 @@ class MenuPage extends StatelessWidget {
             ),
           ),
         ),
-        backgroundColor: GrayDarkColor,
         body: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.max,
             children: [
               Divider(
                 color: GrayDarkColor,
                 height: 0.0001.sw,
               ),
-              Container(
-                width: 1.sw,
-                height: 0.3.sw,
-                color: RedColor,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Obx(() {
-                      return RichText(
-                        text: TextSpan(children: [
-                          TextSpan(
-                            text: 'رصيدك الحالي : ',
-                            style: H3WhiteTextStyle,
+              if (isAuth())
+                Container(
+                  width: 1.sw,
+                  height: 0.3.sw,
+                  color: RedColor,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Obx(() {
+                        return RichText(
+                          text: TextSpan(children: [
+                            TextSpan(
+                              text: 'رصيدك الحالي : ',
+                              style: H3WhiteTextStyle,
+                            ),
+                            TextSpan(
+                              text:
+                                  '${logic.mainController.authUser.value?.totalBalance ?? 0} \$',
+                              style: H3WhiteTextStyle,
+                            ),
+                          ]),
+                        );
+                      }),
+                      30.verticalSpace,
+                      InkWell(
+                        onTap: () {
+                          /*  Get.defaultDialog(
+                              titlePadding: EdgeInsets.symmetric(
+                                  horizontal: 0.03.sw, vertical: 0.03.sh),
+                              title: "شحن رصيد الإعلانات",
+                              titleStyle: H3OrangeTextStyle,
+                              backgroundColor: WhiteColor,
+                              content: Container(
+                                child: Column(
+                                  children: [
+                                    InputComponent(
+                                      controller: logic.codeController,
+                                      hint: 'الكود',
+                                      width: 0.7.sw,
+                                      fill: WhiteColor,
+                                    ),
+                                    10.verticalSpace,
+                                    InputComponent(
+                                      hint: 'كلمة المرور',
+                                      controller: logic.passController,
+                                      width: 0.7.sw,
+                                      fill: WhiteColor,
+                                    ),
+                                    10.verticalSpace,
+                                    Obx(() {
+                                      if(logic.loadingBay.value){
+                                        return Center(child: CircularProgressIndicator(),);
+                                      }
+                                      return InkWell(
+                                        onTap: () async {
+
+                                          bool res = await logic.charge();
+                                          Get.back();
+                                          if (res) {
+
+                                           logic.codeController.clear();
+                                           logic.passController.clear();
+                                          }
+                                        },
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          width: 0.7.sw,
+                                          padding: EdgeInsets.symmetric(
+                                            vertical: 0.01.sh,
+                                            horizontal: 0.02.sw,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: RedColor,
+                                            borderRadius:
+                                            BorderRadius.circular(15.r),
+                                          ),
+                                          child: Text(
+                                            'أرسل للشحن',
+                                            style: H3WhiteTextStyle,
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                                    30.verticalSpace,
+                                    InkWell(
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        width: 0.7.sw,
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: 0.01.sh,
+                                          horizontal: 0.02.sw,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: GrayDarkColor,
+                                          borderRadius:
+                                          BorderRadius.circular(15.r),
+                                        ),
+                                        child: Text(
+                                          'لا املك كوبون',
+                                          style: H3WhiteTextStyle,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ));*/
+                          Get.dialog(
+                            AlertDialog(
+                              title: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text("شحن رصيد الإعلانات",
+                                      style: H3OrangeTextStyle),
+                                  IconButton(
+                                      onPressed: () {
+                                        logic.message.value = null;
+                                        logic.passController.clear();
+                                        logic.codeController.clear();
+                                        Get.back();
+                                      },
+                                      icon: Icon(Icons.close))
+                                ],
+                              ),
+                              backgroundColor: WhiteColor,
+                              content: Container(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    InputComponent(
+                                      controller: logic.codeController,
+                                      hint: 'الكود',
+                                      width: 0.7.sw,
+                                      fill: WhiteColor,
+                                    ),
+                                    10.verticalSpace,
+                                    InputComponent(
+                                      hint: 'كلمة المرور',
+                                      controller: logic.passController,
+                                      width: 0.7.sw,
+                                      fill: WhiteColor,
+                                    ),
+                                    10.verticalSpace,
+                                    Obx(() => Visibility(
+                                          child: Text(
+                                            '${logic.message.value}',
+                                            style: H4RedTextStyle,
+                                          ),
+                                          visible: logic.message.value != null,
+                                        )),
+                                    20.verticalSpace,
+                                    Obx(() {
+                                      print(logic.message.value);
+                                      if (logic.loadingBay.value) {
+                                        return Center(
+                                            child: CircularProgressIndicator());
+                                      }
+                                      return InkWell(
+                                        onTap: () async {
+                                          String? res = await logic.charge();
+                                          if (res != null) {
+                                            Future.delayed(Duration(seconds: 1),
+                                                () {
+                                              messageBox(
+                                                  title: 'فشلت العملية',
+                                                  message: '$res');
+                                            });
+                                          } else {
+                                            logic.codeController.clear();
+                                            logic.passController.clear();
+                                          }
+                                        },
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          width: 0.7.sw,
+                                          padding: EdgeInsets.symmetric(
+                                            vertical: 0.01.sh,
+                                            horizontal: 0.02.sw,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: RedColor,
+                                            borderRadius:
+                                                BorderRadius.circular(15.r),
+                                          ),
+                                          child: Text(
+                                            'أرسل للشحن',
+                                            style: H3WhiteTextStyle,
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                                    30.verticalSpace,
+                                    InkWell(
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        width: 0.7.sw,
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: 0.01.sh,
+                                          horizontal: 0.02.sw,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: GrayDarkColor,
+                                          borderRadius:
+                                              BorderRadius.circular(15.r),
+                                        ),
+                                        child: Text(
+                                          'لا املك كوبون',
+                                          style: H3WhiteTextStyle,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: 0.5.sw,
+                          height: 0.06.sh,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(0.02.sw),
+                              color: WhiteColor),
+                          child: Text(
+                            'شحن رصيد الإعلانات',
+                            style: H3RedTextStyle,
                           ),
-                          TextSpan(
-                            text:
-                                '${logic.mainController.authUser.value?.totalBalance ?? 0} \$',
-                            style: H3WhiteTextStyle,
-                          ),
-                        ]),
-                      );
-                    }),
-                    30.verticalSpace,
-                    Container(
-                      alignment: Alignment.center,
-                      width: 0.5.sw,
-                      height: 0.06.sh,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(0.02.sw),
-                          color: WhiteColor),
-                      child: Text(
-                        'شحن رصيد الإعلانات',
-                        style: H3RedTextStyle,
-                      ),
-                    ),
-                  ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
+              10.verticalSpace,
               Padding(
                 padding: EdgeInsets.symmetric(
                     horizontal: 0.01.sw, vertical: 0.002.sh),
@@ -190,6 +391,9 @@ class MenuPage extends StatelessWidget {
                         title: 'إضافة منتج'),
                     _buildWidget(
                         image: 'assets/images/png/dependancy.png',
+                        onTap: () {
+                          Get.offAndToNamed(PARTNER_PAGE);
+                        },
                         title: 'المراكز المعتمدة'),
                   ],
                 ),
@@ -239,7 +443,7 @@ class MenuPage extends StatelessWidget {
                 return _dropDownButton(
                   selectedValue: logic.selectedValue1.value,
                   title: 'المساعدة والدعم',
-                  img: 'assets/images/png/asks.png',
+                  img: 'assets/images/png/quastion.png',
                   items: [
                     DropdownMenuItem<String>(
                       value: 'asks',
@@ -289,7 +493,6 @@ class MenuPage extends StatelessWidget {
                       value: 'privacy',
                       onTap: () {
                         logic.selectedValue1.value = 'privacy';
-
                       },
                       child: Row(
                         children: [
@@ -308,83 +511,15 @@ class MenuPage extends StatelessWidget {
                         ],
                       ),
                     ),
-                    DropdownMenuItem<String>(
-                      value: 'about',
-                      onTap: () {
-                        logic.selectedValue2.value = 'about';
-                      },
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 0.06.sw,
-                            child: const Image(
-                              image: AssetImage('assets/images/png/about.png'),
-                            ),
-                          ),
-                          20.horizontalSpace,
-                          Text(
-                            'من نحن',
-                            style: H3GrayTextStyle,
-                          )
-                        ],
-                      ),
-                    ),
-                    if (isAuth())
-                      DropdownMenuItem<String>(
-                        value: 'settings',
-                        onTap: () {
-                          logic.selectedValue2.value = 'settings';
-                        },
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 0.06.sw,
-                              child: const Image(
-                                image: AssetImage(
-                                    'assets/images/png/settings.png'),
-                              ),
-                            ),
-                            20.horizontalSpace,
-                            Text(
-                              'الإعدادات',
-                              style: H3GrayTextStyle,
-                            )
-                          ],
-                        ),
-                      ),
-                    if (isAuth())
-                      DropdownMenuItem<String>(
-                        value: 'logOut',
-                        onTap: () {
-                          logic.selectedValue2.value = 'logOut';
-                          logic.mainController.logout();
-                        },
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 0.06.sw,
-                              child: const Image(
-                                image:
-                                    AssetImage('assets/images/png/log_out.png'),
-                              ),
-                            ),
-                            20.horizontalSpace,
-                            Text(
-                              'تسجيل الخروج',
-                              style: H3GrayTextStyle,
-                            )
-                          ],
-                        ),
-                      )
                   ],
                 );
               }),
-              /*  Obx(() {
+              Obx(() {
                 return _dropDownButton(
                   img: 'assets/images/png/settings.png',
                   selectedValue: logic.selectedValue2.value,
+                  title: 'الإعدادات',
                   items: [
-
                     DropdownMenuItem<String>(
                       value: 'settings',
                       onTap: () {
@@ -396,7 +531,7 @@ class MenuPage extends StatelessWidget {
                             width: 0.06.sw,
                             child: Image(
                               image:
-                              AssetImage('assets/images/png/settings.png'),
+                                  AssetImage('assets/images/png/settings.png'),
                             ),
                           ),
                           20.horizontalSpace,
@@ -428,34 +563,33 @@ class MenuPage extends StatelessWidget {
                         ],
                       ),
                     ),
-
-                    DropdownMenuItem<String>(
-                      value: 'logOut',
-                      onTap: () {
-                        logic.selectedValue2.value = 'logOut';
-                        logic.mainController.logout();
-                      },
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 0.06.sw,
-                            child: Image(
-                              image:
-                              AssetImage('assets/images/png/log_out.png'),
+                    if (isAuth())
+                      DropdownMenuItem<String>(
+                        value: 'logOut',
+                        onTap: () {
+                          logic.selectedValue2.value = 'logOut';
+                        },
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 0.06.sw,
+                              child: Image(
+                                image:
+                                    AssetImage('assets/images/png/log_out.png'),
+                              ),
                             ),
-                          ),
-                          20.horizontalSpace,
-                          Text(
-                            'تسجيل الخروج',
-                            style: H3GrayTextStyle,
-                          )
-                        ],
-                      ),
-                    )
+                            20.horizontalSpace,
+                            Text(
+                              'تسجيل الخروج',
+                              style: H3GrayTextStyle,
+                            )
+                          ],
+                        ),
+                      )
                   ],
-                  title: 'الإعدادات',
                 );
-              }),*/
+              }),
+              30.verticalSpace,
             ],
           ),
         ),
@@ -474,7 +608,8 @@ class MenuPage extends StatelessWidget {
           width: 0.49.sw,
           height: 0.3.sw,
           child: Card(
-            elevation: 8,
+            elevation: 4,
+            color: WhiteColor,
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 0.03.sw),
               child: Column(
@@ -505,7 +640,6 @@ class MenuPage extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 0.01.sw, vertical: 0.002.sh),
       width: 1.sw,
       child: DropdownButtonHideUnderline(
-
         child: DropdownButton2<String>(
           isExpanded: true,
           hint: Row(
@@ -538,10 +672,12 @@ class MenuPage extends StatelessWidget {
           items: items,
           value: selectedValue,
           onChanged: (value) {
-            if(value!=null){
-              logic.changeSelectedValue1(value!);
+            if (['privacy', 'asks', 'contact_us'].contains(value)) {
+              logic.changeSelectedValue1(value);
             }
-
+            if (['about', 'settings', 'logOut'].contains(value)) {
+              logic.changeSelectedValue2(value);
+            }
           },
           buttonStyleData: ButtonStyleData(
             height: 50,

@@ -23,6 +23,7 @@ class ProfileLogic extends GetxController {
 // chart page
   RxList<AdviceModel> myAdvices = RxList<AdviceModel>([]);
   RxList<SliderModel> sliders = RxList<SliderModel>([]);
+  RxList<ProductModel> myProducts = RxList<ProductModel>([]);
   RxInt adviceCount = RxInt(0);
   RxInt views = RxInt(0);
   RxInt sliderCount = RxInt(0);
@@ -101,7 +102,7 @@ class ProfileLogic extends GetxController {
         }
       }
     }
-
+  
     ''');
     try {
       dio.Response? res = await mainController.fetchData();
@@ -145,6 +146,26 @@ class ProfileLogic extends GetxController {
             expired_date
             views_count
         }
+        
+        mySpecialProducts {
+          id
+          name
+          expert
+          is_discount
+          price
+          discount
+          code
+          type
+          views_count
+          image
+          created_at
+          category {
+              name
+          }
+          sub1 {
+              name
+          }
+        }
     
 }
     ''');
@@ -161,6 +182,11 @@ class ProfileLogic extends GetxController {
       if (res.data['data']['mySliders'] != null) {
         for (var item in res.data['data']['mySliders']) {
           sliders.add(SliderModel.fromJson(item));
+        }
+      }
+ if (res.data['data']['mySpecialProducts'] != null) {
+        for (var item in res.data['data']['mySpecialProducts']) {
+          myProducts.add(ProductModel.fromJson(item));
         }
       }
 

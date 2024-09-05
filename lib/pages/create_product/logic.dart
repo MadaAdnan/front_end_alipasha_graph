@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/models/attribute_model.dart';
 import 'package:ali_pasha_graph/models/category_model.dart';
+import 'package:ali_pasha_graph/models/product_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
@@ -12,178 +15,52 @@ import 'package:image_picker/image_picker.dart';
 import 'package:select2dot1/select2dot1.dart';
 import 'package:dio/dio.dart' as dio;
 
+import '../../helpers/components.dart';
+
 class CreateProductLogic extends GetxController {
   final MainController mainController = Get.find<MainController>();
   RxnString errorEndDate = RxnString(null);
   GetStorage box = GetStorage('ali-pasha');
+  RxBool loading = RxBool(false);
 
   // global
   RxList<CategoryModel> categories = RxList<CategoryModel>([]);
-  RxList<SingleItemCategoryModel> listSingleCategoryPeriod =
-      RxList<SingleItemCategoryModel>([]);
-  RxInt page = RxInt(1);
+  RxList<ColorModel> colors = RxList<ColorModel>([]);
 
   // formData
-  //product
   RxString typePost = RxString('product');
-  Rxn<XFile?> mainImage = Rxn<XFile?>();
-  RxList<XFile?> images = RxList<XFile?>();
+  RxnInt periodProduct = RxnInt(360);
+  TextEditingController nameProduct = TextEditingController();
   TextEditingController infoProduct = TextEditingController();
-  TextEditingController priceProduct = TextEditingController();
-  RxnInt periodProduct = RxnInt(null);
-  RxnInt mainCategory = RxnInt(null);
-  RxnInt subCategory = RxnInt(null);
-  RxnInt sub2Category = RxnInt(null);
-  RxnInt sub3Category = RxnInt(null);
-  RxList<int?> limitAttributeSelected = RxList<int?>([]);
 
-  // controllers for select2
-  Rx<SelectDataController> periodController =
-      Rx<SelectDataController>(SelectDataController(
-    data: [],
-    isMultiSelect: false,
-  ));
-  Rx<SelectDataController> categoryController =
-      Rx<SelectDataController>(SelectDataController(
-    data: [],
-    isMultiSelect: false,
-  ));
-  Rx<SelectDataController> subCategoryController =
-      Rx<SelectDataController>(SelectDataController(
-    data: [],
-    isMultiSelect: false,
-  ));
-
-  Rx<SelectDataController> sub2CategoryController =
-      Rx<SelectDataController>(SelectDataController(
-    data: [],
-    isMultiSelect: false,
-  ));
-
-  Rx<SelectDataController> sub3CategoryController =
-      Rx<SelectDataController>(SelectDataController(
-    data: [],
-    isMultiSelect: false,
-  ));
-  RxList<SelectDataController> limitAttributesController =RxList<SelectDataController>([]);
-  final List<Map<String, dynamic>> periodProductList = [
-    {"name": "7 أيام", "value": 7},
-    {"name": "15 يوم", "value": 15},
-    {"name": "شهر واحد", "value": 30},
-    {"name": "شهرين", "value": 60},
-    {"name": "3 أشهر", "value": 90},
-  ];
-  RxList<AttributeModel> attributesLimit = RxList<AttributeModel>([]);
+  //product
+  TextEditingController priceController = TextEditingController(text: '0');
+  TextEditingController discountController = TextEditingController();
+  RxBool isAvailable = RxBool(true);
+  Rxn<CategoryModel> category = Rxn<CategoryModel>(null);
+  Rxn<CategoryModel> subCategory = Rxn<CategoryModel>(null);
+  Rxn<CategoryModel> sub2Category = Rxn<CategoryModel>(null);
+  Rxn<CategoryModel> sub3Category = Rxn<CategoryModel>(null);
+  RxList<XFile> images = RxList<XFile>([]);
+  RxList<int> colorIds = RxList<int>([]);
+  Rx<Map<int,List<int?>>> options = Rx<Map<int,List<int?>>>({});
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    fillPeriodController();
-
-    fillDataFromDraft();
-    ever(typePost, (value) {
-      clearMainCategorySelected();
-
-      page(1);
-      List<SingleItemCategoryModel> list = [];
-      for (var item in categories.where((el) => el.type == value).toList()) {
-        list.add(SingleItemCategoryModel(
-            nameSingleItem: item.name!, value: item.id));
-      }
-      categoryController.value = SelectDataController(
-          data: [SingleCategoryModel(singleItemCategoryList: list)],
-          isMultiSelect: false);
+    ever(options, (value){
+      mainController.logger.e(value);
     });
-
-    // listen category
-    ever(mainCategory, (value) {
-      clearSubCategorySelected();
-      clearSub2CategorySelected();
-      clearSub3CategorySelected();
-      CategoryModel? selectedCategory =
-          categories.where((el) => el.id == value).firstOrNull;
-      if (selectedCategory != null && selectedCategory.children != null) {
-        List<SingleItemCategoryModel> list = [];
-        for (var item in selectedCategory.children!.toList()) {
-          list.add(SingleItemCategoryModel(
-              nameSingleItem: item.name!, value: item.id));
-        }
-        subCategoryController.value = SelectDataController(
-            data: [SingleCategoryModel(singleItemCategoryList: list)],
-            isMultiSelect: false);
-      }
+    ever(category, (value) {
+      subCategory.value = null;
     });
-
-    // listen subCategory
     ever(subCategory, (value) {
-      if (subCategory.value != null) {
-        getLimitAttributes();
-      }
-      clearSub2CategorySelected();
-      clearSub3CategorySelected();
-      CategoryModel? selectedMainCategory =
-          categories.where((el) => el.id == mainCategory.value).firstOrNull;
-      CategoryModel? selectedCategory = selectedMainCategory?.children!
-          .where((el) => el.id == subCategory.value)
-          .firstOrNull;
-      if (selectedCategory != null && selectedCategory.children != null) {
-        List<SingleItemCategoryModel> list = [];
-        for (var item in selectedCategory.children!.toList()) {
-          list.add(SingleItemCategoryModel(
-              nameSingleItem: item.name!, value: item.id));
-        }
-        sub2CategoryController.value = SelectDataController(
-            data: [SingleCategoryModel(singleItemCategoryList: list)],
-            isMultiSelect: false);
-      }
+      sub2Category.value = null;
     });
-
-    //  listen sub2Category
     ever(sub2Category, (value) {
-      clearSub3CategorySelected();
-      CategoryModel? selectedMainCategory =
-          categories.where((el) => el.id == mainCategory.value).firstOrNull;
-      CategoryModel? selectedSubCategory = selectedMainCategory?.children!
-          .where((el) => el.id == subCategory.value)
-          .firstOrNull;
-      CategoryModel? selectedCategory = selectedSubCategory?.children!
-          .where((el) => el.id == sub2Category.value)
-          .firstOrNull;
-      if (selectedCategory != null && selectedCategory.children != null) {
-        List<SingleItemCategoryModel> list = [];
-        for (var item in selectedCategory.children!.toList()) {
-          list.add(SingleItemCategoryModel(
-              nameSingleItem: item.name!, value: item.id));
-        }
-        sub3CategoryController.value = SelectDataController(
-            data: [SingleCategoryModel(singleItemCategoryList: list)],
-            isMultiSelect: false);
-      }
+      sub3Category.value = null;
     });
-
-    // listen Limit Attributes
-   /* ever(attributesLimit, (value) {
-      limitAttributeSelected.clear();
-      if (value.isNotEmpty) {
-        List<SingleCategoryModel> categoriesAttributes = [];
-
-        for (var item in attributesLimit) {
-          List<SingleItemCategoryModel> list = [];
-          for (var single in item.attributes!) {
-            list.add(SingleItemCategoryModel(
-                nameSingleItem: single.name!, value: single.id!));
-          }
-          categoriesAttributes.add(SingleCategoryModel(
-              singleItemCategoryList: list, nameCategory: item.name));
-        }
-        limitAttributesController.value =
-            SelectDataController(data: categoriesAttributes,isMultiSelect: false);
-      } else {
-        limitAttributesController.value =
-            SelectDataController(data: [], isMultiSelect: false);
-      }
-    });*/
   }
 
   @override
@@ -195,32 +72,28 @@ class CreateProductLogic extends GetxController {
 
   fillDataFromDraft() {
     var data = box.read<Map<String, dynamic>>('draft');
-
-    for (var item in periodProductList) {
-      listSingleCategoryPeriod.add(SingleItemCategoryModel(
-          nameSingleItem: item['name'], value: item['value']));
-    }
-
-    if (data != null) {
-      infoProduct = TextEditingController(text: data['info']);
-      priceProduct = TextEditingController(text: data['price']);
-
-      if (data['mainImage'] != null) {
-        mainImage(XFile(data['mainImage']));
-      }
-    }
   }
 
   Future<void> getDataForCreate() async {
     mainController.query.value = r'''
-query Categories {
-    categories {
+query MainCategories {
+    mainCategories {
         id
         name
-         type
+        type
+        has_color
         children {
             id
             name
+            attributes {
+                id
+                name
+                type
+                attributes {
+                    id
+                    name
+                }
+            }
             children {
                 id
                 name
@@ -230,114 +103,93 @@ query Categories {
                 }
             }
         }
-       
+        
+        
     }
+     colors {
+        id
+        code
+    }
+    
 }
 
 ''';
     dio.Response? res = await mainController.fetchData();
-
-    if (res?.data != null && res?.data['data'] != null) {
-      for (var item in res?.data['data']['categories']) {
-        categories.add(CategoryModel.fromJson(item));
+mainController.logger.i(res?.data);
+    if (res?.data != null && res?.data['data']?['mainCategories'] != null) {
+      for (var item in res?.data['data']['mainCategories']) {
+        if (item['type'] == 'product') {
+          categories.add(CategoryModel.fromJson(item));
+        }
       }
-      fillCategory();
     }
+
+    if (res?.data != null && res?.data['data']['colors'] != null) {
+      for (var item in res?.data['data']['colors']) {
+        colors.add(ColorModel.fromJson(item));
+      }
+    }
+  }
+
+  saveData() async {
+
+    loading.value = true;
+    Map<String, dynamic> datajson = {
+      "query":
+          r"""mutation CreateProduct($input: CreateProductInput!) { createProduct(input: $input) { id } }""",
+      "variables": <String, dynamic>{
+        "input": {
+          "images": null,
+          "info": "${infoProduct.text}",
+          "is_available": isAvailable.value,
+          "price": double.tryParse(priceController.text) ?? 0,
+          "discount": double.tryParse(discountController.text),
+          "category_id": category.value?.id,
+          "sub1_id": subCategory.value?.id,
+          "sub2_id": sub2Category.value?.id,
+          "sub3_id": sub3Category.value?.id,
+          "period": periodProduct.value,
+          "colors": colorIds.toList(),
+          "options":options.value.values.map((el)=>el).expand((i)=>i).toList(),
+        }
+      }
+    };
+    mainController.logger.i(datajson['variables']);
+
+    Map<String, XFile?> data = {};
+    String map = '{';
+
+    for (int i = 0; i < images.length; i++) {
+      data['image$i'] = images[i];
+      map += '"image$i": ["variables.input.images.$i"]';
+      if (i < images.length - 1) {
+        map += ',';
+      }
+    }
+
+    map += '}';
+    try {
+      dio.Response res = await mainController.dio_manager
+          .executeGraphQLQueryWithFile(json.encode(datajson),
+              map: map, files: data);
+      mainController.logger.e(res.data);
+      if(res.data?['data']?['createProduct']!=null){
+        showAutoCloseDialog(message: "تم إرسال المنتج للمراجعة بنجاح",isSuccess: true);
+      }
+    } catch (e) {
+      mainController.logger.e("Error get Profile $e");
+    }
+    loading.value = false;
   }
 
   Future<void> saveToDraft() async {
     var data = {
       'type': typePost.value,
       'info': infoProduct.text,
-      'price': priceProduct.text,
+      'price': 90,
       'selectedEndDate': periodProduct.value,
-      'mainImage': mainImage.value?.path
+      'mainImage': 90
     };
     await box.write('draft', data);
-  }
-
-  fillPeriodController() {
-    var data = box.read<Map<String, dynamic>>('draft');
-    List<SingleItemCategoryModel> list = [];
-    for (var item in periodProductList) {
-      list.add(SingleItemCategoryModel(
-          nameSingleItem: item['name'], value: item['value']));
-    }
-    periodController.value = SelectDataController(
-        data: [SingleCategoryModel(singleItemCategoryList: list.toList())],
-        isMultiSelect: false);
-    if (data?['selectedEndDate'] != null) {
-      var selectedPeriod = periodProductList
-          .where((el) => el['value'] == data?['selectedEndDate'])
-          .toList()
-          .first;
-      periodController.value.setSingleSelect(SingleItemCategoryModel(
-          nameSingleItem: selectedPeriod['name'],
-          value: selectedPeriod['value']));
-      periodProduct(int.tryParse("${selectedPeriod['value']}"));
-    }
-  }
-
-  fillCategory() {
-    List<SingleItemCategoryModel> list = [];
-    for (var item
-        in categories.where((el) => el.type == typePost.value).toList()) {
-      list.add(
-          SingleItemCategoryModel(nameSingleItem: item.name!, value: item.id!));
-    }
-    categoryController.value = SelectDataController(
-        data: [SingleCategoryModel(singleItemCategoryList: list)],
-        isMultiSelect: false);
-  }
-
-  clearMainCategorySelected() {
-    mainCategory.value = null;
-    categoryController.value.setSingleSelect(null);
-  }
-
-  clearSubCategorySelected() {
-    subCategory.value = null;
-    subCategoryController.value = SelectDataController(
-        data: <SingleCategoryModel>[], isMultiSelect: false);
-    subCategoryController.value.setSingleSelect(null);
-  }
-
-  clearSub2CategorySelected() {
-    sub2Category.value = null;
-    sub2CategoryController.value = SelectDataController(
-        data: <SingleCategoryModel>[], isMultiSelect: false);
-    sub2CategoryController.value.setSingleSelect(null);
-  }
-
-  clearSub3CategorySelected() {
-    sub3Category.value = null;
-    sub3CategoryController.value = SelectDataController(
-        data: <SingleCategoryModel>[], isMultiSelect: false);
-    sub3CategoryController.value.setSingleSelect(null);
-  }
-
-// get Limit attribute when change subCategory
-  getLimitAttributes() async {
-    mainController.query.value = '''
-    query Attributes {
-    attributes(category_id: ${subCategory.value}) {
-        id
-        name
-        attributes {
-            id
-            name
-        }
-    }
-}
-    ''';
-    attributesLimit.clear();
-    dio.Response? res = await mainController.fetchData();
-    print("RES");
-    print(res?.data);
-    if (res?.data?['data'] != null) {
-      for (var item in res?.data['data']?['attributes']) {
-        attributesLimit.add(AttributeModel.fromJson(item));
-      }
-    }
   }
 }
