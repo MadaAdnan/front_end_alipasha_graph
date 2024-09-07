@@ -15,6 +15,8 @@ import 'package:ali_pasha_graph/pages/communities/binding.dart';
 import 'package:ali_pasha_graph/pages/communities/view.dart';
 import 'package:ali_pasha_graph/pages/contact/binding.dart';
 import 'package:ali_pasha_graph/pages/contact/view.dart';
+import 'package:ali_pasha_graph/pages/create_job/binding.dart';
+import 'package:ali_pasha_graph/pages/create_job/view.dart';
 import 'package:ali_pasha_graph/pages/create_product/binding.dart';
 import 'package:ali_pasha_graph/pages/create_product/view.dart';
 import 'package:ali_pasha_graph/pages/edit_profile/binding.dart';
@@ -74,6 +76,8 @@ import 'package:get/get.dart';
 
 import '../pages/ask/binding.dart';
 import '../pages/ask/view.dart';
+import '../pages/create_tender/binding.dart';
+import '../pages/create_tender/view.dart';
 import '../pages/news/binding.dart';
 import '../pages/news/view.dart';
 import '../pages/products/binding.dart';
@@ -95,6 +99,20 @@ class AppPages {
         name: CREATE_PRODUCT_PAGE,
         page: () => CreateProductPage(),
         binding: CreateProductBinding()),
+    GetPage(
+        middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+        name: CREATE_JOB_PAGE,
+        page: () => CreateJobPage(),
+        binding: CreateJobBinding()),
+
+    GetPage(
+        middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+        name: CREATE_TENDER_PAGE,
+        page: () => CreateTenderPage(),
+        binding: CreateTenderBinding()),
+
+
+
     GetPage(name: MENU_PAGE, page: () => MenuPage(), binding: MenuBinding()),
     GetPage(
         middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],

@@ -113,6 +113,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.18.0"
+  community_material_icon:
+    dependency: transitive
+    description:
+      name: community_material_icon
+      sha256: bb389689f6278158d7b9d9b0c9433e603933283104fea226594590f61503fd08
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.9.55"
   cross_file:
     dependency: transitive
     description:
@@ -205,10 +213,10 @@ packages:
     dependency: transitive
     description:
       name: file_picker
-      sha256: "1bbf65dd997458a08b531042ec3794112a6c39c07c37ff22113d2e7e4f81d4e4"
+      sha256: "825aec673606875c33cd8d3c4083f1a3c3999015a84178b317b7ef396b7384f3"
       url: "https://pub.dev"
     source: hosted
-    version: "6.2.1"
+    version: "8.0.7"
   file_selector_linux:
     dependency: transitive
     description:
@@ -517,6 +525,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "10.7.0"
+  form_builder_file_picker:
+    dependency: "direct main"
+    description:
+      name: form_builder_file_picker
+      sha256: "8bd5fca63a13bb5446c272e9d6968d114b3600496b291e34e76160a1b9219115"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.2.0"
+  form_builder_image_picker:
+    dependency: "direct main"
+    description:
+      name: form_builder_image_picker
+      sha256: "90c861157a367bfd1259368e61b04daef805df1ee7c53667391bc470ad4768c6"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.1.0"
   form_builder_validators:
     dependency: "direct main"
     description:
@@ -894,46 +918,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.8"
-  pointer_interceptor:
-    dependency: transitive
-    description:
-      name: pointer_interceptor
-      sha256: d0a8e660d1204eaec5bd34b34cc92174690e076d2e4f893d9d68c486a13b07c4
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.10.1+1"
-  pointer_interceptor_ios:
-    dependency: transitive
-    description:
-      name: pointer_interceptor_ios
-      sha256: a6906772b3205b42c44614fcea28f818b1e5fdad73a4ca742a7bd49818d9c917
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.10.1"
-  pointer_interceptor_platform_interface:
-    dependency: transitive
-    description:
-      name: pointer_interceptor_platform_interface
-      sha256: "0597b0560e14354baeb23f8375cd612e8bd4841bf8306ecb71fcd0bb78552506"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.10.0+1"
-  pointer_interceptor_web:
-    dependency: transitive
-    description:
-      name: pointer_interceptor_web
-      sha256: a6237528b46c411d8d55cdfad8fcb3269fc4cbb26060b14bff94879165887d1e
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.10.2"
-  quill_html_editor:
-    dependency: "direct main"
-    description:
-      name: quill_html_editor
-      sha256: "7f46ec06a41b8ec30910afc219f1a447cd2e872614cc3a34ef16600043163f19"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.2.8"
   readmore:
     dependency: "direct main"
     description:
@@ -1179,38 +1163,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.5.1"
-  webview_flutter:
-    dependency: transitive
-    description:
-      name: webview_flutter
-      sha256: "6869c8786d179f929144b4a1f86e09ac0eddfe475984951ea6c634774c16b522"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.8.0"
-  webview_flutter_android:
-    dependency: transitive
-    description:
-      name: webview_flutter_android
-      sha256: f42447ca49523f11d8f70abea55ea211b3cafe172dd7a0e7ac007bb35dd356dc
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.16.4"
-  webview_flutter_platform_interface:
-    dependency: transitive
-    description:
-      name: webview_flutter_platform_interface
-      sha256: d937581d6e558908d7ae3dc1989c4f87b786891ab47bb9df7de548a151779d8d
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.10.0"
-  webview_flutter_wkwebview:
-    dependency: transitive
-    description:
-      name: webview_flutter_wkwebview
-      sha256: "9c62cc46fa4f2d41e10ab81014c1de470a6c6f26051a2de32111b2ee55287feb"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.14.0"
   win32:
     dependency: transitive
     description:

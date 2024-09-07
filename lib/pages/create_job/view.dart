@@ -1,49 +1,51 @@
-import 'dart:io';
-import 'package:ali_pasha_graph/Global/main_controller.dart';
-import 'package:ali_pasha_graph/helpers/colors.dart';
-import 'package:ali_pasha_graph/helpers/helper_class.dart';
-import 'package:ali_pasha_graph/helpers/style.dart';
-import 'package:ali_pasha_graph/models/attribute_model.dart';
-import 'package:ali_pasha_graph/models/category_model.dart';
+import 'package:ali_pasha_graph/pages/create_job/logic.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:form_builder_file_picker/form_builder_file_picker.dart';
+import 'package:form_builder_image_picker/form_builder_image_picker.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
+
+import 'package:intl/intl.dart';
 import 'package:location/location.dart';
-import 'logic.dart';
 
-class CreateProductPage extends StatelessWidget {
-  CreateProductPage({Key? key}) : super(key: key);
+import '../../Global/main_controller.dart';
+import '../../helpers/colors.dart';
+import '../../helpers/helper_class.dart';
+import '../../helpers/style.dart';
+import '../../models/attribute_model.dart';
+import '../../models/category_model.dart';
 
-  final logic = Get.find<CreateProductLogic>();
+class CreateJobPage extends StatelessWidget {
+  CreateJobPage({Key? key}) : super(key: key);
+
+  final logic = Get.find<CreateJobLogic>();
 
   final MainController mainController = Get.find<MainController>();
 
-  final _formState = GlobalKey<FormState>();
+
 
   final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: WhiteColor,
-      body: Container(
-        width: 1.sw,
-        height: 1.sh,
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
-          child: Form(
-            autovalidateMode: AutovalidateMode.disabled,
-            key: _formState,
-            child: Column(
-              children: [
+        backgroundColor: WhiteColor,
+        body: Container(
+          width: 1.sw,
+          height: 1.sh,
+          child: SingleChildScrollView(
+            controller: _scrollController,
+            padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
+            child: Form(
+              autovalidateMode: AutovalidateMode.disabled,
+              key: logic.formState,
+              child: Column(children: [
                 Container(
                   width: 1.sw,
                   height: 0.08.sh,
@@ -62,7 +64,9 @@ class CreateProductPage extends StatelessWidget {
                           ),
                         ),
                         InkWell(
-
+                          onTap: () {
+                            Get.offAndToNamed(CREATE_PRODUCT_PAGE);
+                          },
                           child: Container(
                             width: 0.2.sw,
                             padding: EdgeInsets.symmetric(
@@ -97,9 +101,6 @@ class CreateProductPage extends StatelessWidget {
                           ),
                         ),
                         InkWell(
-                          onTap: () {
-                            Get.offAndToNamed(CREATE_JOB_PAGE);
-                          },
                           child: Container(
                             width: 0.2.sw,
                             padding: EdgeInsets.symmetric(
@@ -226,7 +227,7 @@ class CreateProductPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        width: 0.55.sw,
+                        width: 0.9.sw,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -245,7 +246,7 @@ class CreateProductPage extends StatelessWidget {
                             ),
                             10.horizontalSpace,
                             Container(
-                              width: 0.3.sw,
+                              width: 0.6.sw,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -258,7 +259,7 @@ class CreateProductPage extends StatelessWidget {
                                   )),
                                   Container(
                                       child: Text(
-                                    "${mainController.authUser.value?.seller_name ?? mainController.authUser.value?.name} متجر علي باشا باشا",
+                                    "${mainController.authUser.value?.seller_name ?? mainController.authUser.value?.name}",
                                     style: H1BlackTextStyle,
                                     overflow: TextOverflow.ellipsis,
                                   )),
@@ -266,54 +267,6 @@ class CreateProductPage extends StatelessWidget {
                               ),
                             )
                           ],
-                        ),
-                      ),
-                      Container(
-                        width: 0.38.sw,
-                        child: FormBuilderDropdown(
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(color: GrayLightColor),
-                              borderRadius: BorderRadius.circular(15.r),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            logic.periodProduct.value = value;
-                          },
-                          initialValue: logic.periodProduct.value,
-                          items: [
-                            DropdownMenuItem(
-                                value: 360,
-                                child: Text(
-                                  'نشر بدون مدة',
-                                  style: H5BlackTextStyle,
-                                )),
-                            DropdownMenuItem(
-                                value: 90,
-                                child: Text(
-                                  'نشر لمدة 3 أشهر',
-                                  style: H5BlackTextStyle,
-                                )),
-                            DropdownMenuItem(
-                                value: 30,
-                                child: Text(
-                                  'نشر لمدة شهر واحد',
-                                  style: H5BlackTextStyle,
-                                )),
-                            DropdownMenuItem(
-                                value: 15,
-                                child: Text(
-                                  'نشر لمدة 15 يوم',
-                                  style: H5BlackTextStyle,
-                                )),
-                            DropdownMenuItem(
-                                value: 7,
-                                child: Text(
-                                  'نشر لمدة اسبوع واحد',
-                                  style: H5BlackTextStyle,
-                                )),
-                          ],
-                          name: 'period',
                         ),
                       ),
                     ],
@@ -333,7 +286,12 @@ class CreateProductPage extends StatelessWidget {
                     style: H3BlackTextStyle,
                     controller: logic.infoProduct,
                     decoration: InputDecoration(
-                      labelText: 'الوصف',
+                      label: RichText(
+                        text: TextSpan(children: [
+                          TextSpan(text: 'الوصف ', style: H4GrayTextStyle),
+                          TextSpan(text: '*', style: H3RedTextStyle),
+                        ]),
+                      ),
                       labelStyle: H4GrayTextStyle,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15.r),
@@ -341,97 +299,46 @@ class CreateProductPage extends StatelessWidget {
                     ),
                   ),
                 ),
-
-                // body
-                Container(
-                  width: 1.sw,
-                  height: 0.09.sh,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 0.33.sw,
-                        child: FormBuilderTextField(
-                          name: 'price',
-                          controller: logic.priceController,
-                          keyboardType: TextInputType.number,
-                          style: H3BlackTextStyle,
-                          validator: FormBuilderValidators.numeric(),
-                          decoration: InputDecoration(
-                              contentPadding: EdgeInsets.zero,
-                              prefixIcon: Icon(
-                                FontAwesomeIcons.dollarSign,
-                                size: 0.03.sw,
-                              ),
-                              labelText: 'السعر',
-                              labelStyle: H4GrayTextStyle,
-                              border: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: GrayLightColor))),
-                        ),
-                      ),
-                      Container(
-                        width: 0.33.sw,
-                        child: FormBuilderTextField(
-                          name: 'discount',
-                          style: H3BlackTextStyle,
-                          controller: logic.discountController,
-                          keyboardType: TextInputType.number,
-                          validator: FormBuilderValidators.numeric(
-                              errorText: 'يرجى إدخال قيمة رقمية',
-                              checkNullOrEmpty: false),
-                          decoration: InputDecoration(
-                              contentPadding: EdgeInsets.zero,
-                              prefixIcon: Icon(
-                                FontAwesomeIcons.arrowTrendDown,
-                                size: 0.03.sw,
-                              ),
-                              labelText: 'بعد الحسم',
-                              labelStyle: H4GrayTextStyle,
-                              border: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: GrayLightColor))),
-                        ),
-                      ),
-                      Obx(() {
-                        return Container(
-                          width: 0.25.sw,
-                          child: Column(
-                            children: [
-                              Text(
-                                'التوفر بالمخزون',
-                                style: H4BlackTextStyle,
-                              ),
-                              Switch(
-                                onChanged: (value) {
-                                  logic.isAvailable.value = value;
-                                },
-                                activeColor: Colors.green,
-                                value: logic.isAvailable.value,
-                              ),
-                            ],
-                          ),
-                        );
-                      })
-                    ],
-                  ),
-                ),
                 30.verticalSpace,
-
                 Container(
                   width: 1.sw,
-                  height: 0.18.sh,
-                  child: FormBuilderTextField(
-                    validator: FormBuilderValidators.url(
-                        errorText: 'يرجى إدخال رابط صحيح',
-                        checkNullOrEmpty: false),
-                    name: 'video',
-                    keyboardType: TextInputType.url,
-                    style: H3BlackTextStyle,
-                    controller: logic.videoController,
+                  height: 0.08.sh,
+                  child: FormBuilderChoiceChip(
+                    options: [
+                      FormBuilderChipOption(
+                        value: 'job',
+                        child: Text(
+                          'شاغر وظيفي',
+                          style: H3BlackTextStyle,
+                        ),
+                      ),
+                      FormBuilderChipOption(
+                        value: 'search_job',
+                        child: Text(
+                          'أبحث عن وظيفة',
+                          style: H3BlackTextStyle,
+                        ),
+                      ),
+                    ],
+                    name: 'type',
+                    validator: FormBuilderValidators.required(
+                        errorText: 'يرجى إختيار نوع المنشور',
+                        checkNullOrEmpty: true),
+                    initialValue: logic.typeProduct.value,
+                    onChanged: (value) {
+                      logic.typeProduct.value = value;
+                    },
+                    alignment: WrapAlignment.spaceAround,
                     decoration: InputDecoration(
-                      labelText: 'رابط الفيديو',
+                      contentPadding: EdgeInsets.zero,
+                      floatingLabelStyle: H3BlackTextStyle,
+                      label: RichText(
+                        text: TextSpan(children: [
+                          TextSpan(
+                              text: 'نوع المنشور ', style: H4GrayTextStyle),
+                          TextSpan(text: '*', style: H3RedTextStyle),
+                        ]),
+                      ),
                       labelStyle: H4GrayTextStyle,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15.r),
@@ -439,142 +346,215 @@ class CreateProductPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                InkWell(
-                  onTap: () {
-                    if (logic.images.length < 3) {
-                      Get.defaultDialog(
-                          title: 'إختر مكان الصورة',
-                          titleStyle: H3BlackTextStyle,
-                          titlePadding: EdgeInsets.symmetric(vertical: 0.02.sh),
-                          content: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  logic.mainController.pickImage(
-                                    imagSource: ImageSource.gallery,
-                                    onChange: (file, fileSize) =>
-                                        logic.images.add(file!),
-                                  );
-                                  Get.back();
-                                },
-                                child: Container(
-                                  child: Column(
-                                    children: [
-                                      Icon(FontAwesomeIcons.images),
-                                      Text(
-                                        'المعرض',
-                                        style: H3GrayTextStyle,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  if (logic.images.length >= 3) {
-                                    Get.back();
-                                  }
-                                  logic.mainController.pickImage(
-                                      imagSource: ImageSource.camera,
-                                      onChange: (file, fileSize) {
-                                        logic.images.add(file!);
-                                      });
-                                },
-                                child: Container(
-                                  child: Column(
-                                    children: [
-                                      Icon(FontAwesomeIcons.camera),
-                                      Text(
-                                        'الكاميرا',
-                                        style: H3GrayTextStyle,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              )
-                            ],
-                          ));
-                    }
-                  },
-                  child: Container(
-                    width: 1.sw,
-                    height: 0.07.sh,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: GrayLightColor),
-                      borderRadius: BorderRadius.circular(15.r),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Icon(FontAwesomeIcons.image),
-                        40.horizontalSpace,
-                        Text(
-                          'حدد صورة او عدة صور',
-                          style: H4GrayTextStyle,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
                 30.verticalSpace,
-                Obx(
-                  () => Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      ...List.generate(
-                          logic.images.length,
-                          (index) => Stack(
-                                children: [
-                                  Container(
-                                    width: 0.25.sw,
-                                    height: 0.25.sw,
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(15.r),
-                                        image: DecorationImage(
-                                            image: FileImage(File.fromUri(
-                                                Uri.file(logic
-                                                    .images[index].path))))),
-                                  ),
-                                  Positioned(
-                                    child: InkWell(
-                                        onTap: () {
-                                          logic.images.removeAt(index);
-                                        },
-                                        child: Container(
-                                          alignment: Alignment.center,
-                                          width: 0.06.sw,
-                                          height: 0.06.sw,
-                                          child: Icon(
-                                            Icons.close,
-                                            color: WhiteColor,
-                                            size: 0.04.sw,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: RedColor,
-                                          ),
-                                        )),
-                                    right: 0,
-                                    top: 0,
-                                  )
-                                ],
-                              ))
+                Obx(() {
+                  return Visibility(
+                    visible: logic.typeProduct.value == 'job',
+                    child: Container(
+                      width: 1.sw,
+                      height: 0.08.sh,
+                      child: FormBuilderDateTimePicker(
+                        name: 'start_date',
+                        format: DateFormat.yMd(),
+                        controller: logic.startDateController,
+                        decoration: InputDecoration(
+                          contentPadding:
+                              EdgeInsets.symmetric(horizontal: 0.02.sw),
+                          floatingLabelStyle: H3BlackTextStyle,
+                          labelText: 'بداية التقديم',
+                          labelStyle: H4GrayTextStyle,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15.r),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+                30.verticalSpace,
+                Obx(() {
+                  return Visibility(
+                    visible: logic.typeProduct.value == 'job',
+                    child: Container(
+                      width: 1.sw,
+                      height: 0.08.sh,
+                      child: FormBuilderDateTimePicker(
+                        name: 'end_date',
+                        controller: logic.endDateController,
+                        format: DateFormat.yMd(),
+                        decoration: InputDecoration(
+                          contentPadding:
+                              EdgeInsets.symmetric(horizontal: 0.02.sw),
+                          floatingLabelStyle: H3BlackTextStyle,
+                          labelText: 'نهاية التقديم',
+                          labelStyle: H4GrayTextStyle,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15.r),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+                30.verticalSpace,
+                Container(
+                  width: 1.sw,
+                  height: 0.24.sh,
+                  child: FormBuilderFilePicker(
+                    previewImages: false,
+                    allowCompression: true,
+                    typeSelectors: [
+                      TypeSelector(
+                          type: FileType.custom,
+                          selector: Container(
+                            width: 0.9.sw,
+                            padding: EdgeInsets.all(0.02.sw),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: GrayLightColor),
+                            ),
+                            child: Text('إضغط لتحديد المرفقات'),
+                          ))
                     ],
+                    allowedExtensions: ['pdf', 'xlsx', 'docs', 'png', 'jpg'],
+                    allowMultiple: false,
+                    maxFiles: 1,
+                    onChanged: (values) {
+                      logic.images.clear();
+                      if (values != null) {
+                        for (var value in values) {
+                          if (value.path != null) {
+                            logic.images.add(XFile(value.path!));
+                          }
+                        }
+                      }
+                    },
+                    name: 'files',
+                    validator: FormBuilderValidators.required(
+                        errorText: 'يرجى تحديد المرفقات',
+                        checkNullOrEmpty: true),
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.all(10),
+                      constraints: BoxConstraints.expand(),
+                      floatingLabelStyle: H3BlackTextStyle,
+                      label: RichText(
+                        text: TextSpan(children: [
+                          TextSpan(text: 'مرفقات ', style: H4GrayTextStyle),
+                          TextSpan(text: '*', style: H3RedTextStyle),
+                        ]),
+                      ),
+                      labelStyle: H4GrayTextStyle,
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(15.r),
+                      ),
+                    ),
                   ),
                 ),
                 30.verticalSpace,
                 Container(
-                  child: Text(
-                    'ماهو تصنيف المنشور؟',
+                  width: 1.sw,
+                  height: 0.08.sh,
+                  child: FormBuilderTextField(
+                    validator: FormBuilderValidators.email(
+                        errorText: 'يرجى ملء الحقل', checkNullOrEmpty: true),
+                    name: 'email',
+                    keyboardType: TextInputType.emailAddress,
                     style: H3BlackTextStyle,
+                    controller: logic.emailController,
+                    decoration: InputDecoration(
+                      label: RichText(
+                        text: TextSpan(children: [
+                          TextSpan(
+                              text: ' البريد الإلكتروني ',
+                              style: H4GrayTextStyle),
+                          TextSpan(text: '*', style: H3RedTextStyle),
+                        ]),
+                      ),
+                      labelStyle: H4GrayTextStyle,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.r),
+                      ),
+                    ),
                   ),
-                  alignment: Alignment.centerRight,
                 ),
-                20.verticalSpace,
+                30.verticalSpace,
+                Container(
+                  width: 1.sw,
+                  height: 0.08.sh,
+                  child: FormBuilderTextField(
+                    validator: FormBuilderValidators.required(
+                        errorText: 'يرجى ملء الحقل', checkNullOrEmpty: true),
+                    name: 'phone',
+                    keyboardType: TextInputType.phone,
+                    style: H3BlackTextStyle,
+                    controller: logic.phoneController,
+                    decoration: InputDecoration(
+                      label: RichText(
+                        text: TextSpan(children: [
+                          TextSpan(
+                              text: ' رقم الهاتف ', style: H4GrayTextStyle),
+                          TextSpan(text: '*', style: H3RedTextStyle),
+                        ]),
+                      ),
+                      labelStyle: H4GrayTextStyle,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.r),
+                      ),
+                    ),
+                  ),
+                ),
+                30.verticalSpace,
+                Obx(() {
+                  return Visibility(
+                    visible: logic.typeProduct.value == 'job',
+                    child: Container(
+                      width: 1.sw,
+                      height: 0.08.sh,
+                      child: FormBuilderTextField(
+                        name: 'url',
+                        validator: FormBuilderValidators.required(
+                            errorText: 'يرجى إدخال الرابط'),
+                        keyboardType: TextInputType.url,
+                        style: H3BlackTextStyle,
+                        controller: logic.urlController,
+                        decoration: InputDecoration(
+                          labelText: 'رابط التقديم',
+                          labelStyle: H4GrayTextStyle,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15.r),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+                30.verticalSpace,
+                Obx(() {
+                  return Visibility(
+                    visible: logic.typeProduct.value == 'job',
+                    child: Container(
+                      width: 1.sw,
+                      height: 0.08.sh,
+                      child: FormBuilderTextField(
+                        validator: FormBuilderValidators.required(
+                          errorText: 'يرجى إدخال كود الوظيفة',
+                        ),
+                        name: 'code',
+                        keyboardType: TextInputType.text,
+                        style: H3BlackTextStyle,
+                        controller: logic.codeController,
+                        decoration: InputDecoration(
+                          labelText: 'كود الوظيفة',
+                          labelStyle: H4GrayTextStyle,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15.r),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
                 Obx(() {
                   return Container(
                     child: FormBuilderDropdown<CategoryModel>(
@@ -582,13 +562,18 @@ class CreateProductPage extends StatelessWidget {
                           errorText: 'يرجى تحديد القسم الرئيسي',
                           checkNullOrEmpty: true),
                       decoration: InputDecoration(
-                          label: Text(
-                            'القسم الرئيسي',
-                            style: H3GrayTextStyle,
+                          label: RichText(
+                            text: TextSpan(children: [
+                              TextSpan(
+                                  text: 'القسم الرئيسي',
+                                  style: H4GrayTextStyle),
+                              TextSpan(text: '*', style: H3RedTextStyle),
+                            ]),
                           ),
                           border: OutlineInputBorder(
                               borderSide: BorderSide(color: GrayLightColor))),
                       onChanged: (value) => logic.category.value = value,
+                      initialValue: logic.category.value ,
                       name: 'category_id',
                       items: [
                         ...List.generate(
@@ -617,9 +602,13 @@ class CreateProductPage extends StatelessWidget {
                             errorText: 'يرجى تحديد القسم الفرعي',
                             checkNullOrEmpty: true),
                         decoration: InputDecoration(
-                            label: Text(
-                              'القسم الفرعي',
-                              style: H3GrayTextStyle,
+                            label: RichText(
+                              text: TextSpan(children: [
+                                TextSpan(
+                                    text: 'القسم الفرعي ',
+                                    style: H4GrayTextStyle),
+                                TextSpan(text: '*', style: H3RedTextStyle),
+                              ]),
                             ),
                             border: OutlineInputBorder(
                                 borderSide: BorderSide(color: GrayLightColor))),
@@ -695,6 +684,7 @@ class CreateProductPage extends StatelessWidget {
                             border: OutlineInputBorder(
                                 borderSide: BorderSide(color: GrayLightColor))),
                         onChanged: (value) => logic.sub3Category.value = value,
+
                         name: 'sub3_id',
                         items: [
                           ...List.generate(
@@ -792,72 +782,13 @@ class CreateProductPage extends StatelessWidget {
                   return Container();
                 }),
                 30.verticalSpace,
-                Obx(() {
-                  if (logic.category.value != null &&
-                      logic.category.value?.hasColor == true) {
-                    return Column(
-                      children: [
-                        Container(
-                          child: Text(
-                            'متوفر بالألوان',
-                            style: H3BlackTextStyle,
-                          ),
-                          alignment: Alignment.centerRight,
-                        ),
-                        Wrap(
-                          children: [
-                            ...List.generate(
-                                logic.colors.length,
-                                (index) => InkWell(
-                                      onTap: () {
-                                        if (logic.colorIds
-                                            .contains(logic.colors[index].id)) {
-                                          logic.colorIds
-                                              .remove(logic.colors[index].id);
-                                        } else {
-                                          logic.colorIds
-                                              .add(logic.colors[index].id!);
-                                        }
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.all(0.02.sw),
-                                        width: 0.1.sw,
-                                        height: 0.1.sw,
-                                        decoration: BoxDecoration(
-                                            border: logic.colorIds.contains(
-                                                    logic.colors[index].id)
-                                                ? Border.all(color: RedColor)
-                                                : null,
-                                            shape: BoxShape.circle,
-                                            color: logic.colors[index].code
-                                                ?.toColor()),
-                                        child: Container(
-                                          width: 0.05.sw,
-                                          height: 0.05.sw,
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: GrayLightColor,
-                                                  width: 2),
-                                              shape: BoxShape.circle,
-                                              color: logic.colors[index].code
-                                                  ?.toColor()),
-                                        ),
-                                      ),
-                                    ))
-                          ],
-                        ),
-                      ],
-                    );
-                  }
-                  return Container();
-                }),
                 InkWell(
                   onTap: () {
-                    print(_formState.currentState?.validate());
-                    if (_formState.currentState?.validate() == true) {
+                    print(logic.formState.currentState?.validate());
+                    if (logic.formState.currentState?.validate() == true) {
                       logic.saveData();
                     } else {
-                      final firstErrorField = _formState.currentState?.context
+                      final firstErrorField = logic.formState.currentState?.context
                           .findRenderObject() as RenderBox?;
 
                       if (firstErrorField != null) {
@@ -882,86 +813,10 @@ class CreateProductPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(15.r),
                     ),
                   ),
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _dropDownButton({
-    required List<DropdownMenuItem<int>> items,
-    required String title,
-  }) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 0.01.sw, vertical: 0.002.sh),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton2<int>(
-          isExpanded: true,
-          hint: Row(
-            children: [
-              Expanded(
-                child: Row(
-                  children: [
-                    20.horizontalSpace,
-                    Text(
-                      title,
-                      style: H3GrayTextStyle,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
                 ),
-              ),
-            ],
-          ),
-          items: items,
-          value: logic.periodProduct.value,
-          onChanged: (value) {
-            logic.periodProduct.value = value;
-          },
-          buttonStyleData: ButtonStyleData(
-            height: 50,
-            width: 160,
-            padding: const EdgeInsets.only(left: 14, right: 14),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: Colors.black26,
-              ),
-              color: WhiteColor,
-            ),
-            elevation: 2,
-          ),
-          iconStyleData: IconStyleData(
-            icon: const Icon(
-              Icons.arrow_drop_down,
-            ),
-            iconSize: 0.07.sw,
-            iconEnabledColor: DarkColor,
-            iconDisabledColor: Colors.grey,
-          ),
-          dropdownStyleData: DropdownStyleData(
-            maxHeight: 200,
-            width: 1.sw,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(14),
-              color: WhiteColor,
-            ),
-            offset: const Offset(-20, 0),
-            scrollbarTheme: ScrollbarThemeData(
-              radius: const Radius.circular(40),
-              thickness: MaterialStateProperty.all(6),
-              thumbVisibility: MaterialStateProperty.all(true),
+              ]),
             ),
           ),
-          menuItemStyleData: const MenuItemStyleData(
-            height: 40,
-            padding: EdgeInsets.only(left: 14, right: 14),
-          ),
-        ),
-      ),
-    );
+        ));
   }
 }

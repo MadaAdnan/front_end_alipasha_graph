@@ -4,6 +4,8 @@ const String MENU_PAGE = '/menu';
 
 // require Auth
 const String CREATE_PRODUCT_PAGE = '/create_product';
+const String CREATE_JOB_PAGE = '/create_job';
+const String CREATE_TENDER_PAGE = '/create_tender';
 const String PROFILE_PAGE = '/profile_page';
 const String Edit_PROFILE_PAGE = '/edit_profile_page';
 const String BALANCES_PAGE = '/balances';

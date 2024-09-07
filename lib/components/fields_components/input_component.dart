@@ -2,11 +2,13 @@ import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class InputComponent extends StatelessWidget {
   InputComponent({
+    this.name='input',
     super.key,
     required this.width,
     this.controller,
@@ -44,13 +46,14 @@ class InputComponent extends StatelessWidget {
   final String? Function(String?)? onChanged;
   IconData? suffixIcon;
   final String? Function()? suffixClick;
+  final String name;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: width,
       height: height ?? 0.08.sh,
-      child: TextFormField(
+      child: FormBuilderTextField(
         minLines: minLine,
         obscureText: isSecure,
         onChanged: onChanged,
@@ -89,7 +92,7 @@ class InputComponent extends StatelessWidget {
               color: GrayDarkColor,
             ),
           ),
-        ),
+        ), name: '',
       ),
     );
   }

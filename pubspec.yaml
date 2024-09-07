@@ -23,7 +23,7 @@ dependencies:
   dio_cache_interceptor: ^3.5.0
   image_picker: ^1.1.2
   image_cropper: ^7.1.0
-  quill_html_editor: ^2.2.8
+
   select2dot1: ^2.0.9
   location: ^7.0.0
   badges: ^3.1.2
@@ -49,6 +49,8 @@ dependencies:
   flutter_form_builder: ^9.3.0
   form_builder_validators: ^11.0.0
   youtube_player_flutter: ^9.0.3
+  form_builder_image_picker: ^4.1.0
+  form_builder_file_picker: ^4.2.0
       #path: packages/my_package
 
 

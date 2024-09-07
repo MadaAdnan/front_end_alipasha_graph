@@ -10,9 +10,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 class HomeSliverAppBarComponent extends StatelessWidget {
-  HomeSliverAppBarComponent({Key? key}) : super(key: key);
+  HomeSliverAppBarComponent({Key? key,required this.child}) : super(key: key);
   MainController mainController = Get.find<MainController>();
-
+final Widget child;
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
@@ -246,81 +246,7 @@ class HomeSliverAppBarComponent extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            InkWell(
-              onTap: () {
-                Get.toNamed(PROFILE_PAGE);
-              },
-              child: Container(
-                padding:
-                    EdgeInsets.symmetric(horizontal: 10.w, vertical: 0.013.sh),
-                margin: EdgeInsets.only(top: 108),
-                width: double.infinity,
-                height: 0.071.sh,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.all(0.002.sw),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: GrayDarkColor,
-                      ),
-                      child: Container(
-                        padding: EdgeInsets.all(0.002.sw),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: WhiteColor,
-                        ),
-                        child: Container(
-                          padding: EdgeInsets.all(0.002.sw),
-                          decoration: BoxDecoration(shape: BoxShape.circle),
-                          child: Obx(() {
-                            return Container(
-                              width: 0.1.sw,
-                              height: 0.1.sw,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                      image: getLogo() != null
-                                          ? NetworkImage('${getLogo()}')
-                                          : getUserImage())),
-                            );
-                          }),
-                        ),
-                      ),
-                    ),
-                    10.horizontalSpace,
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          Get.toNamed(CREATE_PRODUCT_PAGE);
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10.w),
-                          alignment: Alignment.centerRight,
-                          height: 0.055.sh,
-                          decoration: BoxDecoration(
-                            color: WhiteColor,
-                            boxShadow: [
-                              BoxShadow(color: GrayDarkColor, blurRadius: 3),
-                              BoxShadow(
-                                  color: GrayDarkColor.withOpacity(0.4),
-                                  blurRadius: 3),
-                            ],
-                            borderRadius: BorderRadius.circular(50.w),
-                          ),
-                          child: Text(
-                            'ماذا تفكر أن تنشر ...',
-                            style: H3GrayTextStyle,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            child,
             Divider(
               color: GrayDarkColor,
               height: 0.0017.sh,

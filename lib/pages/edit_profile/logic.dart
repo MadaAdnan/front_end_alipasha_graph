@@ -4,11 +4,13 @@ import 'dart:io';
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/helpers/components.dart';
 import 'package:ali_pasha_graph/helpers/queries.dart';
+import 'package:ali_pasha_graph/models/city_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:get/get_rx/get_rx.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -16,7 +18,9 @@ import 'package:image_picker/image_picker.dart';
 class EditProfileLogic extends GetxController {
   MainController mainController = Get.find<MainController>();
   Rxn<UserModel> user = Rxn<UserModel>(null);
+  RxList<CityModel> cities = RxList<CityModel>([]);
   RxBool loading = RxBool(false);
+  RxnInt cityId = RxnInt(null);
   Rx<TextEditingController> nameController =
       Rx<TextEditingController>(TextEditingController());
   Rx<TextEditingController> emailController =
@@ -93,6 +97,13 @@ class EditProfileLogic extends GetxController {
         is_delivery
         affiliate
         info
+        city{
+        id
+        }
+    }
+    cities{
+    name
+    id
     }
 }
     ''';
@@ -100,6 +111,13 @@ class EditProfileLogic extends GetxController {
       dio.Response? res = await mainController.fetchData();
       if (res?.data?['data']?['me'] != null) {
         user.value = UserModel.fromJson(res?.data?['data']?['me']);
+        cityId.value = user.value?.city?.id;
+      }
+
+      if (res?.data?['data']?['cities'] != null) {
+        for (var item in res?.data?['data']?['cities']) {
+          cities.add(CityModel.fromJson(item));
+        }
       }
     } catch (e) {
       mainController.logger.e("Error get Profile $e");
@@ -111,27 +129,30 @@ class EditProfileLogic extends GetxController {
     loading.value = true;
     Map<String, dynamic> datajson = {
       "query":
-          r" mutation UpdateUser($name:String!,$email:String!,$password:String,$phone:String,$seller_name:String,$address:String,$close_time:String,$open_time:String,$info:String,$image:Upload,$logo:Upload) { "
-          r"updateUser(input:{ name:$name,email:$email,password:$password,phone:$phone,seller_name:$seller_name,address:$address,close_time:$close_time,open_time:$open_time,info:$info,image:$image,logo:$logo }) "
-          "  {$AUTH_FIELDS }"
-          r"}",
+          r" mutation UpdateUser($input:UpdateUserInput!) { "
+              r"updateUser(input:$input) "
+              "  {$AUTH_FIELDS }"
+              r"}",
       "variables": <String, dynamic>{
-    "name": nameController.value.text??'',
-    "email": emailController.value.text??'',
-    "password": passwordController.value.text??'',
-    "phone": phoneController.value.text??'',
-    /*"city_id": 1,*/
-    "seller_name": sellerNameController.value.text??'',
-    "address": addressController.value.text??'',
-    "close_time": closeTimeController.value.text??'',
-    "open_time": openTimeController.value.text??'',
-    "info": infoController.value.text??'',
-    "image": null,
-    "logo": null,
-    "is_delivery": true,
+        "input":{
+          "name": nameController.value.text ?? '',
+          "email": emailController.value.text ?? '',
+          "password": passwordController.value.text ?? '',
+          "phone": phoneController.value.text ?? '',
+          "city_id": cityId.value,
+          "seller_name": sellerNameController.value.text ?? '',
+          "address": addressController.value.text ?? '',
+          "close_time": closeTimeController.value.text ?? '',
+          "open_time": openTimeController.value.text ?? '',
+          "info": infoController.value.text ?? '',
+          "image": null,
+          "logo": null,
+          "is_delivery": true,
+        },
+
       }
     };
-    mainController.logger.i(datajson['variables']);
+
 
     String map = '''
     {
@@ -146,66 +167,25 @@ class EditProfileLogic extends GetxController {
     };
 
     mainController.query.value = '''
-    mutation UpdateUser {
-    updateUser(
-        input: {
-            name: "${nameController.value.text}"
-            email: "${emailController.value.text}"
-            password: "${nameController.value.text}"
-            phone: "${phoneController.value.text}"
-            city_id: 4
-            seller_name: "${sellerNameController.value.text}"
-            address: "${addressController.value.text}"
-            close_time: "${closeTimeController.value.text}"
-            open_time: "${openTimeController.value.text}"
-            info: "${infoController.value.text}"
-            image: null
-            logo: null
-            is_delivery: true
-        }
-    ) {
-        name
-        id
-        seller_name
-        email
-        phone
-        address
-        image
-        logo
-        open_time
-        close_time
-        is_delivery
-        info
-        plans {
-            id
-        }
-        city {
-            id
-        }
-        total_balance
-        total_point
-        followers {
-            user {
-                name
-                id
-            }
-            seller {
-                id
-                seller_name
-            }
-        }
-    }
-}
-
+   
     
     ''';
     try {
-      dio.Response res=await mainController.dio_manager.executeGraphQLQueryWithFile(json.encode(datajson),map: map,files: data);
- if(res.data['data']['updateUser']!=null){
-   mainController.setUserJson(json: res.data['data']['updateUser']);
-   messageBox(title: 'نجاح العملية', message: 'تم تعديل الملف الشخصي بنجاح', isError: false);
-  // mainController.authUser.value=UserModel.fromJson(res.data['data']['updateUser']);
- }
+      dio.Response res = await mainController.dio_manager
+          .executeGraphQLQueryWithFile(json.encode(datajson),
+              map: map, files: data);
+      if (res.data['data']['updateUser'] != null) {
+        mainController.setUserJson(json: res.data['data']['updateUser']);
+        messageBox(
+            title: 'نجاح العملية',
+            message: 'تم تعديل الملف الشخصي بنجاح',
+            isError: false);
+        // mainController.authUser.value=UserModel.fromJson(res.data['data']['updateUser']);
+      }
+      mainController.logger.e(res.data);
+      if(res.data['errors'][0]['message']!=null){
+        mainController.logger.i(res.data['errors'][0]['message']);
+      }
     } catch (e) {
       mainController.logger.e("Error get Profile $e");
     }

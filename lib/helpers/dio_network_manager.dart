@@ -1,5 +1,6 @@
 
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:dio/dio.dart' as dioo;
@@ -104,7 +105,7 @@ class NetworkManager {
     dt["operations"]= query;
     dt["map"]= json.encode(json.decode(map!));
     for (var entry in fileData.entries) {
-     dt[entry.key] = await dioo.MultipartFile.fromFile(entry.value.path,filename: 'test.png');
+     dt[entry.key] = await dioo.MultipartFile.fromFile(entry.value.path,filename: '${entry.value.path}',contentType: dioo.DioMediaType("${entry.value.mimeType}","${entry.value.mimeType}"));
     }
 Get.find<MainController>().logger.e(dt['map']);
     try {

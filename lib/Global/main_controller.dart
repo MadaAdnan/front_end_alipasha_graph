@@ -244,8 +244,8 @@ class MainController extends GetxController {
           file.path, file.path + '.webp',
           format: CompressFormat.webp,
           quality: 80,
-          minHeight: height ?? 100,
-          minWidth: width ?? 100,rotate: 0,numberOfRetries: 10);
+          minHeight: height ?? 300,
+          minWidth: width ?? 300,rotate: 0,numberOfRetries: 10);
 
 
       if (compressedFile != null) {
