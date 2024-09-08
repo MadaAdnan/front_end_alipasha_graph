@@ -38,17 +38,18 @@ class PrayerLogic extends GetxController {
     loading.value = true;
     try {
       dio.Response idlibP = await connect.get(
-          '/${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}?city=Idlib&country=Syria&method=3');
+          '/${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}}?city=Idlib&country=Syria&method=3');
       if (idlibP.data?['data'] != null) {
         idlib.value = PrayerModel.fromJson(idlibP.data?['data']);
       }
+
     } catch (e) {
       mainController.logger.e("Get PrayerTime in idlib $e");
     }
 
     try {
       dio.Response izazP = await connect.get(
-          '/${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}?city=Izaz&country=Syria&method=3');
+          '/${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}}?city=Izaz&country=Syria&method=3');
       if (izazP.data?['data'] != null) {
         izaz.value = PrayerModel.fromJson(izazP.data?['data']);
       }

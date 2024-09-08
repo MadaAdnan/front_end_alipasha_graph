@@ -173,7 +173,7 @@ class CreateJobPage extends StatelessWidget {
                         ),
                         InkWell(
                           onTap: () async {
-                            logic.typePost('service');
+                           Get.offAndToNamed(CREATE_SERVICE_PAGE);
                           },
                           child: Container(
                             width: 0.2.sw,

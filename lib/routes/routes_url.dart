@@ -6,6 +6,14 @@ const String MENU_PAGE = '/menu';
 const String CREATE_PRODUCT_PAGE = '/create_product';
 const String CREATE_JOB_PAGE = '/create_job';
 const String CREATE_TENDER_PAGE = '/create_tender';
+const String CREATE_SERVICE_PAGE = '/create_service';
+
+const String Edit_PRODUCT_PAGE = '/edit_product';
+const String Edit_JOB_PAGE = '/edit_job';
+const String Edit_TENDER_PAGE = '/edit_tender';
+const String Edit_SERVICE_PAGE = '/edit_service';
+
+
 const String PROFILE_PAGE = '/profile_page';
 const String Edit_PROFILE_PAGE = '/edit_profile_page';
 const String BALANCES_PAGE = '/balances';

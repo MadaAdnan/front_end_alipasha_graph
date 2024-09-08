@@ -171,8 +171,8 @@ class CreateProductPage extends StatelessWidget {
                           ),
                         ),
                         InkWell(
-                          onTap: () async {
-                            logic.typePost('service');
+                          onTap: () {
+                            Get.offAndToNamed(CREATE_SERVICE_PAGE);
                           },
                           child: Container(
                             width: 0.2.sw,

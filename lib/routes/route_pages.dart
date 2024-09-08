@@ -19,8 +19,12 @@ import 'package:ali_pasha_graph/pages/create_job/binding.dart';
 import 'package:ali_pasha_graph/pages/create_job/view.dart';
 import 'package:ali_pasha_graph/pages/create_product/binding.dart';
 import 'package:ali_pasha_graph/pages/create_product/view.dart';
+import 'package:ali_pasha_graph/pages/create_service/binding.dart';
+import 'package:ali_pasha_graph/pages/create_service/view.dart';
 import 'package:ali_pasha_graph/pages/edit_profile/binding.dart';
 import 'package:ali_pasha_graph/pages/edit_profile/view.dart';
+import 'package:ali_pasha_graph/pages/edit_service/binding.dart';
+import 'package:ali_pasha_graph/pages/edit_service/view.dart';
 
 import 'package:ali_pasha_graph/pages/filter/binding.dart';
 import 'package:ali_pasha_graph/pages/filter/view.dart';
@@ -110,6 +114,18 @@ class AppPages {
         name: CREATE_TENDER_PAGE,
         page: () => CreateTenderPage(),
         binding: CreateTenderBinding()),
+
+    GetPage(
+        middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+        name: CREATE_SERVICE_PAGE,
+        page: () => CreateServicePage(),
+        binding: CreateServiceBinding()),
+
+    GetPage(
+        middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+        name: Edit_SERVICE_PAGE,
+        page: () => EditServicePage(),
+        binding: EditServiceBinding()),
 
 
 

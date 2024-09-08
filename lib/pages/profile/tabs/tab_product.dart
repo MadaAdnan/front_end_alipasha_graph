@@ -6,6 +6,7 @@ import 'package:ali_pasha_graph/components/product_components/mini_post_card.dar
 import 'package:ali_pasha_graph/components/product_components/post_card.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/pages/profile/logic.dart';
+import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -63,6 +64,14 @@ class TabProduct extends StatelessWidget {
               child: ListView.builder(
                 itemBuilder: (context, index) =>
                     MiniPostCard(
+                      editAction: () {
+                        print(logic.products[index].type);
+                        switch(logic.products[index].type){
+                          case "service":
+                            Get.offAndToNamed(Edit_SERVICE_PAGE,arguments:logic.products[index].id );
+                            break;
+                        }
+                      },
                       post: logic.products[index],
                     ),
                 itemCount: logic.products.length,

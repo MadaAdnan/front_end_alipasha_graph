@@ -20,6 +20,7 @@ class PrayerModel {
   });
 
   factory PrayerModel.fromJson(Map<String,dynamic> data){
+    print(data);
     return PrayerModel(
       fajr: "${data['timings']?['Fajr']??''}",
       sunrice: "${data['timings']?['Sunrise']??''}",

@@ -132,6 +132,7 @@ class CreateTenderPage extends StatelessWidget {
                           ),
                         ),
                         InkWell(
+
                           child: Container(
                             width: 0.2.sw,
                             padding: EdgeInsets.symmetric(
@@ -166,8 +167,8 @@ class CreateTenderPage extends StatelessWidget {
                           ),
                         ),
                         InkWell(
-                          onTap: () async {
-                            logic.typePost('service');
+                          onTap: () {
+                            Get.offAndToNamed(CREATE_SERVICE_PAGE);
                           },
                           child: Container(
                             width: 0.2.sw,

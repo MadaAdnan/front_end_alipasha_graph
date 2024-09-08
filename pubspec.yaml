@@ -11,18 +11,18 @@ dependencies:
 
   cupertino_icons: ^1.0.8
   get: ^4.6.6
-  dio: ^5.5.0+1
+  dio: ^5.7.0
   google_fonts: ^6.2.1
   font_awesome_flutter: ^10.7.0
   flutter_svg_provider: ^1.0.7
-  path_provider: ^2.1.3
+  path_provider: ^2.1.4
   flutter_screenutil: ^5.9.3
 
   readmore: ^3.0.0
   get_storage: ^2.1.1
   dio_cache_interceptor: ^3.5.0
   image_picker: ^1.1.2
-  image_cropper: ^7.1.0
+  image_cropper: ^8.0.2
 
   select2dot1: ^2.0.9
   location: ^7.0.0
@@ -33,9 +33,9 @@ dependencies:
   intl: ^0.19.0
   cherry_toast: ^1.11.0
   change_app_package_name: ^1.3.0
-  firebase_core: ^3.2.0
-  firebase_messaging: ^15.0.3
-  firebase_analytics: ^11.2.0
+  firebase_core: ^3.4.0
+  firebase_messaging: ^15.1.0
+  firebase_analytics: ^11.3.0
   toast: ^0.3.0
   url_launcher: ^6.3.0
   animated_custom_dropdown: ^3.1.1
@@ -46,12 +46,13 @@ dependencies:
   cached_network_image: ^3.4.0
   flutter_image_compress: ^2.3.0
   flutter_widget_from_html_core: ^0.15.2
-  flutter_form_builder: ^9.3.0
+  flutter_form_builder: ^9.4.1
   form_builder_validators: ^11.0.0
   youtube_player_flutter: ^9.0.3
   form_builder_image_picker: ^4.1.0
   form_builder_file_picker: ^4.2.0
-      #path: packages/my_package
+  form_builder_extra_fields: ^11.0.0
+
 
 
 

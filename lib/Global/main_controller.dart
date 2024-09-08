@@ -42,7 +42,7 @@ class MainController extends GetxController {
   RxList<AdviceModel> advices = RxList<AdviceModel>([]);
   RxList<SliderModel> sliders = RxList<SliderModel>([]);
   Rx<SettingModel> settings =
-      Rx(SettingModel(weather_api: '531cff51e64e4a3aa0f130751242408'));
+      Rx(SettingModel(weather_api: '02b438a76f5345c3857124556240809'));
   RxBool is_show_home_appbar = RxBool(true);
   Logger logger = Logger();
   late LaravelFlutterPusher pusher;

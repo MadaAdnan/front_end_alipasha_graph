@@ -46,6 +46,10 @@ class PrayerPage extends StatelessWidget {
               );
             }),
           ),
+         Obx(() {
+           return  Text('${logic.idlib.value?.hijri?.dayName} - ${logic.idlib.value?.hijri?.day} - ${logic.idlib.value?.hijri?.monthName} - ${logic.idlib.value?.hijri?.year}',style: H3GrayTextStyle,);
+         }),
+          30.verticalSpace,
           Container(
             width: 0.9.sw,
             height: 0.1.sh,
