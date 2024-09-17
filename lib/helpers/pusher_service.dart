@@ -1,9 +1,9 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:get/get.dart';
-import 'package:laravel_flutter_pusher_plus/laravel_flutter_pusher_plus.dart';
+// import 'package:laravel_flutter_pusher_plus/laravel_flutter_pusher_plus.dart';
 
 class PusherService {
-  static LaravelFlutterPusher init({String? token}) {
+  /*static LaravelFlutterPusher init({String? token}) {
 
     var options = PusherOptions(
         host: '192.168.11.200',
@@ -24,5 +24,7 @@ class PusherService {
       onError: (ConnectionError e) => print("Error Pusher ${e.message}"),
     );
     return pusher;
-  }
+  }*/
+
+  static init(){}
 }

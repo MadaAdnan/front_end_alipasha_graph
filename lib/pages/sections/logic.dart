@@ -29,7 +29,7 @@ class SectionsLogic extends GetxController {
     mainController.query.value = '''
     
     query MainCategories {
-    mainCategories {
+    mainCategories (type: "product"){
         id
         name
         color

@@ -8,7 +8,6 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:get/get.dart';
 
-
 import 'package:get/state_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
@@ -22,6 +21,7 @@ class CreateProductLogic extends GetxController {
   RxnString errorEndDate = RxnString(null);
   GetStorage box = GetStorage('ali-pasha');
   RxBool loading = RxBool(false);
+  RxnString errorImage = RxnString(null);
 
   // global
   RxList<CategoryModel> categories = RxList<CategoryModel>([]);
@@ -34,6 +34,7 @@ class CreateProductLogic extends GetxController {
   TextEditingController infoProduct = TextEditingController();
 
   //product
+  TextEditingController nameController = TextEditingController();
   TextEditingController priceController = TextEditingController(text: '0');
   TextEditingController discountController = TextEditingController();
   TextEditingController videoController = TextEditingController();
@@ -44,13 +45,13 @@ class CreateProductLogic extends GetxController {
   Rxn<CategoryModel> sub3Category = Rxn<CategoryModel>(null);
   RxList<XFile> images = RxList<XFile>([]);
   RxList<int> colorIds = RxList<int>([]);
-  Rx<Map<int,List<int?>>> options = Rx<Map<int,List<int?>>>({});
+  Rx<Map<int, List<int?>>> options = Rx<Map<int, List<int?>>>({});
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    ever(options, (value){
+    ever(options, (value) {
       mainController.logger.e(value);
     });
     ever(category, (value) {
@@ -76,6 +77,7 @@ class CreateProductLogic extends GetxController {
   }
 
   Future<void> getDataForCreate() async {
+    loading.value = true;
     mainController.query.value = r'''
 query MainCategories {
     mainCategories (type: "product"){
@@ -115,31 +117,37 @@ query MainCategories {
 }
 
 ''';
-    dio.Response? res = await mainController.fetchData();
-mainController.logger.i(res?.data);
-    if (res?.data != null && res?.data['data']?['mainCategories'] != null) {
-      for (var item in res?.data['data']['mainCategories']) {
-        if (item['type'] == 'product') {
-          categories.add(CategoryModel.fromJson(item));
+    try {
+      dio.Response? res = await mainController.fetchData();
+
+      if (res?.data != null && res?.data['data']?['mainCategories'] != null) {
+        for (var item in res?.data['data']['mainCategories']) {
+          if (item['type'] == 'product') {
+            categories.add(CategoryModel.fromJson(item));
+          }
         }
       }
+
+      if (res?.data != null && res?.data['data']['colors'] != null) {
+        for (var item in res?.data['data']['colors']) {
+          colors.add(ColorModel.fromJson(item));
+        }
+      }
+    } catch (e) {
+      mainController.logger.e('Error Get Data CreateProduct : $e');
     }
 
-    if (res?.data != null && res?.data['data']['colors'] != null) {
-      for (var item in res?.data['data']['colors']) {
-        colors.add(ColorModel.fromJson(item));
-      }
-    }
+    loading.value = false;
   }
 
   saveData() async {
-
     loading.value = true;
     Map<String, dynamic> datajson = {
       "query":
           r"""mutation CreateProduct($input: CreateProductInput!) { createProduct(input: $input) { id } }""",
       "variables": <String, dynamic>{
         "input": {
+          "name": "${nameController.text}",
           "images": null,
           "info": "${infoProduct.text}",
           "is_available": isAvailable.value,
@@ -151,8 +159,9 @@ mainController.logger.i(res?.data);
           "sub3_id": sub3Category.value?.id,
           "period": periodProduct.value,
           "colors": colorIds.toList(),
-          'video':"${videoController.text}",
-          "options":options.value.values.map((el)=>el).expand((i)=>i).toList(),
+          'video': "${videoController.text}",
+          "options":
+              options.value.values.map((el) => el).expand((i) => i).toList(),
         }
       }
     };
@@ -175,19 +184,21 @@ mainController.logger.i(res?.data);
           .executeGraphQLQueryWithFile(json.encode(datajson),
               map: map, files: data);
       mainController.logger.e(res.data);
-      if(res.data?['data']?['createProduct']!=null){
+      if (res.data?['data']?['createProduct'] != null) {
         infoProduct.clear();
         priceController.clear();
         discountController.clear();
+        nameController.clear();
         videoController.clear();
-        category.value=null;
-        subCategory.value=null;
-        sub2Category.value=null;
-        sub3Category.value=null;
+        category.value = null;
+        subCategory.value = null;
+        sub2Category.value = null;
+        sub3Category.value = null;
         options.value.clear();
         images.clear();
         colorIds.clear();
-        showAutoCloseDialog(message: "تم إرسال المنتج للمراجعة بنجاح",isSuccess: true);
+        showAutoCloseDialog(
+            message: "تم إرسال المنتج للمراجعة بنجاح", isSuccess: true);
       }
     } catch (e) {
       mainController.logger.e("Error get Profile $e");

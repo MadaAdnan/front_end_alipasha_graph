@@ -13,7 +13,7 @@ import 'package:image_picker/image_picker.dart';
 class ChatLogic extends GetxController {
   MainController mainController = Get.find<MainController>();
   RxBool loadingSend = RxBool(false);
-  TextEditingController messageController = TextEditingController();
+  TextEditingController messageController = TextEditingController(text: "${Get.parameters['msg']}");
   Rxn<XFile> file = Rxn<XFile>(null);
   RxBool loading = RxBool(false);
   RxBool hasMorePage = RxBool(false);
@@ -35,12 +35,12 @@ class ChatLogic extends GetxController {
     ever(page, (value) {
       getMessages();
     });
-    mainController.pusher
-        .subscribe(
-            'private-message.${communityModel.id}.${mainController.authUser.value?.id}')
-        .bind('message.create', (event) {
-      messages.insert(0, MessageCommunityModel.fromJson(event['message']));
-    });
+    // mainController.pusher
+    //     .subscribe(
+    //         'private-message.${communityModel.id}.${mainController.authUser.value?.id}')
+    //     .bind('message.create', (event) {
+    //   messages.insert(0, MessageCommunityModel.fromJson(event['message']));
+    // });
   }
 
   @override
@@ -98,23 +98,24 @@ if(messageController.text.length==0){
   return;
 }
     loadingSend.value = true;
+
     int? sellerId = mainController.authUser.value?.id == communityModel.user?.id
         ? communityModel.seller?.id
         : communityModel.user?.id;
     mainController.query.value = '''
-    mutation CreateMessage2 {
-    createMessage(userId: ${mainController.authUser.value?.id}, sellerId: $sellerId, message: "${messageController.text}") {
-    message
-    attach
-    created_at
-        user {
-        id
+    mutation CreateMessage {
+      createMessage(userId: ${mainController.authUser.value?.id}, sellerId: $sellerId, message: "${messageController.text.replaceAll("\n", '')}") {
+        message
+        attach
+        created_at
+          user {
+            id
             name
             seller_name
             image
             logo
-        }
-        community {
+          }
+          community {
             id
             user {
                 name
@@ -129,14 +130,14 @@ if(messageController.text.length==0){
                 image
                 logo
             }
-        }
-    }
+          }
+      }
 }
 
     ''';
     try {
       dio.Response? res = await mainController.fetchData();
-    //   mainController.logger.e(res?.data);
+       mainController.logger.e(res?.data);
       if (res?.data?['data']['createMessage'] != null) {
         messageController.clear();
         messages.insert(

@@ -7,199 +7,213 @@ import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
+import '../../routes/routes_url.dart';
 import 'logic.dart';
 
 // 2226 heght all screen
 class HomeAppBarComponent extends StatelessWidget
     implements PreferredSizeWidget {
+  HomeAppBarComponent({Key? key}) : super(key: key);
 
-
-  HomeAppBarComponent({Key? key})
-      : super(key: key);
-  double max_height = 0.115.sh;
   MainController mainController = Get.find<MainController>();
-
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      return Container(
-        color: WhiteColor,
-        padding: EdgeInsets.symmetric(horizontal: 0.003.sw, vertical: 2),
-        width: double.infinity,
-        height: mainController.is_show_home_appbar.value ? 0.2.sh : 0.184.sh,
-        child: Column(
-          children: [
-            Container(
-              width: double.infinity,
-              color: WhiteColor,
-              height: 0.044.sh,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  SizedBox(
-                    width: 0.35.sw,
-                    child: const Image(
-                      image: Svg(
-                          'assets/images/svg/ali-pasha-horizantal-logo.svg',
-                          color: RedColor, source: SvgSource.asset),
-                      color: RedColor,
-                      fit: BoxFit.fitHeight,
+    return Container(
+      width: 1.sw,
+      height: 0.093.sh,
+      color: WhiteColor,
+      child: Column(
+        children: [
+          Row(
+            children: <Widget>[
+              Container(
+                width: 0.29.sw,
+                child: Image(
+                  image: Svg('assets/images/svg/ali-pasha-horizantal-logo.svg',
+                      color: RedColor, source: SvgSource.asset),
+                  width: 0.27.sw,
+                  height: 0.03.sh,
+                  color: RedColor,
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
+              ),
+              Expanded(child: Container()),
+              IconButton(
+                icon: Icon(
+                  Icons.search,
+                  color: RedColor,
+                ),
+                onPressed: () {
+                  Get.toNamed(FILTER_PAGE);
+                },
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.live_tv,
+                  color: RedColor,
+                ),
+                onPressed: () {},
+              ),
+              IconButton(
+                onPressed: () {
+                  Get.toNamed(MENU_PAGE);
+                },
+                icon: Obx(() {
+                  return Badge.count(
+                    count: mainController.carts.length,
+                    backgroundColor: RedColor,
+                    alignment: Alignment(-0.006.sw,-0.0015.sh),
+                    isLabelVisible: mainController.carts.length>0,
+                    child: Icon(
+                      FontAwesomeIcons.bars,
+                      size: 0.06.sw,
                     ),
+                  );
+                }),
+              )
+            ],
+          ),
+          Container(
+            height: 0.034.sh,
+            decoration: BoxDecoration(
+                border: Border(bottom: BorderSide(color: GrayLightColor))),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: 0.1.sw,
+                  decoration: BoxDecoration(
+                    border: Get.currentRoute == HOME_PAGE
+                        ? Border(
+                            bottom: BorderSide(
+                              color: RedColor,
+                              style: BorderStyle.solid,
+                              width: 0.001.sw,
+                            ),
+                          )
+                        : null,
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 0.01.sw),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Icon(
-                          FontAwesomeIcons.search,
-                          size: 70.w,
-                          color: RedColor,
-                        ),
-                        20.horizontalSpace,
-                        SizedBox(
-                          width: 0.21.sw,
-                          child: MaterialButton(
-                            color: RedColor,
-                            onPressed: () {},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Icon(
-                                  FontAwesomeIcons.towerCell,
-                                  color: WhiteColor,
-                                  size: 50.w,
-                                ),
-                                15.horizontalSpace,
-                                Text(
-                                  'Live',
-                                  style: H4WhiteTextStyle,
-                                )
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
+                  child: IconButton(
+                    onPressed: () {
+                      Get.offAndToNamed(HOME_PAGE);
+                    },
+                    icon: Icon(
+                      FontAwesomeIcons.home,
+                      size: 0.04.sw,
+                      color: Get.currentRoute == HOME_PAGE ? RedColor : null,
                     ),
-                  )
-                ],
-              ),
-            ),
-            10.verticalSpace,
-            SizedBox(
-              width: double.infinity,
-              height: 0.071.sh,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        FontAwesomeIcons.home,
-                        size: 65.w,
-                      )),
-                  Container(
-                      decoration: BoxDecoration(
-                          border: Border(
-                              bottom: BorderSide(
-                                  color: RedColor,
-                                  style: BorderStyle.solid,
-                                  width: 0.002.sh))),
-                      child: IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            FontAwesomeIcons.bookOpen,
-                            size: 65.w,
-                            color: RedColor,
-                          ))),
-                  IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        FontAwesomeIcons.headset,
-                        size: 65.w,
-                      )),
-                  IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        FontAwesomeIcons.arrowTrendDown,
-                        size: 65.w,
-                      )),
-                  IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        FontAwesomeIcons.comments,
-                        size: 65.w,
-                      )),
-                  IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        FontAwesomeIcons.bars,
-                        size: 75.w,
-                      )),
-                ],
-              ),
-            ),
-            Divider(
-              color: GrayDarkColor,
-              height: 0.0017.sh,
-            ),
-            if (mainController.is_show_home_appbar.value)
-              InkWell(
-                onTap: () {},
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 10.w, vertical: 0.013.sh),
-                  width: double.infinity,
-                  height: 0.071.sh,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Image(
-                        image: const AssetImage('assets/images/png/user.png'),
-                        height: 100.h,
-                      ),
-                      10.horizontalSpace,
-                      Expanded(
-                          child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 10.w),
-                            alignment: Alignment.centerRight,
-                            height: 0.055.sh,
-                            decoration: BoxDecoration(
-                              color: WhiteColor,
-                              boxShadow: [
-                                const BoxShadow(color: GrayDarkColor, blurRadius: 3),
-                                BoxShadow(color: GrayDarkColor.withOpacity(0.4),
-                                    blurRadius: 3)
-                              ],
-                              borderRadius: BorderRadius.circular(50.w),
-                            ),
-                            child: Text(
-                              'ماذا تفكر أن تنشر ...', style: H3GrayTextStyle,),
-                          ))
-                    ],
                   ),
                 ),
-              ),
-            if (mainController.is_show_home_appbar.value)
-              Divider(
-                color: GrayDarkColor,
-                height: 0.0017.sh,
-              ),
-          ],
-        ),
-      );
-    });
-
+                Container(
+                  width: 0.1.sw,
+                  decoration: BoxDecoration(
+                    border: Get.currentRoute == SERVICES_PAGE
+                        ? Border(
+                            bottom: BorderSide(
+                              color: RedColor,
+                              style: BorderStyle.solid,
+                              width: 0.001.sw,
+                            ),
+                          )
+                        : null,
+                  ),
+                  child: IconButton(
+                    onPressed: () {
+                      Get.toNamed(SERVICES_PAGE);
+                    },
+                    icon: Icon(
+                      FontAwesomeIcons.bookOpen,
+                      size: 0.04.sw,
+                      color:
+                          Get.currentRoute == SERVICES_PAGE ? RedColor : null,
+                      //color: RedColor,
+                    ),
+                  ),
+                ),
+                Container(
+                  width: 0.1.sw,
+                  decoration: BoxDecoration(
+                    border: Get.currentRoute == JOBS_PAGE
+                        ? Border(
+                            bottom: BorderSide(
+                              color: RedColor,
+                              style: BorderStyle.solid,
+                              width: 0.001.sw,
+                            ),
+                          )
+                        : null,
+                  ),
+                  child: IconButton(
+                    onPressed: () {
+                      Get.offAndToNamed(JOBS_PAGE);
+                    },
+                    icon: Icon(
+                      FontAwesomeIcons.headset,
+                      size: 0.04.sw,
+                      color: Get.currentRoute == JOBS_PAGE ? RedColor : null,
+                    ),
+                  ),
+                ),
+                Container(
+                  width: 0.1.sw,
+                  decoration: BoxDecoration(
+                    border: Get.currentRoute == TENDERS_PAGE
+                        ? Border(
+                            bottom: BorderSide(
+                              color: RedColor,
+                              style: BorderStyle.solid,
+                              width: 0.001.sw,
+                            ),
+                          )
+                        : null,
+                  ),
+                  child: IconButton(
+                    onPressed: () {
+                      Get.offAndToNamed(TENDERS_PAGE);
+                    },
+                    icon: Icon(FontAwesomeIcons.arrowTrendDown,
+                        size: 0.04.sw,
+                        color:
+                            Get.currentRoute == TENDERS_PAGE ? RedColor : null),
+                  ),
+                ),
+                Container(
+                  width: 0.1.sw,
+                  decoration: BoxDecoration(
+                    border: Get.currentRoute == COMMUNITIES_PAGE
+                        ? Border(
+                            bottom: BorderSide(
+                              color: RedColor,
+                              style: BorderStyle.solid,
+                              width: 0.001.sw,
+                            ),
+                          )
+                        : null,
+                  ),
+                  child: IconButton(
+                    onPressed: () {
+                      Get.toNamed(COMMUNITIES_PAGE);
+                    },
+                    icon: Icon(FontAwesomeIcons.comments,
+                        size: 0.04.sw,
+                        color: Get.currentRoute == COMMUNITIES_PAGE
+                            ? RedColor
+                            : null),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
   // TODO: implement preferredSize
   Size get preferredSize {
-    if (mainController.is_show_home_appbar.value) {
-      max_height = 0.19.sh;
-    }
-    return Size(double.infinity, Get.height * max_height);
+    return Size(double.infinity, 0.12.sh);
   }
 }

@@ -17,15 +17,16 @@ class SectionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: WhiteColor,
       body: Column(
         children: [
           Container(
             margin: EdgeInsets.only(bottom: 0.02.sh),
             alignment: Alignment.center,
             width: 1.sw,
-            height: 0.15.sh,
-            color: GrayLightColor,
-            child: Text('جميع التصنيفات',style: H1BlackTextStyle,),
+            height: 0.06.sh,
+            color: RedColor,
+            child: Text('جميع التصنيفات',style: H2WhiteTextStyle,),
           ),
           Obx(() {
             if (logic.loading.value) {

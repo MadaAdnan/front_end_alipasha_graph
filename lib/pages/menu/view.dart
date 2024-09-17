@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:ali_pasha_graph/components/fields_components/input_component.dart';
+import 'package:ali_pasha_graph/helpers/cart_helper.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/components.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
@@ -13,8 +15,12 @@ import 'package:badges/badges.dart' as badges;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:toast/toast.dart';
 
+import '../../Global/main_controller.dart';
 import '../../components/drop_down_button_menu/drop_down_button_menu.dart';
 import 'logic.dart';
 
@@ -22,6 +28,7 @@ class MenuPage extends StatelessWidget {
   MenuPage({Key? key}) : super(key: key);
 
   final logic = Get.find<MenuLogic>();
+  MainController mainController = Get.find<MainController>();
 
   @override
   Widget build(BuildContext context) {
@@ -374,8 +381,26 @@ class MenuPage extends StatelessWidget {
                           }
                         }),
                     _buildWidget(
-                        image: 'assets/images/png/cart.png',
-                        title: 'سلة المشتريات'),
+                      onTap: () {
+// mainController.emptyCart();
+                        Get.offAndToNamed(CART_SELLER);
+                      },
+                      image: 'assets/images/png/cart.png',
+                      title: 'سلة المشتريات',
+                      child: Obx(() {
+                        return Container(
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.symmetric(
+                              vertical: 0.01.sw, horizontal: 0.01.sw),
+                          decoration: BoxDecoration(
+                              color: RedColor, shape: BoxShape.circle),
+                          child: Text(
+                            '${mainController.carts.length}',
+                            style: H4WhiteTextStyle,
+                          ),
+                        );
+                      }),
+                    ),
                   ],
                 ),
               ),
@@ -387,6 +412,9 @@ class MenuPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     _buildWidget(
+                        onTap: () {
+                          Get.offAndToNamed(CREATE_PRODUCT_PAGE);
+                        },
                         image: 'assets/images/png/create.png',
                         title: 'إضافة منتج'),
                     _buildWidget(
@@ -406,6 +434,20 @@ class MenuPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     _buildWidget(
+                        onTap: () async {
+                          // طلب الإذن
+                          final permissionGranted = await requestStoragePermission();
+                          if (permissionGranted) {
+                            // جلب المسار
+                            final path = await getAppPath();
+                            final filePath = '$path/app.apk'; // أو '$path/app.ipa'
+
+                            // مشاركة الملف
+                            await shareAppFile(filePath);
+                          } else {
+                            print('الإذن مرفوض');
+                          }
+                        },
                         image: 'assets/images/png/share.png',
                         title: 'مشاركة التطبيق'),
                     _buildWidget(
@@ -600,6 +642,7 @@ class MenuPage extends StatelessWidget {
   Widget _buildWidget({
     required String image,
     required String title,
+    Widget? child,
     Function()? onTap,
   }) {
     return InkWell(
@@ -620,10 +663,22 @@ class MenuPage extends StatelessWidget {
                       width: 0.095.sw,
                       height: 0.095.sw,
                       child: Image(image: AssetImage(image))),
-                  Text(
-                    title,
-                    style: H2BlackTextStyle,
-                  )
+                  if (child == null)
+                    Text(
+                      title,
+                      style: H2BlackTextStyle,
+                    ),
+                  if (child != null)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          style: H2BlackTextStyle,
+                        ),
+                        child,
+                      ],
+                    ),
                 ],
               ),
             ),
@@ -721,5 +776,23 @@ class MenuPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<bool> requestStoragePermission() async {
+    final status = await Permission.storage.request();
+    return status.isGranted;
+  }
+
+  // دالة لجلب المسار
+  Future<String> getAppPath() async {
+    final directory = await getApplicationDocumentsDirectory();
+    return directory.path;
+  }
+
+  // دالة لمشاركة الملف
+  Future<void> shareAppFile(String filePath) async {
+    final file = XFile(filePath);
+
+      await Share.shareXFiles([file], text: 'قم بتنزيل تطبيقي من هنا!');
   }
 }

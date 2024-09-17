@@ -56,7 +56,7 @@ class TabProduct extends StatelessWidget {
           ),
           Obx(() {
             if (logic.loading.value && logic.page.value == 1) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }
@@ -70,6 +70,16 @@ class TabProduct extends StatelessWidget {
                           case "service":
                             Get.offAndToNamed(Edit_SERVICE_PAGE,arguments:logic.products[index].id );
                             break;
+                          case "tender":
+                            Get.offAndToNamed(Edit_TENDER_PAGE,arguments:logic.products[index].id );
+                            break;
+                          case "job":
+                          case "search_job":
+                            Get.offAndToNamed(Edit_JOB_PAGE,arguments:logic.products[index].id );
+                            break;
+                          case "product":
+                            Get.offAndToNamed(Edit_PRODUCT_PAGE,arguments:logic.products[index].id );
+                            break;
                         }
                       },
                       post: logic.products[index],
@@ -80,7 +90,7 @@ class TabProduct extends StatelessWidget {
           }),
           Obx(() {
             return Visibility(
-              child: Center(child: CircularProgressIndicator(),),
+              child: const Center(child: CircularProgressIndicator(),),
               visible: mainController.loading.value && logic.page.value > 1,);
           })
         ],

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
@@ -11,7 +12,7 @@ import '../../models/category_model.dart';
 
 class CreateTenderLogic extends GetxController {
 
-  final formState = GlobalKey<FormState>();
+  final formState = GlobalKey<FormBuilderState>();
   final MainController mainController = Get.find<MainController>();
   RxnString errorEndDate = RxnString(null);
   GetStorage box = GetStorage('ali-pasha');
@@ -75,6 +76,7 @@ class CreateTenderLogic extends GetxController {
   }
 
   Future<void> getDataForCreate() async {
+    loading.value=true;
     mainController.query.value = r'''
 query MainCategories {
     mainCategories (type: "tender"){
@@ -110,13 +112,17 @@ query MainCategories {
 }
 
 ''';
+  try{
     dio.Response? res = await mainController.fetchData();
-    mainController.logger.i(res?.data);
     if (res?.data != null && res?.data['data']?['mainCategories'] != null) {
       for (var item in res?.data['data']['mainCategories']) {
         categories.add(CategoryModel.fromJson(item));
       }
     }
+  }catch(e){
+    mainController.logger.e('ERROR GET DATA TENDER : $e');
+  }
+    loading.value=false;
   }
 
   saveData() async {

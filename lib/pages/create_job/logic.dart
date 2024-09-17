@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 
@@ -13,7 +14,7 @@ import '../../models/category_model.dart';
 import 'package:dio/dio.dart' as dio;
 
 class CreateJobLogic extends GetxController {
-  final formState = GlobalKey<FormState>();
+  final formState = GlobalKey<FormBuilderState>();
   final MainController mainController = Get.find<MainController>();
   RxnString errorEndDate = RxnString(null);
   GetStorage box = GetStorage('ali-pasha');
@@ -27,7 +28,7 @@ class CreateJobLogic extends GetxController {
 
   TextEditingController nameProduct = TextEditingController();
   TextEditingController infoProduct = TextEditingController();
-  RxnString typeProduct = RxnString('job');
+  RxnString typeProduct = RxnString(null);
 
   //product
   TextEditingController startDateController = TextEditingController();
@@ -72,11 +73,9 @@ class CreateJobLogic extends GetxController {
     getDataForCreate();
   }
 
-  fillDataFromDraft() {
-    var data = box.read<Map<String, dynamic>>('draft');
-  }
 
   Future<void> getDataForCreate() async {
+    loading.value=true;
     mainController.query.value = r'''
 query MainCategories {
     mainCategories (type: "job"){
@@ -112,13 +111,17 @@ query MainCategories {
 }
 
 ''';
-    dio.Response? res = await mainController.fetchData();
-    mainController.logger.i(res?.data);
-    if (res?.data != null && res?.data['data']?['mainCategories'] != null) {
-      for (var item in res?.data['data']['mainCategories']) {
-        categories.add(CategoryModel.fromJson(item));
+    try{
+      dio.Response? res = await mainController.fetchData();
+      if (res?.data != null && res?.data['data']?['mainCategories'] != null) {
+        for (var item in res?.data['data']['mainCategories']) {
+          categories.add(CategoryModel.fromJson(item));
+        }
       }
+    }catch(e){
+      mainController.logger.e('Error GetData CreateJob :$e');
     }
+    loading.value=false;
   }
 
   saveData() async {
@@ -205,13 +208,4 @@ query MainCategories {
     loading.value = false;
   }
 
-  Future<void> saveToDraft() async {
-    var data = {
-      'type': typePost.value,
-      'info': infoProduct.text,
-      'price': 90,
-      'mainImage': 90
-    };
-    await box.write('draft', data);
-  }
 }

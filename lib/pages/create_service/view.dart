@@ -54,6 +54,7 @@ class CreateServicePage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Container(
+                                padding: EdgeInsets.only(top: 0.02.sh),
                                 decoration: BoxDecoration(
                                     border: Border(
                                         bottom:
@@ -64,7 +65,7 @@ class CreateServicePage extends StatelessWidget {
                                 ),
                               ),
                               InkWell(
-                                onTap: () {
+                                onTap:(){
                                   Get.offAndToNamed(CREATE_PRODUCT_PAGE);
                                 },
                                 child: Container(
@@ -91,7 +92,7 @@ class CreateServicePage extends StatelessWidget {
                                           size: 0.04.sw),
                                       10.horizontalSpace,
                                       Text(
-                                        'منتجات',
+                                        'منتج',
                                         style: logic.typePost.value != 'product'
                                             ? H4GrayTextStyle
                                             : H4WhiteTextStyle,
@@ -101,7 +102,9 @@ class CreateServicePage extends StatelessWidget {
                                 ),
                               ),
                               InkWell(
-                                onTap: () => Get.offAndToNamed(CREATE_JOB_PAGE),
+                                onTap:(){
+                                  Get.offAndToNamed(CREATE_JOB_PAGE);
+                                },
                                 child: Container(
                                   width: 0.2.sw,
                                   padding: EdgeInsets.symmetric(
@@ -126,7 +129,7 @@ class CreateServicePage extends StatelessWidget {
                                           size: 0.04.sw),
                                       10.horizontalSpace,
                                       Text(
-                                        'وظائف',
+                                        'وظيفة',
                                         style: logic.typePost.value != 'job'
                                             ? H4GrayTextStyle
                                             : H4WhiteTextStyle,
@@ -136,7 +139,7 @@ class CreateServicePage extends StatelessWidget {
                                 ),
                               ),
                               InkWell(
-                                onTap: () {
+                                onTap:(){
                                   Get.offAndToNamed(CREATE_TENDER_PAGE);
                                 },
                                 child: Container(
@@ -163,7 +166,7 @@ class CreateServicePage extends StatelessWidget {
                                           size: 0.04.sw),
                                       10.horizontalSpace,
                                       Text(
-                                        'مناقصات',
+                                        'مناقصة',
                                         style: logic.typePost.value != 'tender'
                                             ? H4GrayTextStyle
                                             : H4WhiteTextStyle,
@@ -173,6 +176,7 @@ class CreateServicePage extends StatelessWidget {
                                 ),
                               ),
                               InkWell(
+
                                 child: Container(
                                   width: 0.2.sw,
                                   padding: EdgeInsets.symmetric(
@@ -273,10 +277,10 @@ class CreateServicePage extends StatelessWidget {
                       30.verticalSpace,
                       Container(
                         width: 1.sw,
-                        height: 0.18.sh,
+                        height: 0.13.sh,
                         child: FormBuilderTextField(
                           validator: FormBuilderValidators.required(
-                              errorText: 'يرجى ملء الحقل', checkNullOrEmpty: true),
+                              errorText: 'يرجى كتابة وصف للخدمة', checkNullOrEmpty: true),
                           name: 'info',
                           minLines: 6,
                           maxLines: 9,
@@ -284,9 +288,11 @@ class CreateServicePage extends StatelessWidget {
                           style: H3BlackTextStyle,
                           controller: logic.infoProduct,
                           decoration: InputDecoration(
+                            errorStyle: H5RedTextStyle,
+                            alignLabelWithHint: true,
                             label: RichText(
                               text: TextSpan(children: [
-                                TextSpan(text: 'الوصف ', style: H4GrayTextStyle),
+                                TextSpan(text: 'وصف الخدمة ', style: H4GrayTextStyle),
                                 TextSpan(text: '*', style: H3RedTextStyle),
                               ]),
                             ),
@@ -298,18 +304,19 @@ class CreateServicePage extends StatelessWidget {
                         ),
                       ),
                       30.verticalSpace,
-                      30.verticalSpace,
+
                       Container(
                         width: 1.sw,
                         height: 0.08.sh,
                         child: FormBuilderTextField(
                           validator: FormBuilderValidators.required(
-                              errorText: 'يرجى ملء الحقل', checkNullOrEmpty: true),
+                              errorText: 'يرجى كتابة العنوان التفصيلي', checkNullOrEmpty: true),
                           name: 'address',
                           keyboardType: TextInputType.emailAddress,
                           style: H3BlackTextStyle,
                           controller: logic.addressController,
                           decoration: InputDecoration(
+                            errorStyle: H5RedTextStyle,
                             label: RichText(
                               text: TextSpan(children: [
                                 TextSpan(
@@ -324,12 +331,13 @@ class CreateServicePage extends StatelessWidget {
                           ),
                         ),
                       ),
+                      30.verticalSpace,
                       Container(
                         width: 1.sw,
                         height: 0.08.sh,
                         child: FormBuilderTextField(
                           validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(errorText: 'يرجى ملء الحقل'),
+                            FormBuilderValidators.required(errorText: 'يرجى إدخال بريد إلكتروني'),
                             FormBuilderValidators.email( errorText: 'يرجى إدخال بريد صالح'),
 
                           ]
@@ -340,6 +348,7 @@ class CreateServicePage extends StatelessWidget {
                           style: H3BlackTextStyle,
                           controller: logic.emailController,
                           decoration: InputDecoration(
+                            errorStyle: H5RedTextStyle,
                             label: RichText(
                               text: TextSpan(children: [
                                 TextSpan(
@@ -361,12 +370,13 @@ class CreateServicePage extends StatelessWidget {
                         height: 0.08.sh,
                         child: FormBuilderTextField(
                           validator: FormBuilderValidators.required(
-                              errorText: 'يرجى ملء الحقل', checkNullOrEmpty: true),
+                              errorText: 'يرجى كتابة رقم الهاتف', checkNullOrEmpty: true),
                           name: 'phone',
                           keyboardType: TextInputType.phone,
                           style: H3BlackTextStyle,
                           controller: logic.phoneController,
                           decoration: InputDecoration(
+                            errorStyle: H5RedTextStyle,
                             label: RichText(
                               text: TextSpan(children: [
                                 TextSpan(
@@ -393,7 +403,7 @@ class CreateServicePage extends StatelessWidget {
                           style: H3BlackTextStyle,
                           controller: logic.urlController,
                           decoration: InputDecoration(
-
+                            errorStyle: H5RedTextStyle,
                             labelText: 'رابط الخدمة',
                             labelStyle: H4GrayTextStyle,
                             border: OutlineInputBorder(
@@ -402,6 +412,7 @@ class CreateServicePage extends StatelessWidget {
                           ),
                         ),
                       ),
+                      30.verticalSpace,
                       Obx(() {
                         return Container(
                           child: FormBuilderSearchableDropdown<CityModel>(
@@ -414,6 +425,7 @@ class CreateServicePage extends StatelessWidget {
                                 errorText: 'يرجى تحديد المدينة',
                                 checkNullOrEmpty: true),
                             decoration: InputDecoration(
+                              errorStyle: H5RedTextStyle,
                               label: RichText(
                                 text: TextSpan(children: [
                                   TextSpan(text: 'المدينة', style: H4GrayTextStyle),
@@ -472,11 +484,13 @@ class CreateServicePage extends StatelessWidget {
                       30.verticalSpace,
                       Obx(() {
                         return Container(
+
                           child: FormBuilderDropdown<CategoryModel>(
                             validator: FormBuilderValidators.required(
                                 errorText: 'يرجى تحديد القسم الرئيسي',
                                 checkNullOrEmpty: true),
                             decoration: InputDecoration(
+                              errorStyle: H5RedTextStyle,
                                 label: RichText(
                                   text: TextSpan(children: [
                                     TextSpan(
@@ -517,6 +531,7 @@ class CreateServicePage extends StatelessWidget {
                                   errorText: 'يرجى تحديد القسم الفرعي',
                                   checkNullOrEmpty: true),
                               decoration: InputDecoration(
+                                  errorStyle: H5RedTextStyle,
                                   label: RichText(
                                     text: TextSpan(children: [
                                       TextSpan(
@@ -558,6 +573,7 @@ class CreateServicePage extends StatelessWidget {
                                   errorText: 'يرجى تحديد الفرعي الرئيسي',
                                   checkNullOrEmpty: true),
                               decoration: InputDecoration(
+                                  errorStyle: H5RedTextStyle,
                                   label: Text(
                                     'القسم الفرعي 2',
                                     style: H3GrayTextStyle,
@@ -592,6 +608,7 @@ class CreateServicePage extends StatelessWidget {
                           return Container(
                             child: FormBuilderDropdown<CategoryModel>(
                               decoration: InputDecoration(
+                                  errorStyle: H5RedTextStyle,
                                   label: Text(
                                     'القسم الرئيسي',
                                     style: H3GrayTextStyle,

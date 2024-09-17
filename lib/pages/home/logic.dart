@@ -49,9 +49,10 @@ class HomeLogic extends GetxController {
     }
     mainController.query('''
     query Products {
-    products(first:15, page: ${page}) {
+    products(first:35, page: ${page}) {
         data {
             id
+            name
             expert
             type
             is_discount

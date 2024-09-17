@@ -9,6 +9,10 @@ import 'package:ali_pasha_graph/pages/asks/view.dart';
 
 import 'package:ali_pasha_graph/pages/balance/binding.dart';
 import 'package:ali_pasha_graph/pages/balance/view.dart';
+import 'package:ali_pasha_graph/pages/cart_item/binding.dart';
+import 'package:ali_pasha_graph/pages/cart_item/view.dart';
+import 'package:ali_pasha_graph/pages/cart_seller/binding.dart';
+import 'package:ali_pasha_graph/pages/cart_seller/view.dart';
 import 'package:ali_pasha_graph/pages/chat/binding.dart';
 import 'package:ali_pasha_graph/pages/chat/view.dart';
 import 'package:ali_pasha_graph/pages/communities/binding.dart';
@@ -21,10 +25,16 @@ import 'package:ali_pasha_graph/pages/create_product/binding.dart';
 import 'package:ali_pasha_graph/pages/create_product/view.dart';
 import 'package:ali_pasha_graph/pages/create_service/binding.dart';
 import 'package:ali_pasha_graph/pages/create_service/view.dart';
+import 'package:ali_pasha_graph/pages/edit_job/binding.dart';
+import 'package:ali_pasha_graph/pages/edit_job/view.dart';
+import 'package:ali_pasha_graph/pages/edit_product/binding.dart';
+import 'package:ali_pasha_graph/pages/edit_product/view.dart';
 import 'package:ali_pasha_graph/pages/edit_profile/binding.dart';
 import 'package:ali_pasha_graph/pages/edit_profile/view.dart';
 import 'package:ali_pasha_graph/pages/edit_service/binding.dart';
 import 'package:ali_pasha_graph/pages/edit_service/view.dart';
+import 'package:ali_pasha_graph/pages/edit_tender/binding.dart';
+import 'package:ali_pasha_graph/pages/edit_tender/view.dart';
 
 import 'package:ali_pasha_graph/pages/filter/binding.dart';
 import 'package:ali_pasha_graph/pages/filter/view.dart';
@@ -126,6 +136,36 @@ class AppPages {
         name: Edit_SERVICE_PAGE,
         page: () => EditServicePage(),
         binding: EditServiceBinding()),
+
+    GetPage(
+        middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+        name: Edit_TENDER_PAGE,
+        page: () => EditTenderPage(),
+        binding: EditTenderBinding()),
+
+    GetPage(
+        middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+        name: Edit_JOB_PAGE,
+        page: () => EditJobPage(),
+        binding: EditJobBinding()),
+
+    GetPage(
+        middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+        name: Edit_PRODUCT_PAGE,
+        page: () => EditProductPage(),
+        binding: EditProductBinding()),
+
+    GetPage(
+        name: CART_SELLER,
+        page: () => CartSellerPage(),
+        binding: CartSellerBinding()),
+
+    GetPage(
+        name: CART_ITEM,
+        page: () => CartItemPage(),
+        binding: CartItemBinding()),
+
+
 
 
 

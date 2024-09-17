@@ -107,7 +107,7 @@ class ProfileLogic extends GetxController {
     try {
       dio.Response? res = await mainController.fetchData();
 
-      mainController.logger.i(res?.data);
+
       if (res?.data?['data']?['myProducts'] != null) {
         hasMorePage(
             res?.data['data']?['myProducts']['paginatorInfo']['hasMorePages']);

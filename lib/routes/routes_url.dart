@@ -1,6 +1,8 @@
 const String HOME_PAGE = '/';
 
 const String MENU_PAGE = '/menu';
+const String CART_SELLER = '/cart_seller';
+const String CART_ITEM = '/cart_item';
 
 // require Auth
 const String CREATE_PRODUCT_PAGE = '/create_product';

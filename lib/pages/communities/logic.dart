@@ -40,14 +40,14 @@ class CommunitiesLogic extends GetxController {
         getCommunities();
       }
     });
-    mainController.pusher
-        .subscribe('private-community.${mainController.authUser.value?.id}')
-        .bind('community.create', (event) {
-      mainController.logger.e(event);
-      if (communities.indexWhere((el) => el.id == event['community']['id']) ==
-          -1)
-        communities.insert(0, CommunityModel.fromJson(event['community']));
-    });
+    // mainController.pusher
+    //     .subscribe('private-community.${mainController.authUser.value?.id}')
+    //     .bind('community.create', (event) {
+    //   mainController.logger.e(event);
+    //   if (communities.indexWhere((el) => el.id == event['community']['id']) ==
+    //       -1)
+    //     communities.insert(0, CommunityModel.fromJson(event['community']));
+    // });
   }
 
   @override

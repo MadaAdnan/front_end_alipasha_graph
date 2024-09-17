@@ -31,11 +31,15 @@ class JobCard extends StatelessWidget {
   Widget build(BuildContext context) {
     ToastContext().init(context);
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 7.h),
+
       padding: EdgeInsets.symmetric(vertical: 0.002.sh, horizontal: 0.002.sw),
       width: double.infinity,
-      height: 1.sw+0.177.sh,
-      color: GrayLightColor,
+      height: 1.sw+0.187.sh,
+
+      decoration: BoxDecoration(
+        color: WhiteColor,
+        border: Border(bottom: BorderSide(color: GrayLightColor,width: 0.01.sh))
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,

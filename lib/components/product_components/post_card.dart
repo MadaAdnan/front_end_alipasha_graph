@@ -28,23 +28,27 @@ class PostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       key: key,
-
-      padding: EdgeInsets.symmetric(vertical: 0.002.sh, horizontal: 0.002.sw),
+      padding: EdgeInsets.symmetric( horizontal: 0.002.sw),
       width: double.infinity,
-      height: 1.sw + 0.177.sh,
-      color: GrayLightColor,
+      height: 1.sw+0.187.sh,
+
+      decoration: BoxDecoration(
+          color: WhiteColor,
+          border: Border(bottom: BorderSide(color: GrayLightColor,width: 0.01.sh))
+      ),
+
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
+
             padding:
                 EdgeInsets.symmetric(horizontal: 0.018.sw, vertical: 0.008.sh),
             width: double.infinity,
-            color: WhiteColor,
+            decoration: BoxDecoration(color: WhiteColor),
             height: 0.12.sh,
             child: Column(
               children: [
@@ -52,29 +56,30 @@ class PostCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     InkWell(
-                      onTap: (){
-                        Get.toNamed(PRODUCTS_PAGE,arguments: post?.user);
+                      onTap: () {
+                        Get.toNamed(PRODUCTS_PAGE, arguments: post?.user);
                       },
                       child: Row(
                         children: [
                           CircleAvatar(
                             backgroundColor: GrayLightColor,
-                            backgroundImage: NetworkImage("${post?.user?.logo}"),
+                            backgroundImage:
+                                NetworkImage("${post?.user?.logo}"),
                             minRadius: 0.018.sh,
                             maxRadius: 0.023.sh,
                           ),
                           10.horizontalSpace,
                           Column(
                             children: [
-                              if(post?.user?.seller_name != null)
-                              Container(
-                                width: 0.6.sw,
-                                child: Text(
-                                  "${post?.user?.seller_name}",
-                                  style: H1BlackTextStyle,
-                                  overflow: TextOverflow.ellipsis,
+                              if (post?.user?.seller_name != null)
+                                Container(
+                                  width: 0.6.sw,
+                                  child: Text(
+                                    "${post?.user?.seller_name}",
+                                    style: H1BlackTextStyle,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
-                              ),
                               Container(
                                 width: 0.6.sw,
                                 child: Text(
@@ -294,16 +299,22 @@ class PostCard extends StatelessWidget {
                             ),
                           ),
                           40.horizontalSpace,
-                          Container(
-                            decoration: BoxDecoration(
-                                color: RedColor,
-                                borderRadius: BorderRadius.circular(10.w)),
-                            height: 90.h,
-                            width: 120.w,
-                            padding: EdgeInsets.symmetric(horizontal: 5.w),
-                            child: Icon(
-                              FontAwesomeIcons.cartShopping,
-                              color: WhiteColor,
+                          InkWell(
+                            onTap: ()async {
+                            await  mainController.addToCart(product: post!);
+                            messageBox(title: 'نجاح العملية',message: 'تم الإضافة إلى السلة');
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: RedColor,
+                                  borderRadius: BorderRadius.circular(10.w)),
+                              height: 90.h,
+                              width: 120.w,
+                              padding: EdgeInsets.symmetric(horizontal: 5.w),
+                              child: Icon(
+                                FontAwesomeIcons.cartShopping,
+                                color: WhiteColor,
+                              ),
                             ),
                           ),
                         ],
@@ -312,8 +323,7 @@ class PostCard extends StatelessWidget {
                   )
                 ],
               ),
-            )
-          ,
+            ),
           ),
           Container(
             height: 0.05.sh,
@@ -361,36 +371,36 @@ class PostCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                if(isAuth())
-                MaterialButton(
-                  onPressed: () async {
-                    loadingCommunity.value = true;
-                    await mainController.createCommunity(
-                        sellerId: post!.user!.id!);
-                    loadingCommunity.value = false;
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(
-                        FontAwesomeIcons.headset,
-                        size: 0.05.sw,
-                      ),
-                      10.horizontalSpace,
-                      Obx(() {
-                        return loadingCommunity.value
-                            ? Center(
-                                child: CircularProgressIndicator(),
-                              )
-                            : Text(
-                                'محادثة',
-                                style: H4BlackTextStyle,
-                              );
-                      })
-                    ],
+                if (isAuth())
+                  MaterialButton(
+                    onPressed: () async {
+                      loadingCommunity.value = true;
+                      await mainController.createCommunity(
+                          sellerId: post!.user!.id!);
+                      loadingCommunity.value = false;
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.headset,
+                          size: 0.05.sw,
+                        ),
+                        10.horizontalSpace,
+                        Obx(() {
+                          return loadingCommunity.value
+                              ? Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : Text(
+                                  'محادثة',
+                                  style: H4BlackTextStyle,
+                                );
+                        })
+                      ],
+                    ),
                   ),
-                ),
                 MaterialButton(
                   onPressed: () {},
                   child: Row(
@@ -431,8 +441,8 @@ class PostCard extends StatelessWidget {
         dio.Response? res = await mainController.fetchData();
         //  mainController.logger.e(res?.data);
         if (res?.data?['data']?['followAccount'] != null) {
-
-          mainController.setUserJson(json: res?.data?['data']?['followAccount']);
+          mainController.setUserJson(
+              json: res?.data?['data']?['followAccount']);
         }
       } on CustomException catch (e) {
         mainController.logger.e(e);

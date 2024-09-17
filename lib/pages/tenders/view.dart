@@ -1,4 +1,5 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
+import 'package:ali_pasha_graph/components/home_app_bar/view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -15,7 +16,7 @@ class TendersPage extends StatelessWidget {
   TendersPage({Key? key}) : super(key: key);
 
   final logic = Get.find<TendersLogic>();
-  MainController mainController =Get.find<MainController>();
+  MainController mainController = Get.find<MainController>();
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class TendersPage extends StatelessWidget {
         body: NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification scrollInfo) {
             if (scrollInfo.metrics.pixels >=
-                scrollInfo.metrics.maxScrollExtent * 0.80 &&
+                    scrollInfo.metrics.maxScrollExtent * 0.80 &&
                 !mainController.loading.value &&
                 logic.hasMorePage.value) {
               logic.nextPage();
@@ -40,113 +41,42 @@ class TendersPage extends StatelessWidget {
             }
             return true;
           },
-          child: CustomScrollView(
-            slivers: [
-              HomeSliverAppBarComponent(child: InkWell(
-                onTap: () {
-                  Get.toNamed(PROFILE_PAGE);
-                },
-                child: Container(
-                  padding:
-                  EdgeInsets.symmetric(horizontal: 10.w, vertical: 0.013.sh),
-                  margin: EdgeInsets.only(top:0.14.sh),
-                  width: double.infinity,
-                  height: 0.071.sh,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.all(0.002.sw),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: GrayDarkColor,
-                        ),
-                        child: Container(
-                          padding: EdgeInsets.all(0.002.sw),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: WhiteColor,
-                          ),
-                          child: Container(
-                            padding: EdgeInsets.all(0.002.sw),
-                            decoration: BoxDecoration(shape: BoxShape.circle),
-                            child: Obx(() {
-                              return Container(
-                                width: 0.1.sw,
-                                height: 0.1.sw,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                        image: getLogo() != null
-                                            ? NetworkImage('${getLogo()}')
-                                            : getUserImage())),
-                              );
-                            }),
-                          ),
-                        ),
+          child: Column(
+            children: [
+              HomeAppBarComponent(),
+              Expanded(
+                  child: Container(
+                child: Obx(() => ListView(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 0.02.sw,
+                        vertical: 0.02.sh,
                       ),
-                      10.horizontalSpace,
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {
-                            Get.toNamed(CREATE_PRODUCT_PAGE);
+                      children: [
+                        ...List.generate(
+                          logic.tenders.length +
+                              (logic.mainController.loading.value ? 1 : 0),
+                          (index) {
+                            if (index < logic.tenders.length) {
+                              return JobCard(post: logic.tenders[index]);
+                            }
+                            if (logic.mainController.loading.value) {
+                              return Center(child: CircularProgressIndicator());
+                            }
+                            return Container();
                           },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 10.w),
-                            alignment: Alignment.centerRight,
-                            height: 0.055.sh,
-                            decoration: BoxDecoration(
-                              color: WhiteColor,
-                              boxShadow: [
-                                BoxShadow(color: GrayDarkColor, blurRadius: 3),
-                                BoxShadow(
-                                    color: GrayDarkColor.withOpacity(0.4),
-                                    blurRadius: 3),
-                              ],
-                              borderRadius: BorderRadius.circular(50.w),
-                            ),
+                        ),
+                        if (!logic.hasMorePage.value)
+                          Center(
+                              child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: Text(
-                              'ماذا تفكر أن تنشر ...',
+                              'لا يوجد مزيد من النتائج',
                               style: H3GrayTextStyle,
                             ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),),
-              Obx(() {
-                return SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                      if (index < logic.tenders.length) {
-                        return JobCard(post: logic.tenders[index]);
-                      }
-                      if (logic.mainController.loading.value) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                      return null;
-                    },
-                    childCount: logic.tenders.length +
-                        (logic.mainController.loading.value ? 1 : 0),
-                  ),
-                );
-              }),
-              if (!logic.hasMorePage.value)
-                SliverToBoxAdapter(
-                  child: Center(
-                      child: Padding(
-
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Text(
-                          'لا يوجد مزيد من النتائج',
-                          style: H3GrayTextStyle,
-                        ),
-                      )),
-                ),
-
+                          )),
+                      ],
+                    )),
+              ))
             ],
           ),
         ));

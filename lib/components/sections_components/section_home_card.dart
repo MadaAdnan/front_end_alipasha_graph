@@ -31,7 +31,7 @@ class SectionHomeCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              padding: EdgeInsets.all(0.02.sw),
+              padding: EdgeInsets.all(0.01.sw),
               height: 0.150.sw,
               width: 0.150.sw,
               decoration: BoxDecoration(
@@ -42,7 +42,7 @@ class SectionHomeCard extends StatelessWidget {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20.r),
                     image: DecorationImage(
-                        image: NetworkImage("${section?.img}"))),
+                        image: NetworkImage("${section?.img}"),fit: BoxFit.contain)),
               ),
             ),
             Text(

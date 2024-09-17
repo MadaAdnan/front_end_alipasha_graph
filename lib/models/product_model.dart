@@ -55,10 +55,10 @@ class ProductModel {
   List<String> images;
 
   List<String> docs;
-  List<DataImageModel>? liistOfImages;
+  List<DataImageModel>? listOfImages;
   TurkeyPrice? turkey_price;
-  List<DataImageModel>? liistOfDocs;
-
+  List<DataImageModel>? listOfDocs;
+  List<AttributeProducts>? attributes;
   String? created_at;
 
   ProductModel({
@@ -85,8 +85,8 @@ class ProductModel {
     this.is_delivary,
     this.latitude,
     this.level,
-    this.liistOfDocs,
-    this.liistOfImages,
+    this.listOfDocs,
+    this.listOfImages,
     this.longitude,
     this.start_date,
     this.tags,
@@ -103,17 +103,38 @@ class ProductModel {
     this.turkey_price,
     this.colors,
     this.comments,
+    this.attributes,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> data) {
     List<ColorModel> listColor = [];
+    List<AttributeProducts> listAttr = [];
+    List<DataImageModel> listOfDocsList = [];
+    List<DataImageModel> listOfImagesList = [];
     if (data['colors'] != null) {
       for (var item in data['colors']) {
         listColor.add(ColorModel.fromJson(item));
       }
     }
+
+    if (data['listOfDocs'] != null) {
+      for (var item in data['listOfDocs']) {
+        listOfDocsList.add(DataImageModel.fromJson(item));
+      }
+    }
+    if (data['listOfImages'] != null) {
+      for (var item in data['listOfImages']) {
+        listOfImagesList.add(DataImageModel.fromJson(item));
+      }
+    }
+
+    if (data['attributes'] != null) {
+      for (var item in data['attributes']) {
+        listAttr.add(AttributeProducts.fromJson(item));
+      }
+    }
     List<CommentModel> listComments = [];
-   /* if (data['comments'] != null) {
+    /* if (data['comments'] != null) {
       for (var item in data['comments']) {
         listComments.add(CommentModel.fromJson(item));
       }
@@ -161,12 +182,15 @@ class ProductModel {
       turkey_price: data['turkey_price'] != null
           ? TurkeyPrice.fromJson(data['turkey_price'])
           : null,
-      video:  "${data['video'] ?? ''}"
+      video: "${data['video'] ?? ''}",
+      listOfDocs: listOfDocsList,
+      attributes: listAttr,
+      listOfImages: listOfImagesList,
     );
   }
 
   toJson() {
-    return {'video': video,"expert":expert};
+    return {'video': video, "expert": expert};
   }
 }
 
@@ -177,7 +201,8 @@ class DataImageModel {
   DataImageModel({this.id, this.url});
 
   factory DataImageModel.fromJson(Map<String, dynamic> data) {
-    return DataImageModel(id: data['id'], url: data['url']);
+    return DataImageModel(
+        id: int.tryParse("${data['id']}"), url: "${data['url'] ?? ''}");
   }
 }
 
@@ -213,5 +238,19 @@ class ColorModel {
   String toString() {
     // TODO: implement toString
     return "$name";
+  }
+}
+
+class AttributeProducts {
+  int? attributeId;
+  int? productId;
+  String? value;
+
+  AttributeProducts({this.productId, this.attributeId, this.value});
+
+  AttributeProducts.fromJson(Map<String, dynamic> data) {
+    attributeId = int.tryParse("${data['attribute_id']}");
+    productId = int.tryParse("${data['product_id']}");
+    value = "${data['product_id'] ?? ''}";
   }
 }

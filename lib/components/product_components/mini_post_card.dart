@@ -45,7 +45,7 @@ class MiniPostCard extends StatelessWidget {
           Container(
             padding:
                 EdgeInsets.symmetric(horizontal: 0.02.sw, vertical: 0.004.sh),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 border: Border(
               bottom: BorderSide(
                 color: GrayDarkColor,
@@ -81,28 +81,66 @@ class MiniPostCard extends StatelessWidget {
                       onTap: editAction,
                       child: Icon(
                         FontAwesomeIcons.edit,
-                        size: 0.04.sw,
+                        size: 0.05.sw,
                         color: OrangeColor,
                       ),
                     ),
-                    20.horizontalSpace,
+                    50.horizontalSpace,
                     Obx(() {
                       if (loading.value && isDelete.value) {
                         return Container(
                           width: 0.04.sw,
-                          height:  0.04.sw,
-                          child: Center(
+                          height: 0.04.sw,
+                          child: const Center(
                             child: CircularProgressIndicator(),
                           ),
                         );
                       }
                       return InkWell(
                         onTap: () {
-                          deleteProduct();
+                          Get.defaultDialog(
+                            title: 'تأكيد الحذف',
+                            titleStyle: H4RedTextStyle,
+                            titlePadding: EdgeInsets.symmetric(vertical: 0.02.sh),
+                            middleText: 'هل انت متأكد من حذف المنتج ؟',
+                            middleTextStyle: H3BlackTextStyle,
+                            confirm:InkWell(
+                              onTap: (){
+                                deleteProduct();
+                              },
+                              child:  Container(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 0.01.sh, horizontal: 0.03.sw),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15.r),
+                                    border: Border.all(color: RedColor)),
+                                child: Text(
+                                  ' تأكيد ',
+                                  style: H4BlackTextStyle,
+                                ),
+                              ),
+                            ),
+                            cancel:InkWell(
+                              onTap: (){
+                                Get.back();
+                              },
+                              child:  Container(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 0.01.sh, horizontal: 0.03.sw),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15.r),
+                                    border: Border.all(color: GrayLightColor)),
+                                child: Text(
+                                  ' إلغاء ',
+                                  style: H4BlackTextStyle,
+                                ),
+                              ),
+                            ),
+                          );
                         },
                         child: Icon(
                           FontAwesomeIcons.trash,
-                          size: 0.04.sw,
+                          size: 0.05.sw,
                           color: RedColor,
                         ),
                       );
@@ -176,12 +214,13 @@ class MiniPostCard extends StatelessWidget {
                       ],
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        if (post.active!='')
+                        if (post.active != '')
                           Container(
                             width: 0.2.sw,
-                            padding: EdgeInsets.all(8),
+                            padding: const EdgeInsets.all(8),
+                            margin: EdgeInsets.only(top: 0.04.sh),
                             decoration: BoxDecoration(
                               color: post.active!.active2Color(),
                               borderRadius: BorderRadius.circular(15.r),
@@ -201,37 +240,41 @@ class MiniPostCard extends StatelessWidget {
                               ],
                             ),
                           ),
-                        Obx(() {
-                          if (loading.value && isEdit.value) {
+                        if (post.type == 'product')
+                          Obx(() {
+                            if (loading.value && isEdit.value) {
+                              return Container(
+                                width: 0.04.sw,
+                                height: 0.04.sw,
+                                child: const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+                            }
                             return Container(
-                              width: 0.04.sw,
-                              height:  0.04.sw,
-                              child: Center(
-                                child: CircularProgressIndicator(),
+                              margin: EdgeInsets.only(top: 0.04.sh),
+                              child: Column(
+                                children: [
+                                  Obx(() {
+                                    return Switch(
+                                      value: isAvilable.value,
+                                      onChanged: (value) {
+                                        isAvilable.value = !isAvilable.value;
+                                        changeAvialable();
+                                      },
+                                      activeColor: RedColor,
+                                      activeTrackColor: OrangeColor,
+                                      inactiveTrackColor: GrayLightColor,
+                                    );
+                                  }),
+                                  Text(
+                                    'حالة التوفر',
+                                    style: H6OrangeTextStyle,
+                                  ),
+                                ],
                               ),
                             );
-                          }
-                          return Column(
-                            children: [
-                              Obx(() {
-                                return Switch(
-                                  value: isAvilable.value,
-                                  onChanged: (value) {
-                                    isAvilable.value = !isAvilable.value;
-                                    changeAvialable();
-                                  },
-                                  activeColor: RedColor,
-                                  activeTrackColor: OrangeColor,
-                                  inactiveTrackColor: GrayLightColor,
-                                );
-                              }),
-                              Text(
-                                'حالة التوفر',
-                                style: H6OrangeTextStyle,
-                              ),
-                            ],
-                          );
-                        })
+                          })
                       ],
                     )
                   ],
@@ -313,7 +356,6 @@ class MiniPostCard extends StatelessWidget {
             )));
         int index = logic.products.indexWhere((el) => el.id == post.id);
         logic.products.removeAt(index);
-
       }
     } on CustomException catch (e) {}
     loading.value = false;
