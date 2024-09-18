@@ -21,6 +21,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 // import 'package:laravel_flutter_pusher_plus/laravel_flutter_pusher_plus.dart';
 import 'package:logger/logger.dart';
+import 'package:pusher_client_socket/pusher_client_socket.dart';
 
 import '../exceptions/custom_exception.dart';
 import '../helpers/colors.dart';
@@ -48,7 +49,7 @@ class MainController extends GetxController {
       Rx(SettingModel(weather_api: '02b438a76f5345c3857124556240809'));
   RxBool is_show_home_appbar = RxBool(true);
   Logger logger = Logger();
-  // late LaravelFlutterPusher pusher;
+  late PusherClient pusher;
 
   @override
   void onInit() {
@@ -57,7 +58,8 @@ class MainController extends GetxController {
       carts(value);
     });
     try {
-      // pusher = PusherService.init(token: "$token");
+      pusher = PusherService.init(token: "$token");
+
     } catch (e) {}
 
     getAdvices();
@@ -65,7 +67,7 @@ class MainController extends GetxController {
     ever(token, (value) {
       logger.e(token.value);
       try {
-        // pusher = PusherService.init(token: "$token");
+        pusher = PusherService.init(token: "$token");
       } catch (e) {}
       if (value == null) {
         storage.remove('token');
@@ -315,6 +317,7 @@ class MainController extends GetxController {
   Future<void> addToCart({required ProductModel product}) async {
     List<CartModel> cartsItem = await CartHelper.addToCart(product: product);
     carts(cartsItem);
+    messageBox(message: 'تم إضافة المنتج إلى السلة',title: 'نجاح العملية');
 
   }
   Future<void> removeBySeller({ int? sellerId}) async {

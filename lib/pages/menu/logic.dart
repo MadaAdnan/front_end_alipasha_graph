@@ -1,12 +1,14 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
-import 'package:ali_pasha_graph/helpers/components.dart';
+
 import 'package:ali_pasha_graph/helpers/queries.dart';
-import 'package:ali_pasha_graph/main.dart';
+
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import 'package:dio/dio.dart' as dio;
+
+import '../../models/setting_model.dart';
 
 class MenuLogic extends GetxController {
   MainController mainController = Get.find<MainController>();
@@ -21,9 +23,12 @@ class MenuLogic extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    /* mainController. pusher
-        .subscribe('private-community.${mainController.authUser.value?.id}')
-        .bind('message.create', (event) => mainController.logger.e('event =>' + event.toString()));*/
+    mainController.pusher.subscribe('change-setting').bind('update-setting',
+            (event) {
+          mainController.settings.value = SettingModel.fromJson(event['setting']);
+          mainController.logger.d(event);
+        });
+
   }
 
   changeSelectedValue1(String? value) {

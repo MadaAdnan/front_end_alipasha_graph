@@ -1,8 +1,10 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/components/advice_component/view.dart';
 import 'package:ali_pasha_graph/components/product_components/job_card.dart';
+import 'package:ali_pasha_graph/components/product_components/minimize_details_product_component.dart';
 import 'package:ali_pasha_graph/components/product_components/post_card.dart';
 import 'package:ali_pasha_graph/models/category_model.dart';
+import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -78,14 +80,7 @@ class SectionPage extends StatelessWidget {
                       ...List.generate(logic.products.length, (index) {
                         return Column(
                           children: [
-                            if (logic.products[index].type == 'product')
-                              PostCard(
-                                post: logic.products[index],
-                              )
-                            else
-                              JobCard(
-                                post: logic.products[index],
-                              ),
+                            MinimizeDetailsProductComponent(post: logic.products[index],onClick: ()=>Get.toNamed(PRODUCT_PAGE,arguments: logic.products[index].id),),
                             if (logic.advices.length > 0 && index % 5 == 0)
                               AdviceComponent(
                                   advice: logic.advices[int.parse(

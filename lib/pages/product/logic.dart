@@ -85,6 +85,7 @@ class ProductLogic extends GetxController {
     product(id: "${productId.value}") {
         product {
           id
+          name
             user {
                 seller_name
                 logo

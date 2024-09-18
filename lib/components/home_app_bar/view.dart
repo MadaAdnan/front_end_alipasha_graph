@@ -48,13 +48,15 @@ class HomeAppBarComponent extends StatelessWidget
                   Get.toNamed(FILTER_PAGE);
                 },
               ),
-              IconButton(
-                icon: Icon(
-                  Icons.live_tv,
-                  color: RedColor,
-                ),
-                onPressed: () {},
-              ),
+              Obx(() {
+                return IconButton(
+                  icon: Icon(
+                    Icons.live_tv,
+                    color:mainController.settings.value.active_live==true? RedColor:GrayLightColor,
+                  ),
+                  onPressed: () {},
+                );
+              }),
               IconButton(
                 onPressed: () {
                   Get.toNamed(MENU_PAGE);

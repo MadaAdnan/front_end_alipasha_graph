@@ -14,6 +14,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
+import '../../../components/product_components/minimize_details_product_component.dart';
+
 class ProductDetailes extends StatelessWidget {
   ProductDetailes({super.key, this.product, required this.products});
 
@@ -37,6 +39,7 @@ class ProductDetailes extends StatelessWidget {
           ),
           10.verticalSpace,
           Container(
+            width: 1.sw,
             margin: EdgeInsets.symmetric(vertical: 0.003.sh),
             padding:
                 EdgeInsets.symmetric(horizontal: 0.03.sw, vertical: 0.01.sh),
@@ -355,8 +358,8 @@ class ProductDetailes extends StatelessWidget {
                     return Container(
                       margin: EdgeInsets.symmetric(
                           vertical: 0.01.sw, horizontal: 0.01.sw),
-                      width: 0.1.sw,
-                      height: 0.1.sw,
+                      width: 0.05.sw,
+                      height: 0.05.sw,
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: "${product?.colors?[i].code}".toColor(),
@@ -406,13 +409,15 @@ class ProductDetailes extends StatelessWidget {
               ],
             ),
           Container(
+            alignment: Alignment.centerRight,
+            decoration: BoxDecoration(border: Border(bottom: BorderSide(color: OrangeColor))),
             child: Text(
               'منشورات ذات صلة',
               style: H4BlackTextStyle,
             ),
           ),
           ...List.generate(
-              products.length, (i) => _buildCard(post: products[i])),
+              products.length, (i) => MinimizeDetailsProductComponent(post: products[i])),
          150.verticalSpace,
         ],
       ),
@@ -438,6 +443,7 @@ class ProductDetailes extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
+              width: 1.sw,
               padding:
                   EdgeInsets.symmetric(horizontal: 0.01.sw, vertical: 0.004.sh),
               decoration: BoxDecoration(
@@ -517,6 +523,7 @@ class ProductDetailes extends StatelessWidget {
                       horizontal: 0.003.sw, vertical: 0.006.sh),
                   width: 0.55.sw,
                   child: Column(
+
                     children: [
                       Container(
                         child: Text(
@@ -526,13 +533,20 @@ class ProductDetailes extends StatelessWidget {
                         alignment: Alignment.centerRight,
                       ),
                       30.verticalSpace,
-                      Text(
-                        "${post.expert}",
-                        style: H3BlackTextStyle,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 3,
-                      ),
+                     Container(
+                       child:  Text(
+                         "${post.expert}",
+                         style: H3BlackTextStyle,
+                         overflow: TextOverflow.ellipsis,
+                         maxLines: 3,
+                       ),
+                       alignment: Alignment.centerRight,
+                     ),
                       50.verticalSpace,
+                      Container(
+                        child: IconButton(onPressed: (){}, icon: Icon(FontAwesomeIcons.cartShopping,size: 0.04.sw,)),
+                        alignment: Alignment.bottomLeft,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [

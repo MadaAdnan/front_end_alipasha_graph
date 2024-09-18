@@ -74,6 +74,7 @@ class ProductPage extends StatelessWidget {
                         Row(
                           children: [
                             Container(
+                              margin: EdgeInsets.only(top: 0.01.sh),
                               width: 0.1.sw,
                               height: 0.1.sw,
                               decoration: BoxDecoration(
@@ -83,6 +84,7 @@ class ProductPage extends StatelessWidget {
                                           "${logic.product.value?.user
                                               ?.logo}"))),
                             ),
+                            20.horizontalSpace,
                             Text(
                               "${logic.product.value?.user?.seller_name}",
                               style: H4BlackTextStyle,

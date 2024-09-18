@@ -57,6 +57,7 @@ class SectionLogic extends GetxController {
         }
         data {
             id
+            name
             user {
             id
                 seller_name

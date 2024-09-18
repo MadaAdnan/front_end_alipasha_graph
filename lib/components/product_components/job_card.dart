@@ -53,7 +53,7 @@ class JobCard extends StatelessWidget {
             child: Column(
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Row(
                       children: [
@@ -102,7 +102,7 @@ class JobCard extends StatelessWidget {
                           if (index > -1) {
                             return Container(
                               padding: EdgeInsets.symmetric(
-                                  horizontal: 0.007.sw, vertical: 0.001.sh),
+                                  horizontal: 0.009.sw, vertical: 0.004.sh),
                               decoration: BoxDecoration(
                                   color: RedColor,
                                   borderRadius: BorderRadius.circular(15.r),
@@ -130,16 +130,16 @@ class JobCard extends StatelessWidget {
                               child: Obx(() {
                                 return Container(
                                   padding: EdgeInsets.symmetric(
-                                      horizontal: 0.007.sw, vertical: 0.001.sh),
+                                      horizontal: 0.009.sw, vertical: 0.004.sh),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(15.r),
                                       border: Border.all(color: RedColor)),
                                   child: Row(
                                     children: [
                                       if (loading.value == true)
-                                        const Center(
+                                         SizedBox(child: Center(
                                           child: CircularProgressIndicator(),
-                                        ),
+                                        ),width: 0.04.sw,height:0.04.sw,),
                                       if (loading.value == false)
                                         Icon(
                                           FontAwesomeIcons.bell,

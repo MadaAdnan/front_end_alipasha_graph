@@ -11,6 +11,7 @@ import 'package:dio/dio.dart' as dio;
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import '../../models/product_model.dart';
+import '../../models/setting_model.dart';
 
 class HomeLogic extends GetxController {
   String getProductsQuery = '';
@@ -34,7 +35,7 @@ class HomeLogic extends GetxController {
   void onReady() {
     // TODO: implement onReady
     super.onReady();
-   
+
   }
 
   nextPage() {
@@ -139,7 +140,7 @@ class HomeLogic extends GetxController {
   
 }
     ''');
-  /*  ${mainController.sliders.length == 0 ? '''
+    /*  ${mainController.sliders.length == 0 ? '''
     sliders {
         category {
             type
@@ -180,7 +181,7 @@ class HomeLogic extends GetxController {
         }
       }
 
-     /* mainController.logger.i(res.data['data']['sliders']);
+      /* mainController.logger.i(res.data['data']['sliders']);
       if (res.data['data']['sliders'] != null) {
         for (var item in res.data['data']['sliders']) {
           mainController.sliders.add(SliderModel.fromJson(item));
@@ -189,6 +190,4 @@ class HomeLogic extends GetxController {
     }
     loading.value = false;
   }
-
-
 }

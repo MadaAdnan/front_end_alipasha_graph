@@ -109,7 +109,7 @@ class PostCard extends StatelessWidget {
                           if (index > -1) {
                             return Container(
                               padding: EdgeInsets.symmetric(
-                                  horizontal: 0.007.sw, vertical: 0.001.sh),
+                                  horizontal: 0.009.sw, vertical: 0.004.sh),
                               decoration: BoxDecoration(
                                   color: RedColor,
                                   borderRadius: BorderRadius.circular(15.r),
@@ -137,7 +137,7 @@ class PostCard extends StatelessWidget {
                               child: Obx(() {
                                 return Container(
                                   padding: EdgeInsets.symmetric(
-                                      horizontal: 0.007.sw, vertical: 0.001.sh),
+                                      horizontal: 0.009.sw, vertical: 0.004.sh),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(15.r),
                                       border: Border.all(color: RedColor)),
