@@ -12,6 +12,7 @@ import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
 import 'package:get/get.dart';
 
 import '../../../components/product_components/minimize_details_product_component.dart';
@@ -408,17 +409,99 @@ class ProductDetailes extends StatelessWidget {
                         ))
               ],
             ),
+          if ((isAuth() && logic.product.value?.is_vote == false) && logic.product.value!.type=='product')
+            Obx(() {
+              if (logic.loadingRate.value) {
+                return Container(
+                  width: 0.02.sw,
+                  height: 0.02.sw,
+                  child: const CircularProgressIndicator(),
+                );
+              } else {
+                return Container(
+                  width: 1.sw,
+                  height: 0.09.sh,
+                  child: FormBuilderRatingBar(
+                    onChanged: (value) {
+                      if (value?.toInt() != null) {
+                        logic.rateProduct(value: value!.toInt());
+                      }
+                      //
+                    },
+                    name: 'vote',
+                    itemPadding: EdgeInsets.symmetric(
+                      horizontal: 0.006.sw,
+                    ),
+                    ratingWidget: RatingWidget(
+                        full: Icon(
+                          FontAwesomeIcons.solidStar,
+                          color: OrangeColor,
+                          size: 0.04.sw,
+                        ),
+                        half: Icon(
+                          FontAwesomeIcons.starHalf,
+                          color: OrangeColor,
+                          size: 0.04.sw,
+                        ),
+                        empty: Icon(
+                          FontAwesomeIcons.star,
+                          color: OrangeColor,
+                          size: 0.04.sw,
+                        )),
+                    decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: 0.02.sw, vertical: 0.02.sh),
+                        labelText: 'التقييم',
+                        labelStyle: H3GrayTextStyle),
+                    glowColor: OrangeColor,
+                    glow: true,
+                    unratedColor: OrangeColor,
+                    tapOnlyMode: true,
+                    itemCount: 5,
+                    minRating: 1,
+                    maxRating: 5,
+                  ),
+                );
+              }
+            }),
+          if ((!isAuth()||logic.product.value?.is_vote==true)&& logic.product.value!.type=='product')
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
+              margin: EdgeInsets.symmetric(
+                vertical: 0.02.sw,
+              ),
+              child: Row(
+                children: [
+                  ...List.generate(5, (index) {
+                    print(logic.product.value!.vote_avg);
+                    if (logic.product.value!.vote_avg! > index) {
+                      return const Icon(
+                        FontAwesomeIcons.solidStar,
+                        color: OrangeColor,
+                      );
+                    }
+                    return const Icon(
+                      FontAwesomeIcons.star,
+                      color: OrangeColor,
+                    );
+                  })
+                ],
+              ),
+            ),
           Container(
+            padding: EdgeInsets.symmetric(vertical: 0.01.sh),
+            margin: EdgeInsets.symmetric(vertical: 0.01.sh),
             alignment: Alignment.centerRight,
-            decoration: BoxDecoration(border: Border(bottom: BorderSide(color: OrangeColor))),
+            decoration: const BoxDecoration(
+                border: Border(bottom: BorderSide(color: OrangeColor))),
             child: Text(
               'منشورات ذات صلة',
               style: H4BlackTextStyle,
             ),
           ),
-          ...List.generate(
-              products.length, (i) => MinimizeDetailsProductComponent(post: products[i])),
-         150.verticalSpace,
+          ...List.generate(products.length,
+              (i) => MinimizeDetailsProductComponent(post: products[i])),
+          150.verticalSpace,
         ],
       ),
     );
@@ -446,7 +529,7 @@ class ProductDetailes extends StatelessWidget {
               width: 1.sw,
               padding:
                   EdgeInsets.symmetric(horizontal: 0.01.sw, vertical: 0.004.sh),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   border: Border(
                 bottom: BorderSide(
                   color: GrayDarkColor,
@@ -523,7 +606,6 @@ class ProductDetailes extends StatelessWidget {
                       horizontal: 0.003.sw, vertical: 0.006.sh),
                   width: 0.55.sw,
                   child: Column(
-
                     children: [
                       Container(
                         child: Text(
@@ -533,18 +615,23 @@ class ProductDetailes extends StatelessWidget {
                         alignment: Alignment.centerRight,
                       ),
                       30.verticalSpace,
-                     Container(
-                       child:  Text(
-                         "${post.expert}",
-                         style: H3BlackTextStyle,
-                         overflow: TextOverflow.ellipsis,
-                         maxLines: 3,
-                       ),
-                       alignment: Alignment.centerRight,
-                     ),
+                      Container(
+                        child: Text(
+                          "${post.expert}",
+                          style: H3BlackTextStyle,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 3,
+                        ),
+                        alignment: Alignment.centerRight,
+                      ),
                       50.verticalSpace,
                       Container(
-                        child: IconButton(onPressed: (){}, icon: Icon(FontAwesomeIcons.cartShopping,size: 0.04.sw,)),
+                        child: IconButton(
+                            onPressed: () {},
+                            icon: Icon(
+                              FontAwesomeIcons.cartShopping,
+                              size: 0.04.sw,
+                            )),
                         alignment: Alignment.bottomLeft,
                       ),
                       Row(
@@ -553,7 +640,7 @@ class ProductDetailes extends StatelessWidget {
                           if (post.active != '')
                             Container(
                               width: 0.2.sw,
-                              padding: EdgeInsets.all(8),
+                              padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
                                 color: post.active!.active2Color(),
                                 borderRadius: BorderRadius.circular(15.r),
@@ -581,7 +668,6 @@ class ProductDetailes extends StatelessWidget {
                 ),
               ],
             ),
-
           ],
         ),
       ),

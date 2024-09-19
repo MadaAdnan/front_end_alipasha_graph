@@ -21,7 +21,7 @@ class HomeAppBarComponent extends StatelessWidget
   Widget build(BuildContext context) {
     return Container(
       width: 1.sw,
-      height: 0.093.sh,
+      height: 0.099.sh,
       color: WhiteColor,
       child: Column(
         children: [
@@ -77,7 +77,7 @@ class HomeAppBarComponent extends StatelessWidget
             ],
           ),
           Container(
-            height: 0.034.sh,
+            height: 0.04.sh,
             decoration: BoxDecoration(
                 border: Border(bottom: BorderSide(color: GrayLightColor))),
             child: Row(
@@ -103,7 +103,7 @@ class HomeAppBarComponent extends StatelessWidget
                     },
                     icon: Icon(
                       FontAwesomeIcons.home,
-                      size: 0.04.sw,
+                      size: 0.06.sw,
                       color: Get.currentRoute == HOME_PAGE ? RedColor : null,
                     ),
                   ),
@@ -127,7 +127,7 @@ class HomeAppBarComponent extends StatelessWidget
                     },
                     icon: Icon(
                       FontAwesomeIcons.bookOpen,
-                      size: 0.04.sw,
+                      size: 0.06.sw,
                       color:
                           Get.currentRoute == SERVICES_PAGE ? RedColor : null,
                       //color: RedColor,
@@ -153,7 +153,7 @@ class HomeAppBarComponent extends StatelessWidget
                     },
                     icon: Icon(
                       FontAwesomeIcons.headset,
-                      size: 0.04.sw,
+                      size: 0.06.sw,
                       color: Get.currentRoute == JOBS_PAGE ? RedColor : null,
                     ),
                   ),
@@ -176,7 +176,7 @@ class HomeAppBarComponent extends StatelessWidget
                       Get.offAndToNamed(TENDERS_PAGE);
                     },
                     icon: Icon(FontAwesomeIcons.arrowTrendDown,
-                        size: 0.04.sw,
+                        size: 0.06.sw,
                         color:
                             Get.currentRoute == TENDERS_PAGE ? RedColor : null),
                   ),
@@ -199,7 +199,7 @@ class HomeAppBarComponent extends StatelessWidget
                       Get.toNamed(COMMUNITIES_PAGE);
                     },
                     icon: Icon(FontAwesomeIcons.comments,
-                        size: 0.04.sw,
+                        size: 0.06.sw,
                         color: Get.currentRoute == COMMUNITIES_PAGE
                             ? RedColor
                             : null),

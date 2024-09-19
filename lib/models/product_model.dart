@@ -24,6 +24,7 @@ class ProductModel {
   String? active;
   List<dynamic>? tags;
   bool? is_discount;
+  bool? is_vote;
 
   bool? is_delivary;
   bool? is_available;
@@ -60,7 +61,7 @@ class ProductModel {
   List<DataImageModel>? listOfDocs;
   List<AttributeProducts>? attributes;
   String? created_at;
-
+    double? vote_avg;
   ProductModel({
     this.type,
     this.price,
@@ -104,6 +105,8 @@ class ProductModel {
     this.colors,
     this.comments,
     this.attributes,
+    this.is_vote,
+    this.vote_avg,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> data) {
@@ -147,6 +150,7 @@ class ProductModel {
       active: "${data['active'] ?? ''}",
       is_special: bool.tryParse("${data['is_special']}") ?? false,
       is_available: bool.tryParse("${data['is_available']}") ?? false,
+      is_vote: bool.tryParse("${data['is_rate']}") ?? false,
       views_count: "${data['views_count'] ?? 0}",
       expert: "${data['expert'] ?? ''}",
       level: "${data['level'] ?? ''}",
@@ -160,6 +164,7 @@ class ProductModel {
       sub2: data['sub2'] != null ? CategoryModel.fromJson(data['sub2']) : null,
       sub3: data['sub3'] != null ? CategoryModel.fromJson(data['sub3']) : null,
       price: double.tryParse("${data['price']}") ?? 0,
+      vote_avg: double.tryParse("${data['vote_avg']}") ?? 0,
       user: data['user'] != null ? UserModel.fromJson(data['user']) : null,
       city: data['city'] != null ? CityModel.fromJson(data['city']) : null,
       info: "${data['info'] ?? ''}",

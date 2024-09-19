@@ -9,6 +9,7 @@ import 'package:dio/dio.dart' as dio;
 class ProductLogic extends GetxController {
   RxBool loading = RxBool(false);
   RxBool loadingComment = RxBool(false);
+  RxBool loadingRate = RxBool(false);
   RxBool loadingGetComment = RxBool(false);
   MainController mainController = Get.find<MainController>();
   RxnInt productId = RxnInt(null);
@@ -85,6 +86,8 @@ class ProductLogic extends GetxController {
     product(id: "${productId.value}") {
         product {
           id
+          is_rate
+          vote_avg
           name
             user {
                 seller_name
@@ -140,10 +143,10 @@ class ProductLogic extends GetxController {
 
     try {
       dio.Response? res = await mainController.fetchData();
-
+      mainController.logger.e(res?.data);
       loading.value = false;
       if (res?.data?['data']?['product']['product'] != null) {
-         mainController.logger.e(res?.data?['data']?['product']);
+        mainController.logger.e(res?.data?['data']?['product']);
         product.value =
             ProductModel.fromJson(res?.data?['data']?['product']['product']);
       }
@@ -187,7 +190,7 @@ mutation CreateComment {
   }
 
   Future<void> getComments() async {
-    loadingGetComment.value=true;
+    loadingGetComment.value = true;
     mainController.query.value = '''
      query Product {
         product(id: "${productId.value}") {
@@ -227,6 +230,74 @@ mutation CreateComment {
         }
       }
     } on CustomException catch (e) {}
-    loadingGetComment.value=false;
+    loadingGetComment.value = false;
+  }
+
+  Future<void> rateProduct({required int value}) async {
+    mainController.query.value = '''
+    mutation AddVote {
+    addVote(productId: ${productId}, vote: $value) {
+          id
+          is_rate
+          vote_avg
+          name
+            user {
+                seller_name
+                logo
+            }
+            city {
+                name
+            }
+            category {
+                name
+            }
+            sub1 {
+                name
+            }
+            colors {
+                code
+            }
+            name
+            info
+            tags
+            is_discount
+            level
+            phone
+            email
+            address
+            url
+            longitude
+            latitude
+            price
+            discount
+            start_date
+            end_date
+            code
+            type
+            views_count
+            turkey_price {
+                price
+                discount
+            }
+            image
+            video
+            images
+            docs
+            created_at
+            
+        }
+}
+     ''';
+    try {
+      loadingRate.value = true;
+      dio.Response? res = await mainController.fetchData();
+      mainController.logger.i(res?.data);
+      if (res?.data['data']?['addVote'] != null) {
+        product.value = ProductModel.fromJson(res?.data['data']?['addVote']);
+      }
+    } catch (e) {
+      mainController.logger.e("Error Add Vote $e");
+    }
+    loadingRate.value = false;
   }
 }
