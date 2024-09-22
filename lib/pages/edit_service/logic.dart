@@ -51,7 +51,7 @@ class EditServiceLogic extends GetxController {
     // TODO: implement onInit
     super.onInit();
     ever(options, (value) {
-      mainController.logger.e(value);
+    //  mainController.logger.e(value);
     });
     ever(category, (value) {
       subCategory.value = null;
@@ -152,7 +152,7 @@ query MainCategories {
       urlController.value = TextEditingValue(text: '${service.value?.url}');
       citySelected.value =
           cities.where((el) => el.id == service.value?.city?.id).first;
-      mainController.logger.e(citySelected.value?.toJson());
+     // mainController.logger.e(citySelected.value?.toJson());
       category.value =
           categories.where((el) => el.id == service.value?.category?.id).first;
       subCategory.value = category.value?.children!
@@ -197,7 +197,7 @@ query MainCategories {
 
     map += '}';
     try {
-      mainController.logger.e(formState.currentState?.value);
+     // mainController.logger.e(formState.currentState?.value);
       dio.Response res = await mainController.dio_manager
           .executeGraphQLQueryWithFile(json.encode(datajson),
               map: map, files: data);

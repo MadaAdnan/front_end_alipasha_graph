@@ -77,17 +77,17 @@ class ServicesPage extends StatelessWidget {
                           Container(
                             width: 0.31.sw,
                             height: 0.31.sw,
-                            color: GrayWhiteColor,
+                            color: RedColor,
                           ),
                           Container(
                             width: 0.31.sw,
                             height: 0.31.sw,
-                            color: GrayWhiteColor,
+                            color: OrangeColor,
                           ),
                           Container(
                             width: 0.31.sw,
                             height: 0.31.sw,
-                            color: GrayWhiteColor,
+                            color: RedColor,
                           ),
                         ],
                       );
@@ -125,7 +125,7 @@ class ServicesPage extends StatelessWidget {
                                       alignment: Alignment.center,
                                       width: 0.05.sw,
                                       height: 0.05.sw,
-                                      decoration: BoxDecoration(
+                                      decoration: const BoxDecoration(
                                         shape: BoxShape.circle,
                                         color: WhiteColor,
                                       ),
@@ -186,7 +186,7 @@ class ServicesPage extends StatelessWidget {
                                       alignment: Alignment.center,
                                       width: 0.05.sw,
                                       height: 0.05.sw,
-                                      decoration: BoxDecoration(
+                                      decoration: const BoxDecoration(
                                         shape: BoxShape.circle,
                                         color: WhiteColor,
                                       ),
@@ -325,7 +325,7 @@ class ServicesPage extends StatelessWidget {
                               MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Icon(
+                                const Icon(
                                   FontAwesomeIcons.mosque,
                                   color: DarkColor,
                                 ),
@@ -355,7 +355,7 @@ class ServicesPage extends StatelessWidget {
                               MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Icon(
+                                const Icon(
                                   FontAwesomeIcons.oilWell,
                                   color: DarkColor,
                                 ),
@@ -385,7 +385,7 @@ class ServicesPage extends StatelessWidget {
                               MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Icon(
+                                const Icon(
                                   FontAwesomeIcons.truck,
                                   color: DarkColor,
                                 ),
@@ -415,7 +415,7 @@ class ServicesPage extends StatelessWidget {
                               MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Icon(
+                                const Icon(
                                   FontAwesomeIcons.dollarSign,
                                   color: DarkColor,
                                 ),
@@ -445,7 +445,7 @@ class ServicesPage extends StatelessWidget {
                               MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Icon(
+                                const Icon(
                                   FontAwesomeIcons.gem,
                                   color: DarkColor,
                                 ),
@@ -477,7 +477,7 @@ class ServicesPage extends StatelessWidget {
                               padding: EdgeInsets.symmetric(
                                   horizontal: 0.02.sw),
                               width: 1.sw,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 border: Border(
                                   bottom:
                                   BorderSide(color: GrayLightColor),

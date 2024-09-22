@@ -435,8 +435,9 @@ class MenuPage extends StatelessWidget {
                   children: [
                     _buildWidget(
                         onTap: () async {
+                          openUrl(url: "https://play.google.com/store/apps/details?id=com.mada.company.ali.basha");
                           // طلب الإذن
-                          final permissionGranted = await requestStoragePermission();
+                         /* final permissionGranted = await requestStoragePermission();
                           if (permissionGranted) {
                             // جلب المسار
                             final path = await getAppPath();
@@ -446,7 +447,7 @@ class MenuPage extends StatelessWidget {
                             await shareAppFile(filePath);
                           } else {
                             print('الإذن مرفوض');
-                          }
+                          }*/
                         },
                         image: 'assets/images/png/share.png',
                         title: 'مشاركة التطبيق'),

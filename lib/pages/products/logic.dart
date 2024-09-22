@@ -95,12 +95,12 @@ class ProductsLogic extends GetxController {
   ''';
     try {
       dio.Response? res = await mainController.fetchData();
-      mainController.logger.e(res?.data);
+    //  mainController.logger.e(res?.data);
       if (res?.data?['data']?['products']?['paginatorInfo'] == null) {
         hasMorePage.value =
             res?.data?['data']?['products']?['paginatorInfo']['hasMorePages'];
       }
-      mainController.logger.w(products.length);
+      //mainController.logger.w(products.length);
       if (res?.data?['data']?['products']?['data'] != null) {
         for (var item in res?.data?['data']?['products']?['data']) {
           products.add(ProductModel.fromJson(item));
@@ -116,7 +116,7 @@ class ProductsLogic extends GetxController {
         }
 
       }
-      mainController.logger.w(products.length);
+      //mainController.logger.w(products.length);
     } catch (e) {
       mainController.logger.e('Error Get Products By Seller $e');
     }

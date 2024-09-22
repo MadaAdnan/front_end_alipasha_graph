@@ -143,10 +143,10 @@ class ProductLogic extends GetxController {
 
     try {
       dio.Response? res = await mainController.fetchData();
-      mainController.logger.e(res?.data);
+    //  mainController.logger.e(res?.data);
       loading.value = false;
       if (res?.data?['data']?['product']['product'] != null) {
-        mainController.logger.e(res?.data?['data']?['product']);
+       // mainController.logger.e(res?.data?['data']?['product']);
         product.value =
             ProductModel.fromJson(res?.data?['data']?['product']['product']);
       }
@@ -215,7 +215,7 @@ mutation CreateComment {
 
     try {
       dio.Response? res = await mainController.fetchData();
-      mainController.logger.e(res?.data);
+     // mainController.logger.e(res?.data);
       if (res?.data?['data']?['product']['product']['comments']
               ['paginatorInfo'] !=
           null) {
@@ -291,7 +291,7 @@ mutation CreateComment {
     try {
       loadingRate.value = true;
       dio.Response? res = await mainController.fetchData();
-      mainController.logger.i(res?.data);
+     // mainController.logger.i(res?.data);
       if (res?.data['data']?['addVote'] != null) {
         product.value = ProductModel.fromJson(res?.data['data']?['addVote']);
       }

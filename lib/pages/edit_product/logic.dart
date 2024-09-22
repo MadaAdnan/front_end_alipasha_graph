@@ -53,7 +53,7 @@ class EditProductLogic extends GetxController {
     // TODO: implement onInit
     super.onInit();
     ever(options, (value) {
-      mainController.logger.e(value);
+    //  mainController.logger.e(value);
     });
     ever(category, (value) {
       subCategory.value = null;
@@ -197,7 +197,7 @@ query MainCategories {
             .where((el) => el.id == product.value?.sub3?.id)
             .first;
 
-        mainController.logger.i(colorIds);
+     //   mainController.logger.i(colorIds);
       }
     } catch (e) {
       mainController.logger.e('Error Get  Product $productId -Error : $e');

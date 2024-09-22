@@ -228,6 +228,34 @@ class MainController extends GetxController {
     }
     
     
+    settings {
+        social {
+            twitter
+            face
+            instagram
+            youtube
+            linkedin
+            telegram
+            name
+            email
+            sub_email
+            phone
+            sub_phone
+        }
+        address
+        weather_api
+        current_version
+        force_upgrade
+        advice_url
+        active_advice
+        delivery_service
+        auto_update_exchange
+        about
+        privacy
+        active_live
+        live_id
+    }
+    
 }
     ''';
     try {
@@ -236,6 +264,10 @@ class MainController extends GetxController {
         for (var item in res?.data?['data']['advices']) {
           advices.add(AdviceModel.fromJson(item));
         }
+      }
+      if(res?.data?['data']['settings'] != null){
+        settings.value=SettingModel.fromJson(res?.data?['data']['settings']);
+        logger.w(settings.value.weather_api);
       }
     } catch (e) {
       logger.e("Error GetAdvices $e");

@@ -26,7 +26,7 @@ class MenuLogic extends GetxController {
     mainController.pusher.subscribe('change-setting').bind('update-setting',
             (event) {
           mainController.settings.value = SettingModel.fromJson(event['setting']);
-          mainController.logger.d(event);
+        //  mainController.logger.d(event);
         });
 
   }

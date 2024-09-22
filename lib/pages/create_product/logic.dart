@@ -52,7 +52,7 @@ class CreateProductLogic extends GetxController {
     // TODO: implement onInit
     super.onInit();
     ever(options, (value) {
-      mainController.logger.e(value);
+     // mainController.logger.e(value);
     });
     ever(category, (value) {
       subCategory.value = null;
@@ -183,7 +183,7 @@ query MainCategories {
       dio.Response res = await mainController.dio_manager
           .executeGraphQLQueryWithFile(json.encode(datajson),
               map: map, files: data);
-      mainController.logger.e(res.data);
+     // mainController.logger.e(res.data);
       if (res.data?['data']?['createProduct'] != null) {
         infoProduct.clear();
         priceController.clear();

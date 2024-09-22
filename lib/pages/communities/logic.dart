@@ -105,6 +105,7 @@ class CommunitiesLogic extends GetxController {
               : null;
         }
       }
+      //searchController.clear();
     } catch (e) {
       mainController.logger.e(e);
     }

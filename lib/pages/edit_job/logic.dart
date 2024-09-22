@@ -52,7 +52,7 @@ Rxn<ProductModel> job=Rxn<ProductModel>(null);
     // TODO: implement onInit
     super.onInit();
     ever(options, (value) {
-      mainController.logger.e(value);
+    //  mainController.logger.e(value);
     });
     ever(category, (value) {
       subCategory.value = null;
@@ -154,7 +154,7 @@ query MainCategories {
 
       if (res?.data != null && res?.data['data']?['product']?['product'] != null) {
         job.value=ProductModel.fromJson(res?.data['data']?['product']?['product']);
-        mainController.logger.w("${job.value?.type}");
+      //  mainController.logger.w("${job.value?.type}");
         attachments(job.value?.listOfDocs);
         infoProduct.value=TextEditingValue(text: "${job.value?.info}");
         typeProduct.value= "${job.value?.type}";
@@ -235,7 +235,7 @@ query MainCategories {
       dio.Response res = await mainController.dio_manager
           .executeGraphQLQueryWithFile(json.encode(datajson),
           map: map, files: data);
-      mainController.logger.e(res.data);
+    //  mainController.logger.e(res.data);
       if (res.data?['data']?['updateJob'] != null) {
         showAutoCloseDialog(
             message: "تم إرسال الوظيفة للمراجعة بنجاح", isSuccess: true);
@@ -271,8 +271,8 @@ query MainCategories {
 
     try {
       dio.Response? res = await mainController.fetchData();
-      mainController.logger.i("Delete :");
-      mainController.logger.i(res?.data);
+      //mainController.logger.i("Delete :");
+    //  mainController.logger.i(res?.data);
       if (res?.data?['data']?['deleteMedia'] != null) {
         int index = attachments.indexWhere((el) => el.id == id);
         if (index > -1) {

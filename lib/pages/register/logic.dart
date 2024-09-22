@@ -94,7 +94,7 @@ mutation CreateUser {
     try {
       dio.Response? res = await mainController.fetchData();
 
-      mainController.logger.e(res?.data);
+     // mainController.logger.e(res?.data);
       if (res?.data?['data']?['createUser']?['token'] != null) {
         await mainController.setToken(
             token: res?.data?['data']?['createUser']?['token'], isWrite: true);

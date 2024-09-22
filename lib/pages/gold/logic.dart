@@ -117,7 +117,7 @@ query Settings {
   ''';
     try {
       dio.Response? res = await mainController.fetchData();
-      mainController.logger.e(res?.data);
+      //mainController.logger.e(res?.data);
       if (res?.data?['data']?['settings'] != null) {
         setting.value =
             SettingModel.fromJson(res?.data?['data']?['settings']);

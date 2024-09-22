@@ -1,5 +1,6 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/components/advice_component/view.dart';
+import 'package:ali_pasha_graph/components/product_components/minimize_details_product_component.dart';
 import 'package:ali_pasha_graph/components/product_components/post_card.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -19,6 +20,7 @@ class ProductsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: WhiteColor,
       body: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollInfo) {
           if (scrollInfo.metrics.pixels >=
@@ -41,8 +43,9 @@ class ProductsPage extends StatelessWidget {
         child: Column(
           children: [
             Container(
+              padding: EdgeInsets.symmetric(horizontal: 0.02.sw,),
               width: 1.sw,
-              height: 0.1.sh,
+              height: 0.07.sh,
               decoration: BoxDecoration(color: RedColor),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -86,6 +89,7 @@ class ProductsPage extends StatelessWidget {
             Expanded(child: Container(
               child: Obx(() {
                 return ListView(
+                  padding: EdgeInsets.symmetric(vertical: 0.01.sh),
                   children: [
                     if (logic.products.length > 0)
                       ...List.generate(logic.products.length, (index) {
@@ -94,9 +98,10 @@ class ProductsPage extends StatelessWidget {
                             if(logic.advices.length>0 && index%5==0)
                              AdviceComponent(advice: logic.advices[index%logic.advices.length])
                               ,
-                            PostCard(
+                           MinimizeDetailsProductComponent(post: logic.products[index])
+                           /* PostCard(
                               post: logic.products[index],
-                            )
+                            )*/
                           ],
                         );
                       }),
@@ -120,7 +125,7 @@ class ProductsPage extends StatelessWidget {
                   ],
                 );
               }),
-            ))
+            ),),
           ],
         ),
       ),

@@ -241,14 +241,14 @@ class ShippingLogic extends GetxController {
      ''');
     try {
       dio.Response? res = await mainController.fetchData();
-      mainController.logger.i(res?.data);
+      //mainController.logger.i(res?.data);
 
       if (res?.data?['data']?['createOrder'] != null) {
 
         mainController.setUserJson(json:res?.data?['data']?['createOrder']['user'] );
       }
     } catch (e) {
-      mainController.logger.i("Error =>");
+      //mainController.logger.i("Error =>");
       mainController.logger.i(e);
     }
   }

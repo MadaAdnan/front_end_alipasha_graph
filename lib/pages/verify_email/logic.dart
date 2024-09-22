@@ -18,7 +18,8 @@ class VerifyEmailLogic extends GetxController {
 
   @override
   onInit() {
-    mainController.logger.i(mainController.storage.read('token'));
+    super.onInit();
+   // mainController.logger.i(mainController.storage.read('token'));
   }
 
   verify() async {
@@ -54,7 +55,7 @@ class VerifyEmailLogic extends GetxController {
     ''';
     try {
       dio.Response? res = await mainController.fetchData();
-      mainController.logger.e(res?.data);
+      //mainController.logger.e(res?.data);
       if (res?.data?['errors']?[0]?['extensions'] != null) {
         error.value = res?.data?['errors']?[0]?['extensions']?['debugMessage'];
       }

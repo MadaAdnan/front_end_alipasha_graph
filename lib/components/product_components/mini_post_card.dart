@@ -313,7 +313,7 @@ class MiniPostCard extends StatelessWidget {
     ''';
     try {
       dio.Response? res = await mainController.fetchData();
-      mainController.logger.e(res?.data);
+     // mainController.logger.e(res?.data);
       if (res?.data?['data']?['changeAvilable'] != null) {
         Get.snackbar('', '',
             titleText: Center(
@@ -346,7 +346,7 @@ class MiniPostCard extends StatelessWidget {
     ''';
     try {
       dio.Response? res = await mainController.fetchData();
-      mainController.logger.e(res?.data);
+    //  mainController.logger.e(res?.data);
       if (res?.data?['data']?['deleteProduct'] != null) {
         Get.snackbar('', '',
             titleText: Center(

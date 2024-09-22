@@ -1,4 +1,5 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
+import 'package:ali_pasha_graph/main.dart';
 import 'package:ali_pasha_graph/models/category_model.dart';
 import 'package:ali_pasha_graph/models/setting_model.dart';
 import 'package:ali_pasha_graph/models/slider_model.dart';
@@ -26,7 +27,7 @@ class ServicesLogic extends GetxController {
     // TODO: implement onInit
     super.onInit();
     connect = dio.Dio(dio.BaseOptions(
-      baseUrl: 'http://api.weatherapi.com/v1/marine.json',
+      baseUrl: 'http://api.weatherapi.com/v1/forecast.json',
       connectTimeout: const Duration(seconds: 20),
       receiveTimeout: const Duration(seconds: 20),
       headers: {
@@ -149,6 +150,19 @@ class ServicesLogic extends GetxController {
   }
 
   getWeather() async {
+    List<Map<String, dynamic>> weatherStorage = [];
+    if(mainController.storage.hasData('weather')){
+      List<Map<String, dynamic>> data=mainController.storage.read('weather');
+     for(var item in data){
+       WeatherModel weatherModel = WeatherModel.fromStorage(item);
+       idlibWeather.add(weatherModel);
+     }
+     if(idlibWeather.length>0){
+       mainController.logger.w('IN OF STORAGE');
+       return;
+     }
+    }
+    mainController.logger.w('OUT OF STORAGE');
     loading.value = true;
     String setting_weather = "${mainController.settings.value.weather_api}";
     try {
@@ -157,8 +171,11 @@ class ServicesLogic extends GetxController {
 
       if (resIdlib.data['forecast']['forecastday'] != null) {
         for (var item in resIdlib.data['forecast']['forecastday']) {
-          idlibWeather.add(WeatherModel.fromJson(item));
+          WeatherModel weatherModel = WeatherModel.fromJson(item);
+          idlibWeather.add(weatherModel);
+          weatherStorage.add(weatherModel.toJson());
         }
+     await   mainController.storage.write('weather', weatherStorage);
       }
     } catch (e) {
       print("Error Get Weather Idlib $e");

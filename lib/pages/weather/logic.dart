@@ -5,6 +5,7 @@ import 'package:dio/dio.dart' as dio;
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:logger/logger.dart';
 
 // http://api.weatherapi.com/v1/marine.json?key=&q=London&days=1
 
@@ -19,7 +20,7 @@ MainController mainController=Get.find<MainController>();
     // TODO: implement onInit
     super.onInit();
     connect = dio.Dio(dio.BaseOptions(
-      baseUrl: 'http://api.weatherapi.com/v1/marine.json',
+      baseUrl: 'http://api.weatherapi.com/v1/forecast.json',
       connectTimeout: const Duration(seconds: 20),
       receiveTimeout: const Duration(seconds: 20),
       headers: {
@@ -45,8 +46,9 @@ MainController mainController=Get.find<MainController>();
     String setting_weather = "${mainController.settings.value.weather_api}";
     try {
       dio.Response resIdlib =
-          await connect.get('?key=$setting_weather&q=Idlib&days=3');
-
+          await connect.get('?key=$setting_weather&q=Idlib&days=3&aqi=no&alerts=no');
+var logger=Logger();
+logger.d(resIdlib.data);
       if (resIdlib.data['forecast']['forecastday'] != null) {
 
         for(var item in resIdlib.data['forecast']['forecastday']){

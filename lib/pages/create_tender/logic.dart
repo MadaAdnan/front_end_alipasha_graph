@@ -51,7 +51,7 @@ class CreateTenderLogic extends GetxController {
     // TODO: implement onInit
     super.onInit();
     ever(options, (value) {
-      mainController.logger.e(value);
+     // mainController.logger.e(value);
     });
     ever(category, (value) {
       subCategory.value = null;

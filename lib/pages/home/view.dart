@@ -145,16 +145,16 @@ class HomePage extends StatelessWidget {
                     height: 0.103.sh,
                     padding: EdgeInsets.symmetric(vertical: 0.002.sh),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         if (mainController.categories.length == 0)
                           ...List.generate(4, (index) => _buildSection()),
                         ...List.generate(
-                            mainController.categories.length > 4
+                            mainController.categories.where((el)=>el.type=='product').length > 4
                                 ? 4
-                                : mainController.categories.length,
+                                : mainController.categories.where((el)=>el.type=='product').length,
                                 (index) => SectionHomeCard(
-                                section: mainController.categories[index])),
+                                section: mainController.categories.where((el)=>el.type=='product').toList()[index])),
                         _viewMoreButton(
                             title: 'عرض المزيد',
                             color: ShowMoreColor,

@@ -375,7 +375,7 @@ class JobCard extends StatelessWidget {
 }
       ''';
         dio.Response? res = await mainController.fetchData();
-        mainController.logger.e(res?.data);
+       // mainController.logger.e(res?.data);
         if (res?.data?['data']?['followAccount'] != null) {
           mainController.setUserJson(json: res?.data?['data']?['followAccount']);
         }

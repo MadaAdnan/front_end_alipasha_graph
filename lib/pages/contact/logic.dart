@@ -47,7 +47,7 @@ class ContactLogic extends GetxController {
      ''';
     try {
       dio.Response? res = await mainController.fetchData();
-      mainController.logger.i(res?.data?['data']?['settings']?['social']);
+     // mainController.logger.i(res?.data?['data']?['settings']?['social']);
       if(res?.data?['data']?['settings']?['social']!=null){
         social.value=SocialModel.fromJson(res?.data?['data']?['settings']?['social']);
       }

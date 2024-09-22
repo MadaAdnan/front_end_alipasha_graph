@@ -61,7 +61,7 @@ class PlanLogic extends GetxController {
     try {
       dio.Response? res = await mainController.fetchData();
       loading.value = false;
-      mainController.logger.e(res?.data);
+     // mainController.logger.e(res?.data);
       if (res?.data['data']['me']['total_balance'] != null) {
         balance.value =
             double.tryParse("${res?.data['data']['me']['total_balance']}");
@@ -88,7 +88,7 @@ class PlanLogic extends GetxController {
     ''';
     try {
       dio.Response? res = await mainController.fetchData();
-      mainController.logger.i("${res?.data}");
+     // mainController.logger.i("${res?.data}");
       if (res?.data?['errors']?[0]?['message'] != null) {
         messageBox(
             title: 'خطأ',

@@ -182,9 +182,9 @@ class EditProfileLogic extends GetxController {
             isError: false);
         // mainController.authUser.value=UserModel.fromJson(res.data['data']['updateUser']);
       }
-      mainController.logger.e(res.data);
+      //mainController.logger.e(res.data);
       if(res.data['errors'][0]['message']!=null){
-        mainController.logger.i(res.data['errors'][0]['message']);
+       // mainController.logger.i(res.data['errors'][0]['message']);
       }
     } catch (e) {
       mainController.logger.e("Error get Profile $e");

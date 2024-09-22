@@ -13,7 +13,7 @@ import 'package:image_picker/image_picker.dart';
 class ChatLogic extends GetxController {
   MainController mainController = Get.find<MainController>();
   RxBool loadingSend = RxBool(false);
-  TextEditingController messageController = TextEditingController(text: "${Get.parameters['msg']}");
+  TextEditingController messageController = TextEditingController(text: "${Get.parameters['msg']??''}");
   Rxn<XFile> file = Rxn<XFile>(null);
   RxBool loading = RxBool(false);
   RxBool hasMorePage = RxBool(false);
@@ -77,7 +77,7 @@ query Messages {
     loading.value = true;
     try {
       dio.Response? res = await mainController.fetchData();
-      mainController.logger.i(res?.data?['data']?['messages']?['data']);
+     // mainController.logger.i(res?.data?['data']?['messages']?['data']);
       if (res?.data?['data']?['messages']?['paginatorInfo'] != null) {
         hasMorePage.value =
             res?.data?['data']?['messages']?['paginatorInfo']['hasMorePages'];
@@ -137,7 +137,7 @@ if(messageController.text.length==0){
     ''';
     try {
       dio.Response? res = await mainController.fetchData();
-       mainController.logger.e(res?.data);
+     //  mainController.logger.e(res?.data);
       if (res?.data?['data']['createMessage'] != null) {
         messageController.clear();
         messages.insert(
@@ -180,7 +180,7 @@ loadingSend.value = false;
 try{
   dio.Response res=await mainController.dio_manager.executeGraphQLQueryWithFile(json.encode(datajson),map: map,files: data);
   if(res.data?['data']?['createMessage']!=null){
-    mainController.logger.e(res.data?['data']?['createMessage']);
+   // mainController.logger.e(res.data?['data']?['createMessage']);
     messages.insert(
         0,
         MessageCommunityModel.fromJson(

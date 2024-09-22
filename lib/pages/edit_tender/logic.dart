@@ -55,7 +55,7 @@ class EditTenderLogic extends GetxController {
     // TODO: implement onInit
     super.onInit();
     ever(options, (value) {
-      mainController.logger.e(value);
+    //  mainController.logger.e(value);
     });
     ever(category, (value) {
       subCategory.value = null;
@@ -137,7 +137,7 @@ query MainCategories {
 ''';
     try {
       dio.Response? res = await mainController.fetchData();
-      mainController.logger.i(res?.data);
+   //   mainController.logger.i(res?.data);
       if (res?.data != null && res?.data['data']?['mainCategories'] != null) {
         for (var item in res?.data['data']['mainCategories']) {
           categories.add(CategoryModel.fromJson(item));
@@ -221,7 +221,7 @@ query MainCategories {
       dio.Response res = await mainController.dio_manager
           .executeGraphQLQueryWithFile(json.encode(datajson),
               map: map, files: data);
-      mainController.logger.e(res.data);
+   //   mainController.logger.e(res.data);
       if (res.data?['data']?['updateTender'] != null) {
         showAutoCloseDialog(
             message: "تم إرسال الوظيفة للمراجعة بنجاح", isSuccess: true);
@@ -259,8 +259,8 @@ query MainCategories {
 
     try {
       dio.Response? res = await mainController.fetchData();
-      mainController.logger.i("Delete :");
-      mainController.logger.i(res?.data);
+     // mainController.logger.i("Delete :");
+     // mainController.logger.i(res?.data);
       if (res?.data?['data']?['deleteMedia'] != null) {
         int index = attachments.indexWhere((el) => el.id == id);
         if (index > -1) {

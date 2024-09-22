@@ -2,6 +2,7 @@ import 'package:ali_pasha_graph/Global/main_binding.dart';
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/routes/route_pages.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
+import 'package:app_links/app_links.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  final appLinks = AppLinks(); // AppLinks is singleton
+
+// Subscribe to all events (initial link and further)
+  final sub = appLinks.uriLinkStream.listen((uri) {
+   print('URI LINK IS : $uri');
+  });
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.white, // لون الشريط
   ));

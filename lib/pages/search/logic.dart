@@ -94,7 +94,7 @@ class SearchLogic extends GetxController {
       //mainController.logger.e(mainController.query.value);
 
       dio.Response? res = await mainController.fetchData();
-      mainController.logger.e(res?.data);
+     // mainController.logger.e(res?.data);
       if (res?.data['data']['products'] != null) {
         hasMorePage.value = res?.data['data']['products']['paginatorInfo']
                 ['hasMorePages'] ??

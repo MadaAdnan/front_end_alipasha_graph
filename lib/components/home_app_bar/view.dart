@@ -13,15 +13,17 @@ import 'logic.dart';
 // 2226 heght all screen
 class HomeAppBarComponent extends StatelessWidget
     implements PreferredSizeWidget {
-  HomeAppBarComponent({Key? key}) : super(key: key);
+  HomeAppBarComponent({Key? key, this.search}) : super(key: key);
 
   MainController mainController = Get.find<MainController>();
+  Function()? search;
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.symmetric(vertical: 0.001.sh),
       width: 1.sw,
-      height: 0.099.sh,
+      height: 0.11.sh,
       color: WhiteColor,
       child: Column(
         children: [
@@ -44,15 +46,15 @@ class HomeAppBarComponent extends StatelessWidget
                   Icons.search,
                   color: RedColor,
                 ),
-                onPressed: () {
-                  Get.toNamed(FILTER_PAGE);
-                },
+                onPressed: search ?? () => Get.toNamed(FILTER_PAGE),
               ),
               Obx(() {
                 return IconButton(
                   icon: Icon(
                     Icons.live_tv,
-                    color:mainController.settings.value.active_live==true? RedColor:GrayLightColor,
+                    color: mainController.settings.value.active_live == true
+                        ? RedColor
+                        : GrayLightColor,
                   ),
                   onPressed: () {},
                 );
@@ -65,8 +67,8 @@ class HomeAppBarComponent extends StatelessWidget
                   return Badge.count(
                     count: mainController.carts.length,
                     backgroundColor: RedColor,
-                    alignment: Alignment(-0.006.sw,-0.0015.sh),
-                    isLabelVisible: mainController.carts.length>0,
+                    alignment: Alignment(-0.006.sw, -0.0015.sh),
+                    isLabelVisible: mainController.carts.length > 0,
                     child: Icon(
                       FontAwesomeIcons.bars,
                       size: 0.06.sw,
@@ -77,7 +79,7 @@ class HomeAppBarComponent extends StatelessWidget
             ],
           ),
           Container(
-            height: 0.04.sh,
+            height: 0.043.sh,
             decoration: BoxDecoration(
                 border: Border(bottom: BorderSide(color: GrayLightColor))),
             child: Row(
@@ -89,12 +91,12 @@ class HomeAppBarComponent extends StatelessWidget
                   decoration: BoxDecoration(
                     border: Get.currentRoute == HOME_PAGE
                         ? Border(
-                            bottom: BorderSide(
-                              color: RedColor,
-                              style: BorderStyle.solid,
-                              width: 0.001.sw,
-                            ),
-                          )
+                      bottom: BorderSide(
+                        color: RedColor,
+                        style: BorderStyle.solid,
+                        width: 0.001.sw,
+                      ),
+                    )
                         : null,
                   ),
                   child: IconButton(
@@ -113,12 +115,12 @@ class HomeAppBarComponent extends StatelessWidget
                   decoration: BoxDecoration(
                     border: Get.currentRoute == SERVICES_PAGE
                         ? Border(
-                            bottom: BorderSide(
-                              color: RedColor,
-                              style: BorderStyle.solid,
-                              width: 0.001.sw,
-                            ),
-                          )
+                      bottom: BorderSide(
+                        color: RedColor,
+                        style: BorderStyle.solid,
+                        width: 0.001.sw,
+                      ),
+                    )
                         : null,
                   ),
                   child: IconButton(
@@ -129,7 +131,7 @@ class HomeAppBarComponent extends StatelessWidget
                       FontAwesomeIcons.bookOpen,
                       size: 0.06.sw,
                       color:
-                          Get.currentRoute == SERVICES_PAGE ? RedColor : null,
+                      Get.currentRoute == SERVICES_PAGE ? RedColor : null,
                       //color: RedColor,
                     ),
                   ),
@@ -139,12 +141,12 @@ class HomeAppBarComponent extends StatelessWidget
                   decoration: BoxDecoration(
                     border: Get.currentRoute == JOBS_PAGE
                         ? Border(
-                            bottom: BorderSide(
-                              color: RedColor,
-                              style: BorderStyle.solid,
-                              width: 0.001.sw,
-                            ),
-                          )
+                      bottom: BorderSide(
+                        color: RedColor,
+                        style: BorderStyle.solid,
+                        width: 0.001.sw,
+                      ),
+                    )
                         : null,
                   ),
                   child: IconButton(
@@ -163,12 +165,12 @@ class HomeAppBarComponent extends StatelessWidget
                   decoration: BoxDecoration(
                     border: Get.currentRoute == TENDERS_PAGE
                         ? Border(
-                            bottom: BorderSide(
-                              color: RedColor,
-                              style: BorderStyle.solid,
-                              width: 0.001.sw,
-                            ),
-                          )
+                      bottom: BorderSide(
+                        color: RedColor,
+                        style: BorderStyle.solid,
+                        width: 0.001.sw,
+                      ),
+                    )
                         : null,
                   ),
                   child: IconButton(
@@ -178,7 +180,7 @@ class HomeAppBarComponent extends StatelessWidget
                     icon: Icon(FontAwesomeIcons.arrowTrendDown,
                         size: 0.06.sw,
                         color:
-                            Get.currentRoute == TENDERS_PAGE ? RedColor : null),
+                        Get.currentRoute == TENDERS_PAGE ? RedColor : null),
                   ),
                 ),
                 Container(
@@ -186,12 +188,12 @@ class HomeAppBarComponent extends StatelessWidget
                   decoration: BoxDecoration(
                     border: Get.currentRoute == COMMUNITIES_PAGE
                         ? Border(
-                            bottom: BorderSide(
-                              color: RedColor,
-                              style: BorderStyle.solid,
-                              width: 0.001.sw,
-                            ),
-                          )
+                      bottom: BorderSide(
+                        color: RedColor,
+                        style: BorderStyle.solid,
+                        width: 0.001.sw,
+                      ),
+                    )
                         : null,
                   ),
                   child: IconButton(

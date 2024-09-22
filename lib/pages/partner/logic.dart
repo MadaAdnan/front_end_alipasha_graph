@@ -55,7 +55,7 @@ class PartnerLogic extends GetxController {
      ''';
     try {
       dio.Response? response = await mainController.fetchData();
-      mainController.logger.e(response?.data['data']['partners']?['paginatorInfo'] );
+     // mainController.logger.e(response?.data['data']['partners']?['paginatorInfo'] );
       if (response?.data['data']['partners']?['paginatorInfo'] != null) {
         hasMorePage.value = response?.data['data']['partners']?['paginatorInfo']
                 ['hasMorePages'] ??
