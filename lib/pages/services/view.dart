@@ -12,6 +12,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../components/home_app_bar/custom_sliver_app_bar.dart';
 import 'logic.dart';
@@ -74,21 +75,22 @@ class ServicesPage extends StatelessWidget {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
+                          Shimmer.fromColors(child:Container(
                             width: 0.31.sw,
                             height: 0.31.sw,
                             color: RedColor,
-                          ),
-                          Container(
-                            width: 0.31.sw,
-                            height: 0.31.sw,
-                            color: OrangeColor,
-                          ),
-                          Container(
+                          ) , baseColor: GrayDarkColor, highlightColor: GrayLightColor),
+                          Shimmer.fromColors(child:Container(
                             width: 0.31.sw,
                             height: 0.31.sw,
                             color: RedColor,
-                          ),
+                          ) , baseColor: GrayDarkColor, highlightColor: GrayLightColor),
+                          Shimmer.fromColors(child:Container(
+                            width: 0.31.sw,
+                            height: 0.31.sw,
+                            color: RedColor,
+                          ) , baseColor: GrayDarkColor, highlightColor: GrayLightColor),
+
                         ],
                       );
                     }

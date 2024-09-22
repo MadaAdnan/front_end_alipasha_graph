@@ -117,6 +117,7 @@ class ServicesLogic extends GetxController {
     ''';
     try {
       dio.Response? res = await mainController.fetchData();
+      mainController.logger.e(res?.data);
       if (res?.data?['data']?['mainCategories'] != null) {
         for (var item in res?.data?['data']?['mainCategories']) {
           if (item['children'] != null) {
@@ -145,30 +146,40 @@ class ServicesLogic extends GetxController {
     } catch (e) {
       mainController.logger.e("Error get Service $e");
     }
+
     await getWeather();
     loading.value = false;
   }
 
   getWeather() async {
     List<Map<String, dynamic>> weatherStorage = [];
-    if(mainController.storage.hasData('weather')){
-      List<Map<String, dynamic>> data=mainController.storage.read('weather');
-     for(var item in data){
-       WeatherModel weatherModel = WeatherModel.fromStorage(item);
-       idlibWeather.add(weatherModel);
+   try{
+     if(mainController.storage.hasData('weather')){
+       List<Map<String, dynamic>> data=mainController.storage.read('weather');
+       for(var item in data){
+         WeatherModel weatherModel = WeatherModel.fromStorage(item);
+         DateTime? date=DateTime.tryParse("${weatherModel.date}");
+         if(date!=null && (date.compareTo(DateTime.now())==0)){
+           idlibWeather.clear();
+           throw Exception('end Date');
+         }
+         idlibWeather.add(weatherModel);
+       }
+       if(idlibWeather.length>0){
+         mainController.logger.w('IN OF STORAGE');
+         return;
+       }
      }
-     if(idlibWeather.length>0){
-       mainController.logger.w('IN OF STORAGE');
-       return;
-     }
-    }
-    mainController.logger.w('OUT OF STORAGE');
+   }catch(e){
+     mainController.logger.w(e);
+   }
+
     loading.value = true;
     String setting_weather = "${mainController.settings.value.weather_api}";
     try {
       dio.Response resIdlib =
           await connect.get('?key=$setting_weather&q=Idlib&days=3');
-
+      mainController.logger.e(resIdlib.data);
       if (resIdlib.data['forecast']['forecastday'] != null) {
         for (var item in resIdlib.data['forecast']['forecastday']) {
           WeatherModel weatherModel = WeatherModel.fromJson(item);
