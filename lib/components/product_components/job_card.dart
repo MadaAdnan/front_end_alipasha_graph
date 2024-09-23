@@ -346,7 +346,7 @@ class JobCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Icon(FontAwesomeIcons.share,size: 0.05.sw,),
+                      Icon(FontAwesomeIcons.shareNodes,size: 0.05.sw,),
                       10.horizontalSpace,
                       Text(
                         'مشاركة',

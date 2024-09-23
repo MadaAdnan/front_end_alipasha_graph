@@ -1,14 +1,21 @@
+
+
 import 'dart:convert';
 
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/models/community_model.dart';
 import 'package:ali_pasha_graph/models/message_community_model.dart';
+import 'package:audio_session/audio_session.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_sound/flutter_sound.dart' as audio;
+import 'package:flutter_sound/public/flutter_sound_player.dart';
+import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
-import 'package:get_storage/get_storage.dart';
+
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ChatLogic extends GetxController {
   MainController mainController = Get.find<MainController>();
@@ -21,7 +28,52 @@ class ChatLogic extends GetxController {
   RxList<MessageCommunityModel> messages = RxList<MessageCommunityModel>([]);
   CommunityModel communityModel = Get.arguments;
   ScrollController scrollController = ScrollController();
+  // Audio
+  FlutterSoundPlayer? mPlayer = FlutterSoundPlayer();
+  FlutterSoundRecorder? mRecorder = FlutterSoundRecorder();
+  RxBool mPlayerIsInited = false.obs;
+  RxBool mRecorderIsInited = false.obs;
 
+  RxBool mplaybackReady = false.obs;
+  //String? _mPath;
+  List<double> bufferF32 = [];
+  List<int> bufferI16 = [];
+  List<int> bufferU8 = [];
+  int sampleRate = 0;
+  audio.Codec codecSelected = audio.Codec.pcmFloat32;
+
+  Future<void> openRecorder() async {
+    var status = await Permission.microphone.request();
+    if (status != PermissionStatus.granted) {
+      throw RecordingPermissionException('Microphone permission not granted');
+    }
+    await mRecorder!.openRecorder();
+
+    final session = await AudioSession.instance;
+    await session.configure(AudioSessionConfiguration(
+      avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
+      avAudioSessionCategoryOptions:
+      AVAudioSessionCategoryOptions.allowBluetooth |
+      AVAudioSessionCategoryOptions.defaultToSpeaker,
+      avAudioSessionMode: AVAudioSessionMode.spokenAudio,
+      avAudioSessionRouteSharingPolicy:
+      AVAudioSessionRouteSharingPolicy.defaultPolicy,
+      avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
+      androidAudioAttributes: const AndroidAudioAttributes(
+        contentType: AndroidAudioContentType.speech,
+        flags: AndroidAudioFlags.none,
+        usage: AndroidAudioUsage.voiceCommunication,
+      ),
+      androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
+      androidWillPauseWhenDucked: true,
+    ));
+    sampleRate = 16000;
+
+
+      mRecorderIsInited.value = true;
+
+  }
+  // Audio
   nextPage() {
     if (hasMorePage.value) {
       page.value++;

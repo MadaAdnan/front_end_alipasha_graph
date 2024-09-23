@@ -2,12 +2,14 @@ import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/components/advice_component/view.dart';
 import 'package:ali_pasha_graph/components/product_components/job_card.dart';
 import 'package:ali_pasha_graph/components/product_components/minimize_details_product_component.dart';
+import 'package:ali_pasha_graph/components/product_components/minimize_details_product_component_loading.dart';
 import 'package:ali_pasha_graph/components/product_components/post_card.dart';
 import 'package:ali_pasha_graph/models/category_model.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../helpers/colors.dart';
 import '../../helpers/style.dart';
@@ -77,9 +79,12 @@ class SectionPage extends StatelessWidget {
                 child: Obx(() {
                   return Column(
                     children: [
+                      if(logic.loading.value)
+                        ...List.generate(4, (index)=>Shimmer.fromColors(child: MinimizeDetailsProductComponentLoading(), baseColor: GrayLightColor, highlightColor: GrayWhiteColor),),
                       ...List.generate(logic.products.length, (index) {
                         return Column(
                           children: [
+
                             MinimizeDetailsProductComponent(post: logic.products[index],onClick: ()=>Get.toNamed(PRODUCT_PAGE,arguments: logic.products[index].id),),
                             if (logic.advices.length > 0 && index % 5 == 0)
                               AdviceComponent(

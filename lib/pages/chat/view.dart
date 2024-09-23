@@ -130,14 +130,60 @@ class ChatPage extends StatelessWidget {
                       child: FormBuilderTextField(
                         name: 'msg',
                         controller: logic.messageController,
+                        style: H4BlackTextStyle,
+                        textAlign: TextAlign.start,
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(15.r),borderSide: BorderSide(color: GrayLightColor)),
-                          suffixIcon: IconButton(
-                              onPressed: () {
-                                logic.pickImage(
-                                    imagSource: ImageSource.gallery);
-                              },
-                              icon: Icon(FontAwesomeIcons.paperclip),),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15.r),
+                              borderSide: BorderSide(color: GrayLightColor)),
+                          suffixIcon: Container(
+                            width: 0.1.sw,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Container(
+                                  child: IconButton(
+                                    onPressed: () {
+                                      logic.pickImage(
+                                          imagSource: ImageSource.gallery);
+                                    },
+                                    icon: Icon(
+                                      FontAwesomeIcons.paperclip,
+                                      size: 0.04.sw,
+                                    ),
+                                  ),
+                                  width: 0.05.sw,
+                                ),
+                                Obx(() {
+                                  if (!logic.mRecorderIsInited.value) {
+                                    return Container(
+                                      width: 0.05.sw,
+                                      child: IconButton(
+                                        onPressed: () {
+                                          logic.openRecorder();
+                                        },
+                                        icon: Icon(
+                                          FontAwesomeIcons.microphone,
+                                          size: 0.04.sw,
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    return Container(
+                                      width: 0.05.sw,
+                                      child: IconButton(
+                                        onPressed: () {},
+                                        icon: Icon(
+                                          FontAwesomeIcons.stop,
+                                          size: 0.04.sw,
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                }),
+                              ],
+                            ),
+                          ),
                         ),
                       )),
                   Obx(() {

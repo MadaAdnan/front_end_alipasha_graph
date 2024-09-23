@@ -183,6 +183,9 @@ class HomeAppBarComponent extends StatelessWidget
                         Get.currentRoute == TENDERS_PAGE ? RedColor : null),
                   ),
                 ),
+
+
+
                 Container(
                   width: 0.1.sw,
                   decoration: BoxDecoration(
@@ -203,6 +206,31 @@ class HomeAppBarComponent extends StatelessWidget
                     icon: Icon(FontAwesomeIcons.comments,
                         size: 0.06.sw,
                         color: Get.currentRoute == COMMUNITIES_PAGE
+                            ? RedColor
+                            : null),
+                  ),
+                ),
+
+                Container(
+                  width: 0.1.sw,
+                  decoration: BoxDecoration(
+                    border: Get.currentRoute == COMMUNITIES_PAGE
+                        ? Border(
+                      bottom: BorderSide(
+                        color: RedColor,
+                        style: BorderStyle.solid,
+                        width: 0.001.sw,
+                      ),
+                    )
+                        : null,
+                  ),
+                  child: IconButton(
+                    onPressed: () {
+                      Get.toNamed(PROFILE_PAGE);
+                    },
+                    icon: Icon(FontAwesomeIcons.solidUser,
+                        size: 0.06.sw,
+                        color: Get.currentRoute == PROFILE_PAGE
                             ? RedColor
                             : null),
                   ),

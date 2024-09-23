@@ -360,7 +360,7 @@ class PostCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Icon(
-                        FontAwesomeIcons.comment,
+                        FontAwesomeIcons.message,
                         size: 0.05.sw,
                       ),
                       10.horizontalSpace,
@@ -384,7 +384,7 @@ class PostCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Icon(
-                          FontAwesomeIcons.headset,
+                          FontAwesomeIcons.comments,
                           size: 0.05.sw,
                         ),
                         10.horizontalSpace,
@@ -408,7 +408,7 @@ class PostCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Icon(
-                        FontAwesomeIcons.share,
+                        FontAwesomeIcons.shareNodes,
                         size: 0.05.sw,
                       ),
                       10.horizontalSpace,
