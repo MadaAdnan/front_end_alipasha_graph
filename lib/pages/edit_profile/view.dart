@@ -11,6 +11,7 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:logger/logger.dart';
 
 import 'logic.dart';
 
@@ -292,8 +293,8 @@ class EditProfilePage extends StatelessWidget {
                                       imagSource: ImageSource.gallery,
                                       onChange: (file, size) {
                                         logic.avatar.value = file;
-                                        print(
-                                            "Size: ${size! / (1024 * 1024)} MB");
+                                        var l=Logger();
+                                        l.i(logic.avatar.value);
                                       });
                                 },
                                 child: Obx(() {

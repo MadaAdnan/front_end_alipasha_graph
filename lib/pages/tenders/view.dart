@@ -1,5 +1,6 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/components/home_app_bar/view.dart';
+import 'package:ali_pasha_graph/components/product_components/minimize_details_product_component_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -21,7 +22,7 @@ class TendersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: GrayLightColor,
+        backgroundColor: WhiteColor,
         body: NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification scrollInfo) {
             if (scrollInfo.metrics.pixels >=
@@ -53,19 +54,16 @@ class TendersPage extends StatelessWidget {
                       ),
                       children: [
                         ...List.generate(
-                          logic.tenders.length +
-                              (logic.mainController.loading.value ? 1 : 0),
+                          logic.tenders.length ,
                           (index) {
-                            if (index < logic.tenders.length) {
+
                               return JobCard(post: logic.tenders[index]);
-                            }
-                            if (logic.mainController.loading.value) {
-                              return Center(child: CircularProgressIndicator());
-                            }
-                            return Container();
+
+
                           },
                         ),
-                        if (!logic.hasMorePage.value)
+                        if(logic.loading.value) ...List.generate(6 ,(index) => MinimizeDetailsProductComponentLoading(),),
+                        if (!logic.hasMorePage.value && !logic.loading.value)
                           Center(
                               child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),

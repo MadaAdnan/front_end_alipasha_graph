@@ -330,7 +330,7 @@ class EditProductPage extends StatelessWidget {
                       ),
 
                     Obx(() {
-                      return Visibility(child:   InkWell(
+                      return Visibility(visible: logic.images.length + logic.attachments.length <4,child:   InkWell(
                         onTap: () {
                           if (logic.images.length < 4) {
                             Get.defaultDialog(
@@ -417,7 +417,7 @@ class EditProductPage extends StatelessWidget {
                             ],
                           ),
                         ),
-                      ),visible: logic.images.length + logic.attachments.length <4,);
+                      ),);
                     }),
 
                       30.verticalSpace,

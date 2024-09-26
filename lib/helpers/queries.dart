@@ -2,6 +2,12 @@ const AUTH_USER='''
  user {
             id
             name
+            is_verified
+id_color
+info
+open_time
+close_time
+total_views
             seller_name
             email_verified_at
             email
@@ -22,6 +28,14 @@ const AUTH_USER='''
             }
              city {
                 name
+                id
+            }
+            social{
+              twitter
+              face
+              instagram
+              linkedin
+              tiktok
             }
             followers {
                 seller{
@@ -34,16 +48,29 @@ const AUTH_USER='''
 ''';
 
 const AUTH_FIELDS='''
-  id
+            id
             name
+           open_time
+close_time
+total_views
             seller_name
             email_verified_at
             email
             level
+            is_verified
+            id_color
+            social{
+              twitter
+              face
+              instagram
+              linkedin
+              tiktok
+            }
             address
             phone
             image
             logo
+            info
             following_count
             total_balance
             total_point
@@ -57,6 +84,7 @@ const AUTH_FIELDS='''
             
              city {
                 name
+                id
             }
             followers {
                 seller{

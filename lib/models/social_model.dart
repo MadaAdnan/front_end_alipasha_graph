@@ -10,6 +10,7 @@ class SocialModel {
   String? sub_email;
   String? phone;
   String? sub_phone;
+  String? tiktok;
 
   SocialModel({
     this.name,
@@ -23,6 +24,7 @@ class SocialModel {
     this.telegram,
     this.twitter,
     this.youtube,
+    this.tiktok,
   });
 
   factory SocialModel.fromJson(Map<String,dynamic> data){
@@ -38,6 +40,7 @@ class SocialModel {
       telegram: "${data['telegram']??''}",
       twitter: "${data['twitter']??''}",
       youtube: "${data['youtube']??''}",
+      tiktok: "${data['tiktok']??''}",
     );
   }
 }

@@ -85,6 +85,7 @@ class ProfileLogic extends GetxController {
          }
         data {
             id
+            created_at
             name
             expert
             is_available
@@ -93,6 +94,15 @@ class ProfileLogic extends GetxController {
             type
             views_count
             image
+            user{
+            id
+            seller_name
+            is_verified
+            }
+            city{
+            id
+            name
+            }
             category {
               name
             }

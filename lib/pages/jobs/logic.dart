@@ -6,6 +6,7 @@ import 'package:dio/dio.dart' as dio;
 import 'package:toast/toast.dart';
 
 class JobsLogic extends GetxController {
+  RxBool loading =RxBool(false);
   RxBool hasMorePage = RxBool(false);
   RxInt page = RxInt(1);
   MainController mainController = Get.find<MainController>();
@@ -72,7 +73,7 @@ class JobsLogic extends GetxController {
 
     ''';
     try {
-
+      loading.value=true;
       dio.Response? res = await mainController.fetchData();
       mainController.logger.e(res?.data);
       if (res?.data?['data']?['products']?['paginatorInfo'] != null) {
@@ -88,5 +89,6 @@ class JobsLogic extends GetxController {
     } on CustomException catch (e) {
       mainController.logger.e("Error Jobs Pge ${e.message}");
     }
+    loading.value=false;
   }
 }

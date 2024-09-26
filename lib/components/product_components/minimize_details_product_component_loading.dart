@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 
 class MinimizeDetailsProductComponentLoading extends StatelessWidget {
   MinimizeDetailsProductComponentLoading({
@@ -20,113 +21,70 @@ class MinimizeDetailsProductComponentLoading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-
-      child: Container(
-        decoration: BoxDecoration(
-            border: Border(
-                bottom: BorderSide(color: GrayDarkColor, width: 0.004.sh))),
-        padding: EdgeInsets.symmetric(vertical: 0.002.sh),
-        width: 1.sw,
-        child: Row(
-          children: [
-            // image
-            Container(
-              width: 0.35.sw,
-              height: 0.35.sw,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("assets/images/png/user.png"),
-                    fit: BoxFit.cover),
-              ),
+    return  Container(
+      decoration: BoxDecoration(
+          border: Border(
+              bottom: BorderSide(
+                  color: GrayDarkColor,
+                  width: 0.004.sh))),
+      padding: EdgeInsets.symmetric(vertical: 0.002.sh),
+      width: 1.sw,
+      height: 0.2.sh,
+      child: Row(
+        children: [
+          Shimmer.fromColors(child: Container(
+            width: 0.4.sw,
+            height: 0.2.sh,
+            decoration: BoxDecoration(
+              color: GrayLightColor,
+              borderRadius: BorderRadius.circular(30.r),
             ),
-            10.horizontalSpace,
-            Container(
-              height: 0.35.sw,
-              width: 0.6.sw,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: EdgeInsets.only(top: 0.002.sh),
-                    width: 0.6.sw,
-                    child: RichText(
-                      text: TextSpan(children: [
-                        TextSpan(text: 'seller ',style: H4RedTextStyle),
-                        TextSpan(text: '(سرمدا )',style: H4GrayTextStyle),
-                      ]),
-                    ),
-                  ),
-                  10.verticalSpace,
-                  Container(
-                    width: 0.6.sw,
-                    child: Text(
-                      'منتج',
-                      style: H2BlackTextStyle,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  10.verticalSpace,
-                  Expanded(
-                    child: Container(
-                      width: 0.6.sw,
-                      child: Text(
-                        'وصف المنشور',
-                        style: H4GrayTextStyle,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                      ),
-                    ),
-                  ),
-                  10.verticalSpace,
+          ), baseColor: GrayLightColor, highlightColor: GrayWhiteColor),
+          30.horizontalSpace,
+         Container(child:  Column(
+           children: [
+             Shimmer.fromColors(child:  Container(
+               decoration: BoxDecoration(
+                 color: GrayLightColor,
+                 borderRadius: BorderRadius.circular(30.r),
+               ),
+               width: 0.5.sw,
+               height: 0.02.sh,
+             ), baseColor: GrayLightColor, highlightColor: GrayWhiteColor),
 
-                  Container(
-                    alignment: Alignment.bottomCenter,
-                    width: 0.6.sw,
-                    padding: EdgeInsets.symmetric(vertical: 0.002.sh),
-                    decoration: BoxDecoration(
-                        border: Border(
-                      top: BorderSide(color: GrayDarkColor),
-                    )),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          child: RichText(
-                            text: TextSpan(children: [
-                              TextSpan(
-                                  text: " معرف المنشور: ",
-                                  style: H4GrayTextStyle),
-                              TextSpan(
-                                  text: "1", style: H4GrayTextStyle),
-                            ]),
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(left: 0.02.sw),
-                          child: Row(
-                            children: [
-                              Icon(
-                                FontAwesomeIcons.eye,
-                                size: 0.04.sw,
-                                color: GrayDarkColor,
-                              ),
-                              5.horizontalSpace,
-                              Text(
-                                '10k',
-                                style: H4GrayTextStyle,
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
+             20.verticalSpace,
+             Shimmer.fromColors(child:  Container(
+               decoration: BoxDecoration(
+                 color: GrayLightColor,
+                 borderRadius: BorderRadius.circular(30.r),
+               ),
+               width: 0.5.sw,
+               height: 0.02.sh,
+             ), baseColor: GrayLightColor, highlightColor: GrayWhiteColor),
+
+             20.verticalSpace,
+             Shimmer.fromColors(child:   Container(
+               decoration: BoxDecoration(
+                 color: GrayLightColor,
+                 borderRadius: BorderRadius.circular(30.r),
+               ),
+               width: 0.5.sw,
+               height: 0.02.sh,
+             ), baseColor: GrayLightColor, highlightColor: GrayWhiteColor),
+
+             20.verticalSpace,
+             Shimmer.fromColors(child:   Container(
+               decoration: BoxDecoration(
+                 color: GrayLightColor,
+                 borderRadius: BorderRadius.circular(30.r),
+               ),
+               width: 0.5.sw,
+               height: 0.02.sh,
+             ), baseColor: GrayLightColor, highlightColor: GrayWhiteColor),
+
+           ],
+         ),padding: EdgeInsets.only(top:0.02.sh),)
+        ],
       ),
     );
   }

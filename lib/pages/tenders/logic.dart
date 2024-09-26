@@ -5,6 +5,8 @@ import '../../models/product_model.dart';
 import 'package:dio/dio.dart' as dio;
 
 class TendersLogic extends GetxController {
+
+  RxBool loading = RxBool(false);
   RxBool hasMorePage = RxBool(false);
   RxInt page = RxInt(1);
   MainController mainController = Get.find<MainController>();
@@ -71,7 +73,7 @@ class TendersLogic extends GetxController {
 
     ''';
     try {
-
+loading.value=true;
       dio.Response? res = await mainController.fetchData();
      // mainController.logger.e(res?.data);
       if (res?.data?['data']?['products']?['paginatorInfo'] != null) {
@@ -87,5 +89,6 @@ class TendersLogic extends GetxController {
     }  catch (e) {
       mainController.logger.e("Error Tenders Pge ${e}");
     }
+    loading.value=false;
   }
 }

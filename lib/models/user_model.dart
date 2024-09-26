@@ -1,6 +1,7 @@
 import 'package:ali_pasha_graph/models/city_model.dart';
 import 'package:ali_pasha_graph/models/plan_model.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
+import 'package:ali_pasha_graph/models/social_model.dart';
 
 class UserModel {
   int? id;
@@ -19,6 +20,8 @@ class UserModel {
   bool? is_active;
   bool? is_seller;
   String? affiliate;
+  bool? is_verified;
+  String? id_color;
   String? info;
   String? customImg;
   String? level;
@@ -30,7 +33,8 @@ class UserModel {
   double? totalBalance;
   double? totalPoint;
   int? followingCount;
-
+  int? total_views;
+SocialModel? social;
   UserModel({
     this.name,
     this.id,
@@ -58,7 +62,11 @@ class UserModel {
     this.level,
     this.followers,
     this.followingCount,
-    this.is_seller
+    this.is_seller,
+    this.id_color,
+    this.is_verified=false,
+    this.social,
+    this.total_views,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> data) {
@@ -84,15 +92,18 @@ class UserModel {
     return UserModel(
       id: int.tryParse("${data['id']}"),
       followingCount: int.tryParse("${data['following_count']}") ?? 0,
+      total_views: int.tryParse("${data['total_views']}") ?? 0,
       info: "${data['info'] ?? ''}",
       affiliate: "${data['affiliate'] ?? ''}",
       is_special: bool.tryParse("${data['is_special']}")?? false,
+      is_verified: bool.tryParse("${data['is_verified']}")?? false,
       is_restaurant: bool.tryParse("${data['is_restaurant']}")?? false,
       is_delivery: bool.tryParse("${data['is_delivery']}")?? false,
       is_active: bool.tryParse("${data['is_active']}")?? false,
       is_seller: bool.tryParse("${data['is_seller'] }")?? false,
       close_time: "${data['close_time'] ?? ''}",
       open_time: "${data['open_time'] ?? ''}",
+      id_color: "${data['id_color'] ?? ''}",
       image: "${data['image'] ?? ''}",
       address: "${data['address'] ?? ''}",
       phone: "${data['phone'] ?? ''}",
@@ -106,6 +117,7 @@ class UserModel {
       totalPoint: double.tryParse("${data['total_point'] }")??0,
       email_verified_at: "${data['email_verified_at'] ?? ''}",
       city: data['city'] != null ? CityModel.fromJson(data['city']) : null,
+      social: data['social'] != null ? SocialModel.fromJson(data['social']) : null,
       products: listProducts.toList(),
       plans: listPlans.toList(),
       followers: listFollowers.toList(),
@@ -118,12 +130,14 @@ class UserModel {
       'name': name,
       'id': id,
       'seller_name': seller_name,
-      'emaile': email,
+      'email': email,
       'email_verified_at': email_verified_at,
       'phone': phone,
       'address': address,
       'image': image,
       'logo': logo,
+      "id_color":id_color,
+      "is_verified":is_verified,
       'open_time': open_time,
       'close_time': close_time,
       'is_active': is_active,

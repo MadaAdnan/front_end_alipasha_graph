@@ -1,6 +1,7 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/components/home_app_bar/view.dart';
 import 'package:ali_pasha_graph/components/product_components/job_card.dart';
+import 'package:ali_pasha_graph/components/product_components/minimize_details_product_component_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -49,18 +50,18 @@ class JobsPage extends StatelessWidget {
                   return ListView(
                     children: [
                       ...List.generate(
-                          logic.jobs.length +
-                              (logic.mainController.loading.value ? 1 : 0),
+                          logic.jobs.length,
                           (index) {
-                        if (index < logic.jobs.length) {
+
                           return JobCard(post: logic.jobs[index]);
-                        }
-                        if (logic.mainController.loading.value) {
-                          return Center(child: CircularProgressIndicator());
-                        }
-                        return Container();
+
+
+
                       }),
-                      if (!logic.hasMorePage.value)
+                  if (logic.mainController.loading.value)
+                   ...List.generate(5, (index)=>MinimizeDetailsProductComponentLoading()),
+
+                      if (!logic.hasMorePage.value && !logic.loading.value)
                         Center(
                             child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),

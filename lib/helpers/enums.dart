@@ -143,6 +143,17 @@ extension FormatNumber on String {
       return this.toString();
     }
   }
+
+  String toFormatNumberK() {
+    int number = int.tryParse(this) ?? 0;
+    if (number >= 1000000) {
+      return (number / 1000000).toString() + ' M';
+    } else if (number >= 1000) {
+      return (number / 1000).toString() + ' K';
+    } else {
+      return this.toString();
+    }
+  }
 }
 
 extension ProductActiveEnum on String {

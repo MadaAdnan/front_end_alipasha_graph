@@ -83,23 +83,7 @@ class EditProfileLogic extends GetxController {
     mainController.query.value = '''
   query Me {
     me {
-    is_seller
-        id
-        name
-        seller_name
-        email
-        phone
-        address
-        image
-        logo
-        open_time
-        close_time
-        is_delivery
-        affiliate
-        info
-        city{
-        id
-        }
+   $AUTH_FIELDS
     }
     cities{
     name
@@ -109,9 +93,12 @@ class EditProfileLogic extends GetxController {
     ''';
     try {
       dio.Response? res = await mainController.fetchData();
+      mainController.logger.d(res?.data);
       if (res?.data?['data']?['me'] != null) {
+        mainController.logger.d(res?.data?['data']?['me']);
         user.value = UserModel.fromJson(res?.data?['data']?['me']);
         cityId.value = user.value?.city?.id;
+        mainController.setUserJson(json: res?.data?['data']?['me']);
       }
 
       if (res?.data?['data']?['cities'] != null) {
@@ -131,7 +118,7 @@ class EditProfileLogic extends GetxController {
       "query":
           r" mutation UpdateUser($input:UpdateUserInput!) { "
               r"updateUser(input:$input) "
-              "  {$AUTH_FIELDS }"
+              "{$AUTH_FIELDS }"
               r"}",
       "variables": <String, dynamic>{
         "input":{
@@ -156,8 +143,8 @@ class EditProfileLogic extends GetxController {
 
     String map = '''
     {
-  "image": ["variables.image"],
-  "logo": ["variables.logo"]
+  "image": ["variables.input.image"],
+  "logo": ["variables.input.logo"]
 }
     ''';
 
@@ -165,17 +152,14 @@ class EditProfileLogic extends GetxController {
       if (avatar.value != null) 'image': avatar.value,
       if (logo.value != null) 'logo': logo.value,
     };
-
-    mainController.query.value = '''
-   
-    
-    ''';
+    mainController.logger.e(avatar.value?.path);
     try {
       dio.Response res = await mainController.dio_manager
           .executeGraphQLQueryWithFile(json.encode(datajson),
               map: map, files: data);
       if (res.data['data']['updateUser'] != null) {
         mainController.setUserJson(json: res.data['data']['updateUser']);
+
         messageBox(
             title: 'نجاح العملية',
             message: 'تم تعديل الملف الشخصي بنجاح',

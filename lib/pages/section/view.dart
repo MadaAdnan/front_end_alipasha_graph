@@ -11,6 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
+
 import '../../helpers/colors.dart';
 import '../../helpers/style.dart';
 import 'logic.dart';
@@ -50,26 +51,27 @@ class SectionPage extends StatelessWidget {
               width: 1.sw,
               height: 0.05.sh,
               margin: EdgeInsets.symmetric(vertical: 0.01.sh),
-              color: WhiteColor,
+              padding: EdgeInsets.symmetric(vertical: 0.003.sh),
+              decoration: BoxDecoration(
+                  color: WhiteColor,
+                  border: Border(bottom: BorderSide(color: GrayDarkColor))),
               child: Obx(() {
-                if (logic.loading.value && logic.category.value == null) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                if (logic.loading.value == false &&
-                        logic.category.value == null ||
-                    logic.category.value?.children?.length == 0) {
-                  return Text('لا يوجد أقسام فرعية');
-                }
                 return ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
-                    ...List.generate(logic.category.value!.children!.length,
-                        (index) {
-                      return _buildSubSection(
-                          category: logic.category.value!.children![index]);
-                    })
+                    if (logic.loading.value)
+                      ...List.generate(4, (index) {
+                        return Shimmer.fromColors(
+                            baseColor: GrayLightColor,
+                            highlightColor: GrayWhiteColor,
+                            child: _loadingbuildSubSection());
+                      }),
+                    if (!logic.loading.value)
+                      ...List.generate(logic.category.value!.children!.length,
+                          (index) {
+                        return _buildSubSection(
+                            category: logic.category.value!.children![index]);
+                      })
                   ],
                 );
               }),
@@ -79,13 +81,19 @@ class SectionPage extends StatelessWidget {
                 child: Obx(() {
                   return Column(
                     children: [
-                      if(logic.loading.value)
-                        ...List.generate(4, (index)=>Shimmer.fromColors(child: MinimizeDetailsProductComponentLoading(), baseColor: GrayLightColor, highlightColor: GrayWhiteColor),),
+                      if (logic.loading.value)
+                       ...List.generate(4, (index)=> Shimmer.fromColors(
+                           baseColor: GrayLightColor,
+                           highlightColor: GrayWhiteColor,
+                           child:MinimizeDetailsProductComponentLoading())),
                       ...List.generate(logic.products.length, (index) {
                         return Column(
                           children: [
-
-                            MinimizeDetailsProductComponent(post: logic.products[index],onClick: ()=>Get.toNamed(PRODUCT_PAGE,arguments: logic.products[index].id),),
+                            MinimizeDetailsProductComponent(
+                              post: logic.products[index],
+                              onClick: () => Get.toNamed(PRODUCT_PAGE,
+                                  arguments: logic.products[index].id),
+                            ),
                             if (logic.advices.length > 0 && index % 5 == 0)
                               AdviceComponent(
                                   advice: logic.advices[int.parse(
@@ -93,13 +101,12 @@ class SectionPage extends StatelessWidget {
                           ],
                         );
                       }),
-                      if (logic.loading.value)
-                        Container(
-                          child: Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        ),
-                      if (!logic.hasMorePage.value)
+                      if(logic.loading.value)
+                        Shimmer.fromColors(
+                            baseColor: GrayLightColor,
+                            highlightColor: GrayWhiteColor,
+                            child:MinimizeDetailsProductComponentLoading()),
+                      if (!logic.hasMorePage.value && !logic.loading.value)
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: Text(
@@ -138,6 +145,24 @@ class SectionPage extends StatelessWidget {
           style: logic.categoryId.value != category.id
               ? H3BlackTextStyle
               : H3WhiteTextStyle,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
+    );
+  }
+
+  _loadingbuildSubSection() {
+    return InkWell(
+      child: Container(
+        width: 1.sw / 4.5,
+        margin: EdgeInsets.symmetric(horizontal: 0.02.sw),
+        alignment: Alignment.center,
+        padding: EdgeInsets.symmetric(vertical: 0.001.sh, horizontal: 0.02.sw),
+        decoration: BoxDecoration(
+            color: GrayLightColor, borderRadius: BorderRadius.circular(15.r)),
+        child: Text(
+          "القسم",
+          style: H3WhiteTextStyle,
           overflow: TextOverflow.ellipsis,
         ),
       ),

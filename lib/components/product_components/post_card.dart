@@ -129,7 +129,8 @@ class PostCard extends StatelessWidget {
                                 ],
                               ),
                             );
-                          } else {
+                          }
+                          else if(post?.user?.id !=mainController.authUser.value?.id) {
                             return InkWell(
                               onTap: () {
                                 follow();
@@ -163,6 +164,9 @@ class PostCard extends StatelessWidget {
                                 );
                               }),
                             );
+                          }
+                          else{
+                            return Container();
                           }
                         } else {
                           return Container();
