@@ -7,7 +7,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_sound/public/flutter_sound_player.dart';
+
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -782,7 +782,7 @@ class PlayerSoundMessage extends StatelessWidget {
 
   RxBool play = RxBool(false);
   final String? path;
-  FlutterSoundPlayer? mPlayer = FlutterSoundPlayer();
+
 
   @override
   Widget build(BuildContext context) {
@@ -805,21 +805,17 @@ class PlayerSoundMessage extends StatelessWidget {
 
   Future<void> playAudio() async {
     if (!play.value) {
-      await mPlayer!.openPlayer();
+
       play.value = true;
     }
 
     if (path != null) {
-      await mPlayer!.startPlayer(
-          fromURI: path,
-          whenFinished: () {
-            play.value = false;
-          });
+
     }
   }
 
   Future<void> stopPlayer() async {
-    await mPlayer!.stopPlayer();
+
     play.value = false;
   }
 }

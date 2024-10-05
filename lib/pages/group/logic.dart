@@ -1,14 +1,13 @@
 import 'dart:convert';
 
-import 'package:audio_session/audio_session.dart';
+
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_sound/public/flutter_sound_player.dart';
-import 'package:flutter_sound/public/flutter_sound_recorder.dart';
+
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter_sound/flutter_sound.dart' as audio;
+
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
+
 import '../../Global/main_controller.dart';
 import '../../models/community_model.dart';
 import '../../models/message_community_model.dart';
@@ -26,9 +25,7 @@ class GroupLogic extends GetxController {
   CommunityModel communityModel = Get.arguments;
   ScrollController scrollController = ScrollController();
 
-  // Audio
-  FlutterSoundPlayer? mPlayer = FlutterSoundPlayer();
-  FlutterSoundRecorder? mRecorder = FlutterSoundRecorder();
+
   RxBool mPlayerIsInited = false.obs;
   RxBool mRecorderIsInited = false.obs;
 
@@ -39,54 +36,20 @@ class GroupLogic extends GetxController {
   List<int> bufferI16 = [];
   List<int> bufferU8 = [];
   int sampleRate = 0;
-  audio.Codec codecSelected = audio.Codec.pcmFloat32;
+
   RxString? recordedFilePath = RxString('');
   RxDouble mRecordingLevel = RxDouble(0);
 
   Future<void> openRecorder() async {
-    var status = await Permission.microphone.request();
-    if (status != PermissionStatus.granted) {
-      throw RecordingPermissionException('Microphone permission not granted');
-    }
-    await mRecorder!.openRecorder();
 
-    final session = await AudioSession.instance;
-    await session.configure(AudioSessionConfiguration(
-      avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
-      avAudioSessionCategoryOptions:
-      AVAudioSessionCategoryOptions.allowBluetooth |
-      AVAudioSessionCategoryOptions.defaultToSpeaker,
-      avAudioSessionMode: AVAudioSessionMode.spokenAudio,
-      avAudioSessionRouteSharingPolicy:
-      AVAudioSessionRouteSharingPolicy.defaultPolicy,
-      avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
-      androidAudioAttributes: const AndroidAudioAttributes(
-        contentType: AndroidAudioContentType.speech,
-        flags: AndroidAudioFlags.none,
-        usage: AndroidAudioUsage.voiceCommunication,
-      ),
-      androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
-      androidWillPauseWhenDucked: true,
-    ));
-    sampleRate = 16000;
-
-    mRecorderIsInited.value = true;
   }
 
   Future<void> startRecording() async {
-    if (!mRecorderIsInited.value) {
-      await openRecorder();
-    }
-    recordedFilePath!(await _localFile);
-    mainController.logger.d("PATH IS");
-    mainController.logger.d(recordedFilePath?.value);
-    _startUpdatingRecordingLevel();
-    await mRecorder!.startRecorder(toFile: recordedFilePath?.value);
+
   }
 
   Future<void> stopRecorder() async {
-    await mRecorder!.stopRecorder();
-    mRecorderIsInited.value = false;
+
 
     // بعد إنهاء التسجيل، يمكنك تشغيل الصوت المسجل
     //  await playRecordedAudio();
@@ -94,40 +57,23 @@ class GroupLogic extends GetxController {
 
 
   _startUpdatingRecordingLevel() {
-    mRecorder!.setSubscriptionDuration(Duration(milliseconds: 100));
-    mRecorder!.onProgress!.listen(
-          (event) {
-        if(event.decibels!=null){
-          mRecordingLevel.value = event.decibels! /120;
-        }
 
-      },
-    );
   }
 
 
 
   Future<void> openPlayer() async {
-    await mPlayer!.openPlayer();
-    mPlayerIsInited.value = true;
+
   }
 
   Future<void> playRecordedAudio() async {
-    if (!mPlayerIsInited.value) {
-      await openPlayer();
-    }
 
-    if (recordedFilePath?.value != null) {
-      await mPlayer!.startPlayer(fromURI: recordedFilePath!.value,whenFinished: (){
-        mPlayerIsInited.value=false;
-      });
-    }
+
 
   }
 
   Future<void> stopPlayer() async {
-    await mPlayer!.stopPlayer();
-    mPlayerIsInited.value = false;
+
   }
 
   Future<String> get _localPath async {
