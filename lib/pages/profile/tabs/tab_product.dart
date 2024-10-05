@@ -39,21 +39,21 @@ class TabProduct extends StatelessWidget {
       },
       child: Column(
         children: [
-          Container(
+        /*  Container(
             color: WhiteColor,
             padding: EdgeInsets.symmetric(
                 vertical: 0.004.sh, horizontal: 0.02.sw),
             child: InputComponent(
               fill: WhiteColor,
               width: 1.sw,
-              height: 0.07.sh,
+              height: 0.055.sh,
               hint: 'ابحث عن منتج',
               controller: logic.searchController,
               onEditingComplete: () {
                 logic.search.value = logic.searchController.text;
               },
             ),
-          ),
+          ),*/
           Obx(() {
             if (logic.loading.value && logic.page.value == 1) {
               return const Center(

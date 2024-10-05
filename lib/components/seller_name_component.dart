@@ -8,22 +8,27 @@ import 'package:get/get.dart';
 import '../helpers/style.dart';
 
 class SellerNameComponent extends StatelessWidget {
-   SellerNameComponent({super.key,this.textStyle,required this.sellerName,required this.isVerified});
+   SellerNameComponent({super.key,this.textStyle,required this.sellerName,required this.isVerified,this.white,this.color});
 
   MainController mainController = Get.find<MainController>();
 final TextStyle? textStyle;
 final String sellerName;
 final bool isVerified;
+final bool? white;
+final Color? color;
   @override
   Widget build(BuildContext context) {
     return Container(
-      alignment: Alignment.center,
+
+      alignment: Alignment.topRight,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             "${sellerName}",
-            style: textStyle??H1RedTextStyle.copyWith(color: "${mainController.authUser.value?.id_color}".toColor()),
+            style: textStyle??H1RedTextStyle.copyWith(color:color?? "${mainController.authUser.value?.id_color}".toColor(),
+            ),
+            overflow: TextOverflow.ellipsis,
           ),
           15.horizontalSpace,
           if ((isVerified==true))
@@ -32,8 +37,8 @@ final bool isVerified;
               height: 0.04.sw,
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: Svg(
-                        "assets/images/svg/verified.svg",
+                      image: Svg(white!=true?
+                        "assets/images/svg/verified.svg":"assets/images/svg/verified_white.svg",
                         size: Size(0.04.sw, 0.04.sw),
                       ))),
             ),

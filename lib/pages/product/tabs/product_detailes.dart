@@ -43,7 +43,7 @@ class ProductDetailes extends StatelessWidget {
             width: 1.sw,
             margin: EdgeInsets.symmetric(vertical: 0.003.sh),
             padding:
-                EdgeInsets.symmetric(horizontal: 0.03.sw, vertical: 0.01.sh),
+                EdgeInsets.symmetric(horizontal: 0.01.sw, vertical: 0.01.sh),
             decoration: BoxDecoration(
               color: GrayWhiteColor,
               borderRadius: BorderRadius.circular(15.r),
@@ -409,7 +409,8 @@ class ProductDetailes extends StatelessWidget {
                         ))
               ],
             ),
-          if ((isAuth() && logic.product.value?.is_vote == false) && logic.product.value!.type=='product')
+          if ((isAuth() && logic.product.value?.is_vote == false) &&
+              logic.product.value!.type == 'product')
             Obx(() {
               if (logic.loadingRate.value) {
                 return Container(
@@ -464,16 +465,16 @@ class ProductDetailes extends StatelessWidget {
                 );
               }
             }),
-          if ((!isAuth()||logic.product.value?.is_vote==true)&& logic.product.value!.type=='product')
+          if ((!isAuth() || logic.product.value?.is_vote == true) &&
+              logic.product.value!.type == 'product')
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
+              padding: EdgeInsets.symmetric(horizontal: 0.01.sw),
               margin: EdgeInsets.symmetric(
                 vertical: 0.02.sw,
               ),
               child: Row(
                 children: [
                   ...List.generate(5, (index) {
-                    print(logic.product.value!.vote_avg);
                     if (logic.product.value!.vote_avg! > index) {
                       return const Icon(
                         FontAwesomeIcons.solidStar,
@@ -493,7 +494,12 @@ class ProductDetailes extends StatelessWidget {
             margin: EdgeInsets.symmetric(vertical: 0.01.sh),
             alignment: Alignment.centerRight,
             decoration: const BoxDecoration(
-                border: Border(bottom: BorderSide(color: OrangeColor))),
+              border: Border(
+                bottom: BorderSide(
+                  color: OrangeColor,
+                ),
+              ),
+            ),
             child: Text(
               'منشورات ذات صلة',
               style: H4BlackTextStyle,
@@ -501,7 +507,7 @@ class ProductDetailes extends StatelessWidget {
           ),
           ...List.generate(products.length,
               (i) => MinimizeDetailsProductComponent(post: products[i])),
-          150.verticalSpace,
+          10.verticalSpace,
         ],
       ),
     );

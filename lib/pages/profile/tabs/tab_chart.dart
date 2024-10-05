@@ -255,9 +255,9 @@ class TabChart extends StatelessWidget {
           children: [
             RichText(
               text: TextSpan(children: [
-                TextSpan(text: "$count", style: H2RedTextStyle),
+                TextSpan(text: "$count", style: H2RedTextStyle.copyWith(color: mainController.authUser.value?.id_color?.toColor())),
                 if (symbol != null)
-                  TextSpan(text: " $symbol ", style: H2RedTextStyle),
+                  TextSpan(text: " $symbol ", style: H2RedTextStyle.copyWith(color: mainController.authUser.value?.id_color?.toColor())),
               ]),
             ),
             Text(

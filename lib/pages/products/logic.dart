@@ -1,9 +1,11 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/models/advice_model.dart';
+import 'package:ali_pasha_graph/models/category_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
 
+import '../../helpers/queries.dart';
 import '../../models/product_model.dart';
 
 class ProductsLogic extends GetxController {
@@ -11,10 +13,11 @@ class ProductsLogic extends GetxController {
   RxBool hasMorePage = RxBool(false);
   RxBool loading = RxBool(false);
   RxInt page = RxInt(1);
-  UserModel seller = Get.arguments;
+  Rxn<UserModel> seller = Rxn<UserModel>(Get.arguments);
   RxList<ProductModel> products = RxList<ProductModel>([]);
+  RxList<CategoryModel> categories = RxList<CategoryModel>([]);
   RxList<AdviceModel> advices = RxList<AdviceModel>([]);
-
+RxnInt categoryId=RxnInt(null);
   void nextPage() {
     if (hasMorePage.value) {
       page.value++;
@@ -27,6 +30,14 @@ class ProductsLogic extends GetxController {
     super.onInit();
     ever(page, (value) {
       getProducts();
+    });
+    ever(categoryId,(value){
+      if(page.value==1){
+        getProducts();
+      }else{
+        page.value=1;
+      }
+
     });
   }
 
@@ -42,7 +53,7 @@ class ProductsLogic extends GetxController {
 
     mainController.query.value = '''
    query Products {
-    products(user_id: ${seller.id}, first: 15, page: ${page.value}) {
+    products(sub1_id:${categoryId.value},user_id: ${seller.value?.id}, first: 15, page: ${page.value}) {
         paginatorInfo {
             hasMorePages
         }
@@ -65,6 +76,7 @@ class ProductsLogic extends GetxController {
             id
                 seller_name
                 logo
+                is_verified
             }
           
             city {
@@ -79,7 +91,9 @@ class ProductsLogic extends GetxController {
             }
         }
     }
-    advices (user_id: ${seller.id}) {
+   
+    ${page.value == 1 ? '''  
+     advices (user_id: ${seller.value?.id}) {
         name
         user {
             id
@@ -90,31 +104,42 @@ class ProductsLogic extends GetxController {
         image
         id
     }
+    user(id:${seller.value?.id}){$AUTH_FIELDS}
+    categoryBySeller(sellerId:${seller.value?.id}) {id name}''' : ''}
 }
 
   ''';
     try {
       dio.Response? res = await mainController.fetchData();
-    //  mainController.logger.e(res?.data);
+      //  mainController.logger.e(res?.data);
       if (res?.data?['data']?['products']?['paginatorInfo'] == null) {
         hasMorePage.value =
             res?.data?['data']?['products']?['paginatorInfo']['hasMorePages'];
       }
       //mainController.logger.w(products.length);
       if (res?.data?['data']?['products']?['data'] != null) {
+        if(page.value==1){
+          products.clear();
+        }
         for (var item in res?.data?['data']?['products']?['data']) {
           products.add(ProductModel.fromJson(item));
-
         }
+      }
+      if (res?.data?['data']?['user'] != null) {
+        seller.value = UserModel.fromJson(res?.data?['data']?['user']);
+      }
 
+      if (res?.data?['data']?['categoryBySeller'] != null) {
+        categories.clear();
+        for (var item in res?.data?['data']?['categoryBySeller']) {
+          categories.add(CategoryModel.fromJson(item));
+        }
       }
 
       if (res?.data?['data']?['advices'] != null) {
         for (var item in res?.data?['data']?['advices']) {
           advices.add(AdviceModel.fromJson(item));
-
         }
-
       }
       //mainController.logger.w(products.length);
     } catch (e) {

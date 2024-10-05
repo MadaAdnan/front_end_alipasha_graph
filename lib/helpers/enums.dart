@@ -147,9 +147,9 @@ extension FormatNumber on String {
   String toFormatNumberK() {
     int number = int.tryParse(this) ?? 0;
     if (number >= 1000000) {
-      return (number / 1000000).toString() + ' M';
+      return (number / 1000000).toStringAsFixed(1) + ' M';
     } else if (number >= 1000) {
-      return (number / 1000).toString() + ' K';
+      return (number / 1000).toStringAsFixed(1) + ' K';
     } else {
       return this.toString();
     }

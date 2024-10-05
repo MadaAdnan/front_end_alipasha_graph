@@ -61,25 +61,23 @@ class CommunitiesLogic extends GetxController {
     loading.value = true;
     mainController.query.value = '''
     query Communities {
-    communities(
+    getMyCommunity(
         search: "${search.value}",first: 10, page: ${page.value}) {
-        data {
+         data {
             id
-            last_change
-            not_seen_count
-            user {
-            id
-                name
-                seller_name
-                image
-                logo
+            name
+            type
+            last_update
+            users_count
+            manager{
+            id 
+            seller_name
+            logo
             }
-            seller {
-            id
+            users{
+                id
                 name
-                seller_name
                 image
-                logo
             }
         }
         paginatorInfo {
@@ -92,14 +90,14 @@ class CommunitiesLogic extends GetxController {
 
     try {
       dio.Response? res = await mainController.fetchData();
-     // mainController.logger.e(res?.data);
-      if (res?.data?['data']?['communities']?['paginatorInfo'] != null) {
-        hasMorePage.value = res?.data?['data']?['communities']?['paginatorInfo']
+      mainController.logger.e(res?.data);
+      if (res?.data?['data']?['getMyCommunity']?['paginatorInfo'] != null) {
+        hasMorePage.value = res?.data?['data']?['getMyCommunity']?['paginatorInfo']
             ['hasMorePages'];
       }
 
-      if (res?.data?['data']?['communities']?['data'] != null) {
-        for (var item in res?.data?['data']?['communities']?['data']) {
+      if (res?.data?['data']?['getMyCommunity']?['data'] != null) {
+        for (var item in res?.data?['data']?['getMyCommunity']?['data']) {
           communities.indexWhere((el) => el.id == item['id']) == -1
               ? communities.add(CommunityModel.fromJson(item))
               : null;

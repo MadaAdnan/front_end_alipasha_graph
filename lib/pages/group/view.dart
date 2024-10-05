@@ -1,27 +1,25 @@
-import 'package:ali_pasha_graph/components/fields_components/input_component.dart';
-import 'package:ali_pasha_graph/helpers/components.dart';
-import 'package:ali_pasha_graph/models/message_community_model.dart';
-import 'package:ali_pasha_graph/models/user_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_sound/public/flutter_sound_player.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../Global/main_controller.dart';
 import '../../helpers/colors.dart';
+import '../../helpers/components.dart';
 import '../../helpers/style.dart';
+import '../../models/message_community_model.dart';
+import '../chat/view.dart';
 import 'logic.dart';
 
-class ChatPage extends StatelessWidget {
-  ChatPage({Key? key}) : super(key: key);
+class GroupPage extends StatelessWidget {
+  GroupPage({Key? key}) : super(key: key);
 
-  final logic = Get.find<ChatLogic>();
+  final logic = Get.find<GroupLogic>();
+
   MainController mainController = Get.find<MainController>();
 
   @override
@@ -58,7 +56,7 @@ class ChatPage extends StatelessWidget {
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
-                        if (logic.communityModel.users?[0] != null)
+                        if (logic.communityModel.users!.length >0)
                           Positioned(
                             right: 0.08.sw,
                             child: Container(
@@ -109,7 +107,7 @@ class ChatPage extends StatelessWidget {
                         Positioned(
                             right: 0.3.sw,
                             child: Text(
-                              '${mainController.authUser.value?.name} & ${logic.communityModel.users!.where((el) => el.id != mainController.authUser.value?.id).firstOrNull?.name}',
+                              'عدد المشتركين : ${logic.communityModel.users_count}',
                               style: H3WhiteTextStyle,
                             )),
                       ],
@@ -128,8 +126,10 @@ class ChatPage extends StatelessWidget {
                   ...List.generate(logic.messages.length, (index) {
                     bool isIam = mainController.authUser.value?.id ==
                         logic.messages[index].user?.id;
-                    if(isIam) return myMessage(context,  message: logic.messages[index]); else  return anotherMessage(context, message: logic.messages[index]);
-
+                    if(isIam)
+                    return myMessage(context,
+                        message: logic.messages[index]); else return anotherMessage(context,
+                        message: logic.messages[index]);
                   }),
                   if (logic.loading.value)
                     Container(
@@ -212,23 +212,23 @@ class ChatPage extends StatelessWidget {
                                                         maxHeight: 0.12.sw),*/
                                                           duration: Duration(
                                                               milliseconds:
-                                                                  100),
+                                                              100),
                                                           width: 0.07.sw +
                                                               (logic.mRecordingLevel
-                                                                      .value *
+                                                                  .value *
                                                                   100.0),
                                                           // تغيير حجم الحاوية بناءً على شدة الصوت
                                                           height: 0.07.sw +
                                                               (logic.mRecordingLevel
-                                                                      .value *
+                                                                  .value *
                                                                   100.0),
                                                           decoration:
-                                                              BoxDecoration(
+                                                          BoxDecoration(
                                                             color: RedColor,
                                                             borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        50.r),
+                                                            BorderRadius
+                                                                .circular(
+                                                                50.r),
                                                           ),
                                                           child: InkWell(
                                                             onTap: () {
@@ -242,7 +242,7 @@ class ChatPage extends StatelessWidget {
                                                                     .white,
                                                                 size: 0.02.sw +
                                                                     (logic.mRecordingLevel
-                                                                            .value *
+                                                                        .value *
                                                                         50.0), // تغيير حجم الأيقونة بناءً على شدة الصوت
                                                               ),
                                                             ),
@@ -253,14 +253,14 @@ class ChatPage extends StatelessWidget {
                                                         width: 0.15.sw,
                                                         height: 0.15.sw,
                                                         alignment:
-                                                            Alignment.center,
+                                                        Alignment.center,
                                                         decoration: BoxDecoration(
                                                             borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        30.r),
+                                                            BorderRadius
+                                                                .circular(
+                                                                30.r),
                                                             color:
-                                                                GrayLightColor),
+                                                            GrayLightColor),
                                                         child: IconButton(
                                                             onPressed: () {
                                                               logic
@@ -277,19 +277,19 @@ class ChatPage extends StatelessWidget {
                                                     SizedBox(height: 0.01.sh),
                                                     Obx(() {
                                                       if (logic.recordedFilePath
-                                                                  ?.value !=
-                                                              null &&
+                                                          ?.value !=
+                                                          null &&
                                                           logic.mRecorderIsInited
-                                                                  .value ==
+                                                              .value ==
                                                               false) {
                                                         return Row(
                                                           mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .end,
+                                                          MainAxisAlignment
+                                                              .end,
                                                           children: [
                                                             if (logic
-                                                                    .mPlayerIsInited
-                                                                    .value ==
+                                                                .mPlayerIsInited
+                                                                .value ==
                                                                 false)
                                                               IconButton(
                                                                 onPressed: logic
@@ -299,8 +299,8 @@ class ChatPage extends StatelessWidget {
                                                                         .solidCirclePlay),
                                                               ),
                                                             if (logic
-                                                                    .mPlayerIsInited
-                                                                    .value ==
+                                                                .mPlayerIsInited
+                                                                .value ==
                                                                 true)
                                                               IconButton(
                                                                 onPressed: logic
@@ -323,8 +323,8 @@ class ChatPage extends StatelessWidget {
                                                       }
                                                       return Row(
                                                         mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceEvenly,
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
                                                         children: [
                                                           InkWell(
                                                             onTap: () async {
@@ -341,24 +341,24 @@ class ChatPage extends StatelessWidget {
                                                             child: Container(
                                                               padding: EdgeInsets
                                                                   .symmetric(
-                                                                      horizontal:
-                                                                          0.05
-                                                                              .sw,
-                                                                      vertical:
-                                                                          0.02.sw),
+                                                                  horizontal:
+                                                                  0.05
+                                                                      .sw,
+                                                                  vertical:
+                                                                  0.02.sw),
                                                               decoration:
-                                                                  BoxDecoration(
+                                                              BoxDecoration(
                                                                 color: Colors
                                                                     .green,
                                                                 borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            50.r),
+                                                                BorderRadius
+                                                                    .circular(
+                                                                    50.r),
                                                               ),
                                                               child: Text(
                                                                 'إرسال',
                                                                 style:
-                                                                    H4WhiteTextStyle,
+                                                                H4WhiteTextStyle,
                                                               ),
                                                             ),
                                                           ),
@@ -372,23 +372,23 @@ class ChatPage extends StatelessWidget {
                                                             child: Container(
                                                               padding: EdgeInsets
                                                                   .symmetric(
-                                                                      horizontal:
-                                                                          0.05
-                                                                              .sw,
-                                                                      vertical:
-                                                                          0.02.sw),
+                                                                  horizontal:
+                                                                  0.05
+                                                                      .sw,
+                                                                  vertical:
+                                                                  0.02.sw),
                                                               decoration:
-                                                                  BoxDecoration(
+                                                              BoxDecoration(
                                                                 color: RedColor,
                                                                 borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            50.r),
+                                                                BorderRadius
+                                                                    .circular(
+                                                                    50.r),
                                                               ),
                                                               child: Text(
                                                                 'إلغاء',
                                                                 style:
-                                                                    H4WhiteTextStyle,
+                                                                H4WhiteTextStyle,
                                                               ),
                                                             ),
                                                           )
@@ -463,10 +463,10 @@ class ChatPage extends StatelessWidget {
 
   bool isURL(String text) {
     final RegExp urlRegExp =
-        RegExp(r'^(https?:\/\/)?' //  بدء الرابط بـ "http://" أو "https://"
-            r'([a-zA-Z0-9\-_]+\.)+[a-zA-Z]{2,}' // النطاق مثل "example.com"
-            r'(:\d+)?(\/[^\s]*)?$' // اختياري: المنفذ والمسار
-            );
+    RegExp(r'^(https?:\/\/)?' //  بدء الرابط بـ "http://" أو "https://"
+    r'([a-zA-Z0-9\-_]+\.)+[a-zA-Z]{2,}' // النطاق مثل "example.com"
+    r'(:\d+)?(\/[^\s]*)?$' // اختياري: المنفذ والمسار
+    );
     return urlRegExp.hasMatch(text);
   }
 
@@ -504,14 +504,14 @@ class ChatPage extends StatelessWidget {
             Container(
               width: 0.75.sw,
               padding:
-                  EdgeInsets.symmetric(vertical: 0.009.sh, horizontal: 0.02.sw),
+              EdgeInsets.symmetric(vertical: 0.009.sh, horizontal: 0.02.sw),
               decoration: BoxDecoration(
                 color: RedColor ,
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(30.r),
                     bottomRight: Radius.circular(30.r),
                     topLeft:
-                        Radius.circular(30.r) ),
+                    Radius.circular(30.r) ),
               ),
               child: RichText(
                 softWrap: true,
@@ -544,7 +544,7 @@ class ChatPage extends StatelessWidget {
           if (message.type != 'text' && message.type != 'wav')
             InkWell(
               child: Container(
-               width: 0.7.sw,
+                width: 0.7.sw,
                 height: 0.6.sw,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30.r),
@@ -564,10 +564,10 @@ class ChatPage extends StatelessWidget {
                         CachedNetworkImage(
                             imageUrl: '${message.attach}',
                             imageBuilder: (context, imageProvider) => Container(
-                                  child: Image(
-                                    image: imageProvider,
-                                  ),
-                                )),
+                              child: Image(
+                                image: imageProvider,
+                              ),
+                            )),
                         Positioned(
                           top: 10,
                           right: 10,
@@ -582,7 +582,7 @@ class ChatPage extends StatelessWidget {
                                         color: DarkColor, blurRadius: 0.02.sw)
                                   ]),
                               child:
-                                  Icon(Icons.close, color: RedColor, size: 30),
+                              Icon(Icons.close, color: RedColor, size: 30),
                             ),
                             onPressed: () => Get.back(),
                           ),
@@ -597,7 +597,7 @@ class ChatPage extends StatelessWidget {
                             child: Text(
                               'Image Description', // وصف الصورة
                               style:
-                                  TextStyle(color: Colors.white, fontSize: 16),
+                              TextStyle(color: Colors.white, fontSize: 16),
                             ),
                           ),
                         ),
@@ -628,7 +628,7 @@ class ChatPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment:
-       CrossAxisAlignment.end,
+        CrossAxisAlignment.end,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -677,7 +677,7 @@ class ChatPage extends StatelessWidget {
                           ..onTap = () async => await openUrl(url: '$el'),
                         text: ' $el ',
                         style:  H3OrangeTextStyle.copyWith(height: 1.5)
-                            ,
+                        ,
                       );
                     } else {
                       return TextSpan(
@@ -689,13 +689,13 @@ class ChatPage extends StatelessWidget {
               ),
             ),
           if (message.type == 'wav')
-           Container(
-             padding: EdgeInsets.symmetric(vertical: 0.004.sw,horizontal:0.004.sw ),
-             decoration: BoxDecoration(borderRadius: BorderRadius.circular(150.r),color: GrayLightColor),
-             child:  PlayerSoundMessage(
-               path: message.attach,
-             ),
-           ),
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 0.004.sw,horizontal:0.004.sw ),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(150.r),color: GrayLightColor),
+              child:  PlayerSoundMessage(
+                path: message.attach,
+              ),
+            ),
           if (message.type != 'text' && message.type != 'wav')
             InkWell(
               child: Container(
@@ -774,52 +774,5 @@ class ChatPage extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-class PlayerSoundMessage extends StatelessWidget {
-  PlayerSoundMessage({super.key, this.path});
-
-  RxBool play = RxBool(false);
-  final String? path;
-  FlutterSoundPlayer? mPlayer = FlutterSoundPlayer();
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(() {
-      return Container(
-        child: play.value
-            ? IconButton(
-                onPressed: () {
-                  stopPlayer();
-                },
-                icon: Icon(FontAwesomeIcons.stop))
-            : IconButton(
-                onPressed: () {
-                  playAudio();
-                },
-                icon: Icon(FontAwesomeIcons.play)),
-      );
-    });
-  }
-
-  Future<void> playAudio() async {
-    if (!play.value) {
-      await mPlayer!.openPlayer();
-      play.value = true;
-    }
-
-    if (path != null) {
-      await mPlayer!.startPlayer(
-          fromURI: path,
-          whenFinished: () {
-            play.value = false;
-          });
-    }
-  }
-
-  Future<void> stopPlayer() async {
-    await mPlayer!.stopPlayer();
-    play.value = false;
   }
 }

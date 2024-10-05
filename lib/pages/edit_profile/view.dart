@@ -7,11 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
+
 import 'package:image_picker/image_picker.dart';
-import 'package:logger/logger.dart';
+
 
 import 'logic.dart';
 
@@ -58,7 +59,7 @@ class EditProfilePage extends StatelessWidget {
                       width: 1.sw,
                       radius: 150.r,
                       hint: 'الاسم',
-                      controller: logic.nameController.value,
+                      controller: logic.nameController,
                       fill: WhiteColor,
                       textInputType: TextInputType.text,
                       validation: (text) {
@@ -76,7 +77,7 @@ class EditProfilePage extends StatelessWidget {
                         width: 1.sw,
                         radius: 150.r,
                         hint: 'البريد الإلكتروني',
-                        controller: logic.emailController.value,
+                        controller: logic.emailController,
                         fill: WhiteColor,
                         textInputType: TextInputType.emailAddress,
                         validation: (text) {
@@ -93,7 +94,7 @@ class EditProfilePage extends StatelessWidget {
                         width: 1.sw,
                         radius: 150.r,
                         hint: 'رقم الهاتف',
-                        controller: logic.phoneController.value,
+                        controller: logic.phoneController,
                         fill: WhiteColor,
                         textInputType: TextInputType.phone,
                         validation: (text) {
@@ -112,7 +113,7 @@ class EditProfilePage extends StatelessWidget {
                         width: 1.sw,
                         radius: 150.r,
                         hint: 'العنوان',
-                        controller: logic.addressController.value,
+                        controller: logic.addressController,
                         fill: WhiteColor,
                         textInputType: TextInputType.text,
                         validation: (text) {
@@ -121,24 +122,28 @@ class EditProfilePage extends StatelessWidget {
                           }
                           return null;
                         }),
-
                     Obx(() {
                       return Container(
                         child: FormBuilderDropdown<int>(
-                          validator: FormBuilderValidators.required(errorText: "يرجى تحديد المدينة"),
+                            validator: FormBuilderValidators.required(
+                                errorText: "يرجى تحديد المدينة"),
                             name: 'city_id',
                             initialValue: logic.cityId.value,
                             onChanged: (value) => logic.cityId.value = value,
                             decoration: InputDecoration(
-                              label: RichText(text: TextSpan(children: [
-                                TextSpan(text: 'المدينة',style: H4GrayTextStyle),
-                                TextSpan(text: ' * ',style: H3RedTextStyle),
-                              ]),),
+                              label: RichText(
+                                text: TextSpan(children: [
+                                  TextSpan(
+                                      text: 'المدينة', style: H4GrayTextStyle),
+                                  TextSpan(text: ' * ', style: H3RedTextStyle),
+                                ]),
+                              ),
                               border: OutlineInputBorder(
                                 borderSide: BorderSide(color: GrayDarkColor),
                                 borderRadius: BorderRadius.circular(150.r),
                               ),
-                              contentPadding: EdgeInsets.symmetric(horizontal: 0.02.sw),
+                              contentPadding:
+                                  EdgeInsets.symmetric(horizontal: 0.02.sw),
                             ),
                             items: [
                               ...List.generate(
@@ -162,7 +167,7 @@ class EditProfilePage extends StatelessWidget {
                         width: 1.sw,
                         radius: 150.r,
                         hint: 'اسم المتجر',
-                        controller: logic.sellerNameController.value,
+                        controller: logic.sellerNameController,
                         fill: WhiteColor,
                         textInputType: TextInputType.text,
                         validation: (text) {
@@ -181,7 +186,7 @@ class EditProfilePage extends StatelessWidget {
                         width: 1.sw,
                         radius: 150.r,
                         hint: 'يفتح الساعة',
-                        controller: logic.openTimeController.value,
+                        controller: logic.openTimeController,
                         fill: WhiteColor,
                         textInputType: TextInputType.datetime,
                       ),
@@ -192,21 +197,107 @@ class EditProfilePage extends StatelessWidget {
                         width: 1.sw,
                         radius: 150.r,
                         hint: 'يغلق الساعة',
-                        controller: logic.closeTimeController.value,
+                        controller: logic.closeTimeController,
                         fill: WhiteColor,
                         textInputType: TextInputType.datetime,
                       ),
                     if (logic.user.value?.is_seller == true)
-                      InputComponent(
-                        name: 'info',
-                        width: 1.sw,
-                        maxLine: 7,
-                        height: 0.1.sh,
-                        radius: 15.r,
-                        hint: 'وصف مختصر عن المتجر',
-                        controller: logic.infoController.value,
-                        fill: WhiteColor,
-                        textInputType: TextInputType.multiline,
+                      Column(
+                        children: [
+                          InputComponent(
+                            name: 'info',
+                            width: 1.sw,
+                            maxLine: 7,
+                            height: 0.1.sh,
+                            radius: 15.r,
+                            hint: 'وصف مختصر عن المتجر',
+                            controller: logic.infoController,
+                            fill: WhiteColor,
+                            textInputType: TextInputType.multiline,
+                          ),
+                          25.verticalSpace,
+                          Container(
+                            child: InputComponent(
+                              width: 1.sw,
+                              controller: logic.faceController,
+                              name: 'facebook',
+                              hint: 'رابط فيسبوك',
+                              suffixIcon: FontAwesomeIcons.facebook,
+                              radius: 150.r,
+                              fill: WhiteColor,
+                            ),
+                          ),
+                          25.verticalSpace,
+                          Container(
+                            child: InputComponent(
+                              width: 1.sw,
+                              controller: logic.instagramController,
+                              name: 'instagram',
+                              suffixIcon: FontAwesomeIcons.instagram,
+                              hint: 'رابط إنستغرام',
+                              radius: 150.r,
+                              fill: WhiteColor,
+                            ),
+                          ),
+                          25.verticalSpace,
+                          Container(
+                            child: InputComponent(
+                              width: 1.sw,
+                              controller: logic.twitterController,
+                              name: 'twitter',
+                              suffixIcon: FontAwesomeIcons.xTwitter,
+                              hint: 'رابط تويتر',
+                              radius: 150.r,
+                              fill: WhiteColor,
+                            ),
+                          ),
+                          25.verticalSpace,
+                          Container(
+                            child: InputComponent(
+                              width: 1.sw,
+                              controller: logic.linkedInController,
+                              name: 'linkedin',
+                              suffixIcon: FontAwesomeIcons.linkedin,
+                              hint: 'رابط لينكد إن',
+                              radius: 150.r,
+                              fill: WhiteColor,
+                            ),
+                          ),
+                          25.verticalSpace,
+                          Container(
+                            child: InputComponent(
+                              width: 1.sw,
+                              controller: logic.tiktokController,
+                              name: 'tiktok',
+                              suffixIcon: FontAwesomeIcons.tiktok,
+                              hint: 'رابط تيكتوك',
+                              radius: 150.r,
+                              fill: WhiteColor,
+                            ),
+                          ),
+                          25.verticalSpace,
+                          Container(
+                            height: 0.07.sh,
+                            child: FormBuilderColorPickerField(
+                              name: 'colorId',
+                              initialValue:
+                                  logic.colorIdController.text.toColor(),
+                              controller: logic.colorIdController,
+                              decoration: InputDecoration(
+                                label: Text(
+                                  'لون المتجر الأساسي',
+                                  style: H3GrayTextStyle,
+                                ),
+                                contentPadding:
+                                    EdgeInsets.symmetric(horizontal: 0.02.sw),
+                                suffixIconColor: Colors.red,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(150.r),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     25.verticalSpace,
                     Container(
@@ -234,7 +325,7 @@ class EditProfilePage extends StatelessWidget {
                               width: 1.sw,
                               radius: 150.r,
                               hint: 'كلمة المرور',
-                              controller: logic.passwordController.value,
+                              controller: logic.passwordController,
                               fill: WhiteColor,
                               textInputType: TextInputType.text,
                               validation: (text) {
@@ -260,7 +351,7 @@ class EditProfilePage extends StatelessWidget {
                               width: 1.sw,
                               radius: 150.r,
                               hint: 'تأكيد كلمة المرور',
-                              controller: logic.confirmPasswordController.value,
+                              controller: logic.confirmPasswordController,
                               fill: WhiteColor,
                               textInputType: TextInputType.text,
                               validation: (text) {
@@ -293,8 +384,6 @@ class EditProfilePage extends StatelessWidget {
                                       imagSource: ImageSource.gallery,
                                       onChange: (file, size) {
                                         logic.avatar.value = file;
-                                        var l=Logger();
-                                        l.i(logic.avatar.value);
                                       });
                                 },
                                 child: Obx(() {

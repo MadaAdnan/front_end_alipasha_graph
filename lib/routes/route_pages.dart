@@ -13,6 +13,8 @@ import 'package:ali_pasha_graph/pages/cart_item/binding.dart';
 import 'package:ali_pasha_graph/pages/cart_item/view.dart';
 import 'package:ali_pasha_graph/pages/cart_seller/binding.dart';
 import 'package:ali_pasha_graph/pages/cart_seller/view.dart';
+import 'package:ali_pasha_graph/pages/channel/binding.dart';
+import 'package:ali_pasha_graph/pages/channel/view.dart';
 import 'package:ali_pasha_graph/pages/chat/binding.dart';
 import 'package:ali_pasha_graph/pages/chat/view.dart';
 import 'package:ali_pasha_graph/pages/communities/binding.dart';
@@ -42,6 +44,8 @@ import 'package:ali_pasha_graph/pages/followers/binding.dart';
 import 'package:ali_pasha_graph/pages/followers/view.dart';
 import 'package:ali_pasha_graph/pages/gold/binding.dart';
 import 'package:ali_pasha_graph/pages/gold/view.dart';
+import 'package:ali_pasha_graph/pages/group/binding.dart';
+import 'package:ali_pasha_graph/pages/group/view.dart';
 import 'package:ali_pasha_graph/pages/home/binding.dart';
 import 'package:ali_pasha_graph/pages/home/view.dart';
 import 'package:ali_pasha_graph/pages/jobs/binding.dart';
@@ -260,6 +264,22 @@ class AppPages {
       page: () => ChatPage(),
       binding: ChatBinding(),
     ),
+
+    GetPage(
+      middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+      name: GROUP_PAGE,
+      page: () => GroupPage(),
+      binding: GroupBinding(),
+    ),
+
+    GetPage(
+      middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+      name: CHANNEL_PAGE,
+      page: () => ChannelPage(),
+      binding: ChannelBinding(),
+    ),
+
+
     GetPage(
       middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
       name: PLAN_PAGE,

@@ -43,4 +43,6 @@ class SocialModel {
       tiktok: "${data['tiktok']??''}",
     );
   }
+
+
 }

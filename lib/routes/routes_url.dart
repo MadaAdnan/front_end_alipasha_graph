@@ -46,6 +46,10 @@ const String SEARCH_PAGE = '/search_page';
 
 const String COMMUNITIES_PAGE = '/communities_page';
 const String CHAT_PAGE = '/chat_page';
+const String GROUP_PAGE = '/group_page';
+const String CHANNEL_PAGE = '/channel_page';
+
+
 const String PLAN_PAGE = '/plan_page';
 const String GOLD_PAGE = '/gold_page';
 const String MATERIAL_PAGE = '/material_page';

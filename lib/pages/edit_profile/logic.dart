@@ -5,6 +5,7 @@ import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/helpers/components.dart';
 import 'package:ali_pasha_graph/helpers/queries.dart';
 import 'package:ali_pasha_graph/models/city_model.dart';
+import 'package:ali_pasha_graph/models/social_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,26 +22,26 @@ class EditProfileLogic extends GetxController {
   RxList<CityModel> cities = RxList<CityModel>([]);
   RxBool loading = RxBool(false);
   RxnInt cityId = RxnInt(null);
-  Rx<TextEditingController> nameController =
-      Rx<TextEditingController>(TextEditingController());
-  Rx<TextEditingController> emailController =
-      Rx<TextEditingController>(TextEditingController());
-  Rx<TextEditingController> phoneController =
-      Rx<TextEditingController>(TextEditingController());
-  Rx<TextEditingController> addressController =
-      Rx<TextEditingController>(TextEditingController());
-  Rx<TextEditingController> sellerNameController =
-      Rx<TextEditingController>(TextEditingController());
-  Rx<TextEditingController> openTimeController =
-      Rx<TextEditingController>(TextEditingController());
-  Rx<TextEditingController> closeTimeController =
-      Rx<TextEditingController>(TextEditingController());
-  Rx<TextEditingController> infoController =
-      Rx<TextEditingController>(TextEditingController());
-  Rx<TextEditingController> passwordController =
-      Rx<TextEditingController>(TextEditingController());
-  Rx<TextEditingController> confirmPasswordController =
-      Rx<TextEditingController>(TextEditingController());
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+  TextEditingController sellerNameController = TextEditingController();
+  TextEditingController openTimeController = TextEditingController();
+  TextEditingController closeTimeController = TextEditingController();
+  TextEditingController infoController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+  TextEditingController colorIdController =
+      TextEditingController(text: '#FF0000');
+
+  // Social
+
+  TextEditingController instagramController = TextEditingController();
+  TextEditingController faceController = TextEditingController();
+  TextEditingController twitterController = TextEditingController();
+  TextEditingController linkedInController = TextEditingController();
+  TextEditingController tiktokController = TextEditingController();
 
   Rxn<XFile> avatar = Rxn<XFile>(null);
   Rxn<XFile> logo = Rxn<XFile>(null);
@@ -58,20 +59,36 @@ class EditProfileLogic extends GetxController {
     super.onInit();
     ever(user, (value) {
       if (value != null) {
-        nameController.value = TextEditingController(text: user.value!.name);
-        emailController.value = TextEditingController(text: user.value!.email);
-        phoneController.value = TextEditingController(text: user.value!.phone);
+        nameController.value =
+            TextEditingValue(text: "${user.value!.name ?? ''}");
+        emailController.value =
+            TextEditingValue(text: "${user.value!.email ?? ''}");
+        phoneController.value =
+            TextEditingValue(text: "${user.value!.phone ?? ''}");
         addressController.value =
-            TextEditingController(text: user.value!.address);
+            TextEditingValue(text: "${user.value!.address ?? ''}");
         sellerNameController.value =
-            TextEditingController(text: user.value!.seller_name);
+            TextEditingValue(text: "${user.value!.seller_name ?? ''}");
         openTimeController.value =
-            TextEditingController(text: user.value!.open_time);
+            TextEditingValue(text: "${user.value!.open_time ?? ''}");
         closeTimeController.value =
-            TextEditingController(text: user.value!.close_time);
-        infoController.value = TextEditingController(text: user.value!.info);
-        passwordController.value = TextEditingController();
-        confirmPasswordController.value = TextEditingController();
+            TextEditingValue(text: "${user.value!.close_time ?? ''}");
+        infoController.value =
+            TextEditingValue(text: "${user.value!.info ?? ''}");
+        passwordController.value = TextEditingValue();
+        confirmPasswordController.value = TextEditingValue();
+        colorIdController.value =
+            TextEditingValue(text: "${user.value?.id_color ?? '#ff0000'}");
+        instagramController.value =
+            TextEditingValue(text: "${user.value?.social?.instagram ?? ''}");
+        twitterController.value =
+            TextEditingValue(text: "${user.value?.social?.twitter ?? ''}");
+        faceController.value =
+            TextEditingValue(text: "${user.value?.social?.face ?? ''}");
+        linkedInController.value =
+            TextEditingValue(text: "${user.value?.social?.linkedin ?? ''}");
+        tiktokController.value =
+            TextEditingValue(text: "${user.value?.social?.tiktok ?? ''}");
       }
     });
   }
@@ -115,13 +132,12 @@ class EditProfileLogic extends GetxController {
   saveData() async {
     loading.value = true;
     Map<String, dynamic> datajson = {
-      "query":
-          r" mutation UpdateUser($input:UpdateUserInput!) { "
-              r"updateUser(input:$input) "
-              "{$AUTH_FIELDS }"
-              r"}",
+      "query": r" mutation UpdateUser($input:UpdateUserInput!) { "
+          r"updateUser(input:$input) "
+          "{$AUTH_FIELDS }"
+          r"}",
       "variables": <String, dynamic>{
-        "input":{
+        "input": {
           "name": nameController.value.text ?? '',
           "email": emailController.value.text ?? '',
           "password": passwordController.value.text ?? '',
@@ -132,14 +148,20 @@ class EditProfileLogic extends GetxController {
           "close_time": closeTimeController.value.text ?? '',
           "open_time": openTimeController.value.text ?? '',
           "info": infoController.value.text ?? '',
+          "colorId": colorIdController.value.text ?? '',
+          'social': {
+            'instagram': instagramController.value.text ?? '',
+            'face': faceController.value.text ?? '',
+            'linkedin': linkedInController.value.text ?? '',
+            'tiktok': tiktokController.value.text ?? '',
+            'twitter': twitterController.value.text ?? '',
+          },
           "image": null,
           "logo": null,
           "is_delivery": true,
         },
-
       }
     };
-
 
     String map = '''
     {
@@ -157,6 +179,7 @@ class EditProfileLogic extends GetxController {
       dio.Response res = await mainController.dio_manager
           .executeGraphQLQueryWithFile(json.encode(datajson),
               map: map, files: data);
+      mainController.logger.d(res.data);
       if (res.data['data']['updateUser'] != null) {
         mainController.setUserJson(json: res.data['data']['updateUser']);
 
@@ -167,8 +190,8 @@ class EditProfileLogic extends GetxController {
         // mainController.authUser.value=UserModel.fromJson(res.data['data']['updateUser']);
       }
       //mainController.logger.e(res.data);
-      if(res.data['errors'][0]['message']!=null){
-       // mainController.logger.i(res.data['errors'][0]['message']);
+      if (res.data['errors'][0]['message'] != null) {
+        // mainController.logger.i(res.data['errors'][0]['message']);
       }
     } catch (e) {
       mainController.logger.e("Error get Profile $e");

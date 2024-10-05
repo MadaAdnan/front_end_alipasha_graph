@@ -1,18 +1,20 @@
 import 'package:ali_pasha_graph/models/user_model.dart';
 
-class MessageCommunityModel {
+class MessageModel {
   UserModel? user;
-  String? message;
+  String? body;
   String? attach;
+  String? type;
   String? createdAt;
 
-  MessageCommunityModel({this.user, this.attach, this.message, this.createdAt});
+  MessageModel({this.user, this.attach, this.body, this.createdAt,this.type});
 
-  factory MessageCommunityModel.fromJson(Map<String, dynamic> data) {
-    return MessageCommunityModel(
+  factory MessageModel.fromJson(Map<String, dynamic> data) {
+    return MessageModel(
         user: data['user'] != null ? UserModel.fromJson(data['user']) : null,
         createdAt: "${data['created_at'] ?? ''}",
-        message: "${data['message'] ?? ''}",
+        body: "${data['body'] ?? ''}",
+        type: "${data['type'] ?? ''}",
         attach: "${data['attach'] ?? ''}");
   }
 }

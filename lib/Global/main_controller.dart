@@ -38,6 +38,7 @@ class MainController extends GetxController {
   RxnString query = RxnString(null);
   Rxn<Map<String, dynamic>> variables = Rxn(null);
   RxBool loading = RxBool(false);
+  RxBool cartLoading = RxBool(false);
   RxList<Map<String, dynamic>> errors = RxList<Map<String, dynamic>>([]);
   RxList<CategoryModel> categories = RxList<CategoryModel>([]);
   RxList<CityModel> cities = RxList<CityModel>([]);
@@ -65,7 +66,7 @@ class MainController extends GetxController {
     getAdvices();
 
     ever(token, (value) {
-      logger.e(token.value);
+      //logger.e(token.value);
       try {
         pusher = PusherService.init(token: "$token");
       } catch (e) {}
@@ -101,7 +102,7 @@ class MainController extends GetxController {
       Duration responseTime = endDate.difference(startDate);
       logger.i(
           "Duration Response : ${responseTime.inMilliseconds / 1000} Seconds");
-      logger.i("Response Size: ${res.data.toString().length} Byte");
+      logger.i("Response Size: ${res.data.toString().length/1024} KB");
       return res;
     } on dio.DioException catch (e) {
       loading.value = false;
@@ -175,36 +176,26 @@ class MainController extends GetxController {
   createCommunity({required int sellerId,String? message}) async {
     if (authUser.value == null) return;
     query.value = '''
-    mutation CreateCommunity {
-    createCommunity(userId: ${authUser.value?.id}, sellerId: $sellerId) {
+   mutation CreateChat {
+    createChat(memberId: $sellerId) {
         id
-        last_change
-        not_seen_count
-        created_at
-        user {
+        name
+        type
+        last_update
+        users {
             id
             name
-            seller_name
             image
-            logo
-        }
-        seller {
-            id
-            name
-            seller_name
-            image
-            logo
         }
     }
 }
-
      ''';
     try {
       dio.Response? res = await fetchData();
       logger.w(res?.data);
-      if (res?.data?['data']['createCommunity'] != null) {
+      if (res?.data?['data']['createChat'] != null) {
         CommunityModel community =
-            CommunityModel.fromJson(res?.data?['data']['createCommunity']);
+            CommunityModel.fromJson(res?.data?['data']['createChat']);
         Get.toNamed(CHAT_PAGE, arguments: community,parameters: {"msg":"$message"});
       }
     } catch (e) {
@@ -347,39 +338,65 @@ class MainController extends GetxController {
   }
 
   Future<void> addToCart({required ProductModel product}) async {
+    cartLoading.value=true;
+    try{
     List<CartModel> cartsItem = await CartHelper.addToCart(product: product);
     carts(cartsItem);
     messageBox(message: 'تم إضافة المنتج إلى السلة',title: 'نجاح العملية');
-
+    }catch(e){}
+    cartLoading.value=false;
   }
   Future<void> removeBySeller({ int? sellerId}) async {
+    cartLoading.value=true;
+    try{
     List<CartModel> cartsItem = await CartHelper.removeBySeller(sellerId: sellerId);
     carts(cartsItem);
-
+    }catch(e){}
+    cartLoading.value=false;
   }
 
   Future<void> minFromCart({required ProductModel product}) async {
+    cartLoading.value=true;
+    try{
     List<CartModel> cartsItem = await CartHelper.minFromCart(product: product);
     carts(cartsItem);
+    }catch(e){}
+    cartLoading.value=false;
   }
 
   Future<void> deleteFromCart({required ProductModel product}) async {
+    cartLoading.value=true;
+    try{
     List<CartModel> cartsItem = await CartHelper.removeCart(product: product);
     carts(cartsItem);
+    }catch(e){}
+    cartLoading.value=false;
   }
 
   Future<void> emptyCart() async {
+    cartLoading.value=true;
+    try{
     List<CartModel> cartsItem = await CartHelper.emptyCart();
     carts(cartsItem);
+    }catch(e){}
+    cartLoading.value=false;
   }
   Future<void> increaseQty({required int productId}) async {
+    cartLoading.value=true;
+    try{
     List<CartModel> cartsItem = await CartHelper.increaseQty(productId: productId);
     carts(cartsItem);
-
+    }catch(e){}
+    cartLoading.value=false;
   }
   Future<void> decreaseQty({required int productId}) async {
-    List<CartModel> cartsItem = await CartHelper.decreaseQty(productId: productId);
-    carts(cartsItem);
+    cartLoading.value=true;
+    try{
+      List<CartModel> cartsItem = await CartHelper.decreaseQty(productId: productId);
+      carts(cartsItem);
+    }catch(e){}
+    cartLoading.value=false;
+
 
   }
 }

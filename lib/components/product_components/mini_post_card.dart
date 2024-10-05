@@ -38,26 +38,27 @@ class MiniPostCard extends StatelessWidget {
       margin: EdgeInsets.only(top: 0.01.sh),
       width: 1.sw,
       decoration: BoxDecoration(
-        color: WhiteColor,
+        color: GrayWhiteColor,
         borderRadius: BorderRadius.circular(15.r),
       ),
       child: Container(
+        padding: EdgeInsets.only(right: 0.02.sw),
         width: 1.sw,
-        height: 0.17.sh,
+        height: 0.33.sw,
         decoration: BoxDecoration(
-          color: WhiteColor,
-          boxShadow: [
-            BoxShadow(color: DarkColor, blurRadius: 0.1.r, spreadRadius: 0.5.r)
-          ],
+          color: GrayWhiteColor,
+
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              width: 0.33.sw,
-              height: 0.17.sh,
+
+              width: 0.3.sw,
+              height: 0.3.sw,
               decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.r),
                 image: DecorationImage(
                     image: CachedNetworkImageProvider("${post.image}"),fit: BoxFit.cover),
               ),
@@ -105,7 +106,7 @@ width: 0.67.sw,
                     children: [
                       Container(
                         padding: EdgeInsets.only(right: 0.01.sw),
-                        height: 0.13.sh,
+                        height: 0.12.sh,
 
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -116,7 +117,7 @@ width: 0.67.sw,
                               isVerified: post.user?.is_verified??false,
                               textStyle: H2BlackTextStyle,
                             ),
-                            15.verticalSpace,
+                            10.verticalSpace,
                             if (post.type == 'product')
                               Text(
                                 "${post.name}",
@@ -131,7 +132,7 @@ width: 0.67.sw,
                                 "${post.expert}",
                                 style: H4GrayTextStyle,
                               ),
-                            15.verticalSpace,
+                            10.verticalSpace,
                             if (post.type == 'product')
                               RichText(
                                   text: TextSpan(children: [
@@ -153,7 +154,7 @@ width: 0.67.sw,
                       ),
                       if(post.user?.id==mainController.authUser.value?.id)
                       Container(
-                        padding: EdgeInsets.only(left: 0.01.sw),
+                        padding: EdgeInsets.only(left: 0.02.sw),
                         alignment: Alignment.centerLeft,
                         child: InkWell(
                           onTap: () {
@@ -180,7 +181,7 @@ width: 0.67.sw,
                           child: Container(
                             alignment: Alignment.center,
                             padding: EdgeInsets.symmetric(
-                                vertical: 0.01.sh, horizontal: 0.04.sw),
+                                vertical: 0.01.sh, horizontal: 0.02.sw),
                             decoration: BoxDecoration(
                                 color: RedColor,
                                 borderRadius: BorderRadius.circular(45.r)),
@@ -205,9 +206,9 @@ width: 0.67.sw,
                     ],
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 0.01.sw),
+                    padding: EdgeInsets.symmetric(horizontal: 0.01.sw,vertical: 0.004.sh),
                     width: 0.66.sw,
-                    height: 0.03.sh,
+                    height: 0.027.sh,
 
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -216,9 +217,10 @@ width: 0.67.sw,
                           children: [
                             Icon(
                               FontAwesomeIcons.locationDot,
-                              color: GrayLightColor,
+                              color: GrayDarkColor,
                               size: 0.04.sw,
                             ),
+                            10.horizontalSpace,
                             Text("${post.city?.name}",style: H4GrayTextStyle,),
                           ],
                         ),
@@ -226,9 +228,10 @@ width: 0.67.sw,
                           children: [
                             Icon(
                               FontAwesomeIcons.eye,
-                              color: GrayLightColor,
+                              color: GrayDarkColor,
                               size: 0.04.sw,
                             ),
+                            10.horizontalSpace,
                             Text("${post.views_count}",style: H4GrayTextStyle,),
                           ],
                         ),
@@ -236,9 +239,10 @@ width: 0.67.sw,
                           children: [
                             Icon(
                               FontAwesomeIcons.stopwatch,
-                              color: GrayLightColor,
+                              color: GrayDarkColor,
                               size: 0.04.sw,
                             ),
+                            10.horizontalSpace,
                             Text("${post.created_at}",style: H4GrayTextStyle,),
                           ],
                         )
@@ -529,7 +533,7 @@ width: 0.67.sw,
     ''';
     try {
       dio.Response? res = await mainController.fetchData();
-      // mainController.logger.e(res?.data);
+
       if (res?.data?['data']?['changeAvilable'] != null) {
         Get.snackbar('', '',
             titleText: Center(
@@ -562,7 +566,7 @@ width: 0.67.sw,
     ''';
     try {
       dio.Response? res = await mainController.fetchData();
-      //  mainController.logger.e(res?.data);
+
       if (res?.data?['data']?['deleteProduct'] != null) {
         Get.snackbar('', '',
             titleText: Center(

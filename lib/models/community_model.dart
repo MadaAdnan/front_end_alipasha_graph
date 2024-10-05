@@ -4,26 +4,47 @@ import 'package:get/get_rx/get_rx.dart';
 
 class CommunityModel {
   int? id;
-  UserModel? user;
-  UserModel? seller;
+  List<UserModel>? users;
+  UserModel? manager;
   String? lastChange;
   RxInt receiveMessagesCount = RxInt(0);
+  String? url;
+  String? name;
+  String? type;
+  int? users_count;
 
-  CommunityModel(
-      {this.seller,
-      this.user,
-      this.id,
-      this.lastChange,
-      });
+  CommunityModel({
+    this.manager,
+    this.users,
+    this.id,
+    this.lastChange,
+    this.users_count,
+    this.type,
+    this.name,
+    this.url,
+  });
 
   factory CommunityModel.fromJson(Map<String, dynamic> data) {
-    var comm= CommunityModel(
-      user: data['user'] != null ? UserModel.fromJson(data['user']) : null,
-      seller: data['user'] != null ? UserModel.fromJson(data['seller']) : null,
+    List<UserModel> subscribes = [];
+    if (data['users'] != null) {
+      for (var item in data['users']) {
+        subscribes.add(UserModel.fromJson(item));
+      }
+    }
+
+    var comm = CommunityModel(
+      users: subscribes,
+      manager: data['manager'] != null ? UserModel.fromJson(data['manager']) : null,
       id: int.tryParse("${data['id']}"),
-      lastChange: "${data['last_change'] ?? ''}",
+      users_count: int.tryParse("${data['users_count']}")??0,
+      lastChange: "${data['last_update'] ?? ''}",
+      name: "${data['name'] ?? ''}",
+      type: "${data['type'] ?? ''}",
+      url: "${data['url'] ?? ''}",
+
     );
-    comm.receiveMessagesCount.value= int.tryParse("${data['not_seen_count']}") ?? 0;
+   /* comm.receiveMessagesCount.value =
+        int.tryParse("${data['not_seen_count']}") ?? 0;*/
     return comm;
   }
 }

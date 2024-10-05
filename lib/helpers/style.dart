@@ -1,10 +1,43 @@
 import 'dart:ui';
 
 import 'package:ali_pasha_graph/helpers/colors.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+// horizontal Padding
+final shp=0.01.sw;
+final mhp=0.02.sw;
+final lhp=0.04.sw;
 
+// vertical Padding
+final slp=0.01.sh;
+final mlp=0.02.sh;
+final llp=0.04.sh;
+/// space Horizontal
+final smallHSpace=SizedBox(width: shp,);
+final midHSpace=SizedBox(width: mhp,);
+final largeHSpace=SizedBox(width: lhp,);
+
+/// space Vertical
+final smallVSpace=SizedBox(height: slp,);
+final midVSpace=SizedBox(height: mlp,);
+final largeVSpace=SizedBox(height: llp,);
+
+final H0GrayOpacityTextStyle = GoogleFonts.alexandria(
+    color: SubTitleColor, fontWeight: FontWeight.bold, fontSize: 70.sp);
+final H0GrayTextStyle = GoogleFonts.alexandria(
+    color: GrayDarkColor, fontWeight: FontWeight.bold, fontSize: 70.sp);
+final H0RedTextStyle = GoogleFonts.alexandria(
+    color: RedColor, fontWeight: FontWeight.bold, fontSize: 70.sp);
+final H0OrangeTextStyle = GoogleFonts.alexandria(
+    color: OrangeColor, fontWeight: FontWeight.bold, fontSize: 70.sp);
+final H0BlackTextStyle = GoogleFonts.alexandria(
+    color: DarkColor, fontWeight: FontWeight.bold, fontSize: 70.sp);
+final H0WhiteTextStyle = GoogleFonts.alexandria(
+    color: WhiteColor, fontWeight: FontWeight.bold, fontSize: 70.sp);
+final H0RegularDark=GoogleFonts.alexandria(
+    color: DarkColor, fontWeight: FontWeight.w400, fontSize: 70.sp);
 
 /// Nwe Styles H1
 final H1GrayOpacityTextStyle = GoogleFonts.alexandria(

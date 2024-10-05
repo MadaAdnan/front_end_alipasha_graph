@@ -1,27 +1,23 @@
-import 'dart:async';
 import 'dart:convert';
 
-import 'package:ali_pasha_graph/Global/main_controller.dart';
-import 'package:ali_pasha_graph/models/community_model.dart';
-import 'package:ali_pasha_graph/models/message_community_model.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_sound/flutter_sound.dart' as audio;
 import 'package:flutter_sound/public/flutter_sound_player.dart';
 import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:get/get.dart';
-import 'package:dio/dio.dart' as dio;
-
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_sound/flutter_sound.dart' as audio;
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-
-class ChatLogic extends GetxController {
+import '../../Global/main_controller.dart';
+import '../../models/community_model.dart';
+import '../../models/message_community_model.dart';
+import 'package:dio/dio.dart' as dio;
+class GroupLogic extends GetxController {
   MainController mainController = Get.find<MainController>();
   RxBool loadingSend = RxBool(false);
   TextEditingController messageController =
-      TextEditingController(text: "${Get.parameters['msg'] ?? ''}");
+  TextEditingController(text: "${Get.parameters['msg'] ?? ''}");
   Rxn<XFile> file = Rxn<XFile>(null);
   RxBool loading = RxBool(false);
   RxBool hasMorePage = RxBool(false);
@@ -58,11 +54,11 @@ class ChatLogic extends GetxController {
     await session.configure(AudioSessionConfiguration(
       avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
       avAudioSessionCategoryOptions:
-          AVAudioSessionCategoryOptions.allowBluetooth |
-              AVAudioSessionCategoryOptions.defaultToSpeaker,
+      AVAudioSessionCategoryOptions.allowBluetooth |
+      AVAudioSessionCategoryOptions.defaultToSpeaker,
       avAudioSessionMode: AVAudioSessionMode.spokenAudio,
       avAudioSessionRouteSharingPolicy:
-          AVAudioSessionRouteSharingPolicy.defaultPolicy,
+      AVAudioSessionRouteSharingPolicy.defaultPolicy,
       avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
       androidAudioAttributes: const AndroidAudioAttributes(
         contentType: AndroidAudioContentType.speech,
@@ -100,7 +96,7 @@ class ChatLogic extends GetxController {
   _startUpdatingRecordingLevel() {
     mRecorder!.setSubscriptionDuration(Duration(milliseconds: 100));
     mRecorder!.onProgress!.listen(
-      (event) {
+          (event) {
         if(event.decibels!=null){
           mRecordingLevel.value = event.decibels! /120;
         }
@@ -202,7 +198,7 @@ query GetMessages {
       mainController.logger.d(res?.data?['data']);
       if (res?.data?['data']?['getMessages']?['paginatorInfo'] != null) {
         hasMorePage.value = res?.data?['data']?['getMessages']?['paginatorInfo']
-            ['hasMorePages'];
+        ['hasMorePages'];
       }
       if (res?.data?['data']?['getMessages']?['data'] != null) {
         for (var item in res?.data?['data']?['getMessages']?['data']) {
@@ -258,12 +254,12 @@ query GetMessages {
     }
     loadingSend.value = true;
     int? sellerId =
-        mainController.authUser.value?.id == communityModel.manager?.id
-            ? communityModel.manager?.id
-            : communityModel.manager?.id;
+    mainController.authUser.value?.id == communityModel.manager?.id
+        ? communityModel.manager?.id
+        : communityModel.manager?.id;
     Map<String, dynamic> datajson = {
       "query":
-          r"""mutation CreateMessage($communityId:Int!, $body: String!, $attach: Upload) {
+      r"""mutation CreateMessage($communityId:Int!, $body: String!, $attach: Upload) {
        CreateMessage(communityId: $communityId,  body: $body, attach: $attach){
        body
       type
@@ -292,7 +288,7 @@ query GetMessages {
     try {
       dio.Response res = await mainController.dio_manager
           .executeGraphQLQueryWithFile(json.encode(datajson),
-              map: map, files: data);
+          map: map, files: data);
       mainController.logger.e(res.data);
       if (res.data?['data']?['CreateMessage'] != null) {
         messages.insert(

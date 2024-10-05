@@ -21,11 +21,14 @@ class InputComponent extends StatelessWidget {
     this.fill,
     this.onChanged,
     this.suffixIcon,
+    this.prefix,
     this.suffixClick,
     this.isSecure=false,
     this.radius,
     this.maxLine,
-    this.minLine
+    this.minLine,
+    this.textStyle
+
 
   });
 
@@ -40,11 +43,12 @@ class InputComponent extends StatelessWidget {
   final double? radius;
   final int? maxLine;
   final int? minLine;
-
+final TextStyle? textStyle;
   final String? Function(String?)? validation;
   final String? Function()? onEditingComplete;
   final String? Function(String?)? onChanged;
   IconData? suffixIcon;
+  final Widget? prefix;
   final String? Function()? suffixClick;
   final String name;
 
@@ -60,21 +64,26 @@ class InputComponent extends StatelessWidget {
         onEditingComplete: onEditingComplete,
         controller: controller,
         validator: validation,
-        style: H3BlackTextStyle,
+        style: textStyle??H3BlackTextStyle,
         keyboardType: textInputType == TextInputType.multiline && isSecure ? TextInputType.text : textInputType,
         maxLines: isSecure ? 1 : maxLine, // Ensure maxLines is 1 when isSecure is true
         decoration: InputDecoration(
+          prefixIcon: prefix,
           suffixIcon: suffixIcon != null
               ? InkWell(
             child: Icon(suffixIcon, size: 0.05.sw),
             onTap: suffixClick,
           )
               : null,
-          label: RichText(
-            text: TextSpan(children: [
-              TextSpan(text: "${hint ?? ''}", style: H3GrayTextStyle),
-              if (isRequired) TextSpan(text: "*", style: H4RedTextStyle),
-            ]),
+          label: Container(
+
+            child: RichText(
+              overflow: TextOverflow.ellipsis,
+              text: TextSpan(children: [
+                TextSpan(text: "${hint ?? ''}", style: H3GrayTextStyle.copyWith(overflow: TextOverflow.ellipsis)),
+                if (isRequired) TextSpan(text: "*", style: H4RedTextStyle),
+              ]),
+            ),
           ),
           errorStyle: H4RedTextStyle,
           focusedBorder: OutlineInputBorder(

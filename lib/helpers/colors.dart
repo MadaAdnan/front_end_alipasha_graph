@@ -5,7 +5,7 @@ import 'package:ali_pasha_graph/main.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-const Color RedColor = Color.fromRGBO(226, 6, 19, 1);
+const Color RedColor = Color.fromRGBO(226, 6, 19, 1.0);
 
 const Color WhiteColor = Color.fromRGBO(255, 255, 255, 1);
 const Color ScafoldColor = Color.fromRGBO(229, 229, 229, 1);

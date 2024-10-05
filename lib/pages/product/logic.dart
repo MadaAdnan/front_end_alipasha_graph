@@ -63,6 +63,7 @@ class ProductLogic extends GetxController {
             name
             expert
             user {
+            id
                 seller_name
                 logo
             }
@@ -90,6 +91,7 @@ class ProductLogic extends GetxController {
           vote_avg
           name
             user {
+            id
                 seller_name
                 logo
             }
@@ -171,6 +173,7 @@ mutation CreateComment {
         comment
         created_at
         user {
+        id
             name
             image
         }
@@ -242,6 +245,7 @@ mutation CreateComment {
           vote_avg
           name
             user {
+            id
                 seller_name
                 logo
             }
