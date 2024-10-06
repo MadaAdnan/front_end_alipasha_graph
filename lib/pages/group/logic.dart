@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../Global/main_controller.dart';
+import '../../helpers/redcord_manager.dart';
 import '../../models/community_model.dart';
 import '../../models/message_community_model.dart';
 import 'package:dio/dio.dart' as dio;
@@ -40,40 +41,34 @@ class GroupLogic extends GetxController {
   RxString? recordedFilePath = RxString('');
   RxDouble mRecordingLevel = RxDouble(0);
 
-  Future<void> openRecorder() async {
-
-  }
-
+  RecorderManager recorder = RecorderManager();
   Future<void> startRecording() async {
 
+    await recorder.startRecording();
+    mRecorderIsInited.value = true;
   }
 
   Future<void> stopRecorder() async {
 
-
-    // بعد إنهاء التسجيل، يمكنك تشغيل الصوت المسجل
-    //  await playRecordedAudio();
-  }
-
-
-  _startUpdatingRecordingLevel() {
-
-  }
-
-
-
-  Future<void> openPlayer() async {
-
+    await recorder.stopRecording().then((path) {
+      if (path != null) {
+        recordedFilePath!.value = path;
+        print("PATH IS ${path}");
+      } else {
+        print("PATH IS ${path}");
+      }
+    });
+    mRecorderIsInited.value = false;
   }
 
   Future<void> playRecordedAudio() async {
-
-
-
+    mPlayerIsInited.value = true;
+    await recorder.playRecordedAudio(path: recordedFilePath?.value);
   }
 
   Future<void> stopPlayer() async {
-
+    await recorder.StopPlayRecordedAudio();
+    mPlayerIsInited.value = false;
   }
 
   Future<String> get _localPath async {
@@ -83,8 +78,9 @@ class GroupLogic extends GetxController {
 
   Future<String> get _localFile async {
     final path = await _localPath;
-    return '$path/recorded_audio.wav';
+    return '$path/recorded_audio.acc';
   }
+
 
   // Audio
   nextPage() {

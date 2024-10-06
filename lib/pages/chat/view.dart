@@ -1,5 +1,6 @@
 import 'package:ali_pasha_graph/components/fields_components/input_component.dart';
 import 'package:ali_pasha_graph/helpers/components.dart';
+import 'package:ali_pasha_graph/helpers/redcord_manager.dart';
 import 'package:ali_pasha_graph/models/message_community_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -68,7 +69,8 @@ class ChatPage extends StatelessWidget {
                                 shape: BoxShape.circle,
                                 image: DecorationImage(
                                   image: CachedNetworkImageProvider(
-                                      "${logic.communityModel.users?[0].image}"),
+                                      "${logic.communityModel.users?[0]
+                                          .image}"),
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -84,7 +86,8 @@ class ChatPage extends StatelessWidget {
                                 shape: BoxShape.circle,
                                 image: DecorationImage(
                                   image: CachedNetworkImageProvider(
-                                      "${logic.communityModel.users?[1].image}"),
+                                      "${logic.communityModel.users?[1]
+                                          .image}"),
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -100,7 +103,8 @@ class ChatPage extends StatelessWidget {
                                 shape: BoxShape.circle,
                                 image: DecorationImage(
                                   image: CachedNetworkImageProvider(
-                                      "${logic.communityModel.users?[2].image}"),
+                                      "${logic.communityModel.users?[2]
+                                          .image}"),
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -109,7 +113,10 @@ class ChatPage extends StatelessWidget {
                         Positioned(
                             right: 0.3.sw,
                             child: Text(
-                              '${mainController.authUser.value?.name} & ${logic.communityModel.users!.where((el) => el.id != mainController.authUser.value?.id).firstOrNull?.name}',
+                              '${mainController.authUser.value?.name} & ${logic
+                                  .communityModel.users!.where((el) =>
+                              el.id != mainController.authUser.value?.id)
+                                  .firstOrNull?.name}',
                               style: H3WhiteTextStyle,
                             )),
                       ],
@@ -128,8 +135,11 @@ class ChatPage extends StatelessWidget {
                   ...List.generate(logic.messages.length, (index) {
                     bool isIam = mainController.authUser.value?.id ==
                         logic.messages[index].user?.id;
-                    if(isIam) return myMessage(context,  message: logic.messages[index]); else  return anotherMessage(context, message: logic.messages[index]);
-
+                    if (isIam)
+                      return myMessage(context, message: logic.messages[index]);
+                    else
+                      return anotherMessage(context,
+                          message: logic.messages[index]);
                   }),
                   if (logic.loading.value)
                     Container(
@@ -194,113 +204,105 @@ class ChatPage extends StatelessWidget {
                                       width: 0.05.sw,
                                       child: IconButton(
                                         onPressed: () {
-                                          logic.startRecording();
+                                           logic.startRecording();
                                           Get.defaultDialog(
                                               title: ' ',
                                               content: Container(
                                                 child: Column(
                                                   children: [
-                                                    Obx(() {
-                                                      if (logic
-                                                          .mRecorderIsInited
-                                                          .value) {
-                                                        return AnimatedContainer(
-                                                          /* constraints: BoxConstraints(
-                                                        minWidth: 0.07.sw,
-                                                        maxWidth: 0.12.sw,
-                                                        minHeight: 0.07.sw,
-                                                        maxHeight: 0.12.sw),*/
-                                                          duration: Duration(
-                                                              milliseconds:
-                                                                  100),
-                                                          width: 0.07.sw +
-                                                              (logic.mRecordingLevel
-                                                                      .value *
-                                                                  100.0),
-                                                          // تغيير حجم الحاوية بناءً على شدة الصوت
-                                                          height: 0.07.sw +
-                                                              (logic.mRecordingLevel
-                                                                      .value *
-                                                                  100.0),
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: RedColor,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        50.r),
-                                                          ),
-                                                          child: InkWell(
-                                                            onTap: () {
-                                                              logic
-                                                                  .stopRecorder();
-                                                            },
-                                                            child: Center(
-                                                              child: Icon(
-                                                                Icons.stop,
-                                                                color: Colors
-                                                                    .white,
-                                                                size: 0.02.sw +
-                                                                    (logic.mRecordingLevel
-                                                                            .value *
-                                                                        50.0), // تغيير حجم الأيقونة بناءً على شدة الصوت
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        );
-                                                      }
-                                                      return Container(
-                                                        width: 0.15.sw,
-                                                        height: 0.15.sw,
-                                                        alignment:
-                                                            Alignment.center,
-                                                        decoration: BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        30.r),
-                                                            color:
-                                                                GrayLightColor),
-                                                        child: IconButton(
-                                                            onPressed: () {
-                                                              logic
-                                                                  .startRecording();
-                                                            },
-                                                            icon: Icon(
-                                                              FontAwesomeIcons
-                                                                  .microphone,
-                                                              size: 0.08.sw,
-                                                              color: WhiteColor,
-                                                            )),
-                                                      );
-                                                    }),
+                                                   Container(
+                                                     width: 0.12.sw,
+                                                     height: 0.12.sw,
+                                                     child:  Obx(() {
+                                                       if (logic
+                                                           .mRecorderIsInited
+                                                           .value) {
+
+                                                         return AnimatedContainer(
+                                                           constraints: BoxConstraints.expand(width:0.08.sw,height: 0.08.sw),
+                                                           duration: Duration(milliseconds: 200),
+                                                           height: (logic.mRecordingLevel /1000).sw,
+                                                           width:  (logic.mRecordingLevel/ 1000).sw,
+                                                           decoration:
+                                                           BoxDecoration(
+                                                             color: RedColor,
+                                                             borderRadius:
+                                                             BorderRadius
+                                                                 .circular(
+                                                                 150.r),
+                                                           ),
+                                                           child:  InkWell(
+                                                               onTap: () {
+                                                                 logic
+                                                                     .stopRecorder();
+                                                               },
+                                                               child: Center(
+                                                                 child: Icon(
+                                                                   Icons.stop,
+                                                                   color: Colors
+                                                                       .white,
+                                                                   size:0.08.sw , // تغيير حجم الأيقونة بناءً على شدة الصوت
+                                                                 ),
+                                                               ),
+                                                             ),
+
+                                                         );
+                                                       }
+                                                       return Container(
+                                                         width: 0.15.sw,
+                                                         height: 0.15.sw,
+                                                         alignment:
+                                                         Alignment.center,
+                                                         decoration: BoxDecoration(
+                                                             borderRadius:
+                                                             BorderRadius
+                                                                 .circular(
+                                                                 100.r),
+                                                             color:
+                                                             GrayLightColor),
+                                                         child: IconButton(
+                                                             onPressed: () {
+                                                               logic
+                                                                   .startRecording();
+                                                             },
+                                                             icon: Icon(
+                                                               FontAwesomeIcons
+                                                                   .microphone,
+                                                               size: 0.08.sw,
+                                                               color: WhiteColor,
+                                                             )),
+                                                       );
+                                                     }),
+                                                   ),
                                                     SizedBox(height: 0.01.sh),
                                                     Obx(() {
                                                       if (logic.recordedFilePath
-                                                                  ?.value !=
-                                                              null &&
+                                                          ?.value !=
+                                                          null &&
                                                           logic.mRecorderIsInited
-                                                                  .value ==
+                                                              .value ==
                                                               false) {
                                                         return Row(
                                                           mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .end,
+                                                          MainAxisAlignment
+                                                              .end,
                                                           children: [
                                                             if (logic
-                                                                    .mPlayerIsInited
-                                                                    .value ==
+                                                                .mPlayerIsInited
+                                                                .value ==
                                                                 false)
                                                               IconButton(
-                                                                onPressed: logic
-                                                                    .playRecordedAudio,
+                                                                onPressed: (){
+                                                                  logic
+                                                                      .playRecordedAudio();
+                                                                },
                                                                 icon: Icon(
                                                                     FontAwesomeIcons
                                                                         .solidCirclePlay),
                                                               ),
                                                             if (logic
-                                                                    .mPlayerIsInited
-                                                                    .value ==
+                                                                .mPlayerIsInited
+                                                                .value ==
                                                                 true)
                                                               IconButton(
                                                                 onPressed: logic
@@ -323,42 +325,43 @@ class ChatPage extends StatelessWidget {
                                                       }
                                                       return Row(
                                                         mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceEvenly,
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
                                                         children: [
                                                           InkWell(
                                                             onTap: () async {
-                                                              logic.file.value =
-                                                                  XFile(logic
-                                                                      .recordedFilePath!
-                                                                      .value);
+                                                              if(logic.recordedFilePath?.value!=null){
+                                                                logic.file.value = XFile("${logic.recordedFilePath!.value}");
+                                                              }
+                                                              Get.back();
                                                               await logic
                                                                   .uploadFileMessage();
                                                               logic
                                                                   .recordedFilePath!
                                                                   .value = '';
+
                                                             },
                                                             child: Container(
                                                               padding: EdgeInsets
                                                                   .symmetric(
-                                                                      horizontal:
-                                                                          0.05
-                                                                              .sw,
-                                                                      vertical:
-                                                                          0.02.sw),
+                                                                  horizontal:
+                                                                  0.05
+                                                                      .sw,
+                                                                  vertical:
+                                                                  0.02.sw),
                                                               decoration:
-                                                                  BoxDecoration(
+                                                              BoxDecoration(
                                                                 color: Colors
                                                                     .green,
                                                                 borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            50.r),
+                                                                BorderRadius
+                                                                    .circular(
+                                                                    50.r),
                                                               ),
                                                               child: Text(
                                                                 'إرسال',
                                                                 style:
-                                                                    H4WhiteTextStyle,
+                                                                H4WhiteTextStyle,
                                                               ),
                                                             ),
                                                           ),
@@ -372,23 +375,23 @@ class ChatPage extends StatelessWidget {
                                                             child: Container(
                                                               padding: EdgeInsets
                                                                   .symmetric(
-                                                                      horizontal:
-                                                                          0.05
-                                                                              .sw,
-                                                                      vertical:
-                                                                          0.02.sw),
+                                                                  horizontal:
+                                                                  0.05
+                                                                      .sw,
+                                                                  vertical:
+                                                                  0.02.sw),
                                                               decoration:
-                                                                  BoxDecoration(
+                                                              BoxDecoration(
                                                                 color: RedColor,
                                                                 borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            50.r),
+                                                                BorderRadius
+                                                                    .circular(
+                                                                    50.r),
                                                               ),
                                                               child: Text(
                                                                 'إلغاء',
                                                                 style:
-                                                                    H4WhiteTextStyle,
+                                                                H4WhiteTextStyle,
                                                               ),
                                                             ),
                                                           )
@@ -398,6 +401,7 @@ class ChatPage extends StatelessWidget {
                                                   ],
                                                 ),
                                               ));
+
                                         },
                                         icon: Icon(
                                           FontAwesomeIcons.microphone,
@@ -463,19 +467,19 @@ class ChatPage extends StatelessWidget {
 
   bool isURL(String text) {
     final RegExp urlRegExp =
-        RegExp(r'^(https?:\/\/)?' //  بدء الرابط بـ "http://" أو "https://"
-            r'([a-zA-Z0-9\-_]+\.)+[a-zA-Z]{2,}' // النطاق مثل "example.com"
-            r'(:\d+)?(\/[^\s]*)?$' // اختياري: المنفذ والمسار
-            );
+    RegExp(r'^(https?:\/\/)?' //  بدء الرابط بـ "http://" أو "https://"
+    r'([a-zA-Z0-9\-_]+\.)+[a-zA-Z]{2,}' // النطاق مثل "example.com"
+    r'(:\d+)?(\/[^\s]*)?$' // اختياري: المنفذ والمسار
+    );
     return urlRegExp.hasMatch(text);
   }
 
-  Widget myMessage(context,{ required MessageModel message}) {
+  Widget myMessage(context, {required MessageModel message}) {
     return Container(
       width: 1.sw,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start ,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
@@ -504,14 +508,13 @@ class ChatPage extends StatelessWidget {
             Container(
               width: 0.75.sw,
               padding:
-                  EdgeInsets.symmetric(vertical: 0.009.sh, horizontal: 0.02.sw),
+              EdgeInsets.symmetric(vertical: 0.009.sh, horizontal: 0.02.sw),
               decoration: BoxDecoration(
-                color: RedColor ,
+                color: RedColor,
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(30.r),
                     bottomRight: Radius.circular(30.r),
-                    topLeft:
-                        Radius.circular(30.r) ),
+                    topLeft: Radius.circular(30.r)),
               ),
               child: RichText(
                 softWrap: true,
@@ -522,29 +525,32 @@ class ChatPage extends StatelessWidget {
                         recognizer: TapGestureRecognizer()
                           ..onTap = () async => await openUrl(url: '$el'),
                         text: ' $el ',
-                        style:  H3WhiteTextStyle.copyWith(height: 1.5),
+                        style: H3WhiteTextStyle.copyWith(height: 1.5),
                       );
                     } else {
                       return TextSpan(
                           text: ' $el ',
-                          style:  H3WhiteTextStyle.copyWith(height: 1.5));
+                          style: H3WhiteTextStyle.copyWith(height: 1.5));
                     }
                   })
                 ]),
               ),
             ),
-          if (message.type == 'wav')
+          if (message.type == 'wav'|| message.type == 'aac')
             Container(
-              padding: EdgeInsets.symmetric(vertical: 0.004.sw,horizontal:0.004.sw ),
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(150.r),color: RedColor.withOpacity(0.5)),
-              child:  PlayerSoundMessage(
+              padding: EdgeInsets.symmetric(
+                  vertical: 0.004.sw, horizontal: 0.004.sw),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30.r),
+                  color: RedColor.withOpacity(0.5)),
+              child: PlayerSoundMessage(
                 path: message.attach,
               ),
             ),
-          if (message.type != 'text' && message.type != 'wav')
+          if (message.type != 'text' && message.type != 'wav'&& message.type != 'aac')
             InkWell(
               child: Container(
-               width: 0.7.sw,
+                width: 0.7.sw,
                 height: 0.6.sw,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30.r),
@@ -555,62 +561,67 @@ class ChatPage extends StatelessWidget {
               onTap: () {
                 showDialog(
                   context: context,
-                  builder: (context) => Dialog(
-                    insetPadding: EdgeInsets.zero,
-                    backgroundColor: Colors.transparent,
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        CachedNetworkImage(
-                            imageUrl: '${message.attach}',
-                            imageBuilder: (context, imageProvider) => Container(
-                                  child: Image(
-                                    image: imageProvider,
-                                  ),
-                                )),
-                        Positioned(
-                          top: 10,
-                          right: 10,
-                          child: IconButton(
-                            icon: Container(
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  color: WhiteColor,
-                                  shape: BoxShape.circle,
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: DarkColor, blurRadius: 0.02.sw)
-                                  ]),
-                              child:
+                  builder: (context) =>
+                      Dialog(
+                        insetPadding: EdgeInsets.zero,
+                        backgroundColor: Colors.transparent,
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            CachedNetworkImage(
+                                imageUrl: '${message.attach}',
+                                imageBuilder: (context, imageProvider) =>
+                                    Container(
+                                      child: Image(
+                                        image: imageProvider,
+                                      ),
+                                    )),
+                            Positioned(
+                              top: 10,
+                              right: 10,
+                              child: IconButton(
+                                icon: Container(
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                      color: WhiteColor,
+                                      shape: BoxShape.circle,
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color: DarkColor,
+                                            blurRadius: 0.02.sw)
+                                      ]),
+                                  child:
                                   Icon(Icons.close, color: RedColor, size: 30),
+                                ),
+                                onPressed: () => Get.back(),
+                              ),
                             ),
-                            onPressed: () => Get.back(),
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 20,
-                          left: 20,
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            color: Colors.black.withOpacity(0.7),
-                            child: Text(
-                              'Image Description', // وصف الصورة
-                              style:
+                            Positioned(
+                              bottom: 20,
+                              left: 20,
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                color: Colors.black.withOpacity(0.7),
+                                child: Text(
+                                  'Image Description', // وصف الصورة
+                                  style:
                                   TextStyle(color: Colors.white, fontSize: 16),
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
+                      ),
                 );
               },
             ),
-          SizedBox(height: 0.008.sh,),
+          SizedBox(
+            height: 0.008.sh,
+          ),
           Container(
             width: 0.7.sw,
-            alignment:  Alignment.centerLeft ,
+            alignment: Alignment.centerLeft,
             child: Text(
               '${message.createdAt}',
               style: H4GrayTextStyle,
@@ -621,14 +632,12 @@ class ChatPage extends StatelessWidget {
     );
   }
 
-  Widget anotherMessage(context,
-      { required MessageModel message}) {
+  Widget anotherMessage(context, {required MessageModel message}) {
     return Container(
       width: 1.sw,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment:
-       CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -665,7 +674,7 @@ class ChatPage extends StatelessWidget {
                     bottomLeft: Radius.circular(30.r),
                     bottomRight: Radius.circular(30.r),
                     topRight: Radius.circular(30.r),
-                    topLeft:Radius.circular(0)),
+                    topLeft: Radius.circular(0)),
               ),
               child: RichText(
                 softWrap: true,
@@ -676,27 +685,27 @@ class ChatPage extends StatelessWidget {
                         recognizer: TapGestureRecognizer()
                           ..onTap = () async => await openUrl(url: '$el'),
                         text: ' $el ',
-                        style:  H3OrangeTextStyle.copyWith(height: 1.5)
-                            ,
+                        style: H3OrangeTextStyle.copyWith(height: 1.5),
                       );
                     } else {
-                      return TextSpan(
-                          text: ' $el ',
-                          style: H3BlackTextStyle);
+                      return TextSpan(text: ' $el ', style: H3BlackTextStyle);
                     }
                   })
                 ]),
               ),
             ),
-          if (message.type == 'wav')
-           Container(
-             padding: EdgeInsets.symmetric(vertical: 0.004.sw,horizontal:0.004.sw ),
-             decoration: BoxDecoration(borderRadius: BorderRadius.circular(150.r),color: GrayLightColor),
-             child:  PlayerSoundMessage(
-               path: message.attach,
-             ),
-           ),
-          if (message.type != 'text' && message.type != 'wav')
+          if (message.type == 'wav' || message.type == 'aac')
+            Container(
+              padding: EdgeInsets.symmetric(
+                  vertical: 0.004.sw, horizontal: 0.004.sw),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(150.r),
+                  color: GrayLightColor),
+              child: PlayerSoundMessage(
+                path: message.attach,
+              ),
+            ),
+          if (message.type != 'text' && message.type != 'wav'&& message.type != 'aac')
             InkWell(
               child: Container(
                 width: 0.7.sw,
@@ -710,59 +719,64 @@ class ChatPage extends StatelessWidget {
               onTap: () {
                 showDialog(
                   context: context,
-                  builder: (context) => Dialog(
-                    insetPadding: EdgeInsets.zero,
-                    backgroundColor: Colors.transparent,
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        CachedNetworkImage(
-                            imageUrl: '${message.attach}',
-                            imageBuilder: (context, imageProvider) => Container(
-                              child: Image(
-                                image: imageProvider,
+                  builder: (context) =>
+                      Dialog(
+                        insetPadding: EdgeInsets.zero,
+                        backgroundColor: Colors.transparent,
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            CachedNetworkImage(
+                                imageUrl: '${message.attach}',
+                                imageBuilder: (context, imageProvider) =>
+                                    Container(
+                                      child: Image(
+                                        image: imageProvider,
+                                      ),
+                                    )),
+                            Positioned(
+                              top: 10,
+                              right: 10,
+                              child: IconButton(
+                                icon: Container(
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                      color: WhiteColor,
+                                      shape: BoxShape.circle,
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color: DarkColor,
+                                            blurRadius: 0.02.sw)
+                                      ]),
+                                  child:
+                                  Icon(Icons.close, color: RedColor, size: 30),
+                                ),
+                                onPressed: () => Get.back(),
                               ),
-                            )),
-                        Positioned(
-                          top: 10,
-                          right: 10,
-                          child: IconButton(
-                            icon: Container(
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  color: WhiteColor,
-                                  shape: BoxShape.circle,
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: DarkColor, blurRadius: 0.02.sw)
-                                  ]),
-                              child:
-                              Icon(Icons.close, color: RedColor, size: 30),
                             ),
-                            onPressed: () => Get.back(),
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 20,
-                          left: 20,
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            color: Colors.black.withOpacity(0.7),
-                            child: Text(
-                              'Image Description', // وصف الصورة
-                              style:
-                              TextStyle(color: Colors.white, fontSize: 16),
+                            Positioned(
+                              bottom: 20,
+                              left: 20,
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                color: Colors.black.withOpacity(0.7),
+                                child: Text(
+                                  'Image Description', // وصف الصورة
+                                  style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
+                      ),
                 );
               },
             ),
-          SizedBox(height: 0.008.sh,),
+          SizedBox(
+            height: 0.008.sh,
+          ),
           Container(
             width: 0.7.sw,
             alignment: Alignment.centerRight,
@@ -782,7 +796,7 @@ class PlayerSoundMessage extends StatelessWidget {
 
   RxBool play = RxBool(false);
   final String? path;
-
+  RecorderManager recorderManager = RecorderManager();
 
   @override
   Widget build(BuildContext context) {
@@ -790,32 +804,28 @@ class PlayerSoundMessage extends StatelessWidget {
       return Container(
         child: play.value
             ? IconButton(
-                onPressed: () {
-                  stopPlayer();
-                },
-                icon: Icon(FontAwesomeIcons.stop))
+            onPressed: () async {
+              await stopPlayer();
+            },
+            icon: Icon(FontAwesomeIcons.stop))
             : IconButton(
-                onPressed: () {
-                  playAudio();
-                },
-                icon: Icon(FontAwesomeIcons.play)),
+            onPressed: () async {
+              await playAudio();
+            },
+            icon: Icon(FontAwesomeIcons.play)),
       );
     });
   }
 
   Future<void> playAudio() async {
     if (!play.value) {
-
+      await recorderManager.playRecordedAudio(path: path);
       play.value = true;
-    }
-
-    if (path != null) {
-
     }
   }
 
   Future<void> stopPlayer() async {
-
+    await recorderManager.StopPlayRecordedAudio();
     play.value = false;
   }
 }

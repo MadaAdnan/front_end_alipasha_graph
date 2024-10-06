@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:ali_pasha_graph/Global/main_controller.dart';
+import 'package:ali_pasha_graph/helpers/redcord_manager.dart';
 import 'package:ali_pasha_graph/models/community_model.dart';
 import 'package:ali_pasha_graph/models/message_community_model.dart';
 
@@ -43,48 +45,33 @@ class ChatLogic extends GetxController {
 
   RxString? recordedFilePath = RxString('');
   RxDouble mRecordingLevel = RxDouble(0);
-
-  Future<void> openRecorder() async {
-
-  }
-
+  RecorderManager recorder = RecorderManager();
   Future<void> startRecording() async {
-    if (!mRecorderIsInited.value) {
-      await openRecorder();
-    }
-    recordedFilePath!(await _localFile);
-    mainController.logger.d("PATH IS");
-    mainController.logger.d(recordedFilePath?.value);
-    _startUpdatingRecordingLevel();
 
+    await recorder.startRecording();
+    mRecorderIsInited.value = true;
   }
 
   Future<void> stopRecorder() async {
 
+    await recorder.stopRecording().then((path) {
+      if (path != null) {
+        recordedFilePath!.value = path;
+        print("PATH IS ${path}");
+      } else {
+        print("PATH IS ${path}");
+      }
+    });
     mRecorderIsInited.value = false;
-
-    // بعد إنهاء التسجيل، يمكنك تشغيل الصوت المسجل
-    //  await playRecordedAudio();
-  }
-
-
-  _startUpdatingRecordingLevel() {
-
-  }
-
-
-
-  Future<void> openPlayer() async {
-
   }
 
   Future<void> playRecordedAudio() async {
-
-
+    mPlayerIsInited.value = true;
+    await recorder.playRecordedAudio(path: recordedFilePath?.value);
   }
 
   Future<void> stopPlayer() async {
-
+    await recorder.StopPlayRecordedAudio();
     mPlayerIsInited.value = false;
   }
 
@@ -95,20 +82,31 @@ class ChatLogic extends GetxController {
 
   Future<String> get _localFile async {
     final path = await _localPath;
-    return '$path/recorded_audio.wav';
+    return '$path/recorded_audio.acc';
   }
 
   // Audio
+
+
   nextPage() {
     if (hasMorePage.value) {
       page.value++;
     }
   }
 
+  Future<void> initRecord(String path) async {
+    await recorder.init(path: path);
+  }
+
   @override
   void onInit() {
+    _localFile.then((value) {
+      initRecord(value);
+    });
+
     // TODO: implement onInit
     super.onInit();
+
     ever(page, (value) {
       getMessages();
     });

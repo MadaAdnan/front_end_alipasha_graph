@@ -178,7 +178,7 @@ class ChannelPage extends StatelessWidget {
                 ]),
               ),
             ),
-          if (message.type == 'wav')
+          if (message.type == 'wav'||message.type == 'aac')
             Container(
               padding: EdgeInsets.symmetric(vertical: 0.004.sw,horizontal:0.004.sw ),
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(150.r),color: RedColor.withOpacity(0.5)),
@@ -186,7 +186,7 @@ class ChannelPage extends StatelessWidget {
                 path: message.attach,
               ),
             ),
-          if (message.type != 'text' && message.type != 'wav')
+          if (message.type != 'text' && message.type != 'wav'&& message.type != 'aac')
             InkWell(
               child: Container(
                 width: 0.9.sw,

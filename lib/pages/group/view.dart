@@ -200,80 +200,70 @@ class GroupPage extends StatelessWidget {
                                               content: Container(
                                                 child: Column(
                                                   children: [
-                                                    Obx(() {
-                                                      if (logic
-                                                          .mRecorderIsInited
-                                                          .value) {
-                                                        return AnimatedContainer(
-                                                          /* constraints: BoxConstraints(
-                                                        minWidth: 0.07.sw,
-                                                        maxWidth: 0.12.sw,
-                                                        minHeight: 0.07.sw,
-                                                        maxHeight: 0.12.sw),*/
-                                                          duration: Duration(
-                                                              milliseconds:
-                                                              100),
-                                                          width: 0.07.sw +
-                                                              (logic.mRecordingLevel
-                                                                  .value *
-                                                                  100.0),
-                                                          // تغيير حجم الحاوية بناءً على شدة الصوت
-                                                          height: 0.07.sw +
-                                                              (logic.mRecordingLevel
-                                                                  .value *
-                                                                  100.0),
-                                                          decoration:
-                                                          BoxDecoration(
-                                                            color: RedColor,
-                                                            borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                                50.r),
-                                                          ),
-                                                          child: InkWell(
-                                                            onTap: () {
-                                                              logic
-                                                                  .stopRecorder();
-                                                            },
-                                                            child: Center(
-                                                              child: Icon(
-                                                                Icons.stop,
-                                                                color: Colors
-                                                                    .white,
-                                                                size: 0.02.sw +
-                                                                    (logic.mRecordingLevel
-                                                                        .value *
-                                                                        50.0), // تغيير حجم الأيقونة بناءً على شدة الصوت
+                                                    Container(
+                                                      width: 0.12.sw,
+                                                      height: 0.12.sw,
+                                                      child:  Obx(() {
+                                                        if (logic
+                                                            .mRecorderIsInited
+                                                            .value) {
+
+                                                          return AnimatedContainer(
+                                                            constraints: BoxConstraints.expand(width:0.08.sw,height: 0.08.sw),
+                                                            duration: Duration(milliseconds: 200),
+                                                            height: (logic.mRecordingLevel /1000).sw,
+                                                            width:  (logic.mRecordingLevel/ 1000).sw,
+                                                            decoration:
+                                                            BoxDecoration(
+                                                              color: RedColor,
+                                                              borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                  150.r),
+                                                            ),
+                                                            child:  InkWell(
+                                                              onTap: () {
+                                                                logic
+                                                                    .stopRecorder();
+                                                              },
+                                                              child: Center(
+                                                                child: Icon(
+                                                                  Icons.stop,
+                                                                  color: Colors
+                                                                      .white,
+                                                                  size:0.08.sw , // تغيير حجم الأيقونة بناءً على شدة الصوت
+                                                                ),
                                                               ),
                                                             ),
-                                                          ),
+
+                                                          );
+                                                        }
+                                                        return Container(
+                                                          width: 0.15.sw,
+                                                          height: 0.15.sw,
+                                                          alignment:
+                                                          Alignment.center,
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                  100.r),
+                                                              color:
+                                                              GrayLightColor),
+                                                          child: IconButton(
+                                                              onPressed: () {
+                                                                logic
+                                                                    .startRecording();
+                                                              },
+                                                              icon: Icon(
+                                                                FontAwesomeIcons
+                                                                    .microphone,
+                                                                size: 0.08.sw,
+                                                                color: WhiteColor,
+                                                              )),
                                                         );
-                                                      }
-                                                      return Container(
-                                                        width: 0.15.sw,
-                                                        height: 0.15.sw,
-                                                        alignment:
-                                                        Alignment.center,
-                                                        decoration: BoxDecoration(
-                                                            borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                                30.r),
-                                                            color:
-                                                            GrayLightColor),
-                                                        child: IconButton(
-                                                            onPressed: () {
-                                                              logic
-                                                                  .startRecording();
-                                                            },
-                                                            icon: Icon(
-                                                              FontAwesomeIcons
-                                                                  .microphone,
-                                                              size: 0.08.sw,
-                                                              color: WhiteColor,
-                                                            )),
-                                                      );
-                                                    }),
+                                                      }),
+                                                    ),
                                                     SizedBox(height: 0.01.sh),
                                                     Obx(() {
                                                       if (logic.recordedFilePath
@@ -292,8 +282,10 @@ class GroupPage extends StatelessWidget {
                                                                 .value ==
                                                                 false)
                                                               IconButton(
-                                                                onPressed: logic
-                                                                    .playRecordedAudio,
+                                                                onPressed: (){
+                                                                  logic
+                                                                      .playRecordedAudio();
+                                                                },
                                                                 icon: Icon(
                                                                     FontAwesomeIcons
                                                                         .solidCirclePlay),
@@ -328,15 +320,16 @@ class GroupPage extends StatelessWidget {
                                                         children: [
                                                           InkWell(
                                                             onTap: () async {
-                                                              logic.file.value =
-                                                                  XFile(logic
-                                                                      .recordedFilePath!
-                                                                      .value);
+                                                              if(logic.recordedFilePath?.value!=null){
+                                                                logic.file.value = XFile("${logic.recordedFilePath!.value}");
+                                                              }
+                                                              Get.back();
                                                               await logic
                                                                   .uploadFileMessage();
                                                               logic
                                                                   .recordedFilePath!
                                                                   .value = '';
+
                                                             },
                                                             child: Container(
                                                               padding: EdgeInsets
@@ -533,7 +526,7 @@ class GroupPage extends StatelessWidget {
                 ]),
               ),
             ),
-          if (message.type == 'wav')
+          if (message.type == 'wav'||message.type == 'aac')
             Container(
               padding: EdgeInsets.symmetric(vertical: 0.004.sw,horizontal:0.004.sw ),
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(150.r),color: RedColor.withOpacity(0.5)),
@@ -541,7 +534,7 @@ class GroupPage extends StatelessWidget {
                 path: message.attach,
               ),
             ),
-          if (message.type != 'text' && message.type != 'wav')
+          if (message.type != 'text' && message.type != 'wav' && message.type != 'aac')
             InkWell(
               child: Container(
                 width: 0.7.sw,
@@ -688,7 +681,7 @@ class GroupPage extends StatelessWidget {
                 ]),
               ),
             ),
-          if (message.type == 'wav')
+          if (message.type == 'wav' || message.type == 'aac')
             Container(
               padding: EdgeInsets.symmetric(vertical: 0.004.sw,horizontal:0.004.sw ),
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(150.r),color: GrayLightColor),
@@ -696,7 +689,7 @@ class GroupPage extends StatelessWidget {
                 path: message.attach,
               ),
             ),
-          if (message.type != 'text' && message.type != 'wav')
+          if (message.type != 'text' && message.type != 'wav' && message.type != 'aac')
             InkWell(
               child: Container(
                 width: 0.7.sw,

@@ -57,6 +57,8 @@ dependencies:
   pusher_client_socket: ^0.0.1
   app_links: ^6.3.2
   shimmer: ^3.0.0
+  another_audio_recorder: ^1.2.1
+  audioplayers: ^6.1.0
 #  flutter_sound: ^9.6.0
 #  audio_session: ^0.1.20
 
