@@ -1,5 +1,7 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
+import 'package:ali_pasha_graph/components/product_components/job_card.dart';
 import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
+import 'package:ali_pasha_graph/helpers/enums.dart';
 import 'package:ali_pasha_graph/models/plan_model.dart';
 import 'package:ali_pasha_graph/pages/plan/logic.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +52,8 @@ class PlanCardComponent extends StatelessWidget {
                   child: Container(
                     constraints: BoxConstraints.expand(height: 0.7.sh),
                     child: Card(
-                      color: index > -1 ? Colors.teal : WhiteColor,
+                      elevation: 0,
+                      color: index > -1 ? Colors.green.withOpacity(0.6) : Colors.deepPurple.withOpacity(0.8),
                       child: Container(
                         padding: EdgeInsets.symmetric(vertical: 0.01.sh),
                         width: MediaQuery.of(context).size.width * 0.8,
@@ -61,35 +64,35 @@ class PlanCardComponent extends StatelessWidget {
                           children: [
                             Container(
                               alignment: Alignment.center,
-                              child: Text(
-                                "${plan.name}",
-                                style: H2OrangeTextStyle,
-                              ),
+                              child: RichText(text: TextSpan(children: [
+                                TextSpan(text:  "${plan.name}",style: H1OrangeTextStyle),
+                                TextSpan(text: " ( ${plan.duration!.planDuration()} ) ",style: H4WhiteTextStyle),
+                              ])),
                             ),
                             Container(
                               padding: EdgeInsets.symmetric(
                                   vertical: 0.01.sh, horizontal: 0.02.sw),
                               child: Text(
                                 "${plan.info}",
-                                style: index > -1
-                                    ? H4WhiteTextStyle
-                                    : H4GrayTextStyle,
+                                style: H3WhiteTextStyle
+                                   ,
                                 textAlign: TextAlign.center,
                               ),
                             ),
+                            if(  plan.duration!='free')
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Container(
                                   alignment: Alignment.center,
                                   child: Text(
                                     "${plan.price} \$",
                                     style: plan.is_discount == false
-                                        ? H2OrangeTextStyle
-                                        : H3GrayTextStyle.copyWith(
-                                            decoration:
-                                                TextDecoration.lineThrough),
+                                        ? H1OrangeTextStyle
+                                        : H1GrayTextStyle.copyWith(
+                                        decoration:
+                                        TextDecoration.lineThrough),
                                   ),
                                 ),
                                 if (plan.is_discount == true)
@@ -98,124 +101,39 @@ class PlanCardComponent extends StatelessWidget {
                                     alignment: Alignment.center,
                                     child: Text(
                                       "${plan.discount} \$",
-                                      style: H2RedTextStyle,
+                                      style: H1RedTextStyle,
                                     ),
                                   ),
                               ],
-                            ),
-                            if (plan.options != null)
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 0.01.sh, horizontal: 0.02.sw),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.only(top: 0.006.sh),
-                                      alignment: Alignment.centerRight,
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            FontAwesomeIcons.check,
-                                            color: Colors.green,
-                                            size: 0.02.sh,
-                                          ),
-                                          10.horizontalSpace,
-                                          RichText(
-                                            text: TextSpan(children: [
-                                              TextSpan(
-                                                  text: "منتجات مميزة : ",
-                                                  style: index > -1
-                                                      ? H4WhiteTextStyle
-                                                      : H4GrayTextStyle),
-                                              TextSpan(
-                                                  text:
-                                                      "${plan.options?.special}",
-                                                  style: H3RedTextStyle),
-                                            ]),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                        margin: EdgeInsets.only(top: 0.006.sh),
-                                        alignment: Alignment.centerRight,
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              FontAwesomeIcons.check,
-                                              color: Colors.green,
-                                              size: 0.02.sh,
-                                            ),
-                                            10.horizontalSpace,
-                                            RichText(
-                                              text: TextSpan(children: [
-                                                TextSpan(
-                                                    text:
-                                                        "إعلانات بين المنتجات : ",
-                                                    style: index > -1
-                                                        ? H4WhiteTextStyle
-                                                        : H4GrayTextStyle),
-                                                TextSpan(
-                                                    text:
-                                                        "${plan.options?.ads}",
-                                                    style: H3RedTextStyle),
-                                              ]),
-                                            ),
-                                          ],
-                                        )),
-                                    Container(
-                                        margin: EdgeInsets.only(top: 0.006.sh),
-                                        alignment: Alignment.centerRight,
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              FontAwesomeIcons.check,
-                                              color: Colors.green,
-                                              size: 0.02.sh,
-                                            ),
-                                            10.horizontalSpace,
-                                            RichText(
-                                              text: TextSpan(children: [
-                                                TextSpan(
-                                                    text: "سلايدر إعلاني : ",
-                                                    style: index > -1
-                                                        ? H4WhiteTextStyle
-                                                        : H4GrayTextStyle),
-                                                TextSpan(
-                                                    text:
-                                                        "${plan.options?.slider}",
-                                                    style: H3RedTextStyle),
-                                              ]),
-                                            ),
-                                          ],
-                                        )),
-                                  ],
-                                ),
-                              ),
-                            ...List.generate(plan.items!.length, (index) {
+                            ) ,
+
+
+
+
+
+
+                            ...List.generate(plan.items!.length, (i) {
                               return Padding(
                                 padding: EdgeInsets.symmetric(
-                                    vertical: 0.005.sh, horizontal: 0.02.sw),
+                                    vertical: 0.01.sh, horizontal: 0.001.sw),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Icon(
-                                        plan.items![index].active == true
-                                            ? FontAwesomeIcons.check
+                                        plan.items![i].active == true
+                                            ? FontAwesomeIcons.solidCircleCheck
                                             : FontAwesomeIcons.ban,
-                                        color: plan.items![index].active == true
+                                        color: plan.items![i].active == true
                                             ? Colors.green
                                             : RedColor,
-                                        size: 0.02.sh),
+                                        size: 0.07.sw),
                                     10.horizontalSpace,
                                     Container(
-                                      width: 0.6.sw,
+                                      width: 0.655.sw,
                                       child: Text(
-                                        "${plan.items![index].item}",
-                                        style: index > -1 && currentPlan != null
-                                            ? H4WhiteTextStyle
-                                            : H4GrayTextStyle,
+                                        "${plan.items![i].item}",
+                                        style: H2WhiteTextStyle,
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 3,
                                         softWrap: true,
@@ -225,6 +143,7 @@ class PlanCardComponent extends StatelessWidget {
                                 ),
                               );
                             }),
+
                           ],
                         ),
                       ),
@@ -251,8 +170,8 @@ class PlanCardComponent extends StatelessWidget {
                     child: Text(
                       index == -1
                           ? 'إشتراك'
-                          : 'تم الإشتراك حتى (${currentPlan?.pivot?.expired_date})',
-                      style: index == -1 ? H3WhiteTextStyle : H3RedTextStyle,
+                          : plan.duration=='free'?'تم الإشتراك':'تم الإشتراك حتى (${currentPlan?.pivot?.expired_date})',
+                      style: index == -1 ? H3WhiteTextStyle : H3BlackTextStyle,
                     ),
                   ),
                 )

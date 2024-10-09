@@ -104,7 +104,7 @@ class ProfilePage extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 0.23.sh,
+            top: 0.25.sh,
             left: 0,
             child: Container(
               width: 1.sw,
@@ -432,7 +432,7 @@ class ProfilePage extends StatelessWidget {
                     ],
                   ),
 
-                  Transform.translate(offset: Offset(0, -0.02.sh),child: Container(
+                  Transform.translate(offset: Offset(0, 0),child: Container(
                     child: Obx(() {
                       mainController.logger.e(
                           mainController.authUser.value
@@ -572,7 +572,7 @@ class ProfilePage extends StatelessWidget {
                     }),
                   ),),
                   30.verticalSpace,
-                  Transform.translate(offset: Offset(0, -0.02.sh),child: Container(
+                  Transform.translate(offset: Offset(0, 0),child: Container(
                     width: 1.sw,
                     child: Obx(() {
                       return Row(
@@ -685,73 +685,7 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _pageButton({String? title, IconData? icon, int? index}) {
-    return InkWell(
-      onTap: () {
-        logic.pageSelected.value = index!;
-        logic.pageController.animateToPage(index,
-            duration: Duration(microseconds: 400), curve: Curves.bounceInOut);
-      },
-      child: Obx(() {
-        return Container(
-          alignment: Alignment.center,
-          width: 0.31.sw,
-          height: 0.045.sh,
-          padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
-          decoration: BoxDecoration(
-              color: logic.pageSelected == index ? RedColor : GrayLightColor,
-              borderRadius: BorderRadius.circular(0.02.sw)),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text(
-                '$title',
-                style: logic.pageSelected == index
-                    ? H4WhiteTextStyle
-                    : H4BlackTextStyle,
-                overflow: TextOverflow.ellipsis,
-              ),
-              20.horizontalSpace,
-              SizedBox(
-                  width: 0.05.sw,
-                  child: Icon(
-                    icon,
-                    color: logic.pageSelected == index ? WhiteColor : IconColor,
-                  ))
-            ],
-          ),
-        );
-      }),
-    );
-  }
 
-  Widget _buildWidget({String? title, int? count, Function()? onTap}) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        width: 0.3.sw,
-        height: 0.08.sh,
-        decoration: BoxDecoration(
-          border: Border.all(color: GrayDarkColor),
-          borderRadius: BorderRadius.circular(15.r),
-          color: WhiteColor,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "$count",
-              style: H3BlackTextStyle,
-            ),
-            15.verticalSpace,
-            Text(
-              "$title",
-              style: H4BlackTextStyle.copyWith(fontWeight: FontWeight.bold),
-            )
-          ],
-        ),
-      ),
-    );
-  }
+
+
 }

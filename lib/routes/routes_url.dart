@@ -60,6 +60,7 @@ const String SERVICE_PAGE = '/service_page';
 const String WEATHER_PAGE = '/weather_page';
 const String SERVICE_DETAILS = '/service_details';
 const String ASKS_PAGE = '/asks_page';
+const String LIVE_PAGE = '/live_page';
 const String ASK_PAGE = '/ask_page';
 const String CONTACT_US_PAGE = '/contact_us_page';
 const String PARTNER_PAGE = '/partner_page';

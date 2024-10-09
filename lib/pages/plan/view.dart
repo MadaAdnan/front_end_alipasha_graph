@@ -28,7 +28,13 @@ class PlanPage extends StatelessWidget {
         preferredSize: Size(1.sw, 0.4.sh),
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 0.02.sw, vertical: 0.02.sw),
-          color: WhiteColor,
+          decoration: BoxDecoration(color: WhiteColor, boxShadow: [
+            BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                spreadRadius: 16.r,
+                blurRadius: 10.r,
+                blurStyle: BlurStyle.outer)
+          ]),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -83,11 +89,19 @@ class PlanPage extends StatelessWidget {
                   ),
                 );
               }),
-              Obx(() =>logic.balance.value!=null? RichText(
-                      text: TextSpan(children: [
-                    TextSpan(text: 'الرصيد الحالي : ',style: H4GrayTextStyle),
-                    TextSpan(text: '${logic.balance.value}',style: H4OrangeTextStyle),
-                  ])):Text(''))
+              Obx(() => logic.balance.value != null
+                  ? Container(
+                padding: EdgeInsets.only(left: 0.01.sw),
+                      child: RichText(
+                          text: TextSpan(children: [
+                        TextSpan(
+                            text: 'الرصيد الحالي : ', style: H4GrayTextStyle),
+                        TextSpan(
+                            text: '${logic.balance.value}',
+                            style: H3OrangeTextStyle),
+                      ])),
+                    )
+                  : Text(''))
             ],
           ),
         ),

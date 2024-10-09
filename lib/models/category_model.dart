@@ -10,6 +10,7 @@ class CategoryModel {
   List<CategoryModel>? children;
   bool? hasColor;
   int? products2Count;
+  int? productsCount;
   List<AttributeModel>? attributes;
 
   CategoryModel({
@@ -22,6 +23,7 @@ class CategoryModel {
     this.type,
     this.hasColor,
     this.products2Count,
+    this.productsCount,
     this.attributes,
   });
 
@@ -59,7 +61,8 @@ class CategoryModel {
       color: "${data['color']}",
       type: "${data['type']}",
       id: int.tryParse("${data['id']}"),
-      products2Count: int.tryParse("${data['products2_count']}"),
+      products2Count: int.tryParse("${data['products2_count']}")??0,
+      productsCount: int.tryParse("${data['products_count']}")??0,
       children: listChildren.toList(),
       parent: listParent.toList(),
       attributes: listAttribute,

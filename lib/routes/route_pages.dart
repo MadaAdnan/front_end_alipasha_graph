@@ -50,6 +50,8 @@ import 'package:ali_pasha_graph/pages/home/binding.dart';
 import 'package:ali_pasha_graph/pages/home/view.dart';
 import 'package:ali_pasha_graph/pages/jobs/binding.dart';
 import 'package:ali_pasha_graph/pages/jobs/view.dart';
+import 'package:ali_pasha_graph/pages/live/binding.dart';
+import 'package:ali_pasha_graph/pages/live/view.dart';
 import 'package:ali_pasha_graph/pages/login/binding.dart';
 import 'package:ali_pasha_graph/pages/login/view.dart';
 
@@ -317,6 +319,14 @@ class AppPages {
       page: () => AsksPage(),
       binding: AsksBinding(),
     ),
+
+    GetPage(
+      name: LIVE_PAGE,
+      page: () => LivePage(),
+      binding: LiveBinding(),
+    ),
+
+
     GetPage(
       name: ASK_PAGE,
       page: () => AskPage(),

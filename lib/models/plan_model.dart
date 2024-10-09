@@ -10,8 +10,12 @@ class PlanModel {
 
   String? info;
   List<PlanItem>? items;
+  String? duration;
+  int? special_count;
+  int? products_count;
+  int? ads_count;
+  bool? special_store;
 
-  PlanOption? options;
   PlanUserPivot? pivot;
 
   PlanModel({
@@ -21,10 +25,14 @@ class PlanModel {
     this.discount,
     this.is_discount,
     this.items,
-    this.options,
     this.pivot,
     this.price,
     this.type,
+    this.ads_count,
+    this.duration,
+    this.products_count,
+    this.special_count,
+    this.special_store,
   });
 
   factory PlanModel.fromJson(Map<String, dynamic> data) {
@@ -33,7 +41,21 @@ class PlanModel {
       for (var item in data['items']) {
         listItem.add(PlanItem.fromJson(item));
       }
+      listItem.insert(0, PlanItem(active: (int.tryParse("${data['products_count']}") ?? 0) >0,item:" نشر ${ (int.tryParse("${data['products_count']}") ?? 0)} منتج / منتجات شهرياً" ));
+      listItem.insert(0, PlanItem(active: (int.tryParse("${data['special_count']}") ?? 0) >0,item:"عدد المنتجات المميزة ${int.tryParse("${data['special_count']}")}" ));
+      listItem.insert(0, PlanItem(active: (int.tryParse("${data['ads_count']}") ?? 0) >0,item:" عدد الإعلانات ${int.tryParse("${data['ads_count']}")}"));
+      listItem.insert(0, PlanItem(active: bool.tryParse("${data['special_store']}")??false,item:"متجر مميز"));
+
     }
+    listItem.sort((a, b) {
+      if (a.active! && !b.active!) {
+        return -1; // a يأتي قبل b
+      } else if (!a.active! && b.active!) {
+        return 1; // b يأتي قبل a
+      } else {
+        return 0; // لا يوجد تغيير في الترتيب
+      }
+    });
     return PlanModel(
       id: int.tryParse("${data['id']}"),
       name: "${data['name']}",
@@ -42,8 +64,12 @@ class PlanModel {
       info: "${data['info']}",
       is_discount: bool.tryParse("${data['is_discount']}"),
       items: listItem.toList(),
-      options:
-          data['options'] != null ? PlanOption.fromJson(data['options']) : null,
+      duration: "${data['duration']}",
+      type: "${data['type']}",
+      special_store: bool.tryParse("${data['special_store']}"),
+      ads_count: int.tryParse("${data['ads_count']}") ?? 0,
+      special_count: int.tryParse("${data['special_count']}") ?? 0,
+      products_count: int.tryParse("${data['products_count']}") ?? 0,
       pivot:
           data['pivot'] != null ? PlanUserPivot.fromJson(data['pivot']) : null,
     );
@@ -68,38 +94,13 @@ class PlanItem {
 
   factory PlanItem.fromJson(Map<String, dynamic> data) {
     return PlanItem(
-        active: bool.tryParse("${data['active']}"), item: "${data['item']}");
+        active: bool.tryParse("${data['active']}")??false, item: "${data['item']}");
   }
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> data = {};
     data['active'] = active;
     data['item'] = item;
-
-    return data;
-  }
-}
-
-class PlanOption {
-  int? ads;
-  int? slider;
-  int? special;
-
-  PlanOption({this.ads, this.slider, this.special});
-
-  factory PlanOption.fromJson(Map<String, dynamic> data) {
-    return PlanOption(
-      ads: int.tryParse("${data['ads']}"),
-      slider: int.tryParse("${data['slider']}"),
-      special: int.tryParse("${data['special']}"),
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    Map<String, dynamic> data = {};
-    data['ads'] = ads;
-    data['slider'] = slider;
-    data['special'] = special;
 
     return data;
   }

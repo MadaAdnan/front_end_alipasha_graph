@@ -32,12 +32,10 @@ class SliderComponent extends StatelessWidget {
                   (index) => Container(
 
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15.r)
+                        borderRadius: BorderRadius.circular(30.r),
+                      image: DecorationImage(image: CachedNetworkImageProvider("${items[index].image}"),fit: BoxFit.cover)
                     ),
-                child: CachedNetworkImage(
-                  imageUrl: "${items[index].image}",
-                  fit: BoxFit.cover,
-                ),
+
               ))
         ],
       ),

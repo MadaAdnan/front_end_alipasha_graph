@@ -59,6 +59,7 @@ dependencies:
   shimmer: ^3.0.0
   another_audio_recorder: ^1.2.1
   audioplayers: ^6.1.0
+  youtube_player_flutter: ^9.1.1
 #  flutter_sound: ^9.6.0
 #  audio_session: ^0.1.20
 

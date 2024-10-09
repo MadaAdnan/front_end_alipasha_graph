@@ -154,6 +154,22 @@ extension FormatNumber on String {
       return this.toString();
     }
   }
+
+  String planDuration() {
+    switch (this) {
+      case 'free':
+        return "مجاني";
+        break;
+      case 'month':
+        return "شهرياً";
+        break;
+      case 'year':
+        return "سنويا";
+        break;
+      default:
+        return this;
+    }
+  }
 }
 
 extension ProductActiveEnum on String {

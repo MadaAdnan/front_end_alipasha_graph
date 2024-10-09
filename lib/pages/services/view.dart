@@ -40,12 +40,11 @@ class ServicesPage extends StatelessWidget {
               child: ListView(
                 padding: EdgeInsets.symmetric(
                   horizontal: 0.02.sw,
-                  vertical: 0.02.sh,
+                  vertical: 0.01.sh,
                 ),
                 controller: scrollController,
                 children: [
-
-                  Container(
+                  /*Container(
                     height: 0.06.sh,
                     padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
                     child: FormBuilderTextField(
@@ -62,7 +61,7 @@ class ServicesPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  15.verticalSpace,
+                  15.verticalSpace,*/
                   Obx(() {
                     if (logic.sliders.length > 0) {
                       return SliderComponent(items: logic.sliders);
@@ -75,22 +74,30 @@ class ServicesPage extends StatelessWidget {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Shimmer.fromColors(child:Container(
-                            width: 0.31.sw,
-                            height: 0.31.sw,
-                            color: RedColor,
-                          ) , baseColor: GrayDarkColor, highlightColor: GrayLightColor),
-                          Shimmer.fromColors(child:Container(
-                            width: 0.31.sw,
-                            height: 0.31.sw,
-                            color: RedColor,
-                          ) , baseColor: GrayDarkColor, highlightColor: GrayLightColor),
-                          Shimmer.fromColors(child:Container(
-                            width: 0.31.sw,
-                            height: 0.31.sw,
-                            color: RedColor,
-                          ) , baseColor: GrayDarkColor, highlightColor: GrayLightColor),
-
+                          Shimmer.fromColors(
+                              child: Container(
+                                width: 0.31.sw,
+                                height: 0.31.sw,
+                                color: RedColor,
+                              ),
+                              baseColor: GrayDarkColor,
+                              highlightColor: GrayLightColor),
+                          Shimmer.fromColors(
+                              child: Container(
+                                width: 0.31.sw,
+                                height: 0.31.sw,
+                                color: RedColor,
+                              ),
+                              baseColor: GrayDarkColor,
+                              highlightColor: GrayLightColor),
+                          Shimmer.fromColors(
+                              child: Container(
+                                width: 0.31.sw,
+                                height: 0.31.sw,
+                                color: RedColor,
+                              ),
+                              baseColor: GrayDarkColor,
+                              highlightColor: GrayLightColor),
                         ],
                       );
                     }
@@ -98,125 +105,100 @@ class ServicesPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          width: 0.24.sw,
-                          height: 0.24.sw,
+                          width: 0.26.sw,
+                          height: 0.25.sw,
                           padding: EdgeInsets.symmetric(
                               horizontal: 0.008.sw, vertical: 0.002.sh),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15.r),
-                            color: RedColor,
+                            color: GrayWhiteColor,
                           ),
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
+
+                              // Dollar
                               Container(
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'مبيع',
-                                      style: H2RegularDark.copyWith(
-                                          color: WhiteColor),
-                                    ),
-                                    20.horizontalSpace,
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 0.05.sw,
-                                      height: 0.05.sw,
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: WhiteColor,
-                                      ),
-                                      child: Text(
-                                        '\$',
-                                        style: H2RedTextStyle,
-                                      ),
-                                    )
-                                  ],
+                                alignment: Alignment.center,
+                                width: 0.09.sw,
+                                height: 0.09.sw,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: WhiteColor,
+                                ),
+                                child: Text(
+                                  '\$',
+                                  style: H1RedTextStyle.copyWith(
+                                      color: Colors.black,fontSize: 55.sp),
                                 ),
                               ),
                               15.verticalSpace,
-                              Text(
-                                '${logic.dollar.value?.idlib?.usd?.sale} \$',
-                                style: H2WhiteTextStyle,
-                              ),
+                              RichText(text: TextSpan(children:[
+                                TextSpan(text:  'مبيع ',
+                                  style: H2RegularDark,),
+                                TextSpan(text:' ${logic.dollar.value?.idlib?.usd?.sale} \$',
+                                  style: H2BlackTextStyle.copyWith(
+                                      color: Colors.black), )
+                              ] )),
                               15.verticalSpace,
-                              Text(
-                                'شراء',
-                                style: H2RegularDark.copyWith(
-                                    color: WhiteColor),
-                              ),
-                              15.verticalSpace,
-                              Text(
-                                '${logic.dollar.value?.idlib?.usd?.bay} \$',
-                                style: H2WhiteTextStyle,
-                              ),
+                              RichText(text: TextSpan(children:[
+                                TextSpan(text:  'شـراء ',
+                                  style: H2RegularDark,),
+                                TextSpan(text:' ${logic.dollar.value?.idlib?.usd?.bay} \$',
+                                  style: H2BlackTextStyle.copyWith(
+                                      color: Colors.black), )
+                              ] )),
+
+
                             ],
                           ),
                         ),
                         Container(
-                          width: 0.24.sw,
-                          height: 0.24.sw,
+                          width: 0.26.sw,
+                          height: 0.25.sw,
                           padding: EdgeInsets.symmetric(
                               horizontal: 0.008.sw, vertical: 0.002.sh),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15.r),
-                            color: GoldColor,
+                            color: GrayWhiteColor,
                           ),
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Container(
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'ذهب',
-                                      style: H2RegularDark.copyWith(
-                                          color: WhiteColor),
-                                    ),
-                                    20.horizontalSpace,
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 0.05.sw,
-                                      height: 0.05.sw,
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: WhiteColor,
-                                      ),
-                                      child: Icon(
-                                        FontAwesomeIcons.gem,
-                                        size: 0.04.sw,
-                                        color: GoldColor,
-                                      ),
-                                    )
-                                  ],
+                                alignment: Alignment.center,
+                                width: 0.09.sw,
+                                height: 0.09.sw,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: WhiteColor,
+                                ),
+                                child: Icon(
+                                  FontAwesomeIcons.gem,
+                                  size: 0.06.sw,
+                                  color: Colors.black,
                                 ),
                               ),
                               15.verticalSpace,
-                              Text(
-                                '${logic.gold.value?.idlib?.gold21?.bay} \$',
-                                style: H2WhiteTextStyle,
-                              ),
+                              RichText(text: TextSpan(children:[
+                                TextSpan(text:  'ذهـب  ',
+                                  style: H2RegularDark,),
+                                TextSpan(text:'${double.tryParse("${logic.gold.value?.idlib?.gold21?.bay}")} \$',
+                                    style: H2BlackTextStyle.copyWith(
+                                        color: Colors.black) )
+                              ]),),
                               15.verticalSpace,
-                              Text(
-                                'فضة',
-                                style: H2RegularDark.copyWith(
-                                    color: WhiteColor),
-                              ),
-                              15.verticalSpace,
-                              Text(
-                                '${logic.gold.value?.idlib?.sliver?.bay} \$',
-                                style: H2WhiteTextStyle,
-                              ),
+                              RichText(text: TextSpan(children:[
+                                TextSpan(text:  'فضـة  ',
+                                  style: H2RegularDark,),
+                                TextSpan(text:'${double.tryParse("${logic.gold.value?.idlib?.sliver?.bay}")} \$',
+                                    style: H2BlackTextStyle.copyWith(
+                                        color: Colors.black) )
+                              ]),),
+
+
                             ],
                           ),
                         ),
@@ -228,48 +210,66 @@ class ServicesPage extends StatelessWidget {
                             padding: EdgeInsets.symmetric(
                                 horizontal: 0.008.sw, vertical: 0.002.sh),
                             width: 0.4.sw,
-                            height: 0.24.sw,
+                            height: 0.25.sw,
                             decoration: BoxDecoration(
-                              color: RedColor,
+                              color: GrayWhiteColor,
                               borderRadius: BorderRadius.circular(15.r),
                             ),
                             child: Column(
                               children: [
                                 Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Container(
-                                      child: CachedNetworkImage(
-                                        imageUrl:
-                                        '${logic.idlibWeather.first.icon}',
+                                      width: 0.17.sw,
+                                      height: 0.17.sw,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        image: DecorationImage(
+                                            image: CachedNetworkImageProvider(
+                                              '${logic.idlibWeather.first.icon}',
+                                            ),
+
+                                            fit: BoxFit.fitHeight,
+                                            scale: 2),
                                       ),
                                     ),
                                     Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Row(
                                           children: [
                                             Text(
-                                              '${logic.idlibWeather.first.text}'
-                                                  .weatherType(),
-                                              style: H5WhiteTextStyle,
+                                              '${'${logic.idlibWeather.first.text}'
+                                                  .weatherType()} ',
+                                              style: H4RegularDark,
                                             ),
                                             Text(
                                               '${logic.idlibWeather.first.temp_c}'
                                                   .weatherType(),
-                                              style: H1WhiteTextStyle,
+                                              style: H2BlackTextStyle.copyWith(
+                                                  color: Colors.black),
                                             ),
                                           ],
                                         ),
                                         Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               'سرعة الرياح : ',
-                                              style: H6WhiteTextStyle,
+                                              style: H6RegularDark,
                                             ),
                                             Text(
                                               '${logic.idlibWeather.first.wind} كم /  سا',
-                                              style: H6WhiteTextStyle,
+                                              style: H6BlackTextStyle.copyWith(
+                                                  color: Colors.black),
                                             ),
                                           ],
                                         ),
@@ -280,18 +280,29 @@ class ServicesPage extends StatelessWidget {
                                 Container(
                                   child: Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceAround,
                                     children: [
-                                      Text(
-                                        'إدلب',
-                                        style: H2RegularDark.copyWith(
-                                          color: WhiteColor,
-                                        ),
-                                      ),
-                                      Text(
-                                        'عرض المزيد',
-                                        style: H2RegularDark.copyWith(
-                                          color: WhiteColor,
+                                     Transform.translate(offset: Offset(-0.02.sw, 0),child:  Text(
+                                       'إدلب',
+                                       style: H2RegularDark,
+                                     ),),
+                                      Transform.translate(
+                                        offset: Offset(-0.025.sw, 0),
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 0.007.sw,
+                                              horizontal: 0.02.sw),
+                                          decoration: BoxDecoration(
+                                              color: GrayLightColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(30.r)),
+                                          child: Text(
+                                            'عرض المزيد',
+                                            style: H4RegularDark.copyWith(
+                                              color: DarkColor,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -308,7 +319,7 @@ class ServicesPage extends StatelessWidget {
                   Container(
                     width: 1.sw,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         InkWell(
                           onTap: () {
@@ -323,8 +334,7 @@ class ServicesPage extends StatelessWidget {
                               color: GrayWhiteColor,
                             ),
                             child: Column(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceEvenly,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 const Icon(
@@ -353,8 +363,7 @@ class ServicesPage extends StatelessWidget {
                               color: GrayWhiteColor,
                             ),
                             child: Column(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceEvenly,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 const Icon(
@@ -383,8 +392,7 @@ class ServicesPage extends StatelessWidget {
                               color: GrayWhiteColor,
                             ),
                             child: Column(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceEvenly,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 const Icon(
@@ -413,8 +421,7 @@ class ServicesPage extends StatelessWidget {
                               color: GrayWhiteColor,
                             ),
                             child: Column(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceEvenly,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 const Icon(
@@ -443,8 +450,7 @@ class ServicesPage extends StatelessWidget {
                               color: GrayWhiteColor,
                             ),
                             child: Column(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceEvenly,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 const Icon(
@@ -467,65 +473,64 @@ class ServicesPage extends StatelessWidget {
                   Obx(() {
                     return Column(
                       children: [
-                        ... List.generate(logic.filterCategory.length,
-                              ( index) => InkWell(
-                            onTap: () {
-                              Get.toNamed(SERVICE_PAGE,
-                                  arguments: logic.filterCategory[index]);
-                            },
-                            child: Container(
-                              margin:
-                              EdgeInsets.symmetric(vertical: 0.02.sh),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 0.02.sw),
-                              width: 1.sw,
-                              decoration: const BoxDecoration(
-                                border: Border(
-                                  bottom:
-                                  BorderSide(color: GrayLightColor),
+                        ...List.generate(
+                          logic.filterCategory.length,
+                          (index) => Column(children: [
+                            InkWell(
+                              onTap: () {
+                                Get.toNamed(SERVICE_PAGE,
+                                    arguments: logic.filterCategory[index]);
+                              },
+                              child: Container(
+
+                                padding:
+                                EdgeInsets.symmetric(horizontal: 0.02.sw,vertical: 0.007.sh),
+                                width: 1.sw,
+                                decoration: const BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(color: GrayLightColor),
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          width: 0.08.sw,
+                                          height: 0.08.sw,
+                                          alignment: Alignment.center,
+
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: GrayWhiteColor,
+                                          ),
+                                          child: Text(
+                                            "${logic.filterCategory[index].name?[1]}",
+                                            style: H3BlackTextStyle.copyWith(color: Colors.black),
+                                          ),
+                                        ),
+                                        10.horizontalSpace,
+                                        Container(
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            "${logic.filterCategory[index].name}",
+                                            style: H2RegularDark,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    Badge.count(count: int.tryParse('${logic.filterCategory[index].products2Count}')??0)
+
+                                  ],
                                 ),
                               ),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 0.05.sw,
-                                            vertical: 0.05.sw),
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color:
-                                          RedColor.withOpacity(0.3),
-                                        ),
-                                        child: Text(
-                                          "${logic.filterCategory[index].name?[0]}",
-                                          style: H3RedTextStyle,
-                                        ),
-                                      ),
-                                      10.horizontalSpace,
-                                      Container(
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          "${logic.filterCategory[index].name}",
-                                          style: H2RegularDark,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  Text(
-                                    '${logic.filterCategory[index].products2Count}',
-                                    style: H2RegularDark,
-                                  )
-                                ],
-                              ),
                             ),
-                          ),
+                            15.verticalSpace,
+                          ],),
                         )
                       ],
                     );

@@ -151,7 +151,7 @@ class HomeLogic extends GetxController {
 
    ''' : ''}*/
     dio.Response? res = await mainController.fetchData();
-    //mainController.logger.e(res?.data);
+    mainController.logger.e(res?.data);
     if (res != null) {
       hasMorePage(
           res.data['data']['products']['paginatorInfo']['hasMorePages']);

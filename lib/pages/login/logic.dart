@@ -10,9 +10,9 @@ import 'package:dio/dio.dart' as dio;
 
 class LoginLogic extends GetxController {
   TextEditingController usernameController =
-      TextEditingController(text: 'admin@admin.com');
+      TextEditingController(text: /*'admin@admin.com'*/'mh.shamey@gmail.com');
   TextEditingController passwordController =
-      TextEditingController(text: 'password');
+      TextEditingController(text: 'admin123');
   String? token;
 
   ///

@@ -57,7 +57,9 @@ class HomeAppBarComponent extends StatelessWidget
                         : GrayLightColor,
                   ),
                   onPressed: () {
-
+                    if (mainController.settings.value.active_live == true) {
+                      Get.toNamed(LIVE_PAGE);
+                    }
                   },
                 );
               }),
@@ -86,19 +88,19 @@ class HomeAppBarComponent extends StatelessWidget
                 border: Border(bottom: BorderSide(color: GrayLightColor))),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Container(
                   width: 0.1.sw,
                   decoration: BoxDecoration(
                     border: Get.currentRoute == HOME_PAGE
                         ? Border(
-                      bottom: BorderSide(
-                        color: RedColor,
-                        style: BorderStyle.solid,
-                        width: 0.001.sw,
-                      ),
-                    )
+                            bottom: BorderSide(
+                              color: RedColor,
+                              style: BorderStyle.solid,
+                              width: 0.001.sw,
+                            ),
+                          )
                         : null,
                   ),
                   child: IconButton(
@@ -117,12 +119,12 @@ class HomeAppBarComponent extends StatelessWidget
                   decoration: BoxDecoration(
                     border: Get.currentRoute == SERVICES_PAGE
                         ? Border(
-                      bottom: BorderSide(
-                        color: RedColor,
-                        style: BorderStyle.solid,
-                        width: 0.001.sw,
-                      ),
-                    )
+                            bottom: BorderSide(
+                              color: RedColor,
+                              style: BorderStyle.solid,
+                              width: 0.001.sw,
+                            ),
+                          )
                         : null,
                   ),
                   child: IconButton(
@@ -130,10 +132,10 @@ class HomeAppBarComponent extends StatelessWidget
                       Get.toNamed(SERVICES_PAGE);
                     },
                     icon: Icon(
-                      FontAwesomeIcons.bookOpen,
+                      FontAwesomeIcons.locationDot,
                       size: 0.06.sw,
                       color:
-                      Get.currentRoute == SERVICES_PAGE ? RedColor : null,
+                          Get.currentRoute == SERVICES_PAGE ? RedColor : null,
                       //color: RedColor,
                     ),
                   ),
@@ -143,12 +145,12 @@ class HomeAppBarComponent extends StatelessWidget
                   decoration: BoxDecoration(
                     border: Get.currentRoute == JOBS_PAGE
                         ? Border(
-                      bottom: BorderSide(
-                        color: RedColor,
-                        style: BorderStyle.solid,
-                        width: 0.001.sw,
-                      ),
-                    )
+                            bottom: BorderSide(
+                              color: RedColor,
+                              style: BorderStyle.solid,
+                              width: 0.001.sw,
+                            ),
+                          )
                         : null,
                   ),
                   child: IconButton(
@@ -156,7 +158,7 @@ class HomeAppBarComponent extends StatelessWidget
                       Get.offAndToNamed(JOBS_PAGE);
                     },
                     icon: Icon(
-                      FontAwesomeIcons.headset,
+                      FontAwesomeIcons.briefcase,
                       size: 0.06.sw,
                       color: Get.currentRoute == JOBS_PAGE ? RedColor : null,
                     ),
@@ -167,12 +169,12 @@ class HomeAppBarComponent extends StatelessWidget
                   decoration: BoxDecoration(
                     border: Get.currentRoute == TENDERS_PAGE
                         ? Border(
-                      bottom: BorderSide(
-                        color: RedColor,
-                        style: BorderStyle.solid,
-                        width: 0.001.sw,
-                      ),
-                    )
+                            bottom: BorderSide(
+                              color: RedColor,
+                              style: BorderStyle.solid,
+                              width: 0.001.sw,
+                            ),
+                          )
                         : null,
                   ),
                   child: IconButton(
@@ -182,23 +184,20 @@ class HomeAppBarComponent extends StatelessWidget
                     icon: Icon(FontAwesomeIcons.arrowTrendDown,
                         size: 0.06.sw,
                         color:
-                        Get.currentRoute == TENDERS_PAGE ? RedColor : null),
+                            Get.currentRoute == TENDERS_PAGE ? RedColor : null),
                   ),
                 ),
-
-
-
                 Container(
                   width: 0.1.sw,
                   decoration: BoxDecoration(
                     border: Get.currentRoute == COMMUNITIES_PAGE
                         ? Border(
-                      bottom: BorderSide(
-                        color: RedColor,
-                        style: BorderStyle.solid,
-                        width: 0.001.sw,
-                      ),
-                    )
+                            bottom: BorderSide(
+                              color: RedColor,
+                              style: BorderStyle.solid,
+                              width: 0.001.sw,
+                            ),
+                          )
                         : null,
                   ),
                   child: IconButton(
@@ -212,18 +211,17 @@ class HomeAppBarComponent extends StatelessWidget
                             : null),
                   ),
                 ),
-
                 Container(
                   width: 0.1.sw,
                   decoration: BoxDecoration(
                     border: Get.currentRoute == COMMUNITIES_PAGE
                         ? Border(
-                      bottom: BorderSide(
-                        color: RedColor,
-                        style: BorderStyle.solid,
-                        width: 0.001.sw,
-                      ),
-                    )
+                            bottom: BorderSide(
+                              color: RedColor,
+                              style: BorderStyle.solid,
+                              width: 0.001.sw,
+                            ),
+                          )
                         : null,
                   ),
                   child: IconButton(
@@ -232,9 +230,8 @@ class HomeAppBarComponent extends StatelessWidget
                     },
                     icon: Icon(FontAwesomeIcons.solidUser,
                         size: 0.06.sw,
-                        color: Get.currentRoute == PROFILE_PAGE
-                            ? RedColor
-                            : null),
+                        color:
+                            Get.currentRoute == PROFILE_PAGE ? RedColor : null),
                   ),
                 ),
               ],
