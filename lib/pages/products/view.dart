@@ -50,6 +50,7 @@ class ProductsPage extends StatelessWidget {
           return true;
         },
         child: Obx(() {
+          Color? color=logic.seller.value?.is_verified==true ? logic.seller.value?.id_color!.toColor():DarkColor;
           if (logic.loading.value)
             return ListView(
               children: [
@@ -104,7 +105,7 @@ class ProductsPage extends StatelessWidget {
                             child: Icon(
                               FontAwesomeIcons.shareNodes,
                               color:
-                                  "${logic.seller.value?.id_color}".toColor(),
+                                  color,
                               size: 0.05.sw,
                             ),
                           ),
@@ -125,7 +126,7 @@ class ProductsPage extends StatelessWidget {
                       shape: BoxShape.circle,
                       image: DecorationImage(
                           image: CachedNetworkImageProvider(
-                              "${logic.seller.value?.logo}"),
+                              "${logic.seller.value?.image}"),
                           fit: BoxFit.contain)),
                 ),
               ),
@@ -167,8 +168,7 @@ class ProductsPage extends StatelessWidget {
                                             child: Icon(
                                               FontAwesomeIcons.instagram,
                                               color:
-                                                  "${logic.seller.value?.id_color}"
-                                                      .toColor(),
+                                                 color,
                                               size: 0.06.sw,
                                             ),
                                           ),
@@ -189,8 +189,7 @@ class ProductsPage extends StatelessWidget {
                                               child: Icon(
                                                 FontAwesomeIcons.facebook,
                                                 color:
-                                                    "${logic.seller.value?.id_color}"
-                                                        .toColor(),
+                                                    color,
                                                 size: 0.06.sw,
                                               )),
                                         ),
@@ -212,8 +211,7 @@ class ProductsPage extends StatelessWidget {
                                             child: Icon(
                                               FontAwesomeIcons.linkedin,
                                               color:
-                                                  "${logic.seller.value?.id_color}"
-                                                      .toColor(),
+                                                 color,
                                               size: 0.06.sw,
                                             ),
                                           ),
@@ -236,8 +234,7 @@ class ProductsPage extends StatelessWidget {
                                             child: Icon(
                                               FontAwesomeIcons.tiktok,
                                               color:
-                                                  "${logic.seller.value?.id_color}"
-                                                      .toColor(),
+                                                  color,
                                               size: 0.06.sw,
                                             ),
                                           ),
@@ -256,8 +253,7 @@ class ProductsPage extends StatelessWidget {
                                             child: Icon(
                                               FontAwesomeIcons.whatsapp,
                                               color:
-                                                  "${logic.seller.value?.id_color}"
-                                                      .toColor(),
+                                                  color,
                                               size: 0.06.sw,
                                             ),
                                           ),
@@ -278,8 +274,7 @@ class ProductsPage extends StatelessWidget {
                                             child: Icon(
                                               FontAwesomeIcons.xTwitter,
                                               color:
-                                                  "${logic.seller.value?.id_color}"
-                                                      .toColor(),
+                                                  color,
                                               size: 0.06.sw,
                                             ),
                                           ),
@@ -290,7 +285,7 @@ class ProductsPage extends StatelessWidget {
                               ),
                             ),
                             Transform.translate(
-                              offset: Offset(0, 0.01.sh),
+                              offset: Offset(0, 0.02.sh),
                               child: Container(
                                 width: 0.85.sw,
                                 padding: EdgeInsets.only(top: 0.02.sh),
@@ -307,10 +302,11 @@ class ProductsPage extends StatelessWidget {
                                         width: 0.9.sw,
                                         height: 0.05.sh,
                                         alignment: Alignment.center,
+
                                         child: SellerNameComponent(
+                                          alignment: MainAxisAlignment.center,
                                           white: false,
-                                          color: logic.seller.value?.id_color
-                                              ?.toColor(),
+                                          color:color,
                                           isVerified:
                                               logic.seller.value?.is_verified ??
                                                   false,
@@ -358,26 +354,6 @@ class ProductsPage extends StatelessWidget {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceEvenly,
                                           children: [
-                                            Column(
-                                              children: [
-                                                Text(
-                                                  "${logic.seller.value?.total_views}"
-                                                      .toFormatNumberK(),
-                                                  style: H0RegularDark.copyWith(
-                                                      fontWeight:
-                                                          FontWeight.w900,
-                                                      color:
-                                                          "${logic.seller.value?.id_color}"
-                                                              .toColor()),
-                                                  textDirection:
-                                                      TextDirection.ltr,
-                                                ),
-                                                Text(
-                                                  "مشاهدات",
-                                                  style: H4RegularDark,
-                                                )
-                                              ],
-                                            ),
                                             InkWell(
                                               child: Column(
                                                 children: [
@@ -389,8 +365,7 @@ class ProductsPage extends StatelessWidget {
                                                           fontWeight:
                                                               FontWeight.w900,
                                                           color:
-                                                              "${logic.seller.value?.id_color}"
-                                                                  .toColor()),
+                                                             color),
                                                       textDirection:
                                                           TextDirection.ltr,
                                                     );
@@ -402,33 +377,26 @@ class ProductsPage extends StatelessWidget {
                                                 ],
                                               ),
                                             ),
-                                            InkWell(
-                                              onTap: () {
-                                                Get.toNamed(FOLLOWERS_PAGE);
-                                              },
-                                              child: Column(
-                                                children: [
-                                                  Obx(() {
-                                                    return Text(
-                                                      '${logic.seller.value?.followers?.length}'
-                                                          .toFormatNumberK(),
-                                                      style: H0RegularDark.copyWith(
-                                                          fontWeight:
-                                                              FontWeight.w900,
-                                                          color:
-                                                              "${logic.seller.value?.id_color}"
-                                                                  .toColor()),
-                                                      textDirection:
-                                                          TextDirection.ltr,
-                                                    );
-                                                  }),
-                                                  Text(
-                                                    "أتابعه",
-                                                    style: H4RegularDark,
-                                                  )
-                                                ],
-                                              ),
-                                            )
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  "${logic.seller.value?.total_views}"
+                                                      .toFormatNumberK(),
+                                                  style: H0RegularDark.copyWith(
+                                                      fontWeight:
+                                                          FontWeight.w900,
+                                                      color:
+                                                          color),
+                                                  textDirection:
+                                                      TextDirection.ltr,
+                                                ),
+                                                Text(
+                                                  "مشاهدات",
+                                                  style: H4RegularDark,
+                                                )
+                                              ],
+                                            ),
+
                                           ],
                                         ),
                                       ),
@@ -440,136 +408,7 @@ class ProductsPage extends StatelessWidget {
                             )
                           ],
                         ),
-                        Transform.translate(
-                          offset: Offset(0, -0.02.sh),
-                          child: Container(
-                            child: Obx(() {
-                              return Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  if (logic.seller.value?.is_verified != true)
-                                    InkWell(
-                                        onTap: () {},
-                                        child: Container(
-                                          width: 0.35.sw,
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 0.01.sh,
-                                              horizontal: 0.02.sw),
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(15.r),
-                                              color:
-                                                  "${logic.seller.value?.id_color}"
-                                                      .toColor()),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                child: Text(
-                                                  'تـوثيق الحسـاب ',
-                                                  style: H4WhiteTextStyle,
-                                                ),
-                                              ),
-                                              Container(
-                                                width: 0.04.sw,
-                                                height: 0.04.sw,
-                                                decoration: const BoxDecoration(
-                                                    image: DecorationImage(
-                                                        image: Svg(
-                                                          "assets/images/svg/verified_white.svg",
-                                                          color: WhiteColor,
-                                                        ),
-                                                        fit: BoxFit.cover)),
-                                              )
-                                            ],
-                                          ),
-                                        )),
-                                  if (logic.seller.value?.is_verified == true)
-                                    Container(
-                                      width: 0.35.sw,
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 0.01.sh,
-                                          horizontal: 0.02.sw),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(15.r),
-                                          color:
-                                              "${logic.seller.value?.id_color}"
-                                                  .toColor()),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            child: Text(
-                                              'الحسـاب مـوثق',
-                                              style: H4WhiteTextStyle,
-                                            ),
-                                          ),
-                                          10.horizontalSpace,
-                                          Container(
-                                            width: 0.04.sw,
-                                            height: 0.04.sw,
-                                            decoration: const BoxDecoration(
-                                                image: DecorationImage(
-                                                    image: Svg(
-                                                      "assets/images/svg/verified_white.svg",
-                                                      color: WhiteColor,
-                                                    ),
-                                                    fit: BoxFit.cover)),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  InkWell(
-                                      onTap: () {
-                                        Get.toNamed(Edit_PROFILE_PAGE);
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 0.01.sh,
-                                            horizontal: 0.02.sw),
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(15.r),
-                                            color:
-                                                "${logic.seller.value?.id_color}"
-                                                    .toColor()),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              child: Text(
-                                                'تعديل الملف الشخصي ',
-                                                style: H4WhiteTextStyle,
-                                              ),
-                                            ),
-                                            Container(
-                                              width: 0.04.sw,
-                                              height: 0.04.sw,
-                                              child: Icon(
-                                                FontAwesomeIcons.edit,
-                                                size: 0.04.sw,
-                                                color: WhiteColor,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      )),
-                                ],
-                              );
-                            }),
-                          ),
-                        ),
+
                         30.verticalSpace,
                         Transform.translate(
                           offset: Offset(0, -0.02.sh),
@@ -595,8 +434,9 @@ class ProductsPage extends StatelessWidget {
                     child: Column(
                       children: [
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            if(logic.seller.value?.is_verified==true)
                             Container(
                               width: 0.1.sw,
                               alignment: Alignment.centerRight,
@@ -623,8 +463,7 @@ class ProductsPage extends StatelessWidget {
                                             child: Icon(
                                               FontAwesomeIcons.instagram,
                                               color:
-                                                  "${logic.seller.value?.id_color}"
-                                                      .toColor(),
+                                                 color,
                                               size: 0.06.sw,
                                             ),
                                           ),
@@ -645,8 +484,7 @@ class ProductsPage extends StatelessWidget {
                                               child: Icon(
                                                 FontAwesomeIcons.facebook,
                                                 color:
-                                                    "${logic.seller.value?.id_color}"
-                                                        .toColor(),
+                                                    color,
                                                 size: 0.06.sw,
                                               )),
                                         ),
@@ -668,8 +506,7 @@ class ProductsPage extends StatelessWidget {
                                             child: Icon(
                                               FontAwesomeIcons.linkedin,
                                               color:
-                                                  "${logic.seller.value?.id_color}"
-                                                      .toColor(),
+                                                 color,
                                               size: 0.06.sw,
                                             ),
                                           ),
@@ -692,8 +529,7 @@ class ProductsPage extends StatelessWidget {
                                             child: Icon(
                                               FontAwesomeIcons.tiktok,
                                               color:
-                                                  "${logic.seller.value?.id_color}"
-                                                      .toColor(),
+                                                  color,
                                               size: 0.06.sw,
                                             ),
                                           ),
@@ -712,8 +548,7 @@ class ProductsPage extends StatelessWidget {
                                             child: Icon(
                                               FontAwesomeIcons.whatsapp,
                                               color:
-                                                  "${logic.seller.value?.id_color}"
-                                                      .toColor(),
+                                                  color,
                                               size: 0.06.sw,
                                             ),
                                           ),
@@ -734,8 +569,7 @@ class ProductsPage extends StatelessWidget {
                                             child: Icon(
                                               FontAwesomeIcons.xTwitter,
                                               color:
-                                                  "${logic.seller.value?.id_color}"
-                                                      .toColor(),
+                                                  color,
                                               size: 0.06.sw,
                                             ),
                                           ),
@@ -759,14 +593,15 @@ class ProductsPage extends StatelessWidget {
                                         CrossAxisAlignment.center,
                                     children: [
                                       Container(
-                                        padding: EdgeInsets.only(left: 0.03.sw),
-                                        width: 0.9.sw,
+
+                                        width: 1.sw,
                                         height: 0.05.sh,
                                         alignment: Alignment.center,
+
                                         child: SellerNameComponent(
+                                          alignment: MainAxisAlignment.center,
                                           white: false,
-                                          color: logic.seller.value?.id_color
-                                              ?.toColor(),
+                                          color: color,
                                           isVerified:
                                               logic.seller.value?.is_verified ??
                                                   false,
@@ -814,27 +649,12 @@ class ProductsPage extends StatelessWidget {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceEvenly,
                                           children: [
-                                            Column(
-                                              children: [
-                                                Text(
-                                                  "${logic.seller.value?.total_views}"
-                                                      .toFormatNumberK(),
-                                                  style: H0RegularDark.copyWith(
-                                                      fontWeight:
-                                                          FontWeight.w900,
-                                                      color:
-                                                          "${logic.seller.value?.id_color}"
-                                                              .toColor()),
-                                                  textDirection:
-                                                      TextDirection.ltr,
-                                                ),
-                                                Text(
-                                                  "مشاهدات",
-                                                  style: H4RegularDark,
-                                                )
-                                              ],
-                                            ),
                                             InkWell(
+                                              onTap: () {
+                                                if (logic.seller.value?.id ==
+                                                    mainController
+                                                        .authUser.value?.id) {}
+                                              },
                                               child: Column(
                                                 children: [
                                                   Obx(() {
@@ -845,8 +665,7 @@ class ProductsPage extends StatelessWidget {
                                                           fontWeight:
                                                               FontWeight.w900,
                                                           color:
-                                                              "${logic.seller.value?.id_color}"
-                                                                  .toColor()),
+                                                              color),
                                                       textDirection:
                                                           TextDirection.ltr,
                                                     );
@@ -858,33 +677,26 @@ class ProductsPage extends StatelessWidget {
                                                 ],
                                               ),
                                             ),
-                                            InkWell(
-                                              onTap: () {
-                                                Get.toNamed(FOLLOWERS_PAGE);
-                                              },
-                                              child: Column(
-                                                children: [
-                                                  Obx(() {
-                                                    return Text(
-                                                      '${logic.seller.value?.followers?.length}'
-                                                          .toFormatNumberK(),
-                                                      style: H0RegularDark.copyWith(
-                                                          fontWeight:
-                                                              FontWeight.w900,
-                                                          color:
-                                                              "${logic.seller.value?.id_color}"
-                                                                  .toColor()),
-                                                      textDirection:
-                                                          TextDirection.ltr,
-                                                    );
-                                                  }),
-                                                  Text(
-                                                    "أتابعه",
-                                                    style: H4RegularDark,
-                                                  )
-                                                ],
-                                              ),
-                                            )
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  "${logic.seller.value?.total_views}"
+                                                      .toFormatNumberK(),
+                                                  style: H0RegularDark.copyWith(
+                                                      fontWeight:
+                                                          FontWeight.w900,
+                                                      color:
+                                                          color),
+                                                  textDirection:
+                                                      TextDirection.ltr,
+                                                ),
+                                                Text(
+                                                  "مشاهدات",
+                                                  style: H4RegularDark,
+                                                )
+                                              ],
+                                            ),
+
                                           ],
                                         ),
                                       ),
@@ -896,137 +708,7 @@ class ProductsPage extends StatelessWidget {
                             )
                           ],
                         ),
-                        Transform.translate(
-                          offset: Offset(0, 0.02.sh),
-                          child: Container(
-                            child: Obx(() {
-                              return Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  if (logic.seller.value?.is_verified != true)
-                                    InkWell(
-                                        onTap: () {},
-                                        child: Container(
-                                          width: 0.35.sw,
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 0.01.sh,
-                                              horizontal: 0.02.sw),
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(15.r),
-                                              color:
-                                                  "${logic.seller.value?.id_color}"
-                                                      .toColor()),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                child: Text(
-                                                  'تـوثيق الحسـاب ',
-                                                  style: H4WhiteTextStyle,
-                                                ),
-                                              ),
-                                              Container(
-                                                width: 0.04.sw,
-                                                height: 0.04.sw,
-                                                decoration: const BoxDecoration(
-                                                    image: DecorationImage(
-                                                        image: Svg(
-                                                          "assets/images/svg/verified_white.svg",
-                                                          color: WhiteColor,
-                                                        ),
-                                                        fit: BoxFit.cover)),
-                                              )
-                                            ],
-                                          ),
-                                        )),
-                                  if (logic.seller.value?.is_verified == true)
-                                    Container(
-                                      width: 0.35.sw,
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 0.01.sh,
-                                          horizontal: 0.02.sw),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(15.r),
-                                          color:
-                                              "${logic.seller.value?.id_color}"
-                                                  .toColor()),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            child: Text(
-                                              'الحسـاب مـوثق',
-                                              style: H4WhiteTextStyle,
-                                            ),
-                                          ),
-                                          10.horizontalSpace,
-                                          Container(
-                                            width: 0.04.sw,
-                                            height: 0.04.sw,
-                                            decoration: const BoxDecoration(
-                                                image: DecorationImage(
-                                                    image: Svg(
-                                                      "assets/images/svg/verified_white.svg",
-                                                      color: WhiteColor,
-                                                    ),
-                                                    fit: BoxFit.cover)),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  InkWell(
-                                      onTap: () {
-                                        Get.toNamed(Edit_PROFILE_PAGE);
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 0.01.sh,
-                                            horizontal: 0.02.sw),
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(15.r),
-                                            color:
-                                                "${logic.seller.value?.id_color}"
-                                                    .toColor()),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              child: Text(
-                                                'تعديل الملف الشخصي ',
-                                                style: H4WhiteTextStyle,
-                                              ),
-                                            ),
-                                            Container(
-                                              width: 0.04.sw,
-                                              height: 0.04.sw,
-                                              child: Icon(
-                                                FontAwesomeIcons.edit,
-                                                size: 0.04.sw,
-                                                color: WhiteColor,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      )),
-                                ],
-                              );
-                            }),
-                          ),
-                        ),
-                        30.verticalSpace,
+
                         Transform.translate(
                           offset: Offset(0, 0.02.sh),
                           child: Container(
@@ -1037,35 +719,39 @@ class ProductsPage extends StatelessWidget {
                                 scrollDirection: Axis.horizontal,
                                 children: [
                                   InkWell(
-                                    onTap:(){
-                                      logic.categoryId.value=null;
+                                    onTap: () {
+                                      logic.categoryId.value = null;
                                     },
                                     child: Container(
-                                      width: 0.25.sw,
                                       margin: EdgeInsets.only(right: 0.02.sw),
                                       alignment: Alignment.center,
                                       height: 0.02.sh,
                                       padding: EdgeInsets.symmetric(
                                           vertical: 0.002.sh,
-                                          horizontal: 0.02.sw),
+                                          horizontal: 0.07.sw),
                                       child: Text(
                                         'الكل',
                                         style: H4WhiteTextStyle,
                                       ),
-                                      decoration: BoxDecoration(color: logic
-                                          .seller.value?.id_color
-                                          ?.toColor(),borderRadius: BorderRadius.circular(15.r)),
+                                      decoration: BoxDecoration(
+                                          color:
+                                          logic.seller.value?.is_verified==true ? logic.seller.value?.id_color!.toColor():RedColor,
+                                          borderRadius:
+                                              BorderRadius.circular(15.r)),
                                     ),
                                   ),
+
                                   ...List.generate(
                                       logic.categories.length,
                                       (index) => InkWell(
-                                        onTap:(){
-                                          logic.categoryId.value=logic.categories[index].id;
-                                        },
+                                            onTap: () {
+                                              logic.categoryId.value =
+                                                  logic.categories[index].id;
+                                            },
                                             child: Container(
                                               width: 0.25.sw,
-                                              margin: EdgeInsets.only(right: 0.02.sw),
+                                              margin: EdgeInsets.only(
+                                                  right: 0.02.sw),
                                               alignment: Alignment.center,
                                               height: 0.02.sh,
                                               padding: EdgeInsets.symmetric(
@@ -1075,9 +761,11 @@ class ProductsPage extends StatelessWidget {
                                                 '${logic.categories[index].name}',
                                                 style: H4WhiteTextStyle,
                                               ),
-                                              decoration: BoxDecoration(color: logic
-                                                  .seller.value?.id_color
-                                                  ?.toColor(),borderRadius: BorderRadius.circular(15.r)),
+                                              decoration: BoxDecoration(
+                                                  color:color,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15.r)),
                                             ),
                                           ))
                                 ],
@@ -1090,13 +778,14 @@ class ProductsPage extends StatelessWidget {
                   ),
                 ),
               Positioned(
-                top: 0.55.sh,
+                top: 0.51.sh,
                 child: Container(
                   width: 1.sw,
                   height: 0.43.sh,
                   child: Obx(() {
                     return ListView(
-                      padding: EdgeInsets.only(bottom: 0.18.sh,left: 0.02.sw,right: 0.02.sw),
+                      padding: EdgeInsets.only(
+                          bottom: 0.18.sh, left: 0.02.sw, right: 0.02.sw),
                       children: [
                         ...List.generate(
                           logic.products.length,
@@ -1110,6 +799,7 @@ class ProductsPage extends StatelessWidget {
                                 return MinimizeDetailsProductComponent(
                                   post: logic.products[index],
                                   cartLoading: mainController.cartLoading.value,
+                                  TitleColor: color,
                                 );
                               }),
                             ],

@@ -22,6 +22,9 @@ class TabChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color? color=mainController
+        .authUser.value?.is_verified==true ? mainController
+        .authUser.value?.id_color!.toColor():DarkColor;
     return Container(
       color: WhiteColor,
       child: ListView(
@@ -239,6 +242,9 @@ class TabChart extends StatelessWidget {
 
   Widget _buildWidget(
       {String? title, double? count, String? symbol, Function()? onTab}) {
+    Color? color=mainController
+        .authUser.value?.is_verified==true ? mainController
+        .authUser.value?.id_color!.toColor():DarkColor;
     return InkWell(
       onTap: onTab,
       child: Container(
@@ -255,9 +261,9 @@ class TabChart extends StatelessWidget {
           children: [
             RichText(
               text: TextSpan(children: [
-                TextSpan(text: "$count", style: H2RedTextStyle.copyWith(color: mainController.authUser.value?.id_color?.toColor())),
+                TextSpan(text: "$count", style: H2RedTextStyle.copyWith(color:color)),
                 if (symbol != null)
-                  TextSpan(text: " $symbol ", style: H2RedTextStyle.copyWith(color: mainController.authUser.value?.id_color?.toColor())),
+                  TextSpan(text: " $symbol ", style: H2RedTextStyle.copyWith(color:color)),
               ]),
             ),
             Text(

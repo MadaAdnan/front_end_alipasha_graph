@@ -7,6 +7,8 @@ import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
 
 class ProductLogic extends GetxController {
+  RxInt pageIndex = RxInt(int.tryParse("${Get.parameters['index']}")??0);
+  PageController pageController = PageController(initialPage: int.tryParse("${Get.parameters['index']}")??0);
   RxBool loading = RxBool(false);
   RxBool loadingComment = RxBool(false);
   RxBool loadingRate = RxBool(false);
@@ -50,6 +52,10 @@ class ProductLogic extends GetxController {
   void onReady() {
     // TODO: implement onReady
     super.onReady();
+    if(pageIndex.value>0){
+      pageController.animateToPage(pageIndex.value, duration: Duration(milliseconds: 200), curve: Curves.bounceInOut);
+    }
+
     getProduct();
     getComments();
   }

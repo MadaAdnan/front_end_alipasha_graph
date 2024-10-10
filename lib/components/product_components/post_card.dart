@@ -358,7 +358,9 @@ class PostCard extends StatelessWidget {
                   ),
                 ),
                 MaterialButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.toNamed(PRODUCT_PAGE, arguments: post!.id,parameters: {"index":"1"});
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,

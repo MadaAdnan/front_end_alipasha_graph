@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:ali_pasha_graph/Global/main_controller.dart';
+import 'package:ali_pasha_graph/components/progress_loading.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:ali_pasha_graph/pages/product/tabs/comment_page.dart';
@@ -20,19 +21,21 @@ class ProductPage extends StatelessWidget {
   final logic = Get.find<ProductLogic>();
   MainController mainController = Get.find<MainController>();
   ScrollController controller = ScrollController();
-  RxInt pageIndex = RxInt(0);
-  PageController pageController = PageController();
+
+
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       backgroundColor: WhiteColor,
       body: Obx(
             () {
           if (logic.loading.value) {
             return Container(
+
               child: Center(
-                child: CircularProgressIndicator(),
+                child: ProgressLoading(width: 0.3.sw,height: 0.3.sw,),
               ),
             );
           }
@@ -175,7 +178,7 @@ class ProductPage extends StatelessWidget {
                     children: [
                       InkWell(
                         onTap: () {
-                          pageController.animateToPage(0,
+                          logic.pageController.animateToPage(0,
                               duration: Duration(milliseconds: 500),
                               curve: Curves.easeInCirc);
                         },
@@ -184,18 +187,18 @@ class ProductPage extends StatelessWidget {
                           width: 0.3.sw,
                           height: 0.05.sh,
                           decoration: BoxDecoration(
-                              color:pageIndex.value==0? RedColor:GrayLightColor,
+                              color:logic.pageIndex.value==0? RedColor:GrayLightColor,
                               borderRadius: BorderRadius.circular(15.r)),
                           child: Text(
                             'التفاصيل',
-                            style:pageIndex.value==0? H3WhiteTextStyle:H3BlackTextStyle,
+                            style:logic.pageIndex.value==0? H3WhiteTextStyle:H3BlackTextStyle,
                           ),
                         ),
                       ),
                       if(logic.product.value?.type=='product')
                       InkWell(
                         onTap: () {
-                          pageController.animateToPage(1,
+                          logic.pageController.animateToPage(1,
                               duration: Duration(milliseconds: 500),
                               curve: Curves.easeInCirc);
                         },
@@ -204,18 +207,18 @@ class ProductPage extends StatelessWidget {
                           width: 0.3.sw,
                           height: 0.05.sh,
                           decoration: BoxDecoration(
-                              color:pageIndex.value==1? RedColor:GrayLightColor,
+                              color:logic.pageIndex.value==1? RedColor:GrayLightColor,
                               borderRadius: BorderRadius.circular(15.r)),
                           child: Text(
                             'التعليقات',
-                            style:pageIndex.value==1? H3WhiteTextStyle:H3BlackTextStyle,
+                            style:logic.pageIndex.value==1? H3WhiteTextStyle:H3BlackTextStyle,
                           ),
                         ),
                       ),
-                      if(logic.product.value?.type=='product')
+                     /* if(logic.product.value?.type=='product')
                       InkWell(
                         onTap: () {
-                          pageController.animateToPage(2,
+                          logic.pageController.animateToPage(2,
                               duration: Duration(milliseconds: 500),
                               curve: Curves.easeInCirc);
                         },
@@ -224,14 +227,14 @@ class ProductPage extends StatelessWidget {
                           width: 0.3.sw,
                           height: 0.05.sh,
                           decoration: BoxDecoration(
-                              color:pageIndex.value==2? RedColor:GrayLightColor,
+                              color:logic.pageIndex.value==2? RedColor:GrayLightColor,
                               borderRadius: BorderRadius.circular(15.r)),
                           child: Text(
                             'الموقع',
-                            style:pageIndex.value==2? H3WhiteTextStyle:H3BlackTextStyle,
+                            style:logic.pageIndex.value==2? H3WhiteTextStyle:H3BlackTextStyle,
                           ),
                         ),
-                      )
+                      )*/
                     ],
                   ),
                 );
@@ -242,11 +245,11 @@ class ProductPage extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
                 child: PageView(
                   onPageChanged: (index) {
-                    pageIndex.value = index;
+                    logic.pageIndex.value = index;
                   },
                   scrollDirection: Axis.horizontal,
                   allowImplicitScrolling: true,
-                  controller: pageController,
+                  controller: logic.pageController,
                   children: [
                     if(logic.product.value!=null)
                     ProductDetailes(
@@ -257,10 +260,7 @@ class ProductPage extends StatelessWidget {
                     Container(
                       child: CommentPage(),
                     ),
-                    if(logic.product.value?.type=='product')
-                    Container(
-                      child: Text('Page3'),
-                    ),
+
                   ],
                 ),
               )

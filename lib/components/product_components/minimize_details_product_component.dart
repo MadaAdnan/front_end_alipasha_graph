@@ -20,8 +20,10 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
     required this.post,
     this.onClick,
     this.cartLoading = false,
+    this.TitleColor,
   });
 
+  final Color? TitleColor;
   final ProductModel post;
   final Function()? onClick;
   final bool? cartLoading;
@@ -29,244 +31,141 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: 0.01.sh),
-      width: 1.sw,
-      decoration: BoxDecoration(
-        color: GrayWhiteColor,
-        borderRadius: BorderRadius.circular(30.r),
-      ),
-      child: Container(
-        padding: EdgeInsets.only(right: 0.02.sw),
-        width: 1.sw,
-        height: 0.33.sw,
-        decoration: BoxDecoration(
-          color: GrayWhiteColor,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              width: 0.27.sw,
-              height: 0.27.sw,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20.r),
-                image: DecorationImage(
-                    image: CachedNetworkImageProvider("${post.image}"),
-                    fit: BoxFit.cover),
-              ),
-              child: post.is_special == true
-                  ? Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 0.02.sw, vertical: 0.005.sh),
-                      alignment: Alignment.topRight,
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: 0.12.sw,
-                        height: 0.03.sh,
-                        decoration: BoxDecoration(
-                            color: DarkColor.withOpacity(0.6),
-                            borderRadius: BorderRadius.circular(15.r)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Icon(
-                              FontAwesomeIcons.crown,
-                              color: OrangeColor,
-                              size: 0.03.sw,
-                            ),
-                            Text(
-                              " مميز ",
-                              style: H4OrangeTextStyle,
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  : null,
+    return Column(
+      children: [
+        InkWell(
+          onTap: onClick,
+          child: Container(
+            width: 1.sw,
+            decoration: BoxDecoration(
+              color: GrayLightColor,
+              borderRadius: BorderRadius.circular(30.r),
             ),
-            Container(
-              width: 0.61.sw,
-              padding: EdgeInsets.only(top: 0.01.sh),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  width: 0.3.sw,
+                  height: 0.3.sw,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(30.r),
+                          bottomRight: Radius.circular(30.r)),
+                      image: DecorationImage(
+                          image: CachedNetworkImageProvider("${post.image}"))),
+                ),
+                Expanded(
+                    child: Container(
+                  height: 0.3.sw,
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 0.01.sw, vertical: 0.002.sh),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        padding: EdgeInsets.only(right: 0.01.sw),
-                        height: 0.12.sh,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              child: SellerNameComponent(
-                                sellerName: "${post.user?.seller_name}",
-                                isVerified: post.user?.is_verified ?? false,
-                                textStyle: H2BlackTextStyle,
+                      SellerNameComponent(
+                          color: TitleColor,
+                          sellerName: "${post.user?.seller_name ?? ''}",
+                          isVerified: post.user?.is_verified == true),
+                      RichText(
+                          text: TextSpan(children: [
+                        TextSpan(
+                            text: '${post.city?.name ?? ''}',
+                            style: H5GrayTextStyle),
+                        if (post.category?.name != null)
+                          TextSpan(
+                              text: ' - ${post.category?.name}',
+                              style: H5GrayTextStyle),
+                        if (post.sub1?.name != null)
+                          TextSpan(
+                              text: ' - ${post.sub1?.name}',
+                              style: H5GrayTextStyle),
+                      ])),
+                      Text(
+                        "${post.expert!.length < 5 && post.name!.length > 5 ? post.name : post.expert}",
+                        style: H4RegularDark,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      SizedBox(
+                        height: 0.01.sh,
+                      ),
+                      Expanded(
+                        child: RichText(
+                          textDirection: TextDirection.rtl,
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: ' ${post.price} \$ ',
+                                style: post.is_discount == true
+                                    ? H4GrayTextStyle.copyWith(
+                                        decoration: TextDecoration.lineThrough)
+                                    : H4RedTextStyle,
                               ),
-                              width: 0.25.sw,
-                            ),
-                            10.verticalSpace,
-                            if (post.type == 'product')
-                              Container(child: Text(
-                                "${post.name}",
-                                overflow: TextOverflow.ellipsis,
-                                style: H2RedTextBoldStyle.copyWith(
-                                    color: DarkColor),
-                              ),width: 0.5.sw,),
-                            if (post.type == 'job' ||
-                                post.type == 'search_job' ||
-                                post.type == 'tender' ||
-                                post.type == 'service')
-                             Container(child:  Text(
-                               "${post.expert}",
-                               style: H4GrayTextStyle,
-                               overflow: TextOverflow.ellipsis,
-                             ),width: 0.5.sw,),
-                            10.verticalSpace,
-                            if (post.type == 'product')
-                              RichText(
-                                  text: TextSpan(children: [
+                              if (post.is_discount == true)
                                 TextSpan(
-                                  text: "${post.price} \$",
-                                  style: post.is_discount == true
-                                      ? H4RegularDark.copyWith(
-                                          decoration:
-                                              TextDecoration.lineThrough)
-                                      : H2RedTextBoldStyle,
-                                ),
-                                if (post.is_discount == true)
-                                  TextSpan(
-                                      text: "${post.discount} \$",
-                                      style: H2RedTextBoldStyle),
-                              ]))
-                          ],
+                                    text: ' ${post.discount} \$ ',
+                                    style: H4RedTextStyle),
+                            ],
+                          ),
                         ),
                       ),
-                      if (post.user?.id == mainController.authUser.value?.id)
-                        Container(
-                          padding: EdgeInsets.only(left: 0.02.sw),
-                          alignment: Alignment.centerLeft,
-                          child: InkWell(
-                            onTap: () {
-                              switch (post.type) {
-                                case "product":
-                                  Get.toNamed(Edit_PRODUCT_PAGE,
-                                      arguments: post.id!);
-                                  break;
-                                case "job":
-                                case "search_job":
-                                  Get.toNamed(Edit_JOB_PAGE,
-                                      arguments: post.id!);
-                                  break;
-                                case "tender":
-                                  Get.toNamed(Edit_TENDER_PAGE,
-                                      arguments: post.id!);
-                                  break;
-                                case "service":
-                                  Get.toNamed(Edit_SERVICE_PAGE,
-                                      arguments: post.id!);
-                                  break;
-                              }
-                            },
-                            child: Container(
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 0.01.sh, horizontal: 0.02.sw),
-                              decoration: BoxDecoration(
-                                  color: RedColor,
-                                  borderRadius: BorderRadius.circular(45.r)),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "تعديل",
-                                    style: H3WhiteTextStyle,
-                                  ),
-                                  10.horizontalSpace,
-                                  Icon(
-                                    FontAwesomeIcons.pen,
-                                    color: WhiteColor,
-                                    size: 0.03.sw,
-                                  )
-                                ],
-                              ),
+                      Container(
+                        height: 0.06.sw,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // Icon Eye
+                            Row(
+                              children: [
+                                Icon(
+                                  FontAwesomeIcons.eye,
+                                  color: DarkColor,
+                                  size: 0.04.sw,
+                                ),
+                                SizedBox(
+                                  width: 0.007.sw,
+                                ),
+                                Text(
+                                  "${post.views_count}",
+                                  style: H5BlackTextStyle,
+                                )
+                              ],
                             ),
-                          ),
-                        )
+                            Row(
+                              children: [
+                                Icon(
+                                  FontAwesomeIcons.calendar,
+                                  color: DarkColor,
+                                  size: 0.04.sw,
+                                ),
+                                SizedBox(
+                                  width: 0.007.sw,
+                                ),
+                                Text(
+                                  "${post.created_at} 2024-05-03",
+                                  style: H5BlackTextStyle,
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      )
                     ],
                   ),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 0.01.sw, vertical: 0.004.sh),
-                    width: 0.66.sw,
-                    height: 0.027.sh,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(
-                              FontAwesomeIcons.locationDot,
-                              color: GrayDarkColor,
-                              size: 0.04.sw,
-                            ),
-                            10.horizontalSpace,
-                            Text(
-                              "${post.city?.name}",
-                              style: H4GrayTextStyle,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Icon(
-                              FontAwesomeIcons.eye,
-                              color: GrayDarkColor,
-                              size: 0.04.sw,
-                            ),
-                            10.horizontalSpace,
-                            Text(
-                              "${post.views_count}",
-                              style: H4GrayTextStyle,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Icon(
-                              FontAwesomeIcons.stopwatch,
-                              color: GrayDarkColor,
-                              size: 0.04.sw,
-                            ),
-                            10.horizontalSpace,
-                            Text(
-                              "${post.created_at}",
-                              style: H4GrayTextStyle,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                ))
+              ],
             ),
-          ],
+          ),
         ),
-      ),
+        SizedBox(height: 0.01.sh),
+      ],
     );
   }
 
-  getCol() {
+/* getCol() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -424,5 +323,5 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
         )
       ],
     );
-  }
+  }*/
 }

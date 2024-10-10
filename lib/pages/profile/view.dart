@@ -32,6 +32,9 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color? color=mainController
+        .authUser.value?.is_verified==true ? mainController
+        .authUser.value?.id_color!.toColor():DarkColor;
     return Scaffold(
       backgroundColor: WhiteColor,
 
@@ -77,8 +80,7 @@ class ProfilePage extends StatelessWidget {
                             shape: BoxShape.circle, color: WhiteColor),
                         child: Icon(
                           FontAwesomeIcons.shareNodes,
-                          color: "${mainController.authUser.value?.id_color}"
-                              .toColor(),
+                          color: color,
                           size: 0.05.sw,
                         ),
                       ),
@@ -99,8 +101,8 @@ class ProfilePage extends StatelessWidget {
                   shape: BoxShape.circle,
                   image: DecorationImage(
                       image: CachedNetworkImageProvider(
-                          "${mainController.authUser.value?.logo}"),
-                      fit: BoxFit.contain)),
+                          "${mainController.authUser.value?.image}"),
+                      fit: BoxFit.fitHeight)),
             ),
           ),
           Positioned(
@@ -109,12 +111,15 @@ class ProfilePage extends StatelessWidget {
             child: Container(
               width: 1.sw,
               height: 0.35.sh,
+
               padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
               child: Column(
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      if(mainController.authUser.value
+                          ?.is_verified==true)
                       Container(
                         width: 0.1.sw,
                         alignment: Alignment.centerRight,
@@ -141,9 +146,7 @@ class ProfilePage extends StatelessWidget {
                                     child: Icon(
                                       FontAwesomeIcons.instagram,
                                       color:
-                                      "${mainController.authUser.value
-                                          ?.id_color}"
-                                          .toColor(),
+                                      color,
                                       size: 0.06.sw,
                                     ),
                                   ),
@@ -165,9 +168,7 @@ class ProfilePage extends StatelessWidget {
                                       child: Icon(
                                         FontAwesomeIcons.facebook,
                                         color:
-                                        "${mainController.authUser.value
-                                            ?.id_color}"
-                                            .toColor(),
+                                        color,
                                         size: 0.06.sw,
                                       )),
                                 ),
@@ -190,9 +191,7 @@ class ProfilePage extends StatelessWidget {
                                     child: Icon(
                                       FontAwesomeIcons.linkedin,
                                       color:
-                                      "${mainController.authUser.value
-                                          ?.id_color}"
-                                          .toColor(),
+                                      color,
                                       size: 0.06.sw,
                                     ),
                                   ),
@@ -216,9 +215,7 @@ class ProfilePage extends StatelessWidget {
                                     child: Icon(
                                       FontAwesomeIcons.tiktok,
                                       color:
-                                      "${mainController.authUser.value
-                                          ?.id_color}"
-                                          .toColor(),
+                                      color,
                                       size: 0.06.sw,
                                     ),
                                   ),
@@ -239,9 +236,7 @@ class ProfilePage extends StatelessWidget {
                                     child: Icon(
                                       FontAwesomeIcons.whatsapp,
                                       color:
-                                      "${mainController.authUser.value
-                                          ?.id_color}"
-                                          .toColor(),
+                                      color,
                                       size: 0.06.sw,
                                     ),
                                   ),
@@ -265,9 +260,7 @@ class ProfilePage extends StatelessWidget {
                                     child: Icon(
                                       FontAwesomeIcons.xTwitter,
                                       color:
-                                      "${mainController.authUser.value
-                                          ?.id_color}"
-                                          .toColor(),
+                                      color,
                                       size: 0.06.sw,
                                     ),
                                   ),
@@ -278,7 +271,7 @@ class ProfilePage extends StatelessWidget {
                       ),
                       Obx(() {
                         return Transform.translate(offset: Offset(0, 0.01.sh),child:  Container(
-                          width: 0.85.sw,
+                          width: 0.86.sw,
                           padding: EdgeInsets.only(top: 0.02.sh),
                           alignment: Alignment.center,
                           child: Transform.translate(
@@ -290,8 +283,11 @@ class ProfilePage extends StatelessWidget {
                                 Container(
                                   padding: EdgeInsets.only(left: 0.03.sw),
                                   width: 0.9.sw,
+
                                   alignment: Alignment.center,
                                   child: SellerNameComponent(
+                                    alignment: MainAxisAlignment.center,
+                                    color: color,
                                     white: false,
                                     isVerified: mainController
                                         .authUser.value?.is_verified ??
@@ -338,32 +334,15 @@ class ProfilePage extends StatelessWidget {
                                   ),
                                 Obx(() {
                                   return Container(
+
+                                    width: 0.75.sw,
                                     padding:
                                     EdgeInsets.symmetric(vertical: 0.02.sh),
                                     child: Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                      MainAxisAlignment.spaceAround,
                                       children: [
-                                        Column(
-                                          children: [
-                                            Text(
-                                              "${mainController.authUser.value?.total_views}"
-                                                  .toFormatNumberK(),
-                                              style: H0RegularDark
-                                                  .copyWith(
-                                                  fontWeight: FontWeight.w900,
-                                                  color:
-                                                  "${mainController.authUser
-                                                      .value?.id_color}"
-                                                      .toColor()),
-                                              textDirection: TextDirection.ltr,
-                                            ),
-                                            Text(
-                                              "مشاهدات",
-                                              style: H4RegularDark,
-                                            )
-                                          ],
-                                        ),
+
                                         InkWell(
                                           child: Column(
                                             children: [
@@ -375,9 +354,7 @@ class ProfilePage extends StatelessWidget {
                                                       .copyWith(
                                                       fontWeight: FontWeight.w900,
                                                       color:
-                                                      "${mainController.authUser
-                                                          .value?.id_color}"
-                                                          .toColor()),
+                                                      color),
                                                   textDirection: TextDirection
                                                       .ltr,
                                                 );
@@ -388,6 +365,24 @@ class ProfilePage extends StatelessWidget {
                                               )
                                             ],
                                           ),
+                                        ),
+                                        Column(
+                                          children: [
+                                            Text(
+                                              "${mainController.authUser.value?.total_views}"
+                                                  .toFormatNumberK(),
+                                              style: H0RegularDark
+                                                  .copyWith(
+                                                  fontWeight: FontWeight.w900,
+                                                  color:
+                                                  color),
+                                              textDirection: TextDirection.ltr,
+                                            ),
+                                            Text(
+                                              "مشاهدات",
+                                              style: H4RegularDark,
+                                            )
+                                          ],
                                         ),
                                         InkWell(
                                           onTap: () {
@@ -401,11 +396,9 @@ class ProfilePage extends StatelessWidget {
                                                       .toFormatNumberK(),
                                                   style: H0RegularDark
                                                       .copyWith(
-                                                    fontWeight: FontWeight.w900,
+                                                      fontWeight: FontWeight.w900,
                                                       color:
-                                                      "${mainController.authUser
-                                                          .value?.id_color}"
-                                                          .toColor()),
+                                                      color),
                                                   textDirection: TextDirection
                                                       .ltr,
                                                 );
@@ -422,7 +415,7 @@ class ProfilePage extends StatelessWidget {
                                   );
                                 }),
 
-                                10.verticalSpace,
+                                30.verticalSpace,
 
                               ],
                             ),
@@ -434,9 +427,6 @@ class ProfilePage extends StatelessWidget {
 
                   Transform.translate(offset: Offset(0, 0),child: Container(
                     child: Obx(() {
-                      mainController.logger.e(
-                          mainController.authUser.value
-                              ?.is_verified);
                       return Row(
                         mainAxisAlignment:
                         MainAxisAlignment.spaceEvenly,
@@ -445,7 +435,9 @@ class ProfilePage extends StatelessWidget {
                               .authUser.value?.is_verified !=
                               true)
                             InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  openUrl(url: "https://wa.me/${mainController.settings.value.social?.phone}");
+                                },
                                 child: Container(
                                   width:0.35.sw,
                                   padding: EdgeInsets.symmetric(
@@ -455,9 +447,8 @@ class ProfilePage extends StatelessWidget {
                                       borderRadius:
                                       BorderRadius.circular(15.r),
                                       color:
-                                      "${mainController.authUser
-                                          .value?.id_color}"
-                                          .toColor()),
+                                      mainController
+                                          .authUser.value?.is_verified==true ? color:Colors.blue),
                                   child: Row(
                                     mainAxisAlignment:
                                     MainAxisAlignment.center,
@@ -497,9 +488,8 @@ class ProfilePage extends StatelessWidget {
                                   borderRadius:
                                   BorderRadius.circular(15.r),
                                   color:
-                                  "${mainController.authUser.value
-                                      ?.id_color}"
-                                      .toColor()),
+                                  mainController
+                                      .authUser.value?.is_verified==true ? color:Colors.blue),
                               child: Row(
                                 mainAxisAlignment:
                                 MainAxisAlignment.center,
@@ -540,9 +530,8 @@ class ProfilePage extends StatelessWidget {
                                     borderRadius:
                                     BorderRadius.circular(15.r),
                                     color:
-                                    "${mainController.authUser
-                                        .value?.id_color}"
-                                        .toColor()),
+                                    mainController
+                                        .authUser.value?.is_verified==true ? color:Colors.blue),
                                 child: Row(
                                   mainAxisAlignment:
                                   MainAxisAlignment.center,
@@ -596,8 +585,8 @@ class ProfilePage extends StatelessWidget {
                                     borderRadius:
                                     BorderRadius.circular(15.r),
                                     color: logic.pageSelected.value == 0 ?
-                                    "${mainController.authUser.value?.id_color}"
-                                        .toColor() : GrayLightColor),
+                                    (mainController.authUser.value?.is_verified==true ?"${mainController.authUser.value?.id_color}"
+                                        .toColor():RedColor ): GrayLightColor),
                                 child: Text('المنتجات',
                                   style: logic.pageSelected.value == 0
                                       ? H4WhiteTextStyle
@@ -621,8 +610,8 @@ class ProfilePage extends StatelessWidget {
                                     borderRadius:
                                     BorderRadius.circular(15.r),
                                     color: logic.pageSelected.value == 1 ?
-                                    "${mainController.authUser.value?.id_color}"
-                                        .toColor() : GrayLightColor),
+                                    (mainController.authUser.value?.is_verified==true ?"${mainController.authUser.value?.id_color}"
+                                        .toColor():RedColor ): GrayLightColor),
                                 child: Text('الإعلانات الممولة',
                                   style: logic.pageSelected.value == 1
                                       ? H4WhiteTextStyle
@@ -646,8 +635,8 @@ class ProfilePage extends StatelessWidget {
                                     borderRadius:
                                     BorderRadius.circular(15.r),
                                     color: logic.pageSelected.value == 2 ?
-                                    "${mainController.authUser.value?.id_color}"
-                                        .toColor() : GrayLightColor),
+                                    (mainController.authUser.value?.is_verified==true ?"${mainController.authUser.value?.id_color}"
+                                        .toColor():RedColor ): GrayLightColor),
                                 child: Text('الإحصائيات',
                                   style: logic.pageSelected.value == 2
                                       ? H4WhiteTextStyle
