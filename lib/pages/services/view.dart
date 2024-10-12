@@ -34,7 +34,7 @@ class ServicesPage extends StatelessWidget {
         },
         child: Column(
           children: [
-            HomeAppBarComponent(),
+            HomeAppBarComponent(selected: 'service',),
             Expanded(
                 child: Container(
               child: ListView(
@@ -44,24 +44,7 @@ class ServicesPage extends StatelessWidget {
                 ),
                 controller: scrollController,
                 children: [
-                  /*Container(
-                    height: 0.06.sh,
-                    padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
-                    child: FormBuilderTextField(
-                      name: 'section',
-                      onChanged: (value) => logic.search.value = value,
-                      decoration: InputDecoration(
-                        labelText: 'بحث',
-                        labelStyle: H3GrayTextStyle,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(30.r),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  15.verticalSpace,*/
+
                   Obx(() {
                     if (logic.sliders.length > 0) {
                       return SliderComponent(items: logic.sliders);
@@ -473,13 +456,14 @@ class ServicesPage extends StatelessWidget {
                   Obx(() {
                     return Column(
                       children: [
+
                         ...List.generate(
-                          logic.filterCategory.length,
+                          logic.categories.length,
                           (index) => Column(children: [
                             InkWell(
                               onTap: () {
                                 Get.toNamed(SERVICE_PAGE,
-                                    arguments: logic.filterCategory[index]);
+                                    arguments: logic.categories[index]);
                               },
                               child: Container(
 
@@ -508,7 +492,7 @@ class ServicesPage extends StatelessWidget {
                                             color: GrayWhiteColor,
                                           ),
                                           child: Text(
-                                            "${logic.filterCategory[index].name?[1]}",
+                                            "${logic.categories[index].name?.substring(0,1)}",
                                             style: H3BlackTextStyle.copyWith(color: Colors.black),
                                           ),
                                         ),
@@ -516,14 +500,14 @@ class ServicesPage extends StatelessWidget {
                                         Container(
                                           alignment: Alignment.center,
                                           child: Text(
-                                            "${logic.filterCategory[index].name}",
+                                            "${logic.categories[index].name}",
                                             style: H2RegularDark,
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                         )
                                       ],
                                     ),
-                                    Badge.count(count: int.tryParse('${logic.filterCategory[index].products2Count}')??0)
+                                    Badge.count(count: int.tryParse('${logic.categories[index].products2Count}')??0)
 
                                   ],
                                 ),

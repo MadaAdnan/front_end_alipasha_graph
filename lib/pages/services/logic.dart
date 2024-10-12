@@ -14,7 +14,7 @@ class ServicesLogic extends GetxController {
   MainController mainController = Get.find<MainController>();
   RxBool loading = RxBool(false);
   RxList<CategoryModel> categories = RxList<CategoryModel>([]);
-  RxList<CategoryModel> filterCategory = RxList<CategoryModel>([]);
+
   RxnString search = RxnString('');
   Rxn<ExchangeGold> gold = Rxn<ExchangeGold>();
   Rxn<ExchangeCur> dollar = Rxn<ExchangeCur>();
@@ -35,25 +35,9 @@ class ServicesLogic extends GetxController {
         'Accept': 'application/json',
       },
     ));
-    ever(search, (value) {
-      filter();
-    });
-
-    ever(categories, (value) {
-      search.value = null;
-      filter();
-    });
   }
 
-  filter() {
-    if (search.value != null) {
-      filterCategory.value = categories
-          .where((el) => el.name!.contains(search.value ?? ''))
-          .toList();
-    } else {
-      filterCategory.value = categories;
-    }
-  }
+
 
   @override
   void onReady() {
@@ -117,7 +101,7 @@ class ServicesLogic extends GetxController {
     ''';
     try {
       dio.Response? res = await mainController.fetchData();
-      mainController.logger.e(res?.data);
+mainController.logger.d(res?.data);
       if (res?.data?['data']?['mainCategories'] != null) {
         for (var item in res?.data?['data']?['mainCategories']) {
           if (item['children'] != null) {

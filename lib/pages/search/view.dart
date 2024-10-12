@@ -1,4 +1,6 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
+import 'package:ali_pasha_graph/components/product_components/minimize_details_product_component.dart';
+import 'package:ali_pasha_graph/components/progress_loading.dart';
 import 'package:ali_pasha_graph/helpers/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -62,11 +64,45 @@ class SearchPage extends StatelessWidget {
                     children: [
 
                       ...List.generate(logic.products.length, (index) {
-                        return _buildCard(post: logic.products[index]);
+                        switch(logic.products[index].type) {
+                          case "product":
+                            return MinimizeDetailsProductComponent(
+                              TitleColor: DarkColor,
+                                onClick: (){
+                                Get.toNamed(PRODUCT_PAGE,arguments:logic.products[index].id );
+                                },
+                                post: logic.products[index]);
+                          case 'job':
+                          case 'search_job':
+                          case 'tender':
+                            return MinimizeDetailsJobComponent(
+                                TitleColor: DarkColor,
+                                onClick: (){
+                                  Get.toNamed(PRODUCT_PAGE,arguments:logic.products[index].id );
+                                },
+                                post: logic.products[index]);
+                          case 'service':
+                           return MinimizeDetailsServiceComponent( TitleColor: DarkColor,
+                                onClick: (){
+                                  Get.toNamed(PRODUCT_PAGE,arguments:logic.products[index].id );
+                                },
+                                post: logic.products[index]);
+                          default:
+                          return  _buildCard(post: logic.products[index]);
+                        }
                       }),
-                      if (logic.loading.value)
-                        Center(child: CircularProgressIndicator()),
-                      if (!logic.hasMorePage.value)
+                      if (logic.loading.value&& logic.page.value==1)
+                        Container( width: 0.33.sw,child: ProgressLoading()),
+                      if(logic.loading.value && logic.page.value>1)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Flexible(child: Container(height: 0.06.sh,child: ProgressLoading())),
+                            Flexible(child: Text('جاري جلب المزيد',style: H4GrayTextStyle,))
+                          ],
+                        ),
+                      if (!logic.hasMorePage.value&& !logic.loading.value)
                         Center(
                             child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),

@@ -61,6 +61,7 @@ class ProductModel {
   List<DataImageModel>? listOfDocs;
   List<AttributeProducts>? attributes;
   String? created_at;
+  String? updated_at;
     double? vote_avg;
   ProductModel({
     this.type,
@@ -107,6 +108,7 @@ class ProductModel {
     this.attributes,
     this.is_vote,
     this.vote_avg,
+    this.updated_at,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> data) {
@@ -174,6 +176,7 @@ class ProductModel {
       address: "${data['address'] ?? ''}",
       code: "${data['code'] ?? ''}",
       created_at: "${data['created_at'] ?? ''}",
+      updated_at: "${data['updated_at'] ?? ''}",
       docs: List.from(data['docs'] ?? []),
       email: "${data['email'] ?? ''}",
       end_date: "${data['end_date'] ?? ''}",

@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../components/home_app_bar/custom_sliver_app_bar.dart';
+import '../../components/progress_loading.dart';
 import '../../helpers/colors.dart';
 import '../../helpers/components.dart';
 import '../../helpers/style.dart';
@@ -45,25 +46,43 @@ class JobsPage extends StatelessWidget {
           },
           child: Column(
             children: [
-              HomeAppBarComponent(),
+              HomeAppBarComponent(
+                selected: 'job',
+              ),
               Expanded(child: Container(
                 child: Obx(() {
                   return ListView(
                     children: [
-                      ...List.generate(
-                          logic.jobs.length,
-                          (index) {
-
-                          return MinimizeDetailsJobComponent(post: logic.jobs[index],TitleColor: DarkColor,onClick: (){
-                            Get.toNamed(PRODUCT_PAGE,arguments: logic.jobs[index].id);
-                          },);
-
-
-
+                      ...List.generate(logic.jobs.length, (index) {
+                        return MinimizeDetailsJobComponent(
+                          post: logic.jobs[index],
+                          TitleColor: DarkColor,
+                          onClick: () {
+                            Get.toNamed(PRODUCT_PAGE,
+                                arguments: logic.jobs[index].id);
+                          },
+                        );
                       }),
-                  if (logic.mainController.loading.value)
-                   ...List.generate(5, (index)=>MinimizeDetailsProductComponentLoading()),
-
+                      if (logic.mainController.loading.value && logic.page.value==1)
+                        ...List.generate(
+                            5,
+                            (index) =>
+                                MinimizeDetailsProductComponentLoading()),
+                      if (logic.loading.value && logic.page.value>1)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Flexible(
+                                child: Container(
+                                    height: 0.06.sh, child: ProgressLoading())),
+                            Flexible(
+                                child: Text(
+                              'جاري جلب المزيد',
+                              style: H4GrayTextStyle,
+                            ))
+                          ],
+                        ),
                       if (!logic.hasMorePage.value && !logic.loading.value)
                         Center(
                             child: Padding(

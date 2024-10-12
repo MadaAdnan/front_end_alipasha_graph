@@ -30,6 +30,10 @@ class Select2Component extends StatelessWidget {
         onChanged: (List<SingleItemCategoryModel> models) {
           onChanged(models.map((el) => el.value).toList());
         },
+        searchEmptyInfoOverlaySettings: SearchEmptyInfoOverlaySettings(text: label,textStyle: H3RegularDark),
+        pillboxTitleSettings: PillboxTitleSettings(title: label,titleStyleDefault: H3RegularDark),
+        searchEmptyInfoModalSettings: SearchEmptyInfoModalSettings(text: label,textStyle: H3RegularDark),
+
         selectSingleSettings: SelectSingleSettings(textStyle: H3GrayTextStyle),
         isSearchable: isSearch,
         selectDataController: selectDataController,
@@ -37,7 +41,7 @@ class Select2Component extends StatelessWidget {
             DropdownOverlaySettings(sizeAnimationCurve: Curves.bounceIn,),
         dropdownModalSettings:
             DropdownModalSettings(barrierColor: GrayDarkColor,backgroundColor: WhiteColor,),
-        globalSettings: GlobalSettings(mainColor: GrayDarkColor,activeColor:DarkColor,chipColor: RedColor,hoverListItemColor: WhiteColor,inActiveColor: DarkColor),
+        globalSettings: GlobalSettings(mainColor: GrayDarkColor,activeColor:DarkColor,chipColor: RedColor,hoverListItemColor: WhiteColor,inActiveColor: DarkColor,),
         //pillboxTitleSettings: PillboxTitleSettings(title: 'المدينة',titleStyleDefault: HintTextStyle),
         pillboxContentMultiSettings:
             PillboxContentMultiSettings(pillboxLayout: PillboxLayout.wrap),

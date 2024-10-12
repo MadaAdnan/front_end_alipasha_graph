@@ -64,7 +64,7 @@ class PostCard extends StatelessWidget {
                           CircleAvatar(
                             backgroundColor: GrayLightColor,
                             backgroundImage:
-                            NetworkImage("${post.user?.logo}"),
+                            NetworkImage("${post.user?.image}"),
                             minRadius: 0.018.sh,
                             maxRadius: 0.023.sh,
                           ),
@@ -199,12 +199,6 @@ class PostCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
                     style: H3GrayTextStyle,
-                    /* trimCollapsedText: "عرض المزيد",
-                    trimExpandedText: "عرض أقل",
-
-
-                    trimLines: 1,
-                    trimMode: TrimMode.Line,*/
                   ),
                 )
               ],

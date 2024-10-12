@@ -8,6 +8,7 @@ import 'package:ali_pasha_graph/components/home_app_bar/view.dart';
 import 'package:ali_pasha_graph/components/product_components/job_card.dart';
 import 'package:ali_pasha_graph/components/product_components/post_card.dart';
 import 'package:ali_pasha_graph/components/product_components/post_card_loading.dart';
+import 'package:ali_pasha_graph/components/progress_loading.dart';
 import 'package:ali_pasha_graph/components/sections_components/section_home_card.dart';
 import 'package:ali_pasha_graph/components/seller_component/seller_home_page_card.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
@@ -226,7 +227,14 @@ class HomePage extends StatelessWidget {
                       }
                     }
                     if (logic.loading.value) {
-                      return Center(child: CircularProgressIndicator());
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Flexible(child: Container(height: 0.06.sh,child: ProgressLoading())),
+                          Flexible(child: Text('جاري جلب المزيد',style: H4GrayTextStyle,))
+                        ],
+                      );
                     }
                     return Container();
                   },),

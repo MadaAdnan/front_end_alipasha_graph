@@ -52,7 +52,7 @@ class SearchLogic extends GetxController {
         ${filterModel?.startPrice !=null ? "min_price: ${filterModel!.startPrice!}" : ""}
           ${filterModel?.endPrice !=null ? "max_price: ${filterModel!.endPrice!}" : ""}
       
-        first: 15
+        first: 25
         page: ${page.value}
         search: "${filterModel?.search ?? ''}"
     ) {
@@ -61,6 +61,8 @@ class SearchLogic extends GetxController {
             user {
                 seller_name
                 logo
+                image
+                  is_verified
             }
             city {
                 name
@@ -75,6 +77,7 @@ class SearchLogic extends GetxController {
             expert
             price
             discount
+            is_discount
             type
             views_count
             turkey_price {

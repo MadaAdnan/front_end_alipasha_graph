@@ -72,6 +72,8 @@ class ProductLogic extends GetxController {
             id
                 seller_name
                 logo
+                image
+                  is_verified
             }
             city {
                 name

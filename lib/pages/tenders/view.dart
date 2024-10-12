@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 
 import '../../components/home_app_bar/custom_sliver_app_bar.dart';
 import '../../components/product_components/job_card.dart';
+import '../../components/progress_loading.dart';
 import '../../helpers/colors.dart';
 import '../../helpers/components.dart';
 import '../../helpers/style.dart';
@@ -45,7 +46,7 @@ class TendersPage extends StatelessWidget {
           },
           child: Column(
             children: [
-              HomeAppBarComponent(),
+              HomeAppBarComponent(selected: 'tender',),
               Expanded(
                   child: Container(
                 child: Obx(() => ListView(
@@ -65,7 +66,16 @@ class TendersPage extends StatelessWidget {
 
                           },
                         ),
-                        if(logic.loading.value) ...List.generate(6 ,(index) => MinimizeDetailsProductComponentLoading(),),
+                        if(logic.loading.value && logic.page.value==1) ...List.generate(6 ,(index) => MinimizeDetailsProductComponentLoading(),),
+                        if(logic.loading.value && logic.page.value>1)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Flexible(child: Container(height: 0.06.sh,child: ProgressLoading())),
+                              Flexible(child: Text('جاري جلب المزيد',style: H4GrayTextStyle,))
+                            ],
+                          ),
                         if (!logic.hasMorePage.value && !logic.loading.value)
                           Center(
                               child: Padding(

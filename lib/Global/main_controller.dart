@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:ali_pasha_graph/helpers/cart_helper.dart';
 import 'package:ali_pasha_graph/helpers/components.dart';
+import 'package:ali_pasha_graph/helpers/google_auth.dart';
 import 'package:ali_pasha_graph/models/advice_model.dart';
 import 'package:ali_pasha_graph/models/cart_model.dart';
 import 'package:ali_pasha_graph/models/category_model.dart';
@@ -171,7 +172,7 @@ class MainController extends GetxController {
     Get.offAndToNamed(HOME_PAGE);
   }
 
-  loginByGoogle() {}
+
 
   createCommunity({required int sellerId,String? message}) async {
     if (authUser.value == null) return;

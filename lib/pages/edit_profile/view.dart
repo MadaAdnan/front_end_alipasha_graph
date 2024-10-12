@@ -32,7 +32,7 @@ class EditProfilePage extends StatelessWidget {
         children: [
           Container(
             width: 1.sw,
-            height: 0.1.sh,
+            height: 0.06.sh,
             alignment: Alignment.center,
             color: RedColor,
             child: Text(
@@ -201,7 +201,7 @@ class EditProfilePage extends StatelessWidget {
                         fill: WhiteColor,
                         textInputType: TextInputType.datetime,
                       ),
-                    if (logic.user.value?.is_seller == true)
+                    if (logic.user.value?.is_seller == true && logic.user.value?.is_verified == true)
                       Column(
                         children: [
                           InputComponent(
@@ -415,14 +415,14 @@ class EditProfilePage extends StatelessWidget {
                           Column(
                             children: [
                               Text(
-                                "لوغو المتجر",
+                                "صورة الغلاف",
                                 style: H4BlackTextStyle,
                               ),
                               Container(
                                 child: InkWell(
                                   onTap: () {
                                     logic.pickAvatar(
-                                        imagSource: ImageSource.gallery,
+                                        imagSource: ImageSource.gallery,width: 400,height: 200,
                                         onChange: (file, size) {
                                           logic.logo.value = file;
                                           print(

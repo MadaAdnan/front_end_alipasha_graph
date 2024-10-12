@@ -17,18 +17,18 @@ class ShippingLogic extends GetxController {
   TextEditingController addressReceiveController = TextEditingController();
   TextEditingController nameReceiveController = TextEditingController();
   TextEditingController phoneReceiveController = TextEditingController();
-  TextEditingController weightController = TextEditingController(text: "1");
-  TextEditingController heightController = TextEditingController(text: "1");
-  TextEditingController widthController = TextEditingController(text: "1");
-  TextEditingController lengthController = TextEditingController(text: "1");
+  TextEditingController weightController = TextEditingController();
+  TextEditingController heightController = TextEditingController();
+  TextEditingController widthController = TextEditingController();
+  TextEditingController lengthController = TextEditingController();
   SelectDataController fromController = SelectDataController(data: []);
   SelectDataController toController = SelectDataController(data: []);
 
   ///
-  RxnDouble weight = RxnDouble(1);
-  RxnDouble height = RxnDouble(1);
-  RxnDouble width = RxnDouble(1);
-  RxnDouble length = RxnDouble(1);
+  RxnDouble weight = RxnDouble(null);
+  RxnDouble height = RxnDouble(null);
+  RxnDouble width = RxnDouble(null);
+  RxnDouble length = RxnDouble(null);
   RxnInt from = RxnInt(null);
   RxnInt to = RxnInt(null);
 
@@ -43,28 +43,6 @@ class ShippingLogic extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-
-    ever(from, (value) {
-      calcPrice();
-    });
-    ever(to, (value) {
-      calcPrice();
-    });
-    ever(weight, (value) {
-      calcPrice();
-    });
-
-    ever(height, (value) {
-      calcPrice();
-    });
-
-    ever(width, (value) {
-      calcPrice();
-    });
-
-    ever(length, (value) {
-      calcPrice();
-    });
   }
 
   @override

@@ -13,6 +13,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../components/progress_loading.dart';
+import '../../../helpers/style.dart';
 
 class TabProduct extends StatelessWidget {
   TabProduct({super.key});
@@ -25,7 +26,7 @@ class TabProduct extends StatelessWidget {
     return NotificationListener<ScrollNotification>(
       onNotification: (ScrollNotification scrollInfo) {
         if (scrollInfo.metrics.pixels >=
-            scrollInfo.metrics.maxScrollExtent * 0.80 &&
+                scrollInfo.metrics.maxScrollExtent * 0.80 &&
             !mainController.loading.value &&
             logic.hasMorePage.value) {
           logic.nextPage();
@@ -42,7 +43,7 @@ class TabProduct extends StatelessWidget {
       },
       child: Column(
         children: [
-        /*  Container(
+          /*  Container(
             color: WhiteColor,
             padding: EdgeInsets.symmetric(
                 vertical: 0.004.sh, horizontal: 0.02.sw),
@@ -59,44 +60,66 @@ class TabProduct extends StatelessWidget {
           ),*/
           Obx(() {
             if ((logic.loading.value && logic.page.value == 1)) {
-               return Expanded(child:ListView(
-                 children: [
-                   ...List.generate(4, (i)=>MinimizeDetailsProductComponentLoading(),)
-                 ],
-               ),);
+              return Expanded(
+                child: ListView(
+                  children: [
+                    ...List.generate(
+                      4,
+                      (i) => MinimizeDetailsProductComponentLoading(),
+                    )
+                  ],
+                ),
+              );
             }
             return Expanded(
               child: ListView.builder(
-                itemBuilder: (context, index) =>
-                    MiniPostCard(
-                      editAction: () {
-                        print(logic.products[index].type);
-                        switch(logic.products[index].type){
-                          case "service":
-                            Get.offAndToNamed(Edit_SERVICE_PAGE,arguments:logic.products[index].id );
-                            break;
-                          case "tender":
-                            Get.offAndToNamed(Edit_TENDER_PAGE,arguments:logic.products[index].id );
-                            break;
-                          case "job":
-                          case "search_job":
-                            Get.offAndToNamed(Edit_JOB_PAGE,arguments:logic.products[index].id );
-                            break;
-                          case "product":
-                            Get.offAndToNamed(Edit_PRODUCT_PAGE,arguments:logic.products[index].id );
-                            break;
-                        }
-                      },
-                      post: logic.products[index],
-                    ),
+                itemBuilder: (context, index) => MiniPostCard(
+                  editAction: () {
+                    print(logic.products[index].type);
+                    switch (logic.products[index].type) {
+                      case "service":
+                        Get.offAndToNamed(Edit_SERVICE_PAGE,
+                            arguments: logic.products[index].id);
+                        break;
+                      case "tender":
+                        Get.offAndToNamed(Edit_TENDER_PAGE,
+                            arguments: logic.products[index].id);
+                        break;
+                      case "job":
+                      case "search_job":
+                        Get.offAndToNamed(Edit_JOB_PAGE,
+                            arguments: logic.products[index].id);
+                        break;
+                      case "product":
+                        Get.offAndToNamed(Edit_PRODUCT_PAGE,
+                            arguments: logic.products[index].id);
+                        break;
+                    }
+                  },
+                  post: logic.products[index],
+                ),
                 itemCount: logic.products.length,
               ),
             );
           }),
           Obx(() {
             return Visibility(
-              child: const Center(child: CircularProgressIndicator(),),
-              visible: mainController.loading.value && logic.page.value > 1,);
+              visible: mainController.loading.value && logic.page.value > 1,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Flexible(
+                      child:
+                          Container(height: 0.06.sh, child: ProgressLoading())),
+                  Flexible(
+                      child: Text(
+                    'جاري جلب المزيد',
+                    style: H4GrayTextStyle,
+                  ))
+                ],
+              ),
+            );
           })
         ],
       ),

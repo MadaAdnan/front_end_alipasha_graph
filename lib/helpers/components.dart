@@ -29,11 +29,11 @@ String? getName() {
 
 String? getLogo() {
   MainController mainController = Get.find<MainController>();
-  if (mainController.authUser.value?.logo != null &&
+ /* if (mainController.authUser.value?.logo != null &&
       mainController.authUser.value?.logo !=
           mainController.authUser.value?.image) {
     return mainController.authUser.value?.logo;
-  }
+  }*/
   return mainController.authUser.value?.image;
 }
 

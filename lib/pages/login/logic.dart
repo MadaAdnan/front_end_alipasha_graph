@@ -8,6 +8,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
 
+import '../../exceptions/custom_exception.dart';
+import '../../helpers/google_auth.dart';
+
 class LoginLogic extends GetxController {
   TextEditingController usernameController =
       TextEditingController(text: /*'admin@admin.com'*/'mh.shamey@gmail.com');
@@ -51,6 +54,52 @@ mutation Login {
       }
     } catch (e) {
       mainController.logger.e("Login Error ${e}");
+    }
+    loading.value = false;
+  }
+
+  Future<void> registerGoogel() async {
+    Map<String,String>? user=await GoogleAuth.signin();
+    if(user==null){
+      return ;
+    }
+    loading.value = true;
+    mainController.query.value = '''
+mutation CreateGoogleUser {
+    createGoogleUser(
+        input: {
+            name: "${user['name']}"
+            email: "${user['email']}"
+            password: "${user['password']}"
+            device_token: "${token??''}"
+            
+        }
+    ) {
+        token
+        user {
+           $AUTH_FIELDS
+        }
+    }
+}
+
+''';
+
+    try {
+      dio.Response? res = await mainController.fetchData();
+
+      mainController.logger.e(res?.data);
+      if (res?.data?['data']?['createGoogleUser']?['token'] != null) {
+        await mainController.setToken(
+            token: res?.data?['data']?['createGoogleUser']?['token'], isWrite: true);
+
+        await mainController.setUserJson(json: res?.data?['data']?['createGoogleUser']?['user']);
+        Get.offAndToNamed(HOME_PAGE);
+      }
+      if (res?.data?['errors']?[0]?['extensions']['validation'] != null) {
+
+      }
+    } on CustomException catch (e) {
+      print(e);
     }
     loading.value = false;
   }

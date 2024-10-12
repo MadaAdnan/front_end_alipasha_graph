@@ -72,7 +72,9 @@ class HomeLogic extends GetxController {
             id
             name
                 seller_name
+                image
                 logo
+                  is_verified
             }
           
             city {

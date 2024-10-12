@@ -14,11 +14,11 @@ import 'logic.dart';
 // 2226 heght all screen
 class HomeAppBarComponent extends StatelessWidget
     implements PreferredSizeWidget {
-  HomeAppBarComponent({Key? key, this.search}) : super(key: key);
+  HomeAppBarComponent({Key? key, this.search,this.selected}) : super(key: key);
 
   MainController mainController = Get.find<MainController>();
   Function()? search;
-
+final String? selected;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -47,7 +47,7 @@ class HomeAppBarComponent extends StatelessWidget
                   Icons.search,
                   color: RedColor,
                 ),
-                onPressed: search ?? () => Get.toNamed(FILTER_PAGE),
+                onPressed: search ?? () => Get.toNamed(FILTER_PAGE,arguments: selected??'product'),
               ),
               Obx(() {
                 return IconButton(

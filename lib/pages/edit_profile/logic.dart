@@ -201,10 +201,13 @@ class EditProfileLogic extends GetxController {
 
   Future<void> pickAvatar(
       {required ImageSource imagSource,
-      required Function(XFile? file, int? fileSize) onChange}) async {
+      required Function(XFile? file, int? fileSize) onChange,
+      int? width,
+      int? height}) async {
     XFile? selected = await ImagePicker().pickImage(source: imagSource);
     if (selected != null) {
-      XFile? response = await cropAvatar(selected);
+      XFile? response =
+          await cropAvatar(selected, width: width, height: height);
       if (response != null) {
         File compressedFile = File(response.path);
         int fileSize = await compressedFile.length();
@@ -213,15 +216,19 @@ class EditProfileLogic extends GetxController {
     }
   }
 
-  Future<XFile?> cropAvatar(XFile file) async {
+  Future<XFile?> cropAvatar(XFile file, {int? width, int? height}) async {
     try {
+      double ratioY=1;
+      if(width!=null && height!=null && width>0){
+        ratioY=height/width;
+      }
       CroppedFile? cropped = await ImageCropper().cropImage(
         compressFormat: ImageCompressFormat.png,
         sourcePath: file.path,
-        maxWidth: 300,
-        maxHeight: 300,
+        maxWidth: width ?? 300,
+        maxHeight: height ?? 300,
         compressQuality: 80,
-        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: ratioY),
         uiSettings: [
           AndroidUiSettings(
             toolbarTitle: 'قص الصورة',

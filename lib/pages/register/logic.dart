@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
+import 'package:ali_pasha_graph/helpers/google_auth.dart';
+import 'package:ali_pasha_graph/helpers/queries.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
 import 'package:ali_pasha_graph/pages/home/view.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
@@ -49,6 +51,55 @@ class RegisterLogic extends GetxController {
     ], isMultiSelect: false);
   }
 
+
+  Future<void> registerGoogel() async {
+   Map<String,String>? user=await GoogleAuth.signin();
+   if(user==null){
+     return ;
+   }
+    loading.value = true;
+    mainController.query.value = '''
+mutation CreateGoogleUser {
+    createGoogleUser(
+        input: {
+            name: "${user['name']}"
+            email: "${user['email']}"
+            password: "${user['password']}"
+            device_token: "${deviceToken}"
+            
+        }
+    ) {
+        token
+        user {
+           $AUTH_FIELDS
+        }
+    }
+}
+
+''';
+
+    try {
+      dio.Response? res = await mainController.fetchData();
+
+      // mainController.logger.e(res?.data);
+      if (res?.data?['data']?['createGoogleUser']?['token'] != null) {
+        await mainController.setToken(
+            token: res?.data?['data']?['createGoogleUser']?['token'], isWrite: true);
+
+        await mainController.setUserJson(json: res?.data?['data']?['createGoogleUser']?['user']);
+        Get.offAndToNamed(HOME_PAGE);
+      }
+      if (res?.data?['errors']?[0]?['extensions']['validation'] != null) {
+
+      }
+    } on CustomException catch (e) {
+      print(e);
+    }
+    loading.value = false;
+  }
+
+
+
   Future<void> register() async {
     loading.value = true;
     mainController.query.value = '''
@@ -66,25 +117,7 @@ mutation CreateUser {
     ) {
         token
         user {
-            name
-            seller_name
-            email
-            level
-            phone
-            address
-            logo
-            image
-            open_time
-            close_time
-            is_delivery
-            is_restaurant
-            affiliate
-            info
-            city {
-                name
-            }
-            total_balance
-            total_point
+           $AUTH_FIELDS
         }
     }
 }
@@ -138,3 +171,24 @@ mutation CreateUser {
     errorCity.value = null;
   }
 }
+/*
+*  name
+            seller_name
+            email
+            level
+            phone
+            address
+            logo
+            image
+            open_time
+            close_time
+            is_delivery
+            is_restaurant
+            affiliate
+            info
+            city {
+                name
+            }
+            total_balance
+            total_point
+* */

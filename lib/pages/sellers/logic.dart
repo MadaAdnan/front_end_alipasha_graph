@@ -1,3 +1,4 @@
+import 'package:ali_pasha_graph/models/city_model.dart';
 import 'package:get/get.dart';
 
 import '../../Global/main_controller.dart';
@@ -10,6 +11,8 @@ class SellersLogic extends GetxController {
   RxBool hasMorePage = RxBool(false);
   RxInt page = RxInt(1);
   RxList<PartnerModel> sellers = RxList<PartnerModel>([]);
+  RxList<CityModel> cities = RxList<CityModel>([]);
+  Rxn<CityModel> selectedCity = Rxn<CityModel>(null);
 
   nextPage() {
     if (hasMorePage.value) {
@@ -23,6 +26,18 @@ class SellersLogic extends GetxController {
     ever(page, (value) {
       getSellers();
     });
+
+    ever(selectedCity, (value) {
+
+      sellers([]);
+      if(page.value!=1){
+        page.value=1;
+      }else{
+        getSellers();
+      }
+
+
+    });
   }
 
   @override
@@ -35,7 +50,7 @@ class SellersLogic extends GetxController {
     loading.value = true;
     mainController.query.value = '''
     query Sellers {
-    sellers(first: 15, page: ${page.value}) {
+    sellers(first: 25, page: ${page.value} ${selectedCity.value!=null ? ',city_id:"${selectedCity.value?.id}"':''}) {
         paginatorInfo {
             hasMorePages
         }
@@ -50,13 +65,21 @@ class SellersLogic extends GetxController {
             image
         }
     }
+    
+    ${page.value==1? '''  citiesHasVendor(type: "seller") {
+        id
+        name
+        image
+        city_id
+        is_delivery
+    } ''':''}
 }
 
      ''';
     try {
       dio.Response? response = await mainController.fetchData();
       mainController.logger
-          .e(response?.data['data']['sellers']?['paginatorInfo']);
+          .e(response?.data['data']['sellers']);
       if (response?.data['data']['sellers']?['paginatorInfo'] != null) {
         hasMorePage.value = response?.data['data']['sellers']?['paginatorInfo']
                 ['hasMorePages'] ??
@@ -66,6 +89,12 @@ class SellersLogic extends GetxController {
 
         for (var item in response?.data['data']['sellers']?['data']) {
           sellers.add(PartnerModel.fromJson(item));
+        }
+      }
+      if (response?.data['data']['citiesHasVendor'] != null && cities.length==0) {
+
+        for (var item in response?.data['data']['citiesHasVendor'] ) {
+          cities.add(CityModel.fromJson(item));
         }
       }
     } catch (e) {

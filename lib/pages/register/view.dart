@@ -311,7 +311,7 @@ class RegisterPage extends StatelessWidget {
                           25.verticalSpace,
                           InkWell(
                             onTap: () async {
-                              logic.mainController.loginByGoogle();
+                              logic.registerGoogel();
                             },
                             child: Container(
                               width: 1.sw,

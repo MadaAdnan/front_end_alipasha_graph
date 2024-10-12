@@ -76,6 +76,7 @@ RxnInt categoryId=RxnInt(null);
             id
                 seller_name
                 logo
+                image
                 is_verified
             }
           

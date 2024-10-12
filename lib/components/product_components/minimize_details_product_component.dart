@@ -366,7 +366,7 @@ class MinimizeDetailsJobComponent extends StatelessWidget {
                           topRight: Radius.circular(30.r),
                           bottomRight: Radius.circular(30.r)),
                       image: DecorationImage(
-                          image: CachedNetworkImageProvider("${post.user?.logo}"))),
+                          image: CachedNetworkImageProvider("${post.user?.image}"),fit: BoxFit.fitHeight)),
                 ),
                 Expanded(
                     child: Container(
@@ -385,7 +385,7 @@ class MinimizeDetailsJobComponent extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                            Flexible(child: RichText(
+                            Flexible(flex: 3,child: RichText(
                                 overflow: TextOverflow.ellipsis,
                                 text: TextSpan(children: [
                                   TextSpan(
@@ -399,7 +399,7 @@ class MinimizeDetailsJobComponent extends StatelessWidget {
                                     TextSpan(
                                         text: ' - ${post.sub1?.name}',
                                         style: H5GrayTextStyle),
-                                ])),flex: 3,),Flexible(child: Text("(${post.type?.toCategoryTypeLabel()})", style: H5RegularDark.copyWith(color: OrangeColor),overflow: TextOverflow.ellipsis,))],),
+                                ])),),Flexible(child: Text("(${post.type?.toCategoryTypeLabel()})", style: H5RegularDark.copyWith(color: OrangeColor),overflow: TextOverflow.ellipsis,))],),
                           Text(
                             "${post.expert!.length < 5 && post.name!.length > 5 ? post.name : post.expert}",
                             style: H4RegularDark,
@@ -463,6 +463,171 @@ class MinimizeDetailsJobComponent extends StatelessWidget {
                                     ),
                                     Text(
                                       "${post.created_at??''}",
+                                      style: H5BlackTextStyle,
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ))
+              ],
+            ),
+          ),
+        ),
+        SizedBox(height: 0.01.sh),
+      ],
+    );
+  }
+
+
+}
+
+class MinimizeDetailsServiceComponent extends StatelessWidget {
+  MinimizeDetailsServiceComponent({
+    super.key,
+    required this.post,
+    this.onClick,
+    this.cartLoading = false,
+    this.TitleColor,
+  });
+
+  final Color? TitleColor;
+  final ProductModel post;
+  final Function()? onClick;
+  final bool? cartLoading;
+  MainController mainController = Get.find<MainController>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        InkWell(
+          onTap: onClick,
+          child: Container(
+            width: 1.sw,
+            decoration: BoxDecoration(
+              color: GrayLightColor,
+              borderRadius: BorderRadius.circular(30.r),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  width: 0.3.sw,
+                  height: 0.3.sw,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(30.r),
+                          bottomRight: Radius.circular(30.r)),
+                      image: DecorationImage(
+                          image: CachedNetworkImageProvider("${post.image}"),fit: BoxFit.fitHeight)),
+                ),
+                Expanded(
+                    child: Container(
+                      height: 0.3.sw,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 0.01.sw, vertical: 0.002.sh),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if(post.user!=null)
+                          SellerNameComponent(
+                              color: TitleColor,
+                              sellerName: "${post.user?.seller_name ?? ''}",
+                              isVerified: post.user?.is_verified == true),
+                          if(post.user==null)
+                            Container(
+                              padding:EdgeInsets.only(bottom: 0.004.sh),
+                              child: Text("${post.name}",style: H1BlackTextStyle,overflow: TextOverflow.ellipsis,),
+                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Flexible(flex: 3,child: RichText(
+                                  overflow: TextOverflow.ellipsis,
+                                  text: TextSpan(children: [
+                                    TextSpan(
+                                        text: '${post.city?.name ?? ''}',
+                                        style: H5GrayTextStyle),
+                                    if (post.category?.name != null)
+                                      TextSpan(
+                                          text: ' - ${post.category?.name}',
+                                          style: H5GrayTextStyle),
+                                    if (post.sub1?.name != null)
+                                      TextSpan(
+                                          text: ' - ${post.sub1?.name}',
+                                          style: H5GrayTextStyle),
+                                  ])),),
+                              Flexible(child: Text("(${post.type?.toCategoryTypeLabel()})", style: H5RegularDark.copyWith(color: OrangeColor),overflow: TextOverflow.ellipsis,))],),
+                          Text(
+                            "${post.expert!.length < 5 && post.name!.length > 5 ? post.name : post.expert}",
+                            style: H4RegularDark,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          SizedBox(
+                            height: 0.01.sh,
+                          ),
+                          Expanded(
+                            child: RichText(
+                              textDirection: TextDirection.rtl,
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: '',
+                                    style: post.is_discount == true
+                                        ? H4GrayTextStyle.copyWith(
+                                        decoration: TextDecoration.lineThrough)
+                                        : H4RedTextStyle,
+                                  ),
+                                  if (post.is_discount == true)
+                                    TextSpan(
+                                        text: ' ${post.discount} \$ ',
+                                        style: H4RedTextStyle),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Container(
+                            height: 0.06.sw,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                // Icon Eye
+                                Row(
+                                  children: [
+                                    Icon(
+                                      FontAwesomeIcons.eye,
+                                      color: DarkColor,
+                                      size: 0.04.sw,
+                                    ),
+                                    SizedBox(
+                                      width: 0.007.sw,
+                                    ),
+                                    Text(
+                                      "${post.views_count}",
+                                      style: H5BlackTextStyle,
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      FontAwesomeIcons.calendar,
+                                      color: DarkColor,
+                                      size: 0.04.sw,
+                                    ),
+                                    SizedBox(
+                                      width: 0.007.sw,
+                                    ),
+                                    Text(
+                                      "${post.updated_at??''}",
                                       style: H5BlackTextStyle,
                                     )
                                   ],

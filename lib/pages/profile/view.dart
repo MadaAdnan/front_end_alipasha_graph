@@ -531,7 +531,7 @@ class ProfilePage extends StatelessWidget {
                                     BorderRadius.circular(15.r),
                                     color:
                                     mainController
-                                        .authUser.value?.is_verified==true ? color:Colors.blue),
+                                        .authUser.value?.is_verified==true ? color:RedColor),
                                 child: Row(
                                   mainAxisAlignment:
                                   MainAxisAlignment.center,
