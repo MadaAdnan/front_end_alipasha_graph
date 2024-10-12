@@ -15,77 +15,123 @@ class MinimizeDetailsProductComponentLoading extends StatelessWidget {
     super.key,
 
   });
-
-
-
-
   @override
   Widget build(BuildContext context) {
-    return  Container(
-      decoration: BoxDecoration(
-          border: Border(
-              bottom: BorderSide(
-                  color: GrayDarkColor,
-                  width: 0.004.sh))),
-      padding: EdgeInsets.symmetric(vertical: 0.002.sh),
-      width: 1.sw,
-      height: 0.2.sh,
-      child: Row(
-        children: [
-          Shimmer.fromColors(child: Container(
-            width: 0.4.sw,
-            height: 0.2.sh,
+    return Column(
+      children: [
+        InkWell(
+
+          child: Shimmer(child: Container(
+            width: 1.sw,
             decoration: BoxDecoration(
               color: GrayLightColor,
               borderRadius: BorderRadius.circular(30.r),
             ),
-          ), baseColor: GrayLightColor, highlightColor: GrayWhiteColor),
-          30.horizontalSpace,
-         Container(child:  Column(
-           children: [
-             Shimmer.fromColors(child:  Container(
-               decoration: BoxDecoration(
-                 color: GrayLightColor,
-                 borderRadius: BorderRadius.circular(30.r),
-               ),
-               width: 0.5.sw,
-               height: 0.02.sh,
-             ), baseColor: GrayLightColor, highlightColor: GrayWhiteColor),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Shimmer(child:  Container(
+                  width: 0.3.sw,
+                  height: 0.3.sw,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(30.r),
+                        bottomRight: Radius.circular(30.r)),
+                  ),
+                ),gradient: LinearGradient(colors: [GrayDarkColor,GrayWhiteColor]),enabled: true,loop: 5,),
+                Expanded(
+                    child: Container(
+                      height: 0.3.sw,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 0.01.sw, vertical: 0.002.sh),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Shimmer.fromColors(child: Text(' '), baseColor:GrayDarkColor , highlightColor:GrayWhiteColor, ),
+                          Shimmer.fromColors(child:RichText(
+                              text: TextSpan(children: [
+                                TextSpan(
+                                    text: ' ',
+                                    style: H5GrayTextStyle),
+                              ])) , baseColor: GrayLightColor, highlightColor: GrayWhiteColor),
 
-             20.verticalSpace,
-             Shimmer.fromColors(child:  Container(
-               decoration: BoxDecoration(
-                 color: GrayLightColor,
-                 borderRadius: BorderRadius.circular(30.r),
-               ),
-               width: 0.5.sw,
-               height: 0.02.sh,
-             ), baseColor: GrayLightColor, highlightColor: GrayWhiteColor),
+                          Shimmer.fromColors(child:  Text(
+                            " ",
+                            style: H4RegularDark,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ) , baseColor: GrayLightColor, highlightColor: GrayWhiteColor),
 
-             20.verticalSpace,
-             Shimmer.fromColors(child:   Container(
-               decoration: BoxDecoration(
-                 color: GrayLightColor,
-                 borderRadius: BorderRadius.circular(30.r),
-               ),
-               width: 0.5.sw,
-               height: 0.02.sh,
-             ), baseColor: GrayLightColor, highlightColor: GrayWhiteColor),
+                          SizedBox(
+                            height: 0.01.sh,
+                          ),
+                          Expanded(
+                            child: Shimmer.fromColors(child:RichText(
+                              textDirection: TextDirection.rtl,
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: ' ',
+                                    style: H4RedTextStyle,
+                                  ),
 
-             20.verticalSpace,
-             Shimmer.fromColors(child:   Container(
-               decoration: BoxDecoration(
-                 color: GrayLightColor,
-                 borderRadius: BorderRadius.circular(30.r),
-               ),
-               width: 0.5.sw,
-               height: 0.02.sh,
-             ), baseColor: GrayLightColor, highlightColor: GrayWhiteColor),
+                                ],
+                              ),
+                            ), baseColor: GrayLightColor, highlightColor: GrayWhiteColor),
 
-           ],
-         ),padding: EdgeInsets.only(top:0.02.sh),)
-        ],
-      ),
+                          ),
+                          Container(
+                            height: 0.06.sw,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                // Icon Eye
+                                Row(
+                                  children: [
+
+
+                                    SizedBox(
+                                      width: 0.007.sw,
+                                    ),
+                                    Shimmer.fromColors(child: Text(
+                                      "test ",
+                                      style: H5BlackTextStyle,
+                                    ), baseColor: GrayLightColor, highlightColor: GrayWhiteColor)
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Shimmer.fromColors(child: Icon(
+                                      FontAwesomeIcons.calendar,
+                                      color: DarkColor,
+                                      size: 0.04.sw,
+                                    ), baseColor: GrayLightColor, highlightColor: GrayWhiteColor),
+
+                                    SizedBox(
+                                      width: 0.007.sw,
+                                    ),
+                                    Shimmer.fromColors(child: Text(
+                                      " ",
+                                      style: H5BlackTextStyle,
+                                    ), baseColor: GrayLightColor, highlightColor: GrayWhiteColor),
+
+                                  ],
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ))
+              ],
+            ),
+          ), gradient: LinearGradient(colors: [GrayWhiteColor,GrayDarkColor,GrayWhiteColor])),
+        ),
+        SizedBox(height: 0.01.sh),
+      ],
     );
   }
 }

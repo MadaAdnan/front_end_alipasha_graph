@@ -35,12 +35,14 @@ class SectionsLogic extends GetxController {
         color
         type
         image
+        products_count
     }
 }
 
     ''';
     try {
       dio.Response? res = await mainController.fetchData();
+      mainController.logger.e(res?.data?['data']?['mainCategories']);
       if (res?.data?['data']?['mainCategories'] != null) {
         for (var item in res?.data?['data']?['mainCategories']) {
           categories.add(CategoryModel.fromJson(item));
@@ -48,5 +50,23 @@ class SectionsLogic extends GetxController {
       }
     } on CustomException catch (e) {}
     loading.value = false;
+  }
+
+  isVisit(int id,int count){
+   if( mainController.storage.hasData('sectionID.${id}')){
+
+     var oldCount= mainController.storage.read('sectionID.${id}');
+     mainController.logger.d("DDD ${oldCount!=count}");
+     if(oldCount!=count){
+       return false;
+     }else{
+       return true;
+     }
+   }
+   return false;
+  }
+
+  visit(int id,int count)async{
+      await mainController.storage.write('sectionID.${id}',count);
   }
 }

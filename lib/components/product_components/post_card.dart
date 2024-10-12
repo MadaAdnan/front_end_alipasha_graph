@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/components/youtube_player/view.dart';
 import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
@@ -8,6 +10,7 @@ import 'package:ali_pasha_graph/helpers/queries.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
 
 import 'package:ali_pasha_graph/routes/routes_url.dart';
+import 'package:animated_icon/animated_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -18,9 +21,9 @@ import '../../helpers/colors.dart';
 import '../../helpers/style.dart';
 
 class PostCard extends StatelessWidget {
-  final ProductModel? post;
+  final ProductModel post;
 
-  PostCard({super.key, this.post});
+  PostCard({super.key, required this.post});
 
   RxBool loading = RxBool(false);
   RxBool loadingCommunity = RxBool(false);
@@ -30,23 +33,20 @@ class PostCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       key: key,
-      padding: EdgeInsets.symmetric( horizontal: 0.002.sw),
+      padding: EdgeInsets.symmetric(horizontal: 0.002.sw),
       width: double.infinity,
-      height: 1.sw+0.187.sh,
-
+      height: 1.sw + 0.187.sh,
       decoration: BoxDecoration(
           color: WhiteColor,
-          border: Border(bottom: BorderSide(color: GrayLightColor,width: 0.01.sh))
-      ),
-
+          border: Border(
+              bottom: BorderSide(color: GrayLightColor, width: 0.01.sh))),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-
             padding:
-                EdgeInsets.symmetric(horizontal: 0.018.sw, vertical: 0.008.sh),
+            EdgeInsets.symmetric(horizontal: 0.018.sw, vertical: 0.008.sh),
             width: double.infinity,
             decoration: BoxDecoration(color: WhiteColor),
             height: 0.12.sh,
@@ -57,25 +57,25 @@ class PostCard extends StatelessWidget {
                   children: [
                     InkWell(
                       onTap: () {
-                        Get.toNamed(PRODUCTS_PAGE, arguments: post?.user);
+                        Get.toNamed(PRODUCTS_PAGE, arguments: post.user);
                       },
                       child: Row(
                         children: [
                           CircleAvatar(
                             backgroundColor: GrayLightColor,
                             backgroundImage:
-                                NetworkImage("${post?.user?.logo}"),
+                            NetworkImage("${post.user?.logo}"),
                             minRadius: 0.018.sh,
                             maxRadius: 0.023.sh,
                           ),
                           10.horizontalSpace,
                           Column(
                             children: [
-                              if (post?.user?.seller_name != null)
+                              if (post.user?.seller_name != null)
                                 Container(
                                   width: 0.6.sw,
                                   child: Text(
-                                    "${post?.user?.seller_name}",
+                                    "${post.user?.seller_name}",
                                     style: H1BlackTextStyle,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -83,7 +83,9 @@ class PostCard extends StatelessWidget {
                               Container(
                                 width: 0.6.sw,
                                 child: Text(
-                                  '${post?.city?.name ?? ''} - ${post?.category?.name ?? ''} - ${post?.sub1?.name ?? ''}',
+                                  '${post.city?.name ?? ''} - ${post.category
+                                      ?.name ?? ''} - ${post.sub1?.name ??
+                                      ''}',
                                   style: H4GrayOpacityTextStyle,
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -98,12 +100,11 @@ class PostCard extends StatelessWidget {
                         // Check Is Follower
                         if (mainController.authUser.value != null &&
                             mainController.authUser.value!.followers != null &&
-                            post != null &&
-                            post!.user != null &&
-                            post!.user!.id != null) {
+                            post.user != null &&
+                            post.user!.id != null) {
                           int index = mainController.authUser.value!.followers!
                               .indexWhere(
-                            (el) => el.seller?.id == post?.user?.id,
+                                (el) => el.seller?.id == post.user?.id,
                           );
 
                           if (index > -1) {
@@ -129,24 +130,37 @@ class PostCard extends StatelessWidget {
                                 ],
                               ),
                             );
-                          }
-                          else if(post?.user?.id !=mainController.authUser.value?.id) {
-                            return InkWell(
-                              onTap: () {
-                                follow();
-                              },
-                              child: Obx(() {
-                                return Container(
+                          } else if (post.user?.id !=
+                              mainController.authUser.value?.id) {
+                            return Obx(() {
+                              return InkWell(
+                                onTap: () {
+                                  if (loading.value == false) {
+                                    follow();
+                                  }
+                                },
+                                child: Container(
                                   padding: EdgeInsets.symmetric(
-                                      horizontal: 0.009.sw, vertical: 0.004.sh),
+                                      horizontal: 0.009.sw,
+                                      vertical: 0.004.sh),
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15.r),
+                                      borderRadius: BorderRadius.circular(
+                                          15.r),
                                       border: Border.all(color: RedColor)),
                                   child: Row(
                                     children: [
                                       if (loading.value == true)
-                                        const Center(
-                                          child: CircularProgressIndicator(),
+                                        Center(
+                                          child: AnimateIcon(
+                                            key: UniqueKey(),
+                                            onTap: () {},
+                                            iconType:
+                                            IconType.continueAnimation,
+                                            height: 0.055.sw,
+                                            width: 0.055.sw,
+                                            color: RedColor,
+                                            animateIcon: AnimateIcons.bell,
+                                          ),
                                         ),
                                       if (loading.value == false)
                                         Icon(
@@ -161,11 +175,10 @@ class PostCard extends StatelessWidget {
                                       )
                                     ],
                                   ),
-                                );
-                              }),
-                            );
-                          }
-                          else{
+                                ),
+                              );
+                            });
+                          } else {
                             return Container();
                           }
                         } else {
@@ -182,7 +195,7 @@ class PostCard extends StatelessWidget {
                   width: 1.sw,
                   height: 0.044.sh,
                   child: Text(
-                    "${post?.expert}",
+                    "${post.expert!.length.isGreaterThan(5) ?post.expert : post.name}",
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
                     style: H3GrayTextStyle,
@@ -199,7 +212,7 @@ class PostCard extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              Get.toNamed(PRODUCT_PAGE, arguments: post!.id);
+              Get.toNamed(PRODUCT_PAGE, arguments: post.id);
             },
             child: Container(
               width: 1.sw,
@@ -208,12 +221,12 @@ class PostCard extends StatelessWidget {
                   color: GrayDarkColor,
                   image: DecorationImage(
                       image: NetworkImage(
-                        "${post?.image}",
+                        "${post.image}",
                       ),
                       fit: BoxFit.cover)),
               child: Stack(
                 children: [
-                  if (post?.level == 'special')
+                  if (post.level == 'special')
                     Positioned(
                       top: 20.h,
                       left: 10.w,
@@ -258,7 +271,7 @@ class PostCard extends StatelessWidget {
                           child: RichText(
                             text: TextSpan(children: [
                               TextSpan(
-                                  text: ' ${post?.price ?? 0}',
+                                  text: ' ${post.price ?? 0}',
                                   style: H2BlackTextStyle.copyWith(
                                       fontWeight: FontWeight.bold,
                                       decoration: TextDecoration.lineThrough)),
@@ -271,10 +284,10 @@ class PostCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                    visible: post?.is_discount == true,
+                    visible: post.is_discount == true,
                   ),
                   Visibility(
-                    visible: post?.type == 'product',
+                    visible: post.type == 'product',
                     child: Positioned(
                       bottom: 20.h,
                       right: 10.w,
@@ -292,7 +305,8 @@ class PostCard extends StatelessWidget {
                               text: TextSpan(children: [
                                 TextSpan(
                                     text:
-                                        ' ${post?.is_discount == true ? post?.discount : post?.price ?? 0} ',
+                                    ' ${post.is_discount == true ? post
+                                        ?.discount : post.price ?? 0} ',
                                     style: H2WhiteTextStyle.copyWith(
                                         fontWeight: FontWeight.bold)),
                                 TextSpan(
@@ -304,9 +318,11 @@ class PostCard extends StatelessWidget {
                           ),
                           40.horizontalSpace,
                           InkWell(
-                            onTap: ()async {
-                            await  mainController.addToCart(product: post!);
-                            messageBox(title: 'نجاح العملية',message: 'تم الإضافة إلى السلة');
+                            onTap: () async {
+                              await mainController.addToCart(product: post!);
+                              messageBox(
+                                  title: 'نجاح العملية',
+                                  message: 'تم الإضافة إلى السلة');
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -334,7 +350,7 @@ class PostCard extends StatelessWidget {
             alignment: Alignment.center,
             color: WhiteColor,
             padding:
-                EdgeInsets.symmetric(horizontal: 0.001.sw, vertical: 0.005.sh),
+            EdgeInsets.symmetric(horizontal: 0.001.sw, vertical: 0.005.sh),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -351,7 +367,7 @@ class PostCard extends StatelessWidget {
                       ),
                       10.horizontalSpace,
                       Text(
-                        '${post?.views_count ?? 0}'.toFormatNumber(),
+                        '${post.views_count ?? 0}'.toFormatNumber(),
                         style: H4BlackTextStyle,
                       )
                     ],
@@ -359,7 +375,8 @@ class PostCard extends StatelessWidget {
                 ),
                 MaterialButton(
                   onPressed: () {
-                    Get.toNamed(PRODUCT_PAGE, arguments: post!.id,parameters: {"index":"1"});
+                    Get.toNamed(PRODUCT_PAGE,
+                        arguments: post.id, parameters: {"index": "1"});
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -382,7 +399,7 @@ class PostCard extends StatelessWidget {
                     onPressed: () async {
                       loadingCommunity.value = true;
                       await mainController.createCommunity(
-                          sellerId: post!.user!.id!);
+                          sellerId: post.user!.id!);
                       loadingCommunity.value = false;
                     },
                     child: Row(
@@ -397,12 +414,12 @@ class PostCard extends StatelessWidget {
                         Obx(() {
                           return loadingCommunity.value
                               ? Center(
-                                  child: CircularProgressIndicator(),
-                                )
+                            child: CircularProgressIndicator(),
+                          )
                               : Text(
-                                  'محادثة',
-                                  style: H4BlackTextStyle,
-                                );
+                            'محادثة',
+                            style: H4BlackTextStyle,
+                          );
                         })
                       ],
                     ),
@@ -434,12 +451,12 @@ class PostCard extends StatelessWidget {
   }
 
   follow() async {
-    if (post?.user?.id != null) {
+    if (post.user?.id != null) {
       loading.value = true;
       try {
         mainController.query.value = '''
       mutation FollowAccount {
-    followAccount(id: "${post?.user?.id}") {
+    followAccount(id: "${post.user?.id}") {
        $AUTH_FIELDS
     }
 }

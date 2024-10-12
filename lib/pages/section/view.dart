@@ -57,6 +57,7 @@ class SectionPage extends StatelessWidget {
                   border: Border(bottom: BorderSide(color: GrayDarkColor))),
               child: Obx(() {
                 return ListView(
+
                   scrollDirection: Axis.horizontal,
                   children: [
                     if (logic.loading.value)
@@ -78,6 +79,7 @@ class SectionPage extends StatelessWidget {
             ),
             Expanded(
               child: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
                 child: Obx(() {
                   return Column(
                     children: [
@@ -90,6 +92,7 @@ class SectionPage extends StatelessWidget {
                         return Column(
                           children: [
                             MinimizeDetailsProductComponent(
+                              TitleColor: DarkColor,
                               post: logic.products[index],
                               onClick: () => Get.toNamed(PRODUCT_PAGE,
                                   arguments: logic.products[index].id),
@@ -129,12 +132,13 @@ class SectionPage extends StatelessWidget {
     return InkWell(
       onTap: () {
         logic.categoryId.value = category.id;
+
       },
       child: Container(
-        width: 1.sw / 4.5,
-        margin: EdgeInsets.symmetric(horizontal: 0.02.sw),
+
+        margin: EdgeInsets.symmetric(horizontal: 0.01.sw),
         alignment: Alignment.center,
-        padding: EdgeInsets.symmetric(vertical: 0.001.sh, horizontal: 0.02.sw),
+        padding: EdgeInsets.symmetric(vertical: 0.001.sh, horizontal: 0.05.sw),
         decoration: BoxDecoration(
             color: logic.categoryId.value == category.id
                 ? RedColor

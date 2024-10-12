@@ -172,7 +172,7 @@ padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
                           color: RedColor,
                           onPressed: () async {
                             if (logic.cart.value?.seller?.id != null) {
-                              String message = "";
+                            /*  String message = "";
                               for (var item in logic.carts) {
                                 message +=
                                     '''معرف المنتج : ${item.productId} '''
@@ -194,13 +194,37 @@ padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
                                 int elementQty = element.qty ?? 0;
                                 return previousValue +
                                     (elementPrice * elementQty);
-                              }) : 0} \$''';
+                              }) : 0} '''r'''$''';
                               message+='''
-                               ==========================''';
+                               ==========================''';*/
+                              String message = "";
+                              for (var item in logic.carts) {
+                                message += '''معرف المنتج : ${item.productId} '''
+                                    ''' 
+        المنتج : ${item.productName} '''
+                                    ''' 
+        العدد : ${item.qty} '''
+                                    '''
+        سعر الوحدة : ${item.price} '''
+                                    ''' 
+        -------------------------
+        ''';
+                              }
+                              message += '''
+  ==========================''';
+                              message += '''
+  المجموع : ${logic.carts.length > 0 ? logic.carts.fold(0.0, (previousValue, element) {
+                                double elementPrice = element.price ?? 0.0;
+                                int elementQty = element.qty ?? 0;
+                                return previousValue +
+                                    (elementPrice * elementQty);
+                              }) : 0} \$''';
+                              message += '''
+   ==========================''';
                               await mainController.createCommunity(
                                   sellerId: int.parse(
                                       "${logic.cart.value?.seller?.id}"),
-                                  message: message);
+                                  message: message.replaceAll(RegExp(r"['\']"), ''));
                             }
                           },
                           child: Text(

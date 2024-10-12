@@ -1,5 +1,7 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
+import 'package:ali_pasha_graph/components/home_app_bar/view.dart';
 import 'package:ali_pasha_graph/components/product_components/job_card.dart';
+import 'package:ali_pasha_graph/components/progress_loading.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/enums.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
@@ -24,22 +26,27 @@ class SectionsPage extends StatelessWidget {
       backgroundColor: WhiteColor,
       body: Column(
         children: [
-          Container(
-            margin: EdgeInsets.only(bottom: 0.02.sh),
-            alignment: Alignment.center,
-            width: 1.sw,
-            height: 0.06.sh,
-            color: RedColor,
-            child: Text(
-              'جميع التصنيفات',
-              style: H2WhiteTextStyle,
-            ),
-          ),
+          // Container(
+          //   margin: EdgeInsets.only(bottom: 0.02.sh),
+          //   alignment: Alignment.center,
+          //   width: 1.sw,
+          //   height: 0.06.sh,
+          //   color: RedColor,
+          //   child: Text(
+          //     'جميع التصنيفات',
+          //     style: H2WhiteTextStyle,
+          //   ),
+          // ),
+          HomeAppBarComponent(),
           Obx(() {
             if (logic.loading.value) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
+              return Expanded(child: Container(
+                width: 0.5.sw,
+                height: 0.5.sw,
+                child: Center(
+                  child: ProgressLoading(),
+                ),
+              ),);
             }
             return Container(
               width: 1.sw,
@@ -54,7 +61,8 @@ class SectionsPage extends StatelessWidget {
                     ...List.generate(
                       logic.categories.length,
                       (index) => InkWell(
-                        onTap: () {
+                        onTap: () async{
+                         await logic.visit(logic.categories[index].id!,logic.categories[index].productsCount!);
                           Get.toNamed(SECTION_PAGE,
                               arguments: logic.categories[index].id);
                         },
@@ -96,16 +104,15 @@ class SectionsPage extends StatelessWidget {
                               ),
                             ),
                             Positioned(
+                              top: 9,
+                              left: 0,
                               child: Badge(
-                                backgroundColor: RedColor,
+                                backgroundColor:!logic.isVisit(logic.categories[index].id!,logic.categories[index].productsCount!)? RedColor:GrayDarkColor,
                                 isLabelVisible: true,
                                 label: Text(
                                     "${logic.categories[index].productsCount!}"
-                                        .toFormatNumberK(),style: H5WhiteTextStyle,textDirection: TextDirection.ltr,),
+                                        .toFormatNumberK(),style: H4WhiteTextStyle,textDirection: TextDirection.ltr,),
                               ),
-
-                              top: 9,
-                              left: 0,
                             )
                           ],
                         ),

@@ -54,6 +54,7 @@ class CategoryModel {
         listChildren.add(CategoryModel.fromJson(item));
       }
     }
+    listChildren.sort((a,b)=>b.id!.compareTo(a.id!));
     return CategoryModel(
       name: "${data['name']}",
       img: "${data['image']}",
@@ -65,7 +66,7 @@ class CategoryModel {
       productsCount: int.tryParse("${data['products_count']}")??0,
       children: listChildren.toList(),
       parent: listParent.toList(),
-      attributes: listAttribute,
+      attributes:listAttribute,
     );
   }
 

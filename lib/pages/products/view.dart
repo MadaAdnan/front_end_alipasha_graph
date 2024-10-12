@@ -396,6 +396,29 @@ class ProductsPage extends StatelessWidget {
                                                 )
                                               ],
                                             ),
+                                            InkWell(
+                                              child: Column(
+                                                children: [
+                                                  Obx(() {
+                                                    return Text(
+                                                      '${logic.seller.value?.followers!.length}'
+                                                          .toFormatNumberK(),
+                                                      style: H0RegularDark.copyWith(
+                                                          fontWeight:
+                                                          FontWeight.w900,
+                                                          color:
+                                                          color),
+                                                      textDirection:
+                                                      TextDirection.ltr,
+                                                    );
+                                                  }),
+                                                  Text(
+                                                    "أتابعه",
+                                                    style: H4RegularDark,
+                                                  )
+                                                ],
+                                              ),
+                                            ),
 
                                           ],
                                         ),
@@ -696,7 +719,29 @@ class ProductsPage extends StatelessWidget {
                                                 )
                                               ],
                                             ),
-
+                                            InkWell(
+                                              child: Column(
+                                                children: [
+                                                  Obx(() {
+                                                    return Text(
+                                                      '${logic.seller.value?.followers!.length}'
+                                                          .toFormatNumberK(),
+                                                      style: H0RegularDark.copyWith(
+                                                          fontWeight:
+                                                          FontWeight.w900,
+                                                          color:
+                                                          color),
+                                                      textDirection:
+                                                      TextDirection.ltr,
+                                                    );
+                                                  }),
+                                                  Text(
+                                                    "أتابعه",
+                                                    style: H4RegularDark,
+                                                  )
+                                                ],
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       ),

@@ -36,6 +36,7 @@ class SectionLogic extends GetxController {
     ever(page, (value) {
       getPosts();
     });
+
     mainCategory.value = Get.arguments;
   }
 
@@ -47,11 +48,11 @@ class SectionLogic extends GetxController {
   }
 
   Future<void> getPosts() async {
-    print(categoryId.value);
+
     loading.value = true;
     mainController.query.value = '''
     query Products {
-    products(category_id: ${ mainCategory.value??null},sub1_id:${categoryId.value??null}, page: ${page.value}, first: 15) {
+    products(category_id: ${mainCategory.value ?? null},sub1_id:${categoryId.value ?? null}, page: ${page.value}, first: 25) {
         paginatorInfo {
             hasMorePages
         }
@@ -83,6 +84,7 @@ class SectionLogic extends GetxController {
             price
         }
     }
+    
     ${page.value == 1 ? '''category(id: "${mainCategory.value}") {
         id
         name
@@ -95,6 +97,7 @@ class SectionLogic extends GetxController {
             color
             type
             image
+            
         }
     }
     
@@ -110,7 +113,7 @@ class SectionLogic extends GetxController {
         id
     }
     
-    ''' : ''}
+    ''' : ''' '''}
 }
 
     ''';
@@ -118,7 +121,7 @@ class SectionLogic extends GetxController {
     try {
       dio.Response? res = await mainController.fetchData();
       loading.value = false;
-     // mainController.logger.e(res?.data);
+      // mainController.logger.e(res?.data);
       if (res?.data?['data']?['products']['paginatorInfo'] != null) {
         hasMorePage.value =
             res?.data?['data']?['products']['paginatorInfo']['hasMorePages'];
@@ -130,7 +133,7 @@ class SectionLogic extends GetxController {
         }
       }
 
-      if (res?.data?['data']?['category'] != null) {
+      if (res?.data?['data']?['category'] != null ) {
         category.value =
             CategoryModel.fromJson(res?.data?['data']?['category']);
         category.value?.children?.insert(
@@ -153,5 +156,10 @@ class SectionLogic extends GetxController {
     }
 
     loading.value = false;
+  }
+
+  changeCategory(CategoryModel categorymodel) {
+    category.value = categorymodel;
+
   }
 }

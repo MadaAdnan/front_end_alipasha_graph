@@ -1,6 +1,7 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
+import 'package:animated_icon/animated_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
@@ -105,12 +106,36 @@ class HomeAppBarComponent extends StatelessWidget
                   ),
                   child: IconButton(
                     onPressed: () {
-                      Get.offAndToNamed(HOME_PAGE);
+                      Get.toNamed(HOME_PAGE);
                     },
-                    icon: Icon(
+                    icon:Icon(
                       FontAwesomeIcons.home,
                       size: 0.06.sw,
                       color: Get.currentRoute == HOME_PAGE ? RedColor : null,
+                    ),
+                  ),
+                ),
+                Container(
+                  width: 0.1.sw,
+                  decoration: BoxDecoration(
+                    border: Get.currentRoute == SECTIONS_PAGE
+                        ? Border(
+                      bottom: BorderSide(
+                        color: RedColor,
+                        style: BorderStyle.solid,
+                        width: 0.001.sw,
+                      ),
+                    )
+                        : null,
+                  ),
+                  child: IconButton(
+                    onPressed: () {
+                      Get.toNamed(SECTIONS_PAGE);
+                    },
+                    icon: Icon(
+                      FontAwesomeIcons.layerGroup,
+                      size: 0.06.sw,
+                      color: Get.currentRoute == SECTIONS_PAGE ? RedColor : null,
                     ),
                   ),
                 ),
@@ -155,7 +180,7 @@ class HomeAppBarComponent extends StatelessWidget
                   ),
                   child: IconButton(
                     onPressed: () {
-                      Get.offAndToNamed(JOBS_PAGE);
+                      Get.toNamed(JOBS_PAGE);
                     },
                     icon: Icon(
                       FontAwesomeIcons.briefcase,
@@ -179,7 +204,7 @@ class HomeAppBarComponent extends StatelessWidget
                   ),
                   child: IconButton(
                     onPressed: () {
-                      Get.offAndToNamed(TENDERS_PAGE);
+                      Get.toNamed(TENDERS_PAGE);
                     },
                     icon: Icon(FontAwesomeIcons.arrowTrendDown,
                         size: 0.06.sw,
@@ -214,7 +239,7 @@ class HomeAppBarComponent extends StatelessWidget
                 Container(
                   width: 0.1.sw,
                   decoration: BoxDecoration(
-                    border: Get.currentRoute == COMMUNITIES_PAGE
+                    border: Get.currentRoute == PROFILE_PAGE
                         ? Border(
                             bottom: BorderSide(
                               color: RedColor,

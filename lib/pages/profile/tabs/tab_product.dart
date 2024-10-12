@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/components/fields_components/input_component.dart';
 import 'package:ali_pasha_graph/components/product_components/mini_post_card.dart';
+import 'package:ali_pasha_graph/components/product_components/minimize_details_product_component_loading.dart';
 import 'package:ali_pasha_graph/components/product_components/post_card.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/pages/profile/logic.dart';
@@ -10,6 +11,8 @@ import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+
+import '../../../components/progress_loading.dart';
 
 class TabProduct extends StatelessWidget {
   TabProduct({super.key});
@@ -55,10 +58,12 @@ class TabProduct extends StatelessWidget {
             ),
           ),*/
           Obx(() {
-            if (logic.loading.value && logic.page.value == 1) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+            if ((logic.loading.value && logic.page.value == 1)) {
+               return Expanded(child:ListView(
+                 children: [
+                   ...List.generate(4, (i)=>MinimizeDetailsProductComponentLoading(),)
+                 ],
+               ),);
             }
             return Expanded(
               child: ListView.builder(

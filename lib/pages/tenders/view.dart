@@ -1,5 +1,6 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/components/home_app_bar/view.dart';
+import 'package:ali_pasha_graph/components/product_components/minimize_details_product_component.dart';
 import 'package:ali_pasha_graph/components/product_components/minimize_details_product_component_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -57,7 +58,9 @@ class TendersPage extends StatelessWidget {
                           logic.tenders.length ,
                           (index) {
 
-                              return JobCard(post: logic.tenders[index]);
+                              return MinimizeDetailsJobComponent(post: logic.tenders[index],TitleColor: DarkColor,onClick: (){
+                                Get.toNamed(PRODUCT_PAGE,arguments:  logic.tenders[index].id);
+                              },);
 
 
                           },
