@@ -134,15 +134,20 @@ class ProductPage extends StatelessWidget {
                                 ),
                                 RichText(
                                     text: TextSpan(children: [
+                                      if(logic.product.value?.city?.name!=null)
                                       TextSpan(
                                           text:
                                           '${logic.product.value?.city?.name}',
                                           style: H5GrayOpacityTextStyle),
+                                      if(logic.product.value?.category
+                                          ?.name!=null)
                                       TextSpan(
                                           text:
                                           ' - ${logic.product.value?.category
                                               ?.name}',
                                           style: H5GrayOpacityTextStyle),
+                                      if(logic.product.value?.sub1
+                                          ?.name!=null)
                                       TextSpan(
                                           text:
                                           '- ${logic.product.value?.sub1
@@ -170,6 +175,7 @@ class ProductPage extends StatelessWidget {
                   ],
                 ),
               ),
+              if(logic.product.value?.type=='product')
               Obx(() {
                 return Container(
                   height: 0.08.sh,
@@ -241,7 +247,7 @@ class ProductPage extends StatelessWidget {
               }),
               Container(
                 width: 1.sw,
-                height: 0.52.sh,
+                height:logic.product.value?.type=='product'? 0.52.sh:0.62.sh,
                 padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
                 child: PageView(
                   onPageChanged: (index) {

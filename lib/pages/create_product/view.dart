@@ -1,13 +1,13 @@
 import 'dart:io';
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
-import 'package:ali_pasha_graph/helpers/helper_class.dart';
+
 import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:ali_pasha_graph/models/attribute_model.dart';
 import 'package:ali_pasha_graph/models/category_model.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,7 +16,7 @@ import 'package:form_builder_image_picker/form_builder_image_picker.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:location/location.dart';
+
 import 'logic.dart';
 
 class CreateProductPage extends StatelessWidget {

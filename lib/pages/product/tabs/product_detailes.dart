@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/components/product_components/mini_post_card.dart';
+import 'package:ali_pasha_graph/components/progress_loading.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/components.dart';
 import 'package:ali_pasha_graph/helpers/enums.dart';
@@ -9,6 +10,7 @@ import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
 import 'package:ali_pasha_graph/pages/product/logic.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
+import 'package:animated_icon/animated_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -43,7 +45,7 @@ class ProductDetailes extends StatelessWidget {
             width: 1.sw,
             margin: EdgeInsets.symmetric(vertical: 0.003.sh),
             padding:
-                EdgeInsets.symmetric(horizontal: 0.01.sw, vertical: 0.01.sh),
+            EdgeInsets.symmetric(horizontal: 0.01.sw, vertical: 0.01.sh),
             decoration: BoxDecoration(
               color: GrayWhiteColor,
               borderRadius: BorderRadius.circular(15.r),
@@ -58,7 +60,7 @@ class ProductDetailes extends StatelessWidget {
             Container(
               margin: EdgeInsets.symmetric(vertical: 0.003.sh),
               padding:
-                  EdgeInsets.symmetric(horizontal: 0.03.sw, vertical: 0.01.sh),
+              EdgeInsets.symmetric(horizontal: 0.03.sw, vertical: 0.01.sh),
               decoration: BoxDecoration(
                 color: GrayWhiteColor,
                 borderRadius: BorderRadius.circular(15.r),
@@ -73,7 +75,9 @@ class ProductDetailes extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        '${product?.is_discount == true ? product?.discount : product?.price}',
+                        '${product?.is_discount == true
+                            ? product?.discount
+                            : product?.price}',
                         style: H3BlackTextStyle,
                       ),
                       10.horizontalSpace,
@@ -87,7 +91,7 @@ class ProductDetailes extends StatelessWidget {
             Container(
               margin: EdgeInsets.symmetric(vertical: 0.003.sh),
               padding:
-                  EdgeInsets.symmetric(horizontal: 0.03.sw, vertical: 0.01.sh),
+              EdgeInsets.symmetric(horizontal: 0.03.sw, vertical: 0.01.sh),
               decoration: BoxDecoration(
                 color: GrayWhiteColor,
                 borderRadius: BorderRadius.circular(15.r),
@@ -102,12 +106,13 @@ class ProductDetailes extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        '${product?.is_discount == true ? product?.turkey_price?.discount : product?.turkey_price?.price}',
+                        '${product?.is_discount == true ? product?.turkey_price
+                            ?.discount?.toStringAsFixed(2) : product?.turkey_price?.price?.toStringAsFixed(2)}',
                         style: H3BlackTextStyle,
                       ),
                       10.horizontalSpace,
                       Icon(
-                        FontAwesomeIcons.liraSign,
+                        FontAwesomeIcons.turkishLiraSign,
                         size: 0.03.sw,
                       )
                     ],
@@ -121,7 +126,7 @@ class ProductDetailes extends StatelessWidget {
             Container(
               margin: EdgeInsets.symmetric(vertical: 0.003.sh),
               padding:
-                  EdgeInsets.symmetric(horizontal: 0.03.sw, vertical: 0.01.sh),
+              EdgeInsets.symmetric(horizontal: 0.03.sw, vertical: 0.01.sh),
               decoration: BoxDecoration(
                 color: GrayWhiteColor,
                 borderRadius: BorderRadius.circular(15.r),
@@ -146,7 +151,7 @@ class ProductDetailes extends StatelessWidget {
             Container(
               margin: EdgeInsets.symmetric(vertical: 0.003.sh),
               padding:
-                  EdgeInsets.symmetric(horizontal: 0.03.sw, vertical: 0.01.sh),
+              EdgeInsets.symmetric(horizontal: 0.03.sw, vertical: 0.01.sh),
               decoration: BoxDecoration(
                 color: GrayWhiteColor,
                 borderRadius: BorderRadius.circular(15.r),
@@ -166,13 +171,13 @@ class ProductDetailes extends StatelessWidget {
               ),
             ),
           if ((product?.type == 'tender' ||
-                  product?.type == 'job' ||
-                  product?.type == 'search_job') &&
+              product?.type == 'job' ||
+              product?.type == 'search_job') &&
               product?.code?.length != 0)
             Container(
               margin: EdgeInsets.symmetric(vertical: 0.003.sh),
               padding:
-                  EdgeInsets.symmetric(horizontal: 0.03.sw, vertical: 0.01.sh),
+              EdgeInsets.symmetric(horizontal: 0.03.sw, vertical: 0.01.sh),
               decoration: BoxDecoration(
                 color: GrayWhiteColor,
                 borderRadius: BorderRadius.circular(15.r),
@@ -192,13 +197,13 @@ class ProductDetailes extends StatelessWidget {
               ),
             ),
           if ((product?.type == 'tender' ||
-                  product?.type == 'job' ||
-                  product?.type == 'search_job') &&
+              product?.type == 'job' ||
+              product?.type == 'search_job') &&
               product?.phone?.length != 0)
             Container(
               margin: EdgeInsets.symmetric(vertical: 0.003.sh),
               padding:
-                  EdgeInsets.symmetric(horizontal: 0.03.sw, vertical: 0.01.sh),
+              EdgeInsets.symmetric(horizontal: 0.03.sw, vertical: 0.01.sh),
               decoration: BoxDecoration(
                 color: GrayWhiteColor,
                 borderRadius: BorderRadius.circular(15.r),
@@ -224,13 +229,13 @@ class ProductDetailes extends StatelessWidget {
               ),
             ),
           if ((product?.type == 'tender' ||
-                  product?.type == 'job' ||
-                  product?.type == 'search_job') &&
+              product?.type == 'job' ||
+              product?.type == 'search_job') &&
               product?.email?.length != 0)
             Container(
               margin: EdgeInsets.symmetric(vertical: 0.003.sh),
               padding:
-                  EdgeInsets.symmetric(horizontal: 0.03.sw, vertical: 0.01.sh),
+              EdgeInsets.symmetric(horizontal: 0.03.sw, vertical: 0.01.sh),
               decoration: BoxDecoration(
                 color: GrayWhiteColor,
                 borderRadius: BorderRadius.circular(15.r),
@@ -378,7 +383,8 @@ class ProductDetailes extends StatelessWidget {
               children: [
                 ...List.generate(
                     product!.docs.length,
-                    (i) => InkWell(
+                        (i) =>
+                        InkWell(
                           onTap: () {
                             openUrl(url: "${product!.docs[i]}");
                           },
@@ -409,86 +415,106 @@ class ProductDetailes extends StatelessWidget {
                         ))
               ],
             ),
-          if ((isAuth() && logic.product.value?.is_vote == false) &&
-              logic.product.value!.type == 'product')
-            Obx(() {
-              if (logic.loadingRate.value) {
-                return Container(
-                  width: 0.02.sw,
-                  height: 0.02.sw,
-                  child: const CircularProgressIndicator(),
-                );
-              } else {
-                return Container(
-                  width: 1.sw,
-                  height: 0.09.sh,
-                  child: FormBuilderRatingBar(
-                    onChanged: (value) {
-                      if (value?.toInt() != null) {
-                        logic.rateProduct(value: value!.toInt());
-                      }
-                      //
-                    },
-                    name: 'vote',
-                    itemPadding: EdgeInsets.symmetric(
-                      horizontal: 0.006.sw,
-                    ),
-                    ratingWidget: RatingWidget(
-                        full: Icon(
-                          FontAwesomeIcons.solidStar,
-                          color: OrangeColor,
-                          size: 0.04.sw,
+          Row(
+            children: [
+              if ((isAuth() && logic.product.value?.is_vote == false) &&
+                  logic.product.value!.type == 'product')
+                Obx(() {
+                  return Row(
+                    children: [
+                      if (logic.loadingRate.value)
+                        Container(
+                          width: 0.04.sw,
+                          height: 0.04.sw,
+                          child: AnimateIcon(
+                            key: UniqueKey(),
+                            onTap: () {},
+                            iconType:
+                            IconType.continueAnimation,
+                            height: 0.08.sw,
+                            width: 0.08.sw,
+                            color: RedColor,
+                            animateIcon: AnimateIcons.loading7,
+                          ),
                         ),
-                        half: Icon(
-                          FontAwesomeIcons.starHalf,
-                          color: OrangeColor,
-                          size: 0.04.sw,
+                      Container(
+                        width: 0.95.sw,
+                        height: 0.09.sh,
+                        child: FormBuilderRatingBar(
+                          onChanged: (value) {
+                            if (value?.toInt() != null) {
+                              logic.rateProduct(value: value!.toInt());
+                            }
+                            //
+                          },
+                          name: 'vote',
+                          itemPadding: EdgeInsets.symmetric(
+                            horizontal: 0.006.sw,
+                          ),
+                          ratingWidget: RatingWidget(
+
+                            full: Icon(
+                              FontAwesomeIcons.solidStar,
+                              color: OrangeColor,
+                              size: 0.03.sw,
+                            ),
+                            half: Icon(
+                              FontAwesomeIcons.starHalf,
+                              color: OrangeColor,
+                              size: 0.03.sw,
+                            ),
+                            empty: Icon(
+                              FontAwesomeIcons.star,
+                              color: OrangeColor,
+                              size: 0.03.sw,
+                            ),),
+                          decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 0.02.sw, vertical: 0.02.sh),
+                              labelText: 'التقييم',
+                              labelStyle: H3GrayTextStyle),
+                          glowColor: OrangeColor,
+                          itemSize: 0.06.sw,
+                          glow: true,
+                          unratedColor: OrangeColor,
+                          tapOnlyMode: true,
+                          itemCount: 5,
+                          minRating: 1,
+                          maxRating: 5,
                         ),
-                        empty: Icon(
-                          FontAwesomeIcons.star,
-                          color: OrangeColor,
-                          size: 0.04.sw,
-                        )),
-                    decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(
-                            horizontal: 0.02.sw, vertical: 0.02.sh),
-                        labelText: 'التقييم',
-                        labelStyle: H3GrayTextStyle),
-                    glowColor: OrangeColor,
-                    glow: true,
-                    unratedColor: OrangeColor,
-                    tapOnlyMode: true,
-                    itemCount: 5,
-                    minRating: 1,
-                    maxRating: 5,
+                      ),
+                    ],
+                  );
+                }),
+
+              if ((!isAuth() || logic.product.value?.is_vote == true) &&
+                  logic.product.value!.type == 'product')
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 0.01.sw),
+                  margin: EdgeInsets.symmetric(
+                    vertical: 0.02.sw,
                   ),
-                );
-              }
-            }),
-          if ((!isAuth() || logic.product.value?.is_vote == true) &&
-              logic.product.value!.type == 'product')
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 0.01.sw),
-              margin: EdgeInsets.symmetric(
-                vertical: 0.02.sw,
-              ),
-              child: Row(
-                children: [
-                  ...List.generate(5, (index) {
-                    if (logic.product.value!.vote_avg! > index) {
-                      return const Icon(
-                        FontAwesomeIcons.solidStar,
-                        color: OrangeColor,
-                      );
-                    }
-                    return const Icon(
-                      FontAwesomeIcons.star,
-                      color: OrangeColor,
-                    );
-                  })
-                ],
-              ),
-            ),
+                  child: Row(
+                    children: [
+                      ...List.generate(5, (index) {
+                        if (logic.product.value!.vote_avg! > index) {
+                          return Icon(
+                            FontAwesomeIcons.solidStar,
+                            size: 0.06.sw,
+                            color: OrangeColor,
+                          );
+                        }
+                        return Icon(
+                          FontAwesomeIcons.star,
+                          size: 0.06.sw,
+                          color: OrangeColor,
+                        );
+                      })
+                    ],
+                  ),
+                ),
+            ],
+          ),
           Container(
             padding: EdgeInsets.symmetric(vertical: 0.01.sh),
             margin: EdgeInsets.symmetric(vertical: 0.01.sh),
@@ -506,9 +532,11 @@ class ProductDetailes extends StatelessWidget {
             ),
           ),
           ...List.generate(products.length,
-              (i) => MinimizeDetailsProductComponent(post: products[i],TitleColor: DarkColor,onClick: (){
-                logic.productId.value=products[i].id;
-              },)),
+                  (i) =>
+                  MinimizeDetailsProductComponent(
+                    post: products[i], TitleColor: DarkColor, onClick: () {
+                    logic.productId.value = products[i].id;
+                  },)),
           10.verticalSpace,
         ],
       ),

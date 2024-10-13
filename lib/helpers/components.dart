@@ -122,4 +122,6 @@ void showAutoCloseDialog(
       Get.back();
     }
   });
+
+  VerifiedMsg(){}
 }

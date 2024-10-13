@@ -74,6 +74,7 @@ class SectionLogic extends GetxController {
                 name
             }
             expert
+            end_date
             level
             code
             type
@@ -82,6 +83,7 @@ class SectionLogic extends GetxController {
             views_count
             image
             price
+            created_at
         }
     }
     

@@ -35,7 +35,7 @@ class CreateProductLogic extends GetxController {
 
   //product
   TextEditingController nameController = TextEditingController();
-  TextEditingController priceController = TextEditingController(text: '0');
+  TextEditingController priceController = TextEditingController();
   TextEditingController discountController = TextEditingController();
   TextEditingController videoController = TextEditingController();
   RxBool isAvailable = RxBool(true);

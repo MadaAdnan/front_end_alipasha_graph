@@ -4,6 +4,7 @@ import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/enums.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -40,7 +41,7 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
           child: Container(
             width: 1.sw,
             decoration: BoxDecoration(
-              color: GrayLightColor,
+              color: GrayWhiteColor,
               borderRadius: BorderRadius.circular(30.r),
             ),
             child: Row(
@@ -120,38 +121,42 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                   padding: EdgeInsets.symmetric(
                       horizontal: 0.01.sw, vertical: 0.002.sh),
                   child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
+
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SellerNameComponent(
-                          color: TitleColor,
-                          sellerName: "${post.user?.seller_name ?? ''}",
-                          isVerified: post.user?.is_verified == true),
+                      AutoSizeText(
+                        "${post.name!.length > 5  ? post.name : post.expert} ",
+                        style: H1BlackTextStyle.copyWith(fontWeight: FontWeight.bold),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+
+                      SizedBox(height: 0.002.sh,),
                       RichText(
                           text: TextSpan(children: [
                         TextSpan(
                             text: '${post.city?.name ?? ''}',
-                            style: H5GrayTextStyle),
+                            style: H4GrayTextStyle),
                         if (post.category?.name != null)
                           TextSpan(
                               text: ' - ${post.category?.name}',
-                              style: H5GrayTextStyle),
+                              style: H4GrayTextStyle),
                         if (post.sub1?.name != null)
                           TextSpan(
                               text: ' - ${post.sub1?.name}',
-                              style: H5GrayTextStyle),
+                              style: H4GrayTextStyle),
                       ])),
-                      Text(
-                        "${post.name!.length > 5  ? post.name : post.expert}",
-                        style: H4RegularDark,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      SizedBox(
-                        height: 0.01.sh,
-                      ),
-                      Expanded(
+
+                      Container(child: SellerNameComponent(
+                          text: 'منشور بواسطة:',
+                          textStyle: H4RegularDark,
+                          color: TitleColor,
+                          sellerName: "${post.user?.seller_name ?? ''}",
+                          isVerified: post.user?.is_verified == true),),
+
+                      Container(
+                        alignment: Alignment.bottomRight,
                         child: RichText(
                           textDirection: TextDirection.rtl,
                           text: TextSpan(
@@ -161,12 +166,12 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                                 style: post.is_discount == true
                                     ? H4GrayTextStyle.copyWith(
                                         decoration: TextDecoration.lineThrough)
-                                    : H4RedTextStyle,
+                                    : H3RedTextStyle,
                               ),
                               if (post.is_discount == true)
                                 TextSpan(
                                     text: ' ${post.discount} \$ ',
-                                    style: H4RedTextStyle),
+                                    style: H3RedTextStyle),
                             ],
                           ),
                         ),
@@ -204,7 +209,7 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                                   width: 0.007.sw,
                                 ),
                                 Text(
-                                  "${post.created_at} ",
+                                  "${post.created_at}",
                                   style: H5BlackTextStyle,
                                 )
                               ],
@@ -252,7 +257,7 @@ class MinimizeDetailsJobComponent extends StatelessWidget {
           child: Container(
             width: 1.sw,
             decoration: BoxDecoration(
-              color: GrayLightColor,
+              color: GrayWhiteColor,
               borderRadius: BorderRadius.circular(30.r),
             ),
             child: Row(
@@ -338,48 +343,36 @@ class MinimizeDetailsJobComponent extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SellerNameComponent(
-                          color: TitleColor,
-                          sellerName: "${post.user?.seller_name ?? ''}",
-                          isVerified: post.user?.is_verified == true),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Flexible(
-                            flex: 3,
-                            child: RichText(
-                                overflow: TextOverflow.ellipsis,
-                                text: TextSpan(children: [
-                                  TextSpan(
-                                      text: '${post.city?.name ?? ''}',
-                                      style: H5GrayTextStyle),
-                                  if (post.category?.name != null)
-                                    TextSpan(
-                                        text: ' - ${post.category?.name}',
-                                        style: H5GrayTextStyle),
-                                  if (post.sub1?.name != null)
-                                    TextSpan(
-                                        text: ' - ${post.sub1?.name}',
-                                        style: H5GrayTextStyle),
-                                ])),
-                          ),
-                          Flexible(
-                              child: Text(
-                            "(${post.type?.toCategoryTypeLabel()})",
-                            style: H5RegularDark.copyWith(color: OrangeColor),
-                            overflow: TextOverflow.ellipsis,
-                          ))
-                        ],
-                      ),
-                      Text(
-                        "${post.name!.length > 5  ? post.name : post.expert}",
-                        style: H4RegularDark,
+                      AutoSizeText(
+                        "${post.name!.length > 5  ? post.name : post.expert} ",
+                        style: H1BlackTextStyle.copyWith(fontWeight: FontWeight.bold),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      SizedBox(
-                        height: 0.01.sh,
-                      ),
+
+                      SizedBox(height: 0.002.sh,),
+                      RichText(
+                          text: TextSpan(children: [
+                            TextSpan(
+                                text: '${post.city?.name ?? ''}',
+                                style: H4GrayTextStyle),
+                            if (post.category?.name != null)
+                              TextSpan(
+                                  text: ' - ${post.category?.name}',
+                                  style: H4GrayTextStyle),
+                            if (post.sub1?.name != null)
+                              TextSpan(
+                                  text: ' - ${post.sub1?.name}',
+                                  style: H4GrayTextStyle),
+                          ])),
+
+                      Container(child: SellerNameComponent(
+                          text: 'منشور بواسطة:',
+                          textStyle: H4RegularDark,
+                          color: TitleColor,
+                          sellerName: "${post.user?.seller_name ?? ''}",
+                          isVerified: post.user?.is_verified == true),),
+
                       Expanded(
                         child: RichText(
                           textDirection: TextDirection.rtl,
@@ -480,7 +473,7 @@ class MinimizeDetailsServiceComponent extends StatelessWidget {
           child: Container(
             width: 1.sw,
             decoration: BoxDecoration(
-              color: GrayLightColor,
+              color: GrayWhiteColor,
               borderRadius: BorderRadius.circular(30.r),
             ),
             child: Row(
@@ -565,78 +558,53 @@ class MinimizeDetailsServiceComponent extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (post.user != null)
-                        SellerNameComponent(
-                            color: TitleColor,
-                            sellerName: "${post.user?.seller_name ?? ''}",
-                            isVerified: post.user?.is_verified == true),
-                      if (post.user == null)
-                        Container(
-                          padding: EdgeInsets.only(bottom: 0.004.sh),
-                          child: Text(
-                            "${post.name}",
-                            style: H1BlackTextStyle,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      Expanded(child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Flexible(
-                            flex: 3,
-                            child: RichText(
-                                overflow: TextOverflow.ellipsis,
-                                text: TextSpan(children: [
-                                  TextSpan(
-                                      text: '${post.city?.name ?? ''}',
-                                      style: H5GrayTextStyle),
-                                  if (post.category?.name != null)
-                                    TextSpan(
-                                        text: ' - ${post.category?.name}',
-                                        style: H5GrayTextStyle),
-                                  if (post.sub1?.name != null)
-                                    TextSpan(
-                                        text: ' - ${post.sub1?.name}',
-                                        style: H5GrayTextStyle),
-                                ])),
-                          ),
-                          Flexible(
-                              child: Text(
-                            "(${post.type?.toCategoryTypeLabel()})",
-                            style: H5RegularDark.copyWith(color: OrangeColor),
-                            overflow: TextOverflow.ellipsis,
-                          ))
-                        ],
-                      ),
-                      Text(
-                        "${post.name!.length > 5  ? post.name : post.expert}",
-                        style: H4RegularDark,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      SizedBox(
-                        height: 0.01.sh,
-                      ),
-                      Expanded(
-                        child: RichText(
-                          textDirection: TextDirection.rtl,
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: '',
-                                style: post.is_discount == true
-                                    ? H4GrayTextStyle.copyWith(
-                                        decoration: TextDecoration.lineThrough)
-                                    : H4RedTextStyle,
-                              ),
-                              if (post.is_discount == true)
-                                TextSpan(
-                                    text: ' ${post.discount} \$ ',
-                                    style: H4RedTextStyle),
-                            ],
-                          ),
+                        AutoSizeText(
+                          "${post.name!.length > 5  ? post.name : post.expert} ",
+                          style: H1BlackTextStyle.copyWith(fontWeight: FontWeight.bold),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
+
+                        SizedBox(height: 0.002.sh,),
+                        RichText(
+                            text: TextSpan(children: [
+                              TextSpan(
+                                  text: '${post.city?.name ?? ''}',
+                                  style: H4GrayTextStyle),
+                              if (post.category?.name != null)
+                                TextSpan(
+                                    text: ' - ${post.category?.name}',
+                                    style: H4GrayTextStyle),
+                              if (post.sub1?.name != null)
+                                TextSpan(
+                                    text: ' - ${post.sub1?.name}',
+                                    style: H4GrayTextStyle),
+                            ])),
+                        if (post.user != null)
+                          Container(child: SellerNameComponent(
+                              text: 'منشور بواسطة:',
+                              textStyle: H4RegularDark,
+                              color: TitleColor,
+                              sellerName: "${post.user?.seller_name ?? ''}",
+                              isVerified: post.user?.is_verified == true),),
+                        if (post.user == null)
+                          Container(
+                            padding: EdgeInsets.only(bottom: 0.004.sh),
+                            child: Text(
+                              "${post.name}",
+                              style: H4RegularDark,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+
+                      ],)),
+
+
+                     
                       Container(
                         height: 0.06.sw,
                         child: Row(
@@ -718,7 +686,7 @@ class MinimizeDetailsTenderComponent extends StatelessWidget {
           child: Container(
             width: 1.sw,
             decoration: BoxDecoration(
-              color: GrayLightColor,
+              color: GrayWhiteColor,
               borderRadius: BorderRadius.circular(30.r),
             ),
             child: Row(
@@ -837,9 +805,9 @@ class MinimizeDetailsTenderComponent extends StatelessWidget {
                                   ))
                             ],
                           ),
-                          Text(
+                          AutoSizeText(
                             "${post.name!.length > 5  ? post.name : post.expert}",
-                            style: H4RegularDark,
+                            style: H1RegularDark,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
