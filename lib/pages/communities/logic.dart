@@ -77,6 +77,7 @@ class CommunitiesLogic extends GetxController {
             users{
                 id
                 name
+                seller_name
                 image
             }
         }

@@ -141,6 +141,7 @@ query GetMessages {
             user {
                 id
                 name
+                seller_name
                 image
             }
         }

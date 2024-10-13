@@ -75,6 +75,9 @@ class SearchLogic extends GetxController {
             }
             name
             expert
+            start_date
+            end_date
+            
             price
             discount
             is_discount

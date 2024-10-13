@@ -1,3 +1,4 @@
+import 'package:ali_pasha_graph/components/progress_loading.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/enums.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
@@ -22,13 +23,14 @@ class AdviceTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       if (logic.loading.value) {
-        return const Center(
-          child: CircularProgressIndicator(),
+        return  Center(
+          child: Container(width: 0.3.sw,child: ProgressLoading(),),
         );
       }
       return ListView(
         children: [
           10.verticalSpace,
+          if(logic.myProducts.length>0)
           Text(
             'المنتجات المميزة',
             style: H4GrayTextStyle,
@@ -79,6 +81,7 @@ class AdviceTab extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                if( logic.myAdvices.length>0)
                 Text(
                   'الإعلانات بين المنتجات',
                   style: H4GrayTextStyle,
@@ -86,6 +89,7 @@ class AdviceTab extends StatelessWidget {
                 15.verticalSpace,
 
                 /// Header
+                  if( logic.myAdvices.length>0)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -190,11 +194,14 @@ class AdviceTab extends StatelessWidget {
                         },
                       ),
                       15.verticalSpace,
+
+                      if(logic.sliders.length>0)
                       Text(
                         'إعلانات السلايدر',
                         style: H4GrayTextStyle,
                       ),
                       15.verticalSpace,
+                      if(logic.sliders.length>0)
                       ...List.generate(
                         logic.sliders.length,
                         (index) {

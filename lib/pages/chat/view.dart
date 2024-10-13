@@ -116,6 +116,12 @@ class ChatPage extends StatelessWidget {
                               '${mainController.authUser.value?.name} & ${logic
                                   .communityModel.users!.where((el) =>
                               el.id != mainController.authUser.value?.id)
+                                  .firstOrNull?.seller_name!.length !=0 ?logic
+                                  .communityModel.users!.where((el) =>
+                              el.id != mainController.authUser.value?.id)
+                                  .firstOrNull?.seller_name : logic
+                                  .communityModel.users!.where((el) =>
+                              el.id != mainController.authUser.value?.id)
                                   .firstOrNull?.name}',
                               style: H3WhiteTextStyle,
                             )),

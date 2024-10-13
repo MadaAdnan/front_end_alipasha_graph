@@ -142,7 +142,7 @@ class CommunitiesPage extends StatelessWidget {
                                           text: TextSpan(
                                             style: H3BlackTextStyle.copyWith(overflow: TextOverflow.ellipsis),
                                         children: [
-                                          TextSpan(text:  '${logic.communities[index].type != 'chat' ? logic.communities[index].name : '${mainController.authUser.value?.name} & ${friend?.name}'}',style:H3BlackTextStyle.copyWith(overflow: TextOverflow.ellipsis,), ),
+                                          TextSpan(text:  '${logic.communities[index].type != 'chat' ? logic.communities[index].name : '${mainController.authUser.value?.name} & ${friend?.seller_name!.length!=0?friend?.seller_name:friend?.name}'}',style:H3BlackTextStyle.copyWith(overflow: TextOverflow.ellipsis,), ),
                                           if(logic.communities[index].type == 'chat')TextSpan(text: ' (محادثة) ',style: H5RedTextStyle),
                                           if(logic.communities[index].type == 'group')TextSpan(text: ' (مجموعة) ',style: H5RedTextStyle),
                                           if(logic.communities[index].type == 'channel')TextSpan(text: ' (قناة) ',style: H5RedTextStyle),

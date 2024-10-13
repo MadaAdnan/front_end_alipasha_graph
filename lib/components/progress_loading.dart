@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 
 class ProgressLoading extends StatelessWidget {
@@ -8,8 +9,8 @@ final double?height;
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: width,
-      height: height,
+      width: width?? 0.3.sw,
+      height: height??0.3.sw,
       child:  Lottie.asset('assets/json/loading.json'),
     );
   }

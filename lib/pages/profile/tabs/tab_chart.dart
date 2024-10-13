@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:ali_pasha_graph/Global/main_controller.dart';
+import 'package:ali_pasha_graph/components/progress_loading.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/enums.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
@@ -75,9 +76,11 @@ class TabChart extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                if(logic.myProducts.length>0)
                 Text('الإعلانات بين المنتجات',style: H4GrayTextStyle,),
                 15.verticalSpace,
                 /// Header
+                if(logic.myAdvices.length>0)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -107,6 +110,7 @@ class TabChart extends StatelessWidget {
                         style: H2BlackTextStyle,
                       ),
                     ),
+
                     Container(
                       alignment: Alignment.center,
                       margin: EdgeInsets.only(bottom: 0.001.sh),
@@ -125,7 +129,7 @@ class TabChart extends StatelessWidget {
                 Obx(() {
                   if (mainController.loading.value) {
                     return Center(
-                      child: CircularProgressIndicator(),
+                      child: Container(width: 0.3.sw,child: ProgressLoading(),),
                     );
                   }
                   return Column(
@@ -179,6 +183,7 @@ class TabChart extends StatelessWidget {
                         },
                       ),
                       15.verticalSpace,
+                      if(logic.sliders.length>0)
                       Text('إعلانات السلايدر',style: H4GrayTextStyle,),
                       15.verticalSpace,
                       ...List.generate(

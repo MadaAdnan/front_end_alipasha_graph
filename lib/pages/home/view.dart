@@ -39,11 +39,57 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: Obx(() {
+        return Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              if(mainController.carts.length > 0)
+                Stack(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Get.toNamed(CART_SELLER);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(0.02.sw),
+                        decoration:  BoxDecoration(
+                          color: RedColor.withOpacity(0.5),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(Icons.shopping_cart, color: WhiteColor,),
+                      ),
+                    ),
+                    Positioned(child: Badge.count(
+                      count: mainController.carts.length,
+                      backgroundColor: RedColor,), top: 0, right: 0,)
+                  ],
+                ),
+              SizedBox(height: 0.02.sh,),
+              InkWell(
+                onTap: () {
+                  Get.toNamed(CREATE_PRODUCT_PAGE);
+                },
+                child: Container(
+                  padding: EdgeInsets.all(0.02.sw),
+                  decoration:  BoxDecoration(
+                    color: RedColor.withOpacity(0.5),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(FontAwesomeIcons.plus, color: WhiteColor,),
+                ),
+              ),
+            ],
+          ),
+        );
+      }),
+      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       backgroundColor: WhiteColor,
       body: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollInfo) {
           if (scrollInfo.metrics.pixels >=
-                  scrollInfo.metrics.maxScrollExtent * 0.80 &&
+              scrollInfo.metrics.maxScrollExtent * 0.80 &&
               !mainController.loading.value &&
               logic.hasMorePage.value) {
             logic.nextPage();
@@ -61,196 +107,219 @@ class HomePage extends StatelessWidget {
         },
         child: Column(
           children: [
-
             HomeAppBarComponent(),
-            Expanded(child: Container(child: Obx(() {
-              return ListView(
-                controller: _scrollController,
-                children: [
-
-                  InkWell(
-                    onTap: () {
-                      Get.toNamed(PROFILE_PAGE);
-                    },
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
-                      width: 1.sw,
-                      height: 0.06.sh,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.all(0.002.sw),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: GrayDarkColor,
-                            ),
-                            child: Container(
+            Expanded(child: Container(
+              child: Obx(() {
+                return ListView(
+                  controller: _scrollController,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Get.toNamed(PROFILE_PAGE);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
+                        width: 1.sw,
+                        height: 0.06.sh,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Container(
                               padding: EdgeInsets.all(0.002.sw),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: WhiteColor,
+                                color: GrayDarkColor,
                               ),
                               child: Container(
                                 padding: EdgeInsets.all(0.002.sw),
-                                decoration: BoxDecoration(shape: BoxShape.circle),
-                                child: Obx(() {
-                                  return Container(
-                                    width: 0.1.sw,
-                                    height: 0.1.sw,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        image: DecorationImage(
-                                            image: getLogo() != null
-                                                ? NetworkImage('${getLogo()}')
-                                                : getUserImage())),
-                                  );
-                                }),
-                              ),
-                            ),
-                          ),
-                          10.horizontalSpace,
-                          Expanded(
-                            child: InkWell(
-                              onTap: () {
-                                Get.toNamed(CREATE_PRODUCT_PAGE);
-                              },
-                              child: Container(
-                                padding:
-                                EdgeInsets.symmetric(horizontal: 0.02.sw),
-                                alignment: Alignment.centerRight,
-                                height: 0.05.sh,
                                 decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
                                   color: WhiteColor,
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: GrayDarkColor, blurRadius: 3),
-                                    BoxShadow(
-                                        color: GrayDarkColor.withOpacity(0.4),
-                                        blurRadius: 3),
-                                  ],
-                                  borderRadius: BorderRadius.circular(50.w),
                                 ),
-                                child: Text(
-                                  'ماذا تفكر أن تنشر ...',
-                                  style: H3GrayTextStyle,
+                                child: Container(
+                                  padding: EdgeInsets.all(0.002.sw),
+                                  decoration:
+                                  BoxDecoration(shape: BoxShape.circle),
+                                  child: Obx(() {
+                                    return Container(
+                                      width: 0.1.sw,
+                                      height: 0.1.sw,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          image: DecorationImage(
+                                              image: getLogo() != null
+                                                  ? NetworkImage(
+                                                  '${getLogo()}')
+                                                  : getUserImage())),
+                                    );
+                                  }),
                                 ),
                               ),
                             ),
-                          ),
+                            10.horizontalSpace,
+                            Expanded(
+                              child: InkWell(
+                                onTap: () {
+                                  Get.toNamed(CREATE_PRODUCT_PAGE);
+                                },
+                                child: Container(
+                                  padding:
+                                  EdgeInsets.symmetric(horizontal: 0.02.sw),
+                                  alignment: Alignment.centerRight,
+                                  height: 0.05.sh,
+                                  decoration: BoxDecoration(
+                                    color: WhiteColor,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: GrayDarkColor,
+                                          blurRadius: 3),
+                                      BoxShadow(
+                                          color: GrayDarkColor.withOpacity(
+                                              0.4),
+                                          blurRadius: 3),
+                                    ],
+                                    borderRadius: BorderRadius.circular(50.w),
+                                  ),
+                                  child: Text(
+                                    'ماذا تفكر أن تنشر ...',
+                                    style: H3GrayTextStyle,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      color: WhiteColor,
+                      height: 0.103.sh,
+                      padding: EdgeInsets.symmetric(vertical: 0.002.sh),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          if (mainController.categories.length == 0)
+                            ...List.generate(4, (index) => _buildSection()),
+                          ...List.generate(
+                              mainController.categories
+                                  .where((el) => el.type == 'product')
+                                  .length >
+                                  4
+                                  ? 4
+                                  : mainController.categories
+                                  .where((el) => el.type == 'product')
+                                  .length,
+                                  (index) =>
+                                  SectionHomeCard(
+                                      section: mainController.categories
+                                          .where((el) => el.type == 'product')
+                                          .toList()[index])),
+                          _viewMoreButton(
+                              title: 'عرض المزيد',
+                              color: ShowMoreColor,
+                              img: "assets/images/png/show_more.jpg"),
                         ],
                       ),
                     ),
-                  ),
-                  Container(
-                    color: WhiteColor,
-                    height: 0.103.sh,
-                    padding: EdgeInsets.symmetric(vertical: 0.002.sh),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        if (mainController.categories.length == 0)
-                          ...List.generate(4, (index) => _buildSection()),
-                        ...List.generate(
-                            mainController.categories.where((el)=>el.type=='product').length > 4
-                                ? 4
-                                : mainController.categories.where((el)=>el.type=='product').length,
-                                (index) => SectionHomeCard(
-                                section: mainController.categories.where((el)=>el.type=='product').toList()[index])),
-                        _viewMoreButton(
-                            title: 'عرض المزيد',
-                            color: ShowMoreColor,
-                            img: "assets/images/png/show_more.jpg"),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    height: 0.157.sh,
-                    width: double.infinity,
-                    color: WhiteColor,
-                    child: ListView(
-                      padding: EdgeInsets.symmetric(vertical: 10.h),
-                      semanticChildCount: 4,
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        if (logic.sellers.length == 0)
-                          ...List.generate(6, (i) {
-                            return _buildSeller();
-                          })
-                        else
-                          ...List.generate(logic.sellers.length, (index) {
-                            return SellerHomePageCard(
-                              seller: logic.sellers[index],
-                            );
-                          }),
-                      ],
-                    ),
-                  ),
-                  Divider(
-                    color: GrayDarkColor,
-                    height: 0.0017.sh,
-                  ),
-                  if(logic.loading.value)...List.generate(4, (index)=>PostCardLoading()),
-                  ...List.generate(logic.products.length + (logic.loading.value ? 1 : 0),  ( index) {
-                    int i = 0;
-                    if (mainController.advices.length > 0) {
-                      i = index % mainController.advices.length;
-                    }
-
-                    if (index < logic.products.length) {
-                      switch (logic.products[index].type) {
-                        case 'job':
-                        case 'search_job':
-                        case "tender":
-                          return Column(
-                            children: [
-                              JobCard(post: logic.products[index]),
-                              if (index % 5 == 0 &&
-                                  i < mainController.advices.length)
-                                AdviceComponent(
-                                  advice: mainController.advices[i],
-                                )
-                            ],
-                          );
-                        default:
-                          return Column(
-                            children: [
-                              PostCard(post: logic.products[index]),
-                              if (index % 5 == 0 &&
-                                  i < mainController.advices.length)
-                                AdviceComponent(
-                                  advice: mainController.advices[i],
-                                )
-                            ],
-                          );
-                      }
-                    }
-                    if (logic.loading.value) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                    Container(
+                      height: 0.157.sh,
+                      width: double.infinity,
+                      color: WhiteColor,
+                      child: ListView(
+                        padding: EdgeInsets.symmetric(vertical: 10.h),
+                        semanticChildCount: 4,
+                        scrollDirection: Axis.horizontal,
                         children: [
-                          Flexible(child: Container(height: 0.06.sh,child: ProgressLoading())),
-                          Flexible(child: Text('جاري جلب المزيد',style: H4GrayTextStyle,))
+                          if (logic.sellers.length == 0)
+                            ...List.generate(6, (i) {
+                              return _buildSeller();
+                            })
+                          else
+                            ...List.generate(logic.sellers.length, (index) {
+                              return SellerHomePageCard(
+                                seller: logic.sellers[index],
+                              );
+                            }),
                         ],
-                      );
-                    }
-                    return Container();
-                  },),
+                      ),
+                    ),
+                    Divider(
+                      color: GrayDarkColor,
+                      height: 0.0017.sh,
+                    ),
+                    if (logic.loading.value)
+                      ...List.generate(4, (index) => PostCardLoading()),
+                    ...List.generate(
+                      logic.products.length + (logic.loading.value ? 1 : 0),
+                          (index) {
+                        int i = 0;
+                        if (mainController.advices.length > 0) {
+                          i = index % mainController.advices.length;
+                        }
 
-                  if (!logic.hasMorePage.value)
-                    Center(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Text(
-                            'لا يوجد مزيد من النتائج',
-                            style: H3GrayTextStyle,
-                          ),
-                        )),
-                ],
-              );
-            }),))
+                        if (index < logic.products.length) {
+                          switch (logic.products[index].type) {
+                            case 'job':
+                            case 'search_job':
+                            case "tender":
+                              return Column(
+                                children: [
+                                  JobCard(post: logic.products[index]),
+                                  if (index % 5 == 0 &&
+                                      i < mainController.advices.length)
+                                    AdviceComponent(
+                                      advice: mainController.advices[i],
+                                    )
+                                ],
+                              );
+                            default:
+                              return Column(
+                                children: [
+                                  PostCard(post: logic.products[index]),
+                                  if (index % 5 == 0 &&
+                                      i < mainController.advices.length)
+                                    AdviceComponent(
+                                      advice: mainController.advices[i],
+                                    )
+                                ],
+                              );
+                          }
+                        }
+                        if (logic.loading.value) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Flexible(
+                                  child: Container(
+                                      height: 0.06.sh,
+                                      child: ProgressLoading())),
+                              Flexible(
+                                  child: Text(
+                                    'جاري جلب المزيد',
+                                    style: H4GrayTextStyle,
+                                  ))
+                            ],
+                          );
+                        }
+                        return Container();
+                      },
+                    ),
+                    if (!logic.hasMorePage.value)
+                      Center(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 8.0),
+                            child: Text(
+                              'لا يوجد مزيد من النتائج',
+                              style: H3GrayTextStyle,
+                            ),
+                          )),
+                  ],
+                );
+              }),
+            ))
           ],
         ),
       ),
@@ -305,52 +374,56 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _buildSection() {
-    return Shimmer.fromColors(child: Container(
-      padding: EdgeInsets.symmetric(vertical: 0.001.sw),
-      height: 0.096.sh,
-      width: 0.185.sw,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30.w),
-      ),
-      margin: EdgeInsets.symmetric(horizontal: 0.0059.sw),
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              padding: EdgeInsets.all(0.02.sw),
-              height: 0.150.sw,
-              width: 0.150.sw,
-              decoration: BoxDecoration(
-                color: GrayLightColor,
-                borderRadius: BorderRadius.circular(0.03.sw),
-              ),
-              child: Container(
-                color: GrayLightColor,
-              ),
-            ),
-          ]),
-    ), baseColor: GrayLightColor, highlightColor: GrayWhiteColor);
+    return Shimmer.fromColors(
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: 0.001.sw),
+          height: 0.096.sh,
+          width: 0.185.sw,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(30.w),
+          ),
+          margin: EdgeInsets.symmetric(horizontal: 0.0059.sw),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  padding: EdgeInsets.all(0.02.sw),
+                  height: 0.150.sw,
+                  width: 0.150.sw,
+                  decoration: BoxDecoration(
+                    color: GrayLightColor,
+                    borderRadius: BorderRadius.circular(0.03.sw),
+                  ),
+                  child: Container(
+                    color: GrayLightColor,
+                  ),
+                ),
+              ]),
+        ),
+        baseColor: GrayLightColor,
+        highlightColor: GrayWhiteColor);
   }
-
 
   Widget _buildSeller() {
-    return Shimmer.fromColors(child: Container(
-      width: 0.27.sw,
-      margin: EdgeInsets.symmetric(horizontal: 10.w),
-      decoration: BoxDecoration(
-        color: GrayLightColor,
-        borderRadius: BorderRadius.circular(15.r),
-      ),
-      child: Container(
-        padding: EdgeInsets.only(top: 20.h, right: 20.w),
-        alignment: Alignment.topRight,
-        child: CircleAvatar(
-          backgroundColor: WhiteColor,
-          radius: 40.r,
+    return Shimmer.fromColors(
+        child: Container(
+          width: 0.27.sw,
+          margin: EdgeInsets.symmetric(horizontal: 10.w),
+          decoration: BoxDecoration(
+            color: GrayLightColor,
+            borderRadius: BorderRadius.circular(15.r),
+          ),
+          child: Container(
+            padding: EdgeInsets.only(top: 20.h, right: 20.w),
+            alignment: Alignment.topRight,
+            child: CircleAvatar(
+              backgroundColor: WhiteColor,
+              radius: 40.r,
+            ),
+          ),
         ),
-      ),
-    ), baseColor: GrayLightColor, highlightColor: GrayWhiteColor);
+        baseColor: GrayLightColor,
+        highlightColor: GrayWhiteColor);
   }
-
 }

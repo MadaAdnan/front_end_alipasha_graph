@@ -377,25 +377,30 @@ class ProductsPage extends StatelessWidget {
                                                 ],
                                               ),
                                             ),
-                                            Column(
-                                              children: [
-                                                Text(
-                                                  "${logic.seller.value?.total_views}"
-                                                      .toFormatNumberK(),
-                                                  style: H0RegularDark.copyWith(
-                                                      fontWeight:
-                                                          FontWeight.w900,
-                                                      color:
-                                                          color),
-                                                  textDirection:
-                                                      TextDirection.ltr,
-                                                ),
-                                                Text(
-                                                  "مشاهدات",
-                                                  style: H4RegularDark,
-                                                )
-                                              ],
-                                            ),
+                                           InkWell(
+                                             onTap: (){
+
+                                             },
+                                             child:  Column(
+                                               children: [
+                                                 Text(
+                                                   "${logic.seller.value?.total_views}"
+                                                       .toFormatNumberK(),
+                                                   style: H0RegularDark.copyWith(
+                                                       fontWeight:
+                                                       FontWeight.w900,
+                                                       color:
+                                                       color),
+                                                   textDirection:
+                                                   TextDirection.ltr,
+                                                 ),
+                                                 Text(
+                                                   "مشاهدات",
+                                                   style: H4RegularDark,
+                                                 )
+                                               ],
+                                             ),
+                                           ),
                                             InkWell(
                                               child: Column(
                                                 children: [

@@ -52,152 +52,153 @@ class PostCard extends StatelessWidget {
             decoration: BoxDecoration(color: WhiteColor),
             height: 0.12.sh,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Get.toNamed(PRODUCTS_PAGE, arguments: post.user);
-                      },
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            backgroundColor: GrayLightColor,
-                            backgroundImage:
-                                NetworkImage("${post.user?.image}"),
-                            minRadius: 0.018.sh,
-                            maxRadius: 0.023.sh,
-                          ),
-                          10.horizontalSpace,
-                          Column(
-                            children: [
-                              if (post.user?.seller_name != null)
-                                Container(
-                                  width: 0.6.sw,
-                                  child: Text(
-                                    "${post.user?.seller_name}",
-                                    style: H1BlackTextStyle,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              Container(
-                                width: 0.6.sw,
-                                child: Text(
-                                  '${post.city?.name ?? ''} - ${post.category?.name ?? ''} - ${post.sub1?.name ?? ''}',
-                                  style: H4GrayOpacityTextStyle,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                    Obx(() {
-                      if (mainController.authUser.value != null) {
-                        // Check Is Follower
-                        if (mainController.authUser.value != null &&
-                            mainController.authUser.value!.followers != null &&
-                            post.user != null &&
-                            post.user!.id != null) {
-                          int index = mainController.authUser.value!.followers!
-                              .indexWhere(
-                            (el) => el.seller?.id == post.user?.id,
-                          );
+               Flexible(child:  Row(
+                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                 children: [
+                   InkWell(
+                     onTap: () {
+                       Get.toNamed(PRODUCTS_PAGE, arguments: post.user);
+                     },
+                     child: Row(
+                       children: [
+                         CircleAvatar(
+                           backgroundColor: GrayLightColor,
+                           backgroundImage:
+                           NetworkImage("${post.user?.image}"),
+                           minRadius: 0.018.sh,
+                           maxRadius: 0.023.sh,
+                         ),
+                         10.horizontalSpace,
+                         Column(
+                           children: [
+                             if (post.user?.seller_name != null)
+                               Container(
+                                 width: 0.6.sw,
+                                 child: Text(
+                                   "${post.user?.seller_name}",
+                                   style: H1BlackTextStyle,
+                                   overflow: TextOverflow.ellipsis,
+                                 ),
+                               ),
+                             Container(
+                               width: 0.6.sw,
+                               child: Text(
+                                 '${post.city?.name ?? ''} - ${post.category?.name ?? ''} - ${post.sub1?.name ?? ''}',
+                                 style: H4GrayOpacityTextStyle,
+                                 overflow: TextOverflow.ellipsis,
+                               ),
+                             )
+                           ],
+                         )
+                       ],
+                     ),
+                   ),
+                   Obx(() {
+                     if (mainController.authUser.value != null) {
+                       // Check Is Follower
+                       if (mainController.authUser.value != null &&
+                           mainController.authUser.value!.followers != null &&
+                           post.user != null &&
+                           post.user!.id != null) {
+                         int index = mainController.authUser.value!.followers!
+                             .indexWhere(
+                               (el) => el.seller?.id == post.user?.id,
+                         );
 
-                          if (index > -1) {
-                            return Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 0.009.sw, vertical: 0.004.sh),
-                              decoration: BoxDecoration(
-                                  color: RedColor,
-                                  borderRadius: BorderRadius.circular(15.r),
-                                  border: Border.all(color: RedColor)),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    FontAwesomeIcons.solidBell,
-                                    color: WhiteColor,
-                                    size: 0.05.sw,
-                                  ),
-                                  3.horizontalSpace,
-                                  Text(
-                                    "أتابعه",
-                                    style: H5WhiteTextStyle,
-                                  )
-                                ],
-                              ),
-                            );
-                          } else if (post.user?.id !=
-                              mainController.authUser.value?.id) {
-                            return Obx(() {
-                              return InkWell(
-                                onTap: () {
-                                  if (loading.value == false) {
-                                    follow();
-                                  }
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 0.009.sw, vertical: 0.004.sh),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15.r),
-                                      border: Border.all(color: RedColor)),
-                                  child: Row(
-                                    children: [
-                                      if (loading.value == true)
-                                        Center(
-                                          child: AnimateIcon(
-                                            key: UniqueKey(),
-                                            onTap: () {},
-                                            iconType:
-                                                IconType.continueAnimation,
-                                            height: 0.055.sw,
-                                            width: 0.055.sw,
-                                            color: RedColor,
-                                            animateIcon: AnimateIcons.bell,
-                                          ),
-                                        ),
-                                      if (loading.value == false)
-                                        Icon(
-                                          FontAwesomeIcons.bell,
-                                          color: RedColor,
-                                          size: 0.05.sw,
-                                        ),
-                                      3.horizontalSpace,
-                                      Text(
-                                        "متابعة",
-                                        style: H5RedTextStyle,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              );
-                            });
-                          } else {
-                            return Container();
-                          }
-                        } else {
-                          return Container();
-                        }
-                      } else {
-                        return Container();
-                      }
-                    })
-                  ],
-                ),
+                         if (index > -1) {
+                           return Container(
+                             padding: EdgeInsets.symmetric(
+                                 horizontal: 0.009.sw, vertical: 0.004.sh),
+                             decoration: BoxDecoration(
+                                 color: RedColor,
+                                 borderRadius: BorderRadius.circular(15.r),
+                                 border: Border.all(color: RedColor)),
+                             child: Row(
+                               children: [
+                                 Icon(
+                                   FontAwesomeIcons.solidBell,
+                                   color: WhiteColor,
+                                   size: 0.05.sw,
+                                 ),
+                                 3.horizontalSpace,
+                                 Text(
+                                   "أتابعه",
+                                   style: H5WhiteTextStyle,
+                                 )
+                               ],
+                             ),
+                           );
+                         } else if (post.user?.id !=
+                             mainController.authUser.value?.id) {
+                           return Obx(() {
+                             return InkWell(
+                               onTap: () {
+                                 if (loading.value == false) {
+                                   follow();
+                                 }
+                               },
+                               child: Container(
+                                 padding: EdgeInsets.symmetric(
+                                     horizontal: 0.009.sw, vertical: 0.004.sh),
+                                 decoration: BoxDecoration(
+                                     borderRadius: BorderRadius.circular(15.r),
+                                     border: Border.all(color: RedColor)),
+                                 child: Row(
+                                   children: [
+                                     if (loading.value == true)
+                                       Center(
+                                         child: AnimateIcon(
+                                           key: UniqueKey(),
+                                           onTap: () {},
+                                           iconType:
+                                           IconType.continueAnimation,
+                                           height: 0.055.sw,
+                                           width: 0.055.sw,
+                                           color: RedColor,
+                                           animateIcon: AnimateIcons.bell,
+                                         ),
+                                       ),
+                                     if (loading.value == false)
+                                       Icon(
+                                         FontAwesomeIcons.bell,
+                                         color: RedColor,
+                                         size: 0.05.sw,
+                                       ),
+                                     3.horizontalSpace,
+                                     Text(
+                                       "متابعة",
+                                       style: H5RedTextStyle,
+                                     )
+                                   ],
+                                 ),
+                               ),
+                             );
+                           });
+                         } else {
+                           return Container();
+                         }
+                       } else {
+                         return Container();
+                       }
+                     } else {
+                       return Container();
+                     }
+                   })
+                 ],
+               ),flex: 3,),
                 15.verticalSpace,
-                Container(
-                  width: 1.sw,
-                  height: 0.044.sh,
-                  child: Text(
-                    "${post.expert!.length.isGreaterThan(5) ? post.expert : post.name}",
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                    style: H3GrayTextStyle,
-                  ),
-                )
+               Flexible(child:  Container(
+                 width: 1.sw,
+
+                 child: Text(
+                   "${post.expert!.length.isGreaterThan(5) ? post.expert : post.name}",
+                   overflow: TextOverflow.ellipsis,
+                   maxLines: 2,
+                   style: H3GrayTextStyle,
+                 ),
+               ),flex: 2,)
               ],
             ),
           ),

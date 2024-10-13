@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/components/fields_components/input_component.dart';
 import 'package:ali_pasha_graph/components/product_components/mini_post_card.dart';
+import 'package:ali_pasha_graph/components/product_components/minimize_details_product_component.dart';
 import 'package:ali_pasha_graph/components/product_components/minimize_details_product_component_loading.dart';
 import 'package:ali_pasha_graph/components/product_components/post_card.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
@@ -71,33 +72,37 @@ class TabProduct extends StatelessWidget {
                 ),
               );
             }
-            return Expanded(
+            return Flexible(
               child: ListView.builder(
-                itemBuilder: (context, index) => MiniPostCard(
-                  editAction: () {
-                    print(logic.products[index].type);
-                    switch (logic.products[index].type) {
-                      case "service":
-                        Get.offAndToNamed(Edit_SERVICE_PAGE,
-                            arguments: logic.products[index].id);
-                        break;
-                      case "tender":
-                        Get.offAndToNamed(Edit_TENDER_PAGE,
-                            arguments: logic.products[index].id);
-                        break;
-                      case "job":
-                      case "search_job":
-                        Get.offAndToNamed(Edit_JOB_PAGE,
-                            arguments: logic.products[index].id);
-                        break;
-                      case "product":
-                        Get.offAndToNamed(Edit_PRODUCT_PAGE,
-                            arguments: logic.products[index].id);
-                        break;
-                    }
-                  },
-                  post: logic.products[index],
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
+                itemBuilder: (context, index) {
+                  switch (logic.products[index].type) {
+                    case "service":
+                      return MinimizeDetailsServiceComponent(post: logic.products[index],TitleColor: DarkColor,canEdit: true,onClick: (){
+                        Get.toNamed(PRODUCT_PAGE,arguments:logic.products[index].id );
+                      },);
+                    case "tender":
+                      return MinimizeDetailsTenderComponent(post: logic.products[index],TitleColor: DarkColor,canEdit: true,onClick: (){
+                        Get.toNamed(PRODUCT_PAGE,arguments:logic.products[index].id );
+                      },);
+                    case "job":
+                    case "search_job":
+                      return MinimizeDetailsJobComponent(post: logic.products[index],TitleColor: DarkColor,canEdit: true,onClick: (){
+                        Get.toNamed(PRODUCT_PAGE,arguments:logic.products[index].id );
+                      },);
+                      break;
+                    case "product":
+                     return MinimizeDetailsProductComponent(post: logic.products[index],TitleColor: DarkColor,canEdit: true,onClick: (){
+                       Get.toNamed(PRODUCT_PAGE,arguments:logic.products[index].id );
+                     },);
+                      break;
+                    default:
+                      return MinimizeDetailsServiceComponent(post: logic.products[index],TitleColor: DarkColor,onClick: (){
+                        Get.toNamed(PRODUCT_PAGE,arguments:logic.products[index].id );
+                      },);
+                  }
+
+                },
                 itemCount: logic.products.length,
               ),
             );

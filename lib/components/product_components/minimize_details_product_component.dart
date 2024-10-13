@@ -21,12 +21,14 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
     this.onClick,
     this.cartLoading = false,
     this.TitleColor,
+    this.canEdit,
   });
 
   final Color? TitleColor;
   final ProductModel post;
   final Function()? onClick;
   final bool? cartLoading;
+  final bool? canEdit;
   MainController mainController = Get.find<MainController>();
 
   @override
@@ -54,6 +56,63 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                           bottomRight: Radius.circular(30.r)),
                       image: DecorationImage(
                           image: CachedNetworkImageProvider("${post.image}"))),
+                  child: Stack(
+                    alignment: Alignment.topCenter,
+                    children: [
+                      if(canEdit==true)
+                     Positioned(child:  Container(
+                       decoration: BoxDecoration(color: WhiteColor.withOpacity(0.6),shape: BoxShape.circle),
+                       child: IconButton(onPressed: (){
+                         Get.toNamed(Edit_PRODUCT_PAGE,arguments: post.id);
+                       }, icon: Icon(FontAwesomeIcons.edit,color: Colors.black,)),
+                     ),top: 0.05.sh,),
+                      if(post.active=='pending')
+                        Container(
+                          alignment: Alignment.center,
+                          width: 0.2.sw,
+                          height: 0.03.sh,
+                          decoration: BoxDecoration(
+                              color: OrangeColor,
+                              borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(20.r),
+                                  bottomLeft: Radius.circular(20.r))),
+                          child: Text(
+                            'قيد المراجعة',
+                            style: H5WhiteTextStyle,
+                          ),
+                        ),
+                      if(post.active=='block')
+                        Container(
+                          alignment: Alignment.center,
+                          width: 0.2.sw,
+                          height: 0.03.sh,
+                          decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(20.r),
+                                  bottomLeft: Radius.circular(20.r))),
+                          child: Text(
+                            'محظور',
+                            style: H5WhiteTextStyle,
+                          ),
+                        ),
+                      if(post.level=='special' && post.active=='active')
+                        Container(
+                          alignment: Alignment.center,
+                          width: 0.2.sw,
+                          height: 0.03.sh,
+                          decoration: BoxDecoration(
+                              color: GoldColor,
+                              borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(20.r),
+                                  bottomLeft: Radius.circular(20.r))),
+                          child: Text(
+                            'مميز',
+                            style: H5WhiteTextStyle,
+                          ),
+                        )
+                    ],
+                  ),
                 ),
                 Expanded(
                     child: Container(
@@ -84,7 +143,7 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                               style: H5GrayTextStyle),
                       ])),
                       Text(
-                        "${post.expert!.length < 5 && post.name!.length > 5 ? post.name : post.expert}",
+                        "${post.name!.length > 5  ? post.name : post.expert}",
                         style: H4RegularDark,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -145,7 +204,7 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                                   width: 0.007.sw,
                                 ),
                                 Text(
-                                  "${post.created_at} 2024-05-03",
+                                  "${post.created_at} ",
                                   style: H5BlackTextStyle,
                                 )
                               ],
@@ -165,167 +224,7 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
     );
   }
 
-/* getCol() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding:
-              EdgeInsets.symmetric(horizontal: 0.02.sw, vertical: 0.004.sh),
-          decoration: const BoxDecoration(
-              border: Border(
-            bottom: BorderSide(
-              color: GrayDarkColor,
-            ),
-          )),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              RichText(
-                overflow: TextOverflow.ellipsis,
-                text: TextSpan(
-                  children: [
-                    TextSpan(text: "معرف المنتج : ", style: H4BlackTextStyle),
-                    TextSpan(text: "${post.id}", style: H4RedTextStyle),
-                  ],
-                ),
-              ),
-              Row(
-                children: [
-                  Icon(
-                    FontAwesomeIcons.eye,
-                    size: 0.04.sw,
-                  ),
-                  10.horizontalSpace,
-                  Text(
-                    "${post.views_count}",
-                    style: H4RedTextStyle,
-                  )
-                ],
-              ),
-              Row(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      mainController.addToCart(product: post);
-                    },
-                    child: Icon(
-                      FontAwesomeIcons.edit,
-                      size: 0.05.sw,
-                      color: OrangeColor,
-                    ),
-                  ),
-                  50.horizontalSpace,
-                ],
-              )
-            ],
-          ),
-        ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding:
-                  EdgeInsets.symmetric(vertical: 0.003.sh, horizontal: 0.02.sw),
-              width: 0.4.sw,
-              height: 0.19.sh,
-              child: Stack(
-                children: [
-                  Container(
-                    width: 0.8.sw,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30.r),
-                        image: DecorationImage(
-                            image: NetworkImage('${post.image}'),
-                            fit: BoxFit.fitWidth)),
-                  ),
-                  if (post.level == 'special')
-                    Positioned(
-                      top: 10,
-                      child: Container(
-                        alignment: Alignment.center,
-                        //padding: EdgeInsets.symmetric(horizontal: 0.02.sw,vertical: 0.003.sh),
-                        width: 0.4.sw,
-                        height: 0.02.sh,
-
-                        decoration:
-                            BoxDecoration(color: DarkColor.withOpacity(0.6)),
-                        child: Text(
-                          'مميز',
-                          style: H4OrangeTextStyle,
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(
-                  horizontal: 0.003.sw, vertical: 0.006.sh),
-              width: 0.6.sw,
-              child: Column(
-                children: [
-                  Text(
-                    "${post.expert}",
-                    style: H3BlackTextStyle,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 3,
-                  ),
-                  50.verticalSpace,
-                  Row(
-                    children: [
-                      Text(
-                        '${post.category?.name} ',
-                        style: H4GrayOpacityTextStyle,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text(
-                        ' - ${post.sub1?.name} ',
-                        style: H4GrayOpacityTextStyle,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      if (post.active != '')
-                        Container(
-                          width: 0.2.sw,
-                          padding: const EdgeInsets.all(8),
-                          margin: EdgeInsets.only(top: 0.04.sh),
-                          decoration: BoxDecoration(
-                            color: post.active!.active2Color(),
-                            borderRadius: BorderRadius.circular(15.r),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(
-                                '${post.active!.active2Arabic()}',
-                                style: H4WhiteTextStyle,
-                              ),
-                              Icon(
-                                post.active!.active2Icon(),
-                                color: WhiteColor,
-                                size: 0.03.sw,
-                              )
-                            ],
-                          ),
-                        ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ],
-        )
-      ],
-    );
-  }*/
 }
-
 
 class MinimizeDetailsJobComponent extends StatelessWidget {
   MinimizeDetailsJobComponent({
@@ -334,12 +233,14 @@ class MinimizeDetailsJobComponent extends StatelessWidget {
     this.onClick,
     this.cartLoading = false,
     this.TitleColor,
+    this.canEdit,
   });
 
   final Color? TitleColor;
   final ProductModel post;
   final Function()? onClick;
   final bool? cartLoading;
+  final bool? canEdit;
   MainController mainController = Get.find<MainController>();
 
   @override
@@ -366,26 +267,87 @@ class MinimizeDetailsJobComponent extends StatelessWidget {
                           topRight: Radius.circular(30.r),
                           bottomRight: Radius.circular(30.r)),
                       image: DecorationImage(
-                          image: CachedNetworkImageProvider("${post.user?.image}"),fit: BoxFit.fitHeight)),
+                          image:
+                              CachedNetworkImageProvider("${post.user?.image}"),
+                          fit: BoxFit.fitHeight)),
+                  child: Stack(
+                    alignment: Alignment.topCenter,
+                    children: [
+                      if(canEdit==true)
+                        Positioned(child:  Container(
+                          decoration: BoxDecoration(color: WhiteColor.withOpacity(0.6),shape: BoxShape.circle),
+                          child: IconButton(onPressed: (){
+                            Get.toNamed(Edit_JOB_PAGE,arguments: post.id);
+                          }, icon: Icon(FontAwesomeIcons.edit,color: Colors.black,)),
+                        ),top: 0.05.sh,),
+                      if(post.active=='pending')
+                      Container(
+                        alignment: Alignment.center,
+                        width: 0.2.sw,
+                        height: 0.03.sh,
+                        decoration: BoxDecoration(
+                            color: OrangeColor,
+                            borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(20.r),
+                                bottomLeft: Radius.circular(20.r))),
+                        child: Text(
+                          'قيد المراجعة',
+                          style: H5WhiteTextStyle,
+                        ),
+                      ),
+                      if(post.active=='block')
+                      Container(
+                        alignment: Alignment.center,
+                        width: 0.2.sw,
+                        height: 0.03.sh,
+                        decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(20.r),
+                                bottomLeft: Radius.circular(20.r))),
+                        child: Text(
+                          'محظور',
+                          style: H5WhiteTextStyle,
+                        ),
+                      ),
+                      if(post.level=='special' && post.active=='active')
+                        Container(
+                          alignment: Alignment.center,
+                          width: 0.2.sw,
+                          height: 0.03.sh,
+                          decoration: BoxDecoration(
+                              color: GoldColor,
+                              borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(20.r),
+                                  bottomLeft: Radius.circular(20.r))),
+                          child: Text(
+                            'مميز',
+                            style: H5WhiteTextStyle,
+                          ),
+                        )
+                    ],
+                  ),
                 ),
                 Expanded(
                     child: Container(
-                      height: 0.3.sw,
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 0.01.sw, vertical: 0.002.sh),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                  height: 0.3.sw,
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 0.01.sw, vertical: 0.002.sh),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SellerNameComponent(
+                          color: TitleColor,
+                          sellerName: "${post.user?.seller_name ?? ''}",
+                          isVerified: post.user?.is_verified == true),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SellerNameComponent(
-                              color: TitleColor,
-                              sellerName: "${post.user?.seller_name ?? ''}",
-                              isVerified: post.user?.is_verified == true),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                            Flexible(flex: 3,child: RichText(
+                          Flexible(
+                            flex: 3,
+                            child: RichText(
                                 overflow: TextOverflow.ellipsis,
                                 text: TextSpan(children: [
                                   TextSpan(
@@ -399,80 +361,89 @@ class MinimizeDetailsJobComponent extends StatelessWidget {
                                     TextSpan(
                                         text: ' - ${post.sub1?.name}',
                                         style: H5GrayTextStyle),
-                                ])),),Flexible(child: Text("(${post.type?.toCategoryTypeLabel()})", style: H5RegularDark.copyWith(color: OrangeColor),overflow: TextOverflow.ellipsis,))],),
-                          Text(
-                            "${post.expert!.length < 5 && post.name!.length > 5 ? post.name : post.expert}",
-                            style: H4RegularDark,
-                            maxLines: 2,
+                                ])),
+                          ),
+                          Flexible(
+                              child: Text(
+                            "(${post.type?.toCategoryTypeLabel()})",
+                            style: H5RegularDark.copyWith(color: OrangeColor),
                             overflow: TextOverflow.ellipsis,
-                          ),
-                          SizedBox(
-                            height: 0.01.sh,
-                          ),
-                          Expanded(
-                            child: RichText(
-                              textDirection: TextDirection.rtl,
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: '',
-                                    style: post.is_discount == true
-                                        ? H4GrayTextStyle.copyWith(
-                                        decoration: TextDecoration.lineThrough)
-                                        : H4RedTextStyle,
-                                  ),
-                                  if (post.is_discount == true)
-                                    TextSpan(
-                                        text: ' ${post.discount} \$ ',
-                                        style: H4RedTextStyle),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Container(
-                            height: 0.06.sw,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                // Icon Eye
-                                Row(
-                                  children: [
-                                    Icon(
-                                      FontAwesomeIcons.eye,
-                                      color: DarkColor,
-                                      size: 0.04.sw,
-                                    ),
-                                    SizedBox(
-                                      width: 0.007.sw,
-                                    ),
-                                    Text(
-                                      "${post.views_count}",
-                                      style: H5BlackTextStyle,
-                                    )
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      FontAwesomeIcons.calendar,
-                                      color: DarkColor,
-                                      size: 0.04.sw,
-                                    ),
-                                    SizedBox(
-                                      width: 0.007.sw,
-                                    ),
-                                    Text(
-                                      "${post.created_at??''}",
-                                      style: H5BlackTextStyle,
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
-                          )
+                          ))
                         ],
                       ),
-                    ))
+                      Text(
+                        "${post.name!.length > 5  ? post.name : post.expert}",
+                        style: H4RegularDark,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      SizedBox(
+                        height: 0.01.sh,
+                      ),
+                      Expanded(
+                        child: RichText(
+                          textDirection: TextDirection.rtl,
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: '',
+                                style: post.is_discount == true
+                                    ? H4GrayTextStyle.copyWith(
+                                        decoration: TextDecoration.lineThrough)
+                                    : H4RedTextStyle,
+                              ),
+                              if (post.is_discount == true)
+                                TextSpan(
+                                    text: ' ${post.discount} \$ ',
+                                    style: H4RedTextStyle),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: 0.06.sw,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // Icon Eye
+                            Row(
+                              children: [
+                                Icon(
+                                  FontAwesomeIcons.eye,
+                                  color: DarkColor,
+                                  size: 0.04.sw,
+                                ),
+                                SizedBox(
+                                  width: 0.007.sw,
+                                ),
+                                Text(
+                                  "${post.views_count}",
+                                  style: H5BlackTextStyle,
+                                )
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Icon(
+                                  FontAwesomeIcons.calendar,
+                                  color: DarkColor,
+                                  size: 0.04.sw,
+                                ),
+                                SizedBox(
+                                  width: 0.007.sw,
+                                ),
+                                Text(
+                                  "${post.end_date ?? ''}",
+                                  style: H5BlackTextStyle,
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ))
               ],
             ),
           ),
@@ -481,8 +452,6 @@ class MinimizeDetailsJobComponent extends StatelessWidget {
       ],
     );
   }
-
-
 }
 
 class MinimizeDetailsServiceComponent extends StatelessWidget {
@@ -492,12 +461,14 @@ class MinimizeDetailsServiceComponent extends StatelessWidget {
     this.onClick,
     this.cartLoading = false,
     this.TitleColor,
+    this.canEdit
   });
 
   final Color? TitleColor;
   final ProductModel post;
   final Function()? onClick;
   final bool? cartLoading;
+  final bool? canEdit;
   MainController mainController = Get.find<MainController>();
 
   @override
@@ -524,7 +495,304 @@ class MinimizeDetailsServiceComponent extends StatelessWidget {
                           topRight: Radius.circular(30.r),
                           bottomRight: Radius.circular(30.r)),
                       image: DecorationImage(
-                          image: CachedNetworkImageProvider("${post.image}"),fit: BoxFit.fitHeight)),
+                          image: CachedNetworkImageProvider("${post.image}"),
+                          fit: BoxFit.fitHeight)),
+                  child: Stack(
+                    alignment: Alignment.topCenter,
+                    children: [
+                      if(canEdit==true)
+                        Positioned(top: 0.05.sh,child:  Container(
+                          decoration: BoxDecoration(color: WhiteColor.withOpacity(0.6),shape: BoxShape.circle),
+                          child: IconButton(onPressed: (){
+                            Get.toNamed(Edit_SERVICE_PAGE,arguments: post.id);
+                          }, icon: Icon(FontAwesomeIcons.edit,color: Colors.black,)),
+                        ),),
+                      if(post.active=='pending')
+                        Container(
+                          alignment: Alignment.center,
+                          width: 0.2.sw,
+                          height: 0.03.sh,
+                          decoration: BoxDecoration(
+                              color: OrangeColor,
+                              borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(20.r),
+                                  bottomLeft: Radius.circular(20.r))),
+                          child: Text(
+                            'قيد المراجعة',
+                            style: H5WhiteTextStyle,
+                          ),
+                        ),
+                      if(post.active=='block')
+                        Container(
+                          alignment: Alignment.center,
+                          width: 0.2.sw,
+                          height: 0.03.sh,
+                          decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(20.r),
+                                  bottomLeft: Radius.circular(20.r))),
+                          child: Text(
+                            'محظور',
+                            style: H5WhiteTextStyle,
+                          ),
+                        ),
+                      if(post.level=='special' && post.active=='active')
+                        Container(
+                          alignment: Alignment.center,
+                          width: 0.2.sw,
+                          height: 0.03.sh,
+                          decoration: BoxDecoration(
+                              color: GoldColor,
+                              borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(20.r),
+                                  bottomLeft: Radius.circular(20.r))),
+                          child: Text(
+                            'مميز',
+                            style: H5WhiteTextStyle,
+                          ),
+                        )
+                    ],
+                  ),
+                ),
+                Expanded(
+                    child: Container(
+                  height: 0.3.sw,
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 0.01.sw, vertical: 0.002.sh),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (post.user != null)
+                        SellerNameComponent(
+                            color: TitleColor,
+                            sellerName: "${post.user?.seller_name ?? ''}",
+                            isVerified: post.user?.is_verified == true),
+                      if (post.user == null)
+                        Container(
+                          padding: EdgeInsets.only(bottom: 0.004.sh),
+                          child: Text(
+                            "${post.name}",
+                            style: H1BlackTextStyle,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Flexible(
+                            flex: 3,
+                            child: RichText(
+                                overflow: TextOverflow.ellipsis,
+                                text: TextSpan(children: [
+                                  TextSpan(
+                                      text: '${post.city?.name ?? ''}',
+                                      style: H5GrayTextStyle),
+                                  if (post.category?.name != null)
+                                    TextSpan(
+                                        text: ' - ${post.category?.name}',
+                                        style: H5GrayTextStyle),
+                                  if (post.sub1?.name != null)
+                                    TextSpan(
+                                        text: ' - ${post.sub1?.name}',
+                                        style: H5GrayTextStyle),
+                                ])),
+                          ),
+                          Flexible(
+                              child: Text(
+                            "(${post.type?.toCategoryTypeLabel()})",
+                            style: H5RegularDark.copyWith(color: OrangeColor),
+                            overflow: TextOverflow.ellipsis,
+                          ))
+                        ],
+                      ),
+                      Text(
+                        "${post.name!.length > 5  ? post.name : post.expert}",
+                        style: H4RegularDark,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      SizedBox(
+                        height: 0.01.sh,
+                      ),
+                      Expanded(
+                        child: RichText(
+                          textDirection: TextDirection.rtl,
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: '',
+                                style: post.is_discount == true
+                                    ? H4GrayTextStyle.copyWith(
+                                        decoration: TextDecoration.lineThrough)
+                                    : H4RedTextStyle,
+                              ),
+                              if (post.is_discount == true)
+                                TextSpan(
+                                    text: ' ${post.discount} \$ ',
+                                    style: H4RedTextStyle),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: 0.06.sw,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // Icon Eye
+                            Row(
+                              children: [
+                                Icon(
+                                  FontAwesomeIcons.eye,
+                                  color: DarkColor,
+                                  size: 0.04.sw,
+                                ),
+                                SizedBox(
+                                  width: 0.007.sw,
+                                ),
+                                Text(
+                                  "${post.views_count}",
+                                  style: H5BlackTextStyle,
+                                )
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Icon(
+                                  FontAwesomeIcons.calendar,
+                                  color: DarkColor,
+                                  size: 0.04.sw,
+                                ),
+                                SizedBox(
+                                  width: 0.007.sw,
+                                ),
+                                Text(
+                                  "${post.updated_at ?? ''}",
+                                  style: H5BlackTextStyle,
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ))
+              ],
+            ),
+          ),
+        ),
+        SizedBox(height: 0.01.sh),
+      ],
+    );
+  }
+}
+
+
+class MinimizeDetailsTenderComponent extends StatelessWidget {
+  MinimizeDetailsTenderComponent({
+    super.key,
+    required this.post,
+    this.onClick,
+    this.cartLoading = false,
+    this.TitleColor,
+    this.canEdit,
+  });
+
+  final Color? TitleColor;
+  final ProductModel post;
+  final Function()? onClick;
+  final bool? cartLoading;
+  final bool? canEdit;
+  MainController mainController = Get.find<MainController>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        InkWell(
+          onTap: onClick,
+          child: Container(
+            width: 1.sw,
+            decoration: BoxDecoration(
+              color: GrayLightColor,
+              borderRadius: BorderRadius.circular(30.r),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  width: 0.3.sw,
+                  height: 0.3.sw,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(30.r),
+                          bottomRight: Radius.circular(30.r)),
+                      image: DecorationImage(
+                          image:
+                          CachedNetworkImageProvider("${post.user?.image}"),
+                          fit: BoxFit.fitHeight)),
+                  child: Stack(
+                    alignment: Alignment.topCenter,
+                    children: [
+                      if(canEdit==true)
+                        Positioned(child:  Container(
+                          decoration: BoxDecoration(color: WhiteColor.withOpacity(0.6),shape: BoxShape.circle),
+                          child: IconButton(onPressed: (){
+                            Get.toNamed(Edit_TENDER_PAGE,arguments: post.id);
+                          }, icon: Icon(FontAwesomeIcons.edit,color: Colors.black,)),
+                        ),top: 0.05.sh,),
+                      if(post.active=='pending')
+                        Container(
+                          alignment: Alignment.center,
+                          width: 0.2.sw,
+                          height: 0.03.sh,
+                          decoration: BoxDecoration(
+                              color: OrangeColor,
+                              borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(20.r),
+                                  bottomLeft: Radius.circular(20.r))),
+                          child: Text(
+                            'قيد المراجعة',
+                            style: H5WhiteTextStyle,
+                          ),
+                        ),
+                      if(post.active=='block')
+                        Container(
+                          alignment: Alignment.center,
+                          width: 0.2.sw,
+                          height: 0.03.sh,
+                          decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(20.r),
+                                  bottomLeft: Radius.circular(20.r))),
+                          child: Text(
+                            'محظور',
+                            style: H5WhiteTextStyle,
+                          ),
+                        ),
+                      if(post.level=='special' && post.active=='active')
+                        Container(
+                          alignment: Alignment.center,
+                          width: 0.2.sw,
+                          height: 0.03.sh,
+                          decoration: BoxDecoration(
+                              color: GoldColor,
+                              borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(20.r),
+                                  bottomLeft: Radius.circular(20.r))),
+                          child: Text(
+                            'مميز',
+                            style: H5WhiteTextStyle,
+                          ),
+                        )
+                    ],
+                  ),
                 ),
                 Expanded(
                     child: Container(
@@ -536,37 +804,41 @@ class MinimizeDetailsServiceComponent extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if(post.user!=null)
                           SellerNameComponent(
                               color: TitleColor,
                               sellerName: "${post.user?.seller_name ?? ''}",
                               isVerified: post.user?.is_verified == true),
-                          if(post.user==null)
-                            Container(
-                              padding:EdgeInsets.only(bottom: 0.004.sh),
-                              child: Text("${post.name}",style: H1BlackTextStyle,overflow: TextOverflow.ellipsis,),
-                            ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Flexible(flex: 3,child: RichText(
-                                  overflow: TextOverflow.ellipsis,
-                                  text: TextSpan(children: [
-                                    TextSpan(
-                                        text: '${post.city?.name ?? ''}',
-                                        style: H5GrayTextStyle),
-                                    if (post.category?.name != null)
+                              Flexible(
+                                flex: 3,
+                                child: RichText(
+                                    overflow: TextOverflow.ellipsis,
+                                    text: TextSpan(children: [
                                       TextSpan(
-                                          text: ' - ${post.category?.name}',
+                                          text: '${post.city?.name ?? ''}',
                                           style: H5GrayTextStyle),
-                                    if (post.sub1?.name != null)
-                                      TextSpan(
-                                          text: ' - ${post.sub1?.name}',
-                                          style: H5GrayTextStyle),
-                                  ])),),
-                              Flexible(child: Text("(${post.type?.toCategoryTypeLabel()})", style: H5RegularDark.copyWith(color: OrangeColor),overflow: TextOverflow.ellipsis,))],),
+                                      if (post.category?.name != null)
+                                        TextSpan(
+                                            text: ' - ${post.category?.name}',
+                                            style: H5GrayTextStyle),
+                                      if (post.sub1?.name != null)
+                                        TextSpan(
+                                            text: ' - ${post.sub1?.name}',
+                                            style: H5GrayTextStyle),
+                                    ])),
+                              ),
+                              Flexible(
+                                  child: Text(
+                                    "(${post.type?.toCategoryTypeLabel()})",
+                                    style: H5RegularDark.copyWith(color: OrangeColor),
+                                    overflow: TextOverflow.ellipsis,
+                                  ))
+                            ],
+                          ),
                           Text(
-                            "${post.expert!.length < 5 && post.name!.length > 5 ? post.name : post.expert}",
+                            "${post.name!.length > 5  ? post.name : post.expert}",
                             style: H4RegularDark,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
@@ -627,7 +899,7 @@ class MinimizeDetailsServiceComponent extends StatelessWidget {
                                       width: 0.007.sw,
                                     ),
                                     Text(
-                                      "${post.updated_at??''}",
+                                      "${post.end_date ?? ''}",
                                       style: H5BlackTextStyle,
                                     )
                                   ],
@@ -646,6 +918,4 @@ class MinimizeDetailsServiceComponent extends StatelessWidget {
       ],
     );
   }
-
-
 }

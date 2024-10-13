@@ -32,12 +32,11 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color? color=mainController
-        .authUser.value?.is_verified==true ? mainController
-        .authUser.value?.id_color!.toColor():DarkColor;
+    Color? color = mainController.authUser.value?.is_verified == true
+        ? mainController.authUser.value?.id_color!.toColor()
+        : DarkColor;
     return Scaffold(
       backgroundColor: WhiteColor,
-
       body: Stack(
         children: [
           Positioned(
@@ -49,7 +48,7 @@ class ProfilePage extends StatelessWidget {
                 padding: EdgeInsets.symmetric(
                     vertical: 0.02.sw, horizontal: 0.02.sw),
                 width: 1.sw,
-                height: 0.25.sh,
+                height: 0.26.sh,
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         image: CachedNetworkImageProvider(
@@ -63,13 +62,17 @@ class ProfilePage extends StatelessWidget {
                         width: 0.85.sw,
                         height: 0.06.sh,
                         child: Obx(() {
-                          return Visibility(child: ExpandSearch(
-                            controller: logic.searchController,
-                            onEditDone: () {
-                              logic.search.value = logic.searchController.text;
-                              return logic.searchController.text;
-                            },
-                          ),visible: logic.pageSelected.value==0,);
+                          return Visibility(
+                            child: ExpandSearch(
+                              controller: logic.searchController,
+                              onEditDone: () {
+                                logic.search.value =
+                                    logic.searchController.text;
+                                return logic.searchController.text;
+                              },
+                            ),
+                            visible: logic.pageSelected.value == 0,
+                          );
                         })),
                     InkWell(
                       child: Container(
@@ -106,556 +109,571 @@ class ProfilePage extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 0.25.sh,
+            top: 0.26.sh,
             left: 0,
             child: Container(
               width: 1.sw,
-              height: 0.35.sh,
-
+              height: 0.29.sh,
               padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
               child: Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      if(mainController.authUser.value
-                          ?.is_verified==true)
-                      Container(
-                        width: 0.1.sw,
-                        alignment: Alignment.centerRight,
-                        child: Obx(() {
-                          return Transform.translate(
-                            offset: Offset(0, -0.03.sh), child: Column(
-                            children: [
-                              if (mainController
-                                  .authUser.value?.social?.instagram !=
-                                  null &&
-                                  mainController
-                                      .authUser.value?.social?.instagram !=
-                                      '')
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 0.007.sh),
-                                  child: InkWell(
-                                    onTap: () {
-                                      openUrl(
-                                          url:
-                                          "${mainController.authUser.value
-                                              ?.social?.instagram}");
-                                    },
-                                    child: Icon(
-                                      FontAwesomeIcons.instagram,
-                                      color:
-                                      color,
-                                      size: 0.06.sw,
-                                    ),
-                                  ),
-                                ),
-                              if (mainController.authUser.value?.social?.face !=
-                                  null &&
-                                  mainController.authUser.value?.social?.face !=
-                                      '')
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 0.007.sh),
-                                  child: InkWell(
-                                      onTap: () {
-                                        openUrl(
-                                            url:
-                                            "${mainController.authUser.value
-                                                ?.social?.face}");
-                                      },
-                                      child: Icon(
-                                        FontAwesomeIcons.facebook,
-                                        color:
-                                        color,
-                                        size: 0.06.sw,
-                                      )),
-                                ),
-                              if (mainController.authUser.value?.social
-                                  ?.linkedin !=
-                                  null &&
-                                  mainController.authUser.value?.social
-                                      ?.linkedin !=
-                                      '')
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 0.007.sh),
-                                  child: InkWell(
-                                    onTap: () {
-                                      openUrl(
-                                          url:
-                                          "${mainController.authUser.value
-                                              ?.social?.linkedin}");
-                                    },
-                                    child: Icon(
-                                      FontAwesomeIcons.linkedin,
-                                      color:
-                                      color,
-                                      size: 0.06.sw,
-                                    ),
-                                  ),
-                                ),
-                              if (mainController.authUser.value?.social
-                                  ?.linkedin !=
-                                  null &&
-                                  mainController.authUser.value?.social
-                                      ?.linkedin !=
-                                      '')
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 0.007.sh),
-                                  child: InkWell(
-                                    onTap: () {
-                                      openUrl(
-                                          url:
-                                          "${mainController.authUser.value
-                                              ?.social?.linkedin}");
-                                    },
-                                    child: Icon(
-                                      FontAwesomeIcons.tiktok,
-                                      color:
-                                      color,
-                                      size: 0.06.sw,
-                                    ),
-                                  ),
-                                ),
-                              if (mainController.authUser.value?.phone !=
-                                  null &&
-                                  mainController.authUser.value?.phone != '')
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 0.007.sh),
-                                  child: InkWell(
-                                    onTap: () {
-                                      openUrl(
-                                          url:
-                                          "https://wa.me/${mainController
-                                              .authUser.value?.phone}");
-                                    },
-                                    child: Icon(
-                                      FontAwesomeIcons.whatsapp,
-                                      color:
-                                      color,
-                                      size: 0.06.sw,
-                                    ),
-                                  ),
-                                ),
-                              if (mainController.authUser.value?.social
-                                  ?.twitter !=
-                                  null &&
-                                  mainController.authUser.value?.social
-                                      ?.twitter !=
-                                      '')
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 0.007.sh),
-                                  child: InkWell(
-                                    onTap: () {
-                                      openUrl(
-                                          url:
-                                          "${mainController.authUser.value
-                                              ?.social?.twitter}");
-                                    },
-                                    child: Icon(
-                                      FontAwesomeIcons.xTwitter,
-                                      color:
-                                      color,
-                                      size: 0.06.sw,
-                                    ),
-                                  ),
-                                ),
-                            ],
-                          ),);
-                        }),
-                      ),
-                      Obx(() {
-                        return Transform.translate(offset: Offset(0, 0.01.sh),child:  Container(
-                          width: 0.86.sw,
-                          padding: EdgeInsets.only(top: 0.02.sh),
-                          alignment: Alignment.center,
-                          child: Transform.translate(
-                            offset: Offset(0.025.sw, 0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.only(left: 0.03.sw),
-                                  width: 0.9.sw,
-
-                                  alignment: Alignment.center,
-                                  child: SellerNameComponent(
-                                    alignment: MainAxisAlignment.center,
-                                    color: color,
-                                    white: false,
-                                    isVerified: mainController
-                                        .authUser.value?.is_verified ??
-                                        false,
-                                    sellerName:
-                                    "${mainController.authUser.value
-                                        ?.seller_name}",
-                                  ),
-                                ),
-                                if ((mainController.authUser.value
-                                    ?.is_verified ==
-                                    true))
-                                  Container(
-                                    padding:
-                                    EdgeInsets.symmetric(vertical: 0.01.sh),
-                                    child: Text(
-                                      "${mainController.authUser.value?.info}",
-                                      style: H4GrayTextStyle,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                if ((mainController.authUser.value?.address !=
-                                    null &&
-                                    mainController.authUser.value?.address !=
-                                        ''))
-                                  Container(
-                                    alignment: Alignment.center,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment
-                                          .center,
-                                      children: [
-                                        Text(
-                                          "${mainController.authUser.value
-                                              ?.address}",
-                                          style: H4GrayTextStyle,
+                      if (mainController.authUser.value?.is_verified == true)
+                        Container(
+                          width: 0.1.sw,
+                          alignment: Alignment.centerRight,
+                          child: Obx(() {
+                            return Transform.translate(
+                              offset: Offset(0, -0.03.sh),
+                              child: Column(
+                                children: [
+                                  if (mainController.authUser.value?.social
+                                              ?.instagram !=
+                                          null &&
+                                      mainController.authUser.value?.social
+                                              ?.instagram !=
+                                          '')
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 0.007.sh),
+                                      child: InkWell(
+                                        onTap: () {
+                                          openUrl(
+                                              url:
+                                                  "${mainController.authUser.value?.social?.instagram}");
+                                        },
+                                        child: Icon(
+                                          FontAwesomeIcons.instagram,
+                                          color: color,
+                                          size: 0.06.sw,
                                         ),
-                                        Icon(
-                                          FontAwesomeIcons.locationDot,
-                                          color: GrayDarkColor,
-                                          size: 0.04.sw,
-                                        ),
-                                      ],
+                                      ),
                                     ),
-                                  ),
-                                Obx(() {
-                                  return Container(
-
-                                    width: 0.75.sw,
-                                    padding:
-                                    EdgeInsets.symmetric(vertical: 0.02.sh),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                      children: [
-
-                                        InkWell(
-                                          child: Column(
-                                            children: [
-                                              Obx(() {
-                                                return Text(
-                                                  '${mainController.authUser.value?.followingCount}'
-                                                      .toFormatNumberK(),
-                                                  style: H0RegularDark
-                                                      .copyWith(
-                                                      fontWeight: FontWeight.w900,
-                                                      color:
-                                                      color),
-                                                  textDirection: TextDirection
-                                                      .ltr,
-                                                );
-                                              }),
-                                              Text(
-                                                "متابعين",
-                                                style: H4RegularDark,
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        Column(
-                                          children: [
-                                            Text(
-                                              "${mainController.authUser.value?.total_views}"
-                                                  .toFormatNumberK(),
-                                              style: H0RegularDark
-                                                  .copyWith(
-                                                  fontWeight: FontWeight.w900,
-                                                  color:
-                                                  color),
-                                              textDirection: TextDirection.ltr,
-                                            ),
-                                            Text(
-                                              "مشاهدات",
-                                              style: H4RegularDark,
-                                            )
-                                          ],
-                                        ),
-                                        InkWell(
+                                  if (mainController
+                                              .authUser.value?.social?.face !=
+                                          null &&
+                                      mainController
+                                              .authUser.value?.social?.face !=
+                                          '')
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 0.007.sh),
+                                      child: InkWell(
                                           onTap: () {
-                                            Get.toNamed(FOLLOWERS_PAGE);
+                                            openUrl(
+                                                url:
+                                                    "${mainController.authUser.value?.social?.face}");
                                           },
-                                          child: Column(
-                                            children: [
-                                              Obx(() {
-                                                return Text(
-                                                  '${mainController.authUser.value?.followers?.length}'
-                                                      .toFormatNumberK(),
-                                                  style: H0RegularDark
-                                                      .copyWith(
-                                                      fontWeight: FontWeight.w900,
-                                                      color:
-                                                      color),
-                                                  textDirection: TextDirection
-                                                      .ltr,
-                                                );
-                                              }),
-                                              Text(
-                                                "أتابعه",
-                                                style: H4RegularDark,
-                                              )
-                                            ],
-                                          ),
-                                        )
-                                      ],
+                                          child: Icon(
+                                            FontAwesomeIcons.facebook,
+                                            color: color,
+                                            size: 0.06.sw,
+                                          )),
                                     ),
-                                  );
-                                }),
+                                  if (mainController.authUser.value?.social
+                                              ?.linkedin !=
+                                          null &&
+                                      mainController.authUser.value?.social
+                                              ?.linkedin !=
+                                          '')
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 0.007.sh),
+                                      child: InkWell(
+                                        onTap: () {
+                                          openUrl(
+                                              url:
+                                                  "${mainController.authUser.value?.social?.linkedin}");
+                                        },
+                                        child: Icon(
+                                          FontAwesomeIcons.linkedin,
+                                          color: color,
+                                          size: 0.06.sw,
+                                        ),
+                                      ),
+                                    ),
+                                  if (mainController.authUser.value?.social
+                                              ?.linkedin !=
+                                          null &&
+                                      mainController.authUser.value?.social
+                                              ?.linkedin !=
+                                          '')
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 0.007.sh),
+                                      child: InkWell(
+                                        onTap: () {
+                                          openUrl(
+                                              url:
+                                                  "${mainController.authUser.value?.social?.linkedin}");
+                                        },
+                                        child: Icon(
+                                          FontAwesomeIcons.tiktok,
+                                          color: color,
+                                          size: 0.06.sw,
+                                        ),
+                                      ),
+                                    ),
+                                  if (mainController.authUser.value?.phone !=
+                                          null &&
+                                      mainController.authUser.value?.phone !=
+                                          '')
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 0.007.sh),
+                                      child: InkWell(
+                                        onTap: () {
+                                          openUrl(
+                                              url:
+                                                  "https://wa.me/${mainController.authUser.value?.phone}");
+                                        },
+                                        child: Icon(
+                                          FontAwesomeIcons.whatsapp,
+                                          color: color,
+                                          size: 0.06.sw,
+                                        ),
+                                      ),
+                                    ),
+                                  if (mainController.authUser.value?.social
+                                              ?.twitter !=
+                                          null &&
+                                      mainController.authUser.value?.social
+                                              ?.twitter !=
+                                          '')
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 0.007.sh),
+                                      child: InkWell(
+                                        onTap: () {
+                                          openUrl(
+                                              url:
+                                                  "${mainController.authUser.value?.social?.twitter}");
+                                        },
+                                        child: Icon(
+                                          FontAwesomeIcons.xTwitter,
+                                          color: color,
+                                          size: 0.06.sw,
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            );
+                          }),
+                        ),
+                      Obx(() {
+                        return Transform.translate(
+                          offset: Offset(0, 0.01.sh),
+                          child: Container(
+                            width: 0.86.sw,
+                            padding: EdgeInsets.only(top: 0.02.sh),
+                            alignment: Alignment.center,
+                            child: Transform.translate(
+                              offset: Offset(0.025.sw, 0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.only(left: 0.03.sw),
+                                    width: 0.9.sw,
+                                    alignment: Alignment.center,
+                                    child: SellerNameComponent(
+                                      alignment: MainAxisAlignment.center,
+                                      color: color,
+                                      white: false,
+                                      isVerified: mainController
+                                              .authUser.value?.is_verified ??
+                                          false,
+                                      sellerName:
+                                          "${mainController.authUser.value?.seller_name}",
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 0.01.sh),
+                                    child:     Visibility(
+                                      child:Text(
+                                        "${mainController.authUser.value?.info}",
+                                        style: H4GrayTextStyle,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      visible: !(mainController
+                                          .authUser.value?.is_verified ==
+                                          true),
+                                    ),
+                                  )
+                                 ,
 
-                                30.verticalSpace,
-
-                              ],
+                                  if ((mainController.authUser.value?.address !=
+                                          null &&
+                                      mainController.authUser.value?.address !=
+                                          ''))
+                                    Container(
+                                      alignment: Alignment.center,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "${mainController.authUser.value?.address}",
+                                            style: H4GrayTextStyle,
+                                          ),
+                                          Icon(
+                                            FontAwesomeIcons.locationDot,
+                                            color: GrayDarkColor,
+                                            size: 0.04.sw,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  Obx(() {
+                                    return Container(
+                                      width: 0.75.sw,
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 0.02.sh),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          InkWell(
+                                            child: Column(
+                                              children: [
+                                                Obx(() {
+                                                  return Text(
+                                                    '${mainController.authUser.value?.followingCount}'
+                                                        .toFormatNumberK(),
+                                                    style:
+                                                        H0RegularDark.copyWith(
+                                                            fontWeight:
+                                                                FontWeight.w900,
+                                                            color: color),
+                                                    textDirection:
+                                                        TextDirection.ltr,
+                                                  );
+                                                }),
+                                                Text(
+                                                  "متابعين",
+                                                  style: H4RegularDark,
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              logic.pageSelected.value = 2;
+                                              logic
+                                                  .pageController
+                                                  .animateToPage(
+                                                      2,
+                                                      duration: Duration(
+                                                          microseconds: 400),
+                                                      curve:
+                                                          Curves.bounceInOut);
+                                            },
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  "${mainController.authUser.value?.total_views}"
+                                                      .toFormatNumberK(),
+                                                  style: H0RegularDark.copyWith(
+                                                      fontWeight:
+                                                          FontWeight.w900,
+                                                      color: color),
+                                                  textDirection:
+                                                      TextDirection.ltr,
+                                                ),
+                                                Text(
+                                                  "مشاهدات",
+                                                  style: H4RegularDark,
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              Get.toNamed(FOLLOWERS_PAGE);
+                                            },
+                                            child: Column(
+                                              children: [
+                                                Obx(() {
+                                                  return Text(
+                                                    '${mainController.authUser.value?.followers?.length}'
+                                                        .toFormatNumberK(),
+                                                    style:
+                                                        H0RegularDark.copyWith(
+                                                            fontWeight:
+                                                                FontWeight.w900,
+                                                            color: color),
+                                                    textDirection:
+                                                        TextDirection.ltr,
+                                                  );
+                                                }),
+                                                Text(
+                                                  "أتابعه",
+                                                  style: H4RegularDark,
+                                                )
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  }),
+                                ],
+                              ),
                             ),
                           ),
-                        ),);
+                        );
                       })
                     ],
                   ),
-
-                  Transform.translate(offset: Offset(0, 0),child: Container(
-                    child: Obx(() {
-                      return Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.spaceEvenly,
-                        children: [
-                          if (mainController
-                              .authUser.value?.is_verified !=
-                              true)
+                  Transform.translate(
+                    offset: Offset(0, 0),
+                    child: Container(
+                      child: Obx(() {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            if (mainController.authUser.value?.is_verified !=
+                                true)
+                              InkWell(
+                                  onTap: () {
+                                    openUrl(
+                                        url:
+                                            "https://wa.me/${mainController.settings.value.social?.phone}");
+                                  },
+                                  child: Container(
+                                    width: 0.35.sw,
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 0.01.sh, horizontal: 0.02.sw),
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(15.r),
+                                        color: mainController.authUser.value
+                                                    ?.is_verified ==
+                                                true
+                                            ? color
+                                            : Colors.blue),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          child: Text(
+                                            'تـوثيق الحسـاب ',
+                                            style: H4WhiteTextStyle,
+                                          ),
+                                        ),
+                                        Container(
+                                          width: 0.04.sw,
+                                          height: 0.04.sw,
+                                          decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                  image: Svg(
+                                                    "assets/images/svg/verified_white.svg",
+                                                    color: WhiteColor,
+                                                  ),
+                                                  fit: BoxFit.cover)),
+                                        )
+                                      ],
+                                    ),
+                                  )),
+                            if (mainController.authUser.value?.is_verified ==
+                                true)
+                              Container(
+                                width: 0.35.sw,
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 0.01.sh, horizontal: 0.02.sw),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15.r),
+                                    color: mainController
+                                                .authUser.value?.is_verified ==
+                                            true
+                                        ? color
+                                        : Colors.blue),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      child: Text(
+                                        'الحسـاب مـوثق',
+                                        style: H4WhiteTextStyle,
+                                      ),
+                                    ),
+                                    10.horizontalSpace,
+                                    Container(
+                                      width: 0.04.sw,
+                                      height: 0.04.sw,
+                                      decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              image: Svg(
+                                                "assets/images/svg/verified_white.svg",
+                                                color: WhiteColor,
+                                              ),
+                                              fit: BoxFit.cover)),
+                                    )
+                                  ],
+                                ),
+                              ),
                             InkWell(
                                 onTap: () {
-                                  openUrl(url: "https://wa.me/${mainController.settings.value.social?.phone}");
+                                  Get.toNamed(Edit_PROFILE_PAGE);
                                 },
                                 child: Container(
-                                  width:0.35.sw,
                                   padding: EdgeInsets.symmetric(
-                                      vertical: 0.01.sh,
-                                      horizontal: 0.02.sw),
+                                      vertical: 0.01.sh, horizontal: 0.02.sw),
                                   decoration: BoxDecoration(
-                                      borderRadius:
-                                      BorderRadius.circular(15.r),
-                                      color:
-                                      mainController
-                                          .authUser.value?.is_verified==true ? color:Colors.blue),
+                                      borderRadius: BorderRadius.circular(15.r),
+                                      color: mainController.authUser.value
+                                                  ?.is_verified ==
+                                              true
+                                          ? color
+                                          : RedColor),
                                   child: Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.center,
+                                        CrossAxisAlignment.center,
                                     children: [
                                       Container(
                                         child: Text(
-                                          'تـوثيق الحسـاب ',
+                                          'تعديل الملف الشخصي ',
                                           style: H4WhiteTextStyle,
                                         ),
                                       ),
                                       Container(
                                         width: 0.04.sw,
                                         height: 0.04.sw,
-                                        decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                                image: Svg(
-                                                  "assets/images/svg/verified_white.svg",
-                                                  color: WhiteColor,
-                                                ),
-                                                fit: BoxFit
-                                                    .cover)),
+                                        child: Icon(
+                                          FontAwesomeIcons.edit,
+                                          size: 0.04.sw,
+                                          color: WhiteColor,
+                                        ),
                                       )
                                     ],
                                   ),
                                 )),
-                          if (mainController
-                              .authUser.value?.is_verified ==
-                              true)
-                            Container(
-                              width:0.35.sw,
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 0.01.sh,
-                                  horizontal: 0.02.sw),
-                              decoration: BoxDecoration(
-                                  borderRadius:
-                                  BorderRadius.circular(15.r),
-                                  color:
-                                  mainController
-                                      .authUser.value?.is_verified==true ? color:Colors.blue),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.center,
-                                crossAxisAlignment:
-                                CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-
-                                    child: Text(
-                                      'الحسـاب مـوثق',
-                                      style: H4WhiteTextStyle,
-                                    ),
-                                  ),
-                                  10.horizontalSpace,
-                                  Container(
-                                    width: 0.04.sw,
-                                    height: 0.04.sw,
-                                    decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            image: Svg(
-                                              "assets/images/svg/verified_white.svg",
-                                              color: WhiteColor,
-                                            ),
-                                            fit: BoxFit.cover)),
-                                  )
-                                ],
-                              ),
-                            ),
-                          InkWell(
-                              onTap: () {
-                                Get.toNamed(Edit_PROFILE_PAGE);
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 0.01.sh,
-                                    horizontal: 0.02.sw),
-                                decoration: BoxDecoration(
-                                    borderRadius:
-                                    BorderRadius.circular(15.r),
-                                    color:
-                                    mainController
-                                        .authUser.value?.is_verified==true ? color:RedColor),
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.center,
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      child: Text(
-                                        'تعديل الملف الشخصي ',
-                                        style: H4WhiteTextStyle,
-                                      ),
-                                    ),
-                                    Container(
-                                      width: 0.04.sw,
-                                      height: 0.04.sw,
-                                      child: Icon(
-                                        FontAwesomeIcons.edit,
-                                        size: 0.04.sw,
-                                        color: WhiteColor,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              )),
-                        ],
-                      );
-                    }),
-                  ),),
+                          ],
+                        );
+                      }),
+                    ),
+                  ),
                   30.verticalSpace,
-                  Transform.translate(offset: Offset(0, 0),child: Container(
-                    width: 1.sw,
-                    child: Obx(() {
-                      return Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.spaceAround,
-                        children: [
-                          InkWell(
-                              onTap: () {
-                                logic.pageSelected.value = 0;
-                                logic.pageController.animateToPage(0,
-                                    duration: Duration(microseconds: 400),
-                                    curve: Curves.bounceInOut);
-                              },
-                              child: Container(
-                                width: 0.28.sw,
-                                alignment: Alignment.center,
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 0.01.sh,
-                                    horizontal: 0.02.sw),
-                                decoration: BoxDecoration(
-                                    borderRadius:
-                                    BorderRadius.circular(15.r),
-                                    color: logic.pageSelected.value == 0 ?
-                                    (mainController.authUser.value?.is_verified==true ?"${mainController.authUser.value?.id_color}"
-                                        .toColor():RedColor ): GrayLightColor),
-                                child: Text('المنتجات',
-                                  style: logic.pageSelected.value == 0
-                                      ? H4WhiteTextStyle
-                                      : H4BlackTextStyle,),
-                              )),
-
-                          InkWell(
-                              onTap: () {
-                                logic.pageSelected.value = 1;
-                                logic.pageController.animateToPage(1,
-                                    duration: Duration(microseconds: 400),
-                                    curve: Curves.bounceInOut);
-                              },
-                              child: Container(
-                                width: 0.28.sw,
-                                alignment: Alignment.center,
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 0.01.sh,
-                                    horizontal: 0.02.sw),
-                                decoration: BoxDecoration(
-                                    borderRadius:
-                                    BorderRadius.circular(15.r),
-                                    color: logic.pageSelected.value == 1 ?
-                                    (mainController.authUser.value?.is_verified==true ?"${mainController.authUser.value?.id_color}"
-                                        .toColor():RedColor ): GrayLightColor),
-                                child: Text('الإعلانات الممولة',
-                                  style: logic.pageSelected.value == 1
-                                      ? H4WhiteTextStyle
-                                      : H4BlackTextStyle,),
-                              )),
-
-                          InkWell(
-                              onTap: () {
-                                logic.pageSelected.value = 2;
-                                logic.pageController.animateToPage(2,
-                                    duration: Duration(microseconds: 400),
-                                    curve: Curves.bounceInOut);
-                              },
-                              child: Container(
-                                width: 0.28.sw,
-                                alignment: Alignment.center,
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 0.01.sh,
-                                    horizontal: 0.02.sw),
-                                decoration: BoxDecoration(
-                                    borderRadius:
-                                    BorderRadius.circular(15.r),
-                                    color: logic.pageSelected.value == 2 ?
-                                    (mainController.authUser.value?.is_verified==true ?"${mainController.authUser.value?.id_color}"
-                                        .toColor():RedColor ): GrayLightColor),
-                                child: Text('الإحصائيات',
-                                  style: logic.pageSelected.value == 2
-                                      ? H4WhiteTextStyle
-                                      : H4BlackTextStyle,),
-                              )),
-                        ],
-                      );
-                    }),
-                  ),),
+                  Transform.translate(
+                    offset: Offset(0, 0),
+                    child: Container(
+                      width: 1.sw,
+                      child: Obx(() {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            InkWell(
+                                onTap: () {
+                                  logic.pageSelected.value = 0;
+                                  logic.pageController.animateToPage(0,
+                                      duration: Duration(microseconds: 400),
+                                      curve: Curves.bounceInOut);
+                                },
+                                child: Container(
+                                  width: 0.28.sw,
+                                  alignment: Alignment.center,
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 0.01.sh, horizontal: 0.02.sw),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15.r),
+                                      color: logic.pageSelected.value == 0
+                                          ? (mainController.authUser.value
+                                                      ?.is_verified ==
+                                                  true
+                                              ? "${mainController.authUser.value?.id_color}"
+                                                  .toColor()
+                                              : RedColor)
+                                          : GrayLightColor),
+                                  child: Text(
+                                    'المنتجات',
+                                    style: logic.pageSelected.value == 0
+                                        ? H4WhiteTextStyle
+                                        : H4BlackTextStyle,
+                                  ),
+                                )),
+                            InkWell(
+                                onTap: () {
+                                  logic.pageSelected.value = 1;
+                                  logic.pageController.animateToPage(1,
+                                      duration: Duration(microseconds: 400),
+                                      curve: Curves.bounceInOut);
+                                },
+                                child: Container(
+                                  width: 0.28.sw,
+                                  alignment: Alignment.center,
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 0.01.sh, horizontal: 0.02.sw),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15.r),
+                                      color: logic.pageSelected.value == 1
+                                          ? (mainController.authUser.value
+                                                      ?.is_verified ==
+                                                  true
+                                              ? "${mainController.authUser.value?.id_color}"
+                                                  .toColor()
+                                              : RedColor)
+                                          : GrayLightColor),
+                                  child: Text(
+                                    'الإعلانات الممولة',
+                                    style: logic.pageSelected.value == 1
+                                        ? H4WhiteTextStyle
+                                        : H4BlackTextStyle,
+                                  ),
+                                )),
+                            InkWell(
+                                onTap: () {
+                                  logic.pageSelected.value = 2;
+                                  logic.pageController.animateToPage(2,
+                                      duration: Duration(microseconds: 400),
+                                      curve: Curves.bounceInOut);
+                                },
+                                child: Container(
+                                  width: 0.28.sw,
+                                  alignment: Alignment.center,
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 0.01.sh, horizontal: 0.02.sw),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15.r),
+                                      color: logic.pageSelected.value == 2
+                                          ? (mainController.authUser.value
+                                                      ?.is_verified ==
+                                                  true
+                                              ? "${mainController.authUser.value?.id_color}"
+                                                  .toColor()
+                                              : RedColor)
+                                          : GrayLightColor),
+                                  child: Text(
+                                    'الإحصائيات',
+                                    style: logic.pageSelected.value == 2
+                                        ? H4WhiteTextStyle
+                                        : H4BlackTextStyle,
+                                  ),
+                                )),
+                          ],
+                        );
+                      }),
+                    ),
+                  ),
                 ],
               ),
-
             ),
           ),
           Positioned(
-            top: 0.57.sh,
+            top: 0.56.sh,
             child: Container(
               width: 1.sw,
-              height: 0.43.sh,
+              height: 0.4.sh,
+
               padding: EdgeInsets.only(bottom: 0.01.sh),
               child: PageView(
                 controller: logic.pageController,
@@ -673,8 +691,4 @@ class ProfilePage extends StatelessWidget {
       ),
     );
   }
-
-
-
-
 }
