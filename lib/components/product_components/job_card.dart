@@ -15,6 +15,7 @@ import 'package:get/get.dart';
 import "package:dio/dio.dart" as dio;
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:toast/toast.dart';
 import '../../helpers/colors.dart';
 import '../../helpers/style.dart';
@@ -341,7 +342,9 @@ class JobCard extends StatelessWidget {
                   ],
                 ),
                 MaterialButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Share.share("https://ali-pasha.com/products/${post?.id}");
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
