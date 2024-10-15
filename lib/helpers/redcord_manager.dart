@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:another_audio_recorder/another_audio_recorder.dart';
@@ -20,6 +21,7 @@ class RecorderManager {
   String? _filePath;
   bool _isRecording = false;
   AudioPlayer? _audioPlayer;
+  StreamSubscription<Duration>? positionSubscription;
 
   Future<void> init({required String path}) async {
     // طلب الصلاحيات
@@ -81,12 +83,33 @@ class RecorderManager {
     }
   }
 
-  Future<void> playRecordedAudio({String? path}) async {
+  Future<void> playRecordedAudio(
+      {String? path,
+      Function(int position, Duration? duration)? onChangeSeek,
+      Function(bool end)? onEnd}) async {
     _audioPlayer = AudioPlayer();
     if (path != null) {
       await _audioPlayer!.play(
         DeviceFileSource(path),
       );
+      Duration? duration = await _audioPlayer!.getDuration();
+
+      if (onChangeSeek != null) {
+        positionSubscription = _audioPlayer!.onPositionChanged.listen(
+          (Duration position) async {
+            if (onEnd != null) {
+              if (duration != null &&
+                  duration.inSeconds == position.inSeconds) {
+                onEnd(false);
+              } else {
+                onEnd(true);
+              }
+            }
+            onChangeSeek(position.inMilliseconds, duration);
+          },
+        );
+      }
+
       print("Playing audio from path: $path");
     } else if (_filePath != null) {
       await _audioPlayer!.play(DeviceFileSource(_filePath!));

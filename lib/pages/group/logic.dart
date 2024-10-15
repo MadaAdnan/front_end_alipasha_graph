@@ -25,7 +25,7 @@ class GroupLogic extends GetxController {
   RxList<MessageModel> messages = RxList<MessageModel>([]);
   CommunityModel communityModel = Get.arguments;
   ScrollController scrollController = ScrollController();
-
+RxnString message=RxnString(null);
 
   RxBool mPlayerIsInited = false.obs;
   RxBool mRecorderIsInited = false.obs;
@@ -126,6 +126,7 @@ query GetMessages {
             attach
             user {
                 id
+                seller_name
                 name
                 image
             }

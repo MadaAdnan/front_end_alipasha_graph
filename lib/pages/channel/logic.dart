@@ -10,6 +10,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../Global/main_controller.dart';
+import '../../helpers/redcord_manager.dart';
 import '../../models/community_model.dart';
 import '../../models/message_community_model.dart';
 import 'package:dio/dio.dart' as dio;
@@ -26,7 +27,7 @@ class ChannelLogic extends GetxController {
   RxList<MessageModel> messages = RxList<MessageModel>([]);
   CommunityModel communityModel = Get.arguments;
   ScrollController scrollController = ScrollController();
-
+RxnString message=RxnString(null);
   // Audio
 
   RxBool mPlayerIsInited = false.obs;
@@ -43,64 +44,39 @@ class ChannelLogic extends GetxController {
   RxString? recordedFilePath = RxString('');
   RxDouble mRecordingLevel = RxDouble(0);
 
-  Future<void> openRecorder() async {
-
-  }
-
+  RecorderManager recorder = RecorderManager();
   Future<void> startRecording() async {
-    if (!mRecorderIsInited.value) {
-      await openRecorder();
-    }
-    recordedFilePath!(await _localFile);
-    mainController.logger.d("PATH IS");
-    mainController.logger.d(recordedFilePath?.value);
 
+    await recorder.startRecording();
+    mRecorderIsInited.value = true;
   }
 
   Future<void> stopRecorder() async {
 
+    await recorder.stopRecording().then((path) {
+      if (path != null) {
+        recordedFilePath!.value = path;
+        print("PATH IS ${path}");
+      } else {
+        print("PATH IS ${path}");
+      }
+    });
     mRecorderIsInited.value = false;
-
-    // بعد إنهاء التسجيل، يمكنك تشغيل الصوت المسجل
-    //  await playRecordedAudio();
-  }
-
-
-  _startUpdatingRecordingLevel() {
-
-  }
-
-
-
-  Future<void> openPlayer() async {
-
-    mPlayerIsInited.value = true;
   }
 
   Future<void> playRecordedAudio() async {
-    if (!mPlayerIsInited.value) {
-      await openPlayer();
-    }
-
-    if (recordedFilePath?.value != null) {
-
-    }
-
+    mPlayerIsInited.value = true;
+    await recorder.playRecordedAudio(path: recordedFilePath?.value);
   }
 
   Future<void> stopPlayer() async {
-
+    await recorder.StopPlayRecordedAudio();
     mPlayerIsInited.value = false;
   }
 
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
     return directory.path;
-  }
-
-  Future<String> get _localFile async {
-    final path = await _localPath;
-    return '$path/recorded_audio.wav';
   }
 
   // Audio

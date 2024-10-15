@@ -6,9 +6,11 @@ import 'package:get/get.dart';
 import '../../models/slider_model.dart';
 
 class SliderComponent extends StatelessWidget {
-  SliderComponent({Key? key, required this.items}) : super(key: key);
+  SliderComponent({Key? key, required this.items,this.width,this.height}) : super(key: key);
 
   final List<SliderModel> items;
+  final double? width;
+  final double? height;
   RxInt currentPage = RxInt(0);
   PageController pageController = PageController(initialPage: 0,);
 
@@ -16,8 +18,8 @@ class SliderComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     startTimer();
     return WillPopScope(child: Container(
-      width: 1.sw,
-      height: 0.5.sw,
+      width:width?? 1.sw,
+      height:height?? 0.5.sw,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15.r)
       ),

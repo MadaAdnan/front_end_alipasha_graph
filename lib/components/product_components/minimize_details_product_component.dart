@@ -152,7 +152,7 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                           text: 'منشور بواسطة:',
                           textStyle: H4RegularDark,
                           color: TitleColor,
-                          sellerName: "${post.user?.seller_name ?? ''}",
+                          seller: post.user,
                           isVerified: post.user?.is_verified == true),),
 
                       Container(
@@ -370,7 +370,7 @@ class MinimizeDetailsJobComponent extends StatelessWidget {
                           text: 'منشور بواسطة:',
                           textStyle: H4RegularDark,
                           color: TitleColor,
-                          sellerName: "${post.user?.seller_name ?? ''}",
+                          seller:post.user,
                           isVerified: post.user?.is_verified == true),),
 
                       Expanded(
@@ -589,7 +589,7 @@ class MinimizeDetailsServiceComponent extends StatelessWidget {
                               text: 'منشور بواسطة:',
                               textStyle: H4RegularDark,
                               color: TitleColor,
-                              sellerName: "${post.user?.seller_name ?? ''}",
+                              seller: post.user,
                               isVerified: post.user?.is_verified == true),),
                         if (post.user == null)
                           Container(
@@ -774,7 +774,7 @@ class MinimizeDetailsTenderComponent extends StatelessWidget {
                         children: [
                           SellerNameComponent(
                               color: TitleColor,
-                              sellerName: "${post.user?.seller_name ?? ''}",
+                              seller: post.user ,
                               isVerified: post.user?.is_verified == true),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

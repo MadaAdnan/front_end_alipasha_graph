@@ -113,7 +113,7 @@ width: 0.67.sw,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SellerNameComponent(
-                              sellerName: "${post.user?.seller_name}",
+                              seller: post.user,
                               isVerified: post.user?.is_verified??false,
                               textStyle: H2BlackTextStyle,
                             ),

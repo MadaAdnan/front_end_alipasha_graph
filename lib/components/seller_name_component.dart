@@ -1,17 +1,19 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
+import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:get/get.dart';
 
 import '../helpers/style.dart';
+import '../models/user_model.dart';
 
 class SellerNameComponent extends StatelessWidget {
   SellerNameComponent(
       {super.key,
       this.textStyle,
-      required this.sellerName,
+         this.seller,
       required this.isVerified,
       this.white,
       this.color,
@@ -20,7 +22,7 @@ class SellerNameComponent extends StatelessWidget {
 
   MainController mainController = Get.find<MainController>();
   final TextStyle? textStyle;
-  final String sellerName;
+  final UserModel? seller;
   final bool isVerified;
   final bool? white;
   final bool? isRegular;
@@ -34,15 +36,20 @@ class SellerNameComponent extends StatelessWidget {
       mainAxisAlignment: alignment,
       children: [
         Flexible(
-          child: Text(
-            "${text} ${sellerName}",
-            style: textStyle ??
-                H1RedTextStyle.copyWith(
-                  fontWeight: isRegular==true ? FontWeight.w200 : null,
-                  color: color ??
-                      "${mainController.authUser.value?.id_color}".toColor(),
-                ),
-            overflow: TextOverflow.ellipsis,
+          child: InkWell(
+            onTap: (){
+              Get.toNamed(PRODUCTS_PAGE,arguments: seller);
+            },
+            child: Text(
+              "${text} ${seller?.seller_name??''}",
+              style: textStyle ??
+                  H1RedTextStyle.copyWith(
+                    fontWeight: isRegular==true ? FontWeight.w200 : null,
+                    color: color ??
+                        "${mainController.authUser.value?.id_color}".toColor(),
+                  ),
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ),
         if ((isVerified == true))

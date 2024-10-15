@@ -71,7 +71,7 @@ class ProductLogic extends GetxController {
             user {
             id
                 seller_name
-                logo
+                
                 image
                   is_verified
             }
@@ -101,7 +101,9 @@ class ProductLogic extends GetxController {
             user {
             id
                 seller_name
-                logo
+                name
+                image
+                is_verified
             }
             city {
                 name
@@ -183,7 +185,9 @@ mutation CreateComment {
         user {
         id
             name
+            seller_name
             image
+            is_verified
         }
     }
 }

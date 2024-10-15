@@ -26,17 +26,7 @@ class SectionsPage extends StatelessWidget {
       backgroundColor: WhiteColor,
       body: Column(
         children: [
-          // Container(
-          //   margin: EdgeInsets.only(bottom: 0.02.sh),
-          //   alignment: Alignment.center,
-          //   width: 1.sw,
-          //   height: 0.06.sh,
-          //   color: RedColor,
-          //   child: Text(
-          //     'جميع التصنيفات',
-          //     style: H2WhiteTextStyle,
-          //   ),
-          // ),
+
           HomeAppBarComponent(),
           Obx(() {
             if (logic.loading.value) {
@@ -50,7 +40,7 @@ class SectionsPage extends StatelessWidget {
             }
             return Container(
               width: 1.sw,
-              height: 0.82.sh,
+              height: 0.79.sh,
               child: SingleChildScrollView(
                 padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
                 child: Wrap(

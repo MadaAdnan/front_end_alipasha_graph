@@ -14,6 +14,7 @@ import 'package:ali_pasha_graph/models/user_model.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
+import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 import 'package:get/get.dart';
@@ -85,11 +86,27 @@ class MainController extends GetxController {
   void onReady() {
     getUserFromStorage();
 
+    FlutterBranchSdk.initSession().listen((deepLinkData) {
+      // استخراج بيانات الرابط العميق من deepLinkData
+      if (deepLinkData.containsKey('+clicked_branch_link') &&
+          deepLinkData['+clicked_branch_link'] == true) {
+        String? page = deepLinkData['page'];
+        logger.w('DEEP LINKS ${deepLinkData}');
+        if (page != null) {
+          // الانتقال إلى صفحة معينة باستخدام GetX
+          Get.toNamed('/$page');
+        }
+      }
+    });
+
+
    /* pusher.connect(
       onConnectionStateChange: (p0) =>
           logger.e("STATE NOW: " + p0.currentState),
     );*/
   }
+
+
 
   Future<dio.Response?> fetchData() async {
     loading.value = true;

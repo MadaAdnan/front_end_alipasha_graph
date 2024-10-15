@@ -2,14 +2,19 @@ import 'dart:ui';
 
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/components/progress_loading.dart';
+import 'package:ali_pasha_graph/components/seller_name_component.dart';
+import 'package:ali_pasha_graph/components/slider_component/view.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
+import 'package:ali_pasha_graph/models/slider_model.dart';
 import 'package:ali_pasha_graph/pages/product/tabs/comment_page.dart';
 import 'package:ali_pasha_graph/pages/product/tabs/product_detailes.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
@@ -26,7 +31,7 @@ class ProductPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
+
     return Scaffold(
       backgroundColor: WhiteColor,
       body: Obx(
@@ -44,137 +49,77 @@ class ProductPage extends StatelessWidget {
           if (images?.length == 0 && logic.product.value?.user?.logo != null) {
             images?.add("${logic.product.value?.user?.logo}");
           }
+
+          
           return ListView(
             children: [
-              Container(
-                alignment: Alignment.center,
-                width: 1.sw,
-                height: 0.5.sw,
-                decoration: BoxDecoration(
-                    border: Border(bottom: BorderSide(color: GrayLightColor))),
-                child: PageView.builder(
-                  itemBuilder: (context, index) =>
-                      Image(
-                        image: NetworkImage("${images?[index]}"),
-                      ),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: images?.length,
-                ),
-              ),
-              Container(
-                width: 1.sw,
-                height: 0.1.sh,
-                padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
-                margin: EdgeInsets.only(bottom: 0.01.sh),
-                decoration: BoxDecoration(
-                    color: WhiteColor,
-                    border: Border(bottom: BorderSide(color: GrayLightColor))),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(top: 0.01.sh),
-                              width: 0.1.sw,
-                              height: 0.1.sw,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                      image: NetworkImage(
-                                          "${logic.product.value?.user
-                                              ?.logo}"))),
-                            ),
-                            20.horizontalSpace,
-                            Text(
-                              "${logic.product.value?.user?.seller_name}",
-                              style: H4BlackTextStyle,
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              "${logic.product.value?.views_count}",
-                              style: H4BlackTextStyle,
-                            ),
-                            10.horizontalSpace,
-                            Icon(
-                              FontAwesomeIcons.eye,
-                              size: 50.h,
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Icon(
-                              FontAwesomeIcons.caretLeft,
-                              size: 40.h,
-                              color: RedColor,
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+             Container(
+               padding: EdgeInsets.symmetric(horizontal: 0.01.sw),
+               width: 1.sw,
+               height: 0.06.sh,
+               color:WhiteColor,
+               child: Row(
+                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                 children: [
+                   Row(
+                     children: [
+                       Container(width: 0.05.sh,height: 0.05.sh,decoration: BoxDecoration(
+                         shape: BoxShape.circle,
+
+                         image: DecorationImage(image: CachedNetworkImageProvider("${logic.product.value?.user?.image}"),fit: BoxFit.cover)
+                       ),),
+                      SizedBox(width: 0.02.sw,),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                         Row(
+                           children: [
+                             Text('منشور بواسطة :',style: H4RegularDark,),
+                             Icon(FontAwesomeIcons.locationDot,size: 0.02.sh,color: GrayLightColor,),
+                             Text("${logic.product.value?.city}",style: H4RegularDark,),
+                           ],
+                         ),
+                          SizedBox(height: 0.02.sw,),
+                          Row(
+                            children: [
+                              Text("${logic.product.value?.user?.seller_name}",style: H4BlackTextStyle.copyWith(fontWeight: FontWeight.w900,color: Colors.black),),
+                              if ((logic.product.value?.user?.is_verified == true))
                                 Container(
-                                  width: 0.7.sw,
-                                  child: Text(
-                                    "${logic.product.value?.name}",
-                                    style: H2BlackTextStyle,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
+                                  width: 0.04.sw,
+                                  height: 0.04.sw,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: Svg("assets/images/svg/verified.svg"
+                                                ,
+                                            size: Size(0.01.sw, 0.01.sw),
+                                          ))),
                                 ),
-                                RichText(
-                                    text: TextSpan(children: [
-                                      if(logic.product.value?.city?.name!=null)
-                                      TextSpan(
-                                          text:
-                                          '${logic.product.value?.city?.name}',
-                                          style: H5GrayOpacityTextStyle),
-                                      if(logic.product.value?.category
-                                          ?.name!=null)
-                                      TextSpan(
-                                          text:
-                                          ' - ${logic.product.value?.category
-                                              ?.name}',
-                                          style: H5GrayOpacityTextStyle),
-                                      if(logic.product.value?.sub1
-                                          ?.name!=null)
-                                      TextSpan(
-                                          text:
-                                          '- ${logic.product.value?.sub1
-                                              ?.name}',
-                                          style: H5GrayOpacityTextStyle)
-                                    ]))
-                              ],
-                            ),
-                          ],
-                        ),
-                        RichText(
-                          text: TextSpan(children: [
-                            TextSpan(
-                                text: "ID : ",
-                                style: H3BlackTextStyle.copyWith(
-                                    fontWeight: FontWeight.bold)),
-                            TextSpan(
-                                text: "${logic.product.value?.id}",
-                                style: H3BlackTextStyle.copyWith(
-                                    fontWeight: FontWeight.bold)),
-                          ]),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+                            ],
+                          )
+                          //Text('${logic.product.value?.user?.seller_name}')
+
+                        ],
+                      )
+                     ],
+                   ),
+                   Container()
+                 ],
+               ),
+             ),
+             if(logic.product.value?.images.length!=0)
+               Container(
+                 width: 0.41.sw,
+                 child: SliderComponent(items:logic.product.value!.images.map((el)=>SliderModel(image: el)).toList(),width: 0.41.sh,height: 0.41.sh,),
+               ),
+
+              if(logic.product.value?.images.length==0)
+                SizedBox(
+                  width: 0.41.sw,
+                  child: Container(
+                    child: SliderComponent(items:[SliderModel(image: "${logic.product.value!.image}")],width: 0.41.sh,height: 0.41.sh,),
+                  ),
+                )
+                ,
               if(logic.product.value?.type=='product')
               Obx(() {
                 return Container(

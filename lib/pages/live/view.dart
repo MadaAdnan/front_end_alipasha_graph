@@ -86,7 +86,8 @@ class LivePage extends StatelessWidget {
                             ),
                           ...List.generate(
                             logic.messages.length,
-                            (index) =>logic.messages[index].user?.id==mainController.authUser.value?.id? Row(
+                                (index) =>logic.messages[index].user?.id==mainController.authUser.value?.id?
+                                Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [

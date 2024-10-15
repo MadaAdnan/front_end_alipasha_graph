@@ -75,7 +75,7 @@ class CommunitiesPage extends StatelessWidget {
                         .firstOrNull;
                     return InkWell(
                       onTap: () {
-                        switch(logic.communities[index].type){
+                        switch (logic.communities[index].type) {
                           case "chat":
                             Get.toNamed(CHAT_PAGE,
                                 arguments: logic.communities[index]);
@@ -138,17 +138,53 @@ class CommunitiesPage extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       RichText(
-                                          overflow: TextOverflow.ellipsis,
-                                          text: TextSpan(
-                                            style: H3BlackTextStyle.copyWith(overflow: TextOverflow.ellipsis),
-                                        children: [
-                                          TextSpan(text:  '${logic.communities[index].type != 'chat' ? logic.communities[index].name : '${mainController.authUser.value?.name} & ${friend?.seller_name!.length!=0?friend?.seller_name:friend?.name}'}',style:H3BlackTextStyle.copyWith(overflow: TextOverflow.ellipsis,), ),
-                                          if(logic.communities[index].type == 'chat')TextSpan(text: ' (محادثة) ',style: H5RedTextStyle),
-                                          if(logic.communities[index].type == 'group')TextSpan(text: ' (مجموعة) ',style: H5RedTextStyle),
-                                          if(logic.communities[index].type == 'channel')TextSpan(text: ' (قناة) ',style: H5RedTextStyle),
-                                        ]
-                                      )),
+                                          maxLines: 1,
+                                          text: TextSpan(children: [
+                                            if (logic.communities[index].type ==
+                                                'chat')
+                                              WidgetSpan(
+                                                  child: Container(
+                                                child: Text(' (محادثة) ',
+                                                    style: H5RedTextStyle),
+                                              )),
+                                            if (logic.communities[index].type ==
+                                                'group')
+                                              WidgetSpan(
+                                                  child: Container(
+                                                child: Text(' (مجموعة) ',
+                                                    style: H5RedTextStyle),
+                                              )),
+                                            if (logic.communities[index].type ==
+                                                'channel')
+                                              WidgetSpan(
+                                                  child: Container(
+                                                child: Text(' (قناة) ',
+                                                    style: H5RedTextStyle),
+                                              )),
+                                            WidgetSpan(
+                                                child: SizedBox(
+                                              child: Flexible(
+                                                flex: 2,
+                                                child:Builder(builder: (context){
+                                                  String? name='';
 
+                                                  if(logic.communities[index].type != 'chat'){
+                                                   name=logic.communities[index].name;
+                                                  }else{
+                                                    name=friend?.seller_name!.length != 0 ? friend?.seller_name : friend?.name;
+                                                  }
+                                                  return  Text(
+                                                    '$name',
+                                                    style:
+                                                    H3BlackTextStyle.copyWith(
+                                                      overflow:
+                                                      TextOverflow.ellipsis,
+                                                    ),
+                                                  );
+                                                }),
+                                              ),
+                                            )),
+                                          ])),
                                       20.verticalSpace,
                                       RichText(
                                           text: TextSpan(children: [
@@ -184,21 +220,21 @@ class CommunitiesPage extends StatelessWidget {
                                           Icon(
                                             FontAwesomeIcons.comments,
                                             size: 0.04.sw,
-                                            color: RedColor,
+                                            color: GrayDarkColor,
                                           ),
                                         if (logic.communities[index].type ==
                                             'group')
                                           Icon(
                                             FontAwesomeIcons.users,
                                             size: 0.04.sw,
-                                            color: OrangeColor,
+                                            color: GrayDarkColor,
                                           ),
                                         if (logic.communities[index].type ==
                                             'channel')
                                           Icon(
-                                            FontAwesomeIcons.volumeHigh,
+                                            FontAwesomeIcons.bullhorn,
                                             size: 0.04.sw,
-                                            color: Colors.blue,
+                                            color: GrayDarkColor,
                                           ),
                                         45.verticalSpace,
                                       ],
@@ -214,7 +250,8 @@ class CommunitiesPage extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.end,
                                       children: [
-                                        Badge.count(count: 10),
+                                        if(logic.communities[index].unRead!>0)
+                                        Badge.count(count: logic.communities[index].unRead!),
                                         20.verticalSpace,
                                         Text(
                                           '${logic.communities[index].lastChange}',
@@ -234,126 +271,125 @@ class CommunitiesPage extends StatelessWidget {
                   }),
                   if (logic.loading.value)
                     ...List.generate(
-                        4,
-                        (index) => Shimmer.fromColors(child: Container(
-              margin: EdgeInsets.only(top: 0.01.sh),
-              padding:
-              EdgeInsets.symmetric(horizontal: 0.01.sw),
-              height: 0.08.sh,
-              decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30.r),
-              color: WhiteColor,
-              boxShadow: [
-              BoxShadow(
-              color: Colors.black.withOpacity(0.25),
-              spreadRadius: 0.006,
-              blurRadius: 0.5,
-              offset: Offset(
-              0, 1), // changes position of shadow
-              ),
-              ],
-              ),
-              child: Row(
-              mainAxisAlignment:
-              MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-              // image
-              Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment:
-              CrossAxisAlignment.center,
-              children: [
-              Container(
-              width: 0.13.sw,
-              height: 0.13.sw,
-              decoration: BoxDecoration(
-              shape: BoxShape.circle),
-              ),
+                      4,
+                      (index) => Shimmer.fromColors(
+                          baseColor: GrayLightColor,
+                          highlightColor: GrayWhiteColor,
+                          child: Container(
+                            margin: EdgeInsets.only(top: 0.01.sh),
+                            padding: EdgeInsets.symmetric(horizontal: 0.01.sw),
+                            height: 0.08.sh,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30.r),
+                              color: WhiteColor,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.25),
+                                  spreadRadius: 0.006,
+                                  blurRadius: 0.5,
+                                  offset: Offset(
+                                      0, 1), // changes position of shadow
+                                ),
+                              ],
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                // image
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      width: 0.13.sw,
+                                      height: 0.13.sw,
+                                      decoration:
+                                          BoxDecoration(shape: BoxShape.circle),
+                                    ),
 
-              // title
-              Container(
-              width: 0.62.sw,
-              child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment:
-              MainAxisAlignment.center,
-              crossAxisAlignment:
-              CrossAxisAlignment.start,
-              children: [
-              Text(
-              '',
-              style: H3BlackTextStyle,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-              ),
-              20.verticalSpace,
-              RichText(
-              text: TextSpan(children: [
-              TextSpan(
-              text: 'عدد المشتركين :',
-              style: H5RegularDark),
-              TextSpan(
-              text: ' ',
-              style: H4OrangeTextStyle),
-              ])),
-              ],
-              ),
-              ),
-              ],
-              ),
+                                    // title
+                                    Container(
+                                      width: 0.62.sw,
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '',
+                                            style: H3BlackTextStyle,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                          ),
+                                          20.verticalSpace,
+                                          RichText(
+                                              text: TextSpan(children: [
+                                            TextSpan(
+                                                text: 'عدد المشتركين :',
+                                                style: H5RegularDark),
+                                            TextSpan(
+                                                text: ' ',
+                                                style: H4OrangeTextStyle),
+                                          ])),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
 
-              Container(
-              width: 0.2.sw,
-              child: Row(
-              children: [
-              Container(
-              width: 0.06.sw,
-              alignment: Alignment.center,
-              child: Column(
-              mainAxisAlignment:
-              MainAxisAlignment.center,
-              crossAxisAlignment:
-              CrossAxisAlignment.start,
-              children: [
-              Icon(
-              FontAwesomeIcons.comments,
-              size: 0.04.sw,
-              color: RedColor,
-              ),
-              45.verticalSpace,
-              ],
-              ),
-              ),
+                                Container(
+                                  width: 0.2.sw,
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 0.06.sw,
+                                        alignment: Alignment.center,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Icon(
+                                              FontAwesomeIcons.comments,
+                                              size: 0.04.sw,
+                                              color: RedColor,
+                                            ),
+                                            45.verticalSpace,
+                                          ],
+                                        ),
+                                      ),
 // notify
-              Container(
-              width: 0.14.sw,
-              padding:
-              EdgeInsets.only(left: 0.01.sw),
-              child: Column(
-              mainAxisAlignment:
-              MainAxisAlignment.center,
-              crossAxisAlignment:
-              CrossAxisAlignment.end,
-              children: [
-              Badge.count(count: 10),
-              20.verticalSpace,
-              Text(
-              '',
-              style: H5GrayOpacityTextStyle,
-              )
-              ],
-              ),
-              )
-              ],
-              ),
-              )
-              //icon
-              ],
-              ),
-              ) , baseColor: GrayLightColor, highlightColor: GrayWhiteColor)
-                           ,)
+                                      Container(
+                                        width: 0.14.sw,
+                                        padding: EdgeInsets.only(left: 0.01.sw),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            Badge.count(count: 10),
+                                            20.verticalSpace,
+                                            Text(
+                                              '',
+                                              style: H5GrayOpacityTextStyle,
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                )
+                                //icon
+                              ],
+                            ),
+                          )),
+                    )
                 ],
               );
             }))

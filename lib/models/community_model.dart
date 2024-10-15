@@ -12,6 +12,7 @@ class CommunityModel {
   String? name;
   String? type;
   int? users_count;
+int? unRead;
 
   CommunityModel({
     this.manager,
@@ -22,6 +23,7 @@ class CommunityModel {
     this.type,
     this.name,
     this.url,
+    this.unRead,
   });
 
   factory CommunityModel.fromJson(Map<String, dynamic> data) {
@@ -37,6 +39,7 @@ class CommunityModel {
       manager: data['manager'] != null ? UserModel.fromJson(data['manager']) : null,
       id: int.tryParse("${data['id']}"),
       users_count: int.tryParse("${data['users_count']}")??0,
+      unRead: int.tryParse("${data['un_read']}")??0,
       lastChange: "${data['last_update'] ?? ''}",
       name: "${data['name'] ?? ''}",
       type: "${data['type'] ?? ''}",

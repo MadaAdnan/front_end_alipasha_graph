@@ -117,7 +117,329 @@ class ChannelPage extends StatelessWidget {
                 ],
               );
             })),
+            if(logic.communityModel.manager?.id==mainController.authUser.value?.id)
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
+              alignment: Alignment.center,
+              constraints: BoxConstraints(maxHeight: 0.07.sh),
+              width: 1.sw,
+              height: 0.07.sh,
+              decoration: const BoxDecoration(
+                color: GrayWhiteColor,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                      child: Container(
+                        child: FormBuilderTextField(
+                          name: 'msg',
+                          controller: logic.messageController,
+                          style: H2RegularDark.copyWith(color: Colors.black),
+                          onChanged: (value) => logic.message.value = value,
+                          decoration: InputDecoration(
+                            fillColor: WhiteColor,
+                            filled: true,
+                            hintStyle: H5GrayTextStyle.copyWith(
+                              color: Colors.black.withOpacity(0.3),
+                            ),
+                            contentPadding:
+                            EdgeInsets.symmetric(horizontal: 0.02.sw),
+                            suffixIcon: Obx(() {
+                              if (logic.loadingSend.value) {
+                                return Container(
+                                  width: 0.04.sw,
+                                  height: 0.04.sw,
+                                  child: Container(
+                                      padding: const EdgeInsets.all(7),
+                                      child: const Center(
+                                        child: Padding(
+                                          padding: EdgeInsets.all(7),
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                      )),
+                                );
+                              }
+                              return Container(
+                                decoration: const BoxDecoration(
+                                    color: RedColor, shape: BoxShape.circle),
+                                child: Transform.flip(
+                                  flipX: true,
+                                  child: Obx(() {
+                                    if (logic.message.value == null ||
+                                        logic.message.value!.isEmpty) {
+                                      return IconButton(
+                                          onPressed: () {
+                                            logic.startRecording();
+                                            Get.defaultDialog(
+                                                title: ' ',
+                                                content: Container(
+                                                  child: Column(
+                                                    children: [
+                                                      Container(
+                                                        width: 0.12.sw,
+                                                        height: 0.12.sw,
+                                                        child: Obx(() {
+                                                          if (logic
+                                                              .mRecorderIsInited
+                                                              .value) {
+                                                            return AnimatedContainer(
+                                                              constraints:
+                                                              BoxConstraints
+                                                                  .expand(
+                                                                  width: 0.08
+                                                                      .sw,
+                                                                  height: 0.08
+                                                                      .sw),
+                                                              duration:
+                                                              const Duration(
+                                                                  milliseconds:
+                                                                  200),
+                                                              height:
+                                                              (logic.mRecordingLevel /
+                                                                  1000)
+                                                                  .sw,
+                                                              width:
+                                                              (logic.mRecordingLevel /
+                                                                  1000)
+                                                                  .sw,
+                                                              decoration:
+                                                              BoxDecoration(
+                                                                color: RedColor,
+                                                                borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                    150.r),
+                                                              ),
+                                                              child: InkWell(
+                                                                onTap: () {
+                                                                  logic
+                                                                      .stopRecorder();
+                                                                },
+                                                                child: Center(
+                                                                  child: Icon(
+                                                                    Icons.stop,
+                                                                    color: Colors
+                                                                        .white,
+                                                                    size: 0.08
+                                                                        .sw, // تغيير حجم الأيقونة بناءً على شدة الصوت
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            );
+                                                          }
+                                                          return Container(
+                                                            width: 0.15.sw,
+                                                            height: 0.15.sw,
+                                                            alignment:
+                                                            Alignment.center,
+                                                            decoration: BoxDecoration(
+                                                                borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                    100.r),
+                                                                color:
+                                                                GrayLightColor),
+                                                            child: IconButton(
+                                                                onPressed: () {
+                                                                  logic
+                                                                      .startRecording();
+                                                                },
+                                                                icon: Icon(
+                                                                  FontAwesomeIcons
+                                                                      .microphone,
+                                                                  size: 0.08.sw,
+                                                                  color: WhiteColor,
+                                                                )),
+                                                          );
+                                                        }),
+                                                      ),
+                                                      SizedBox(height: 0.01.sh),
+                                                      Obx(() {
+                                                        if (logic.recordedFilePath
+                                                            ?.value !=
+                                                            null &&
+                                                            logic.mRecorderIsInited
+                                                                .value ==
+                                                                false) {
+                                                          return Row(
+                                                            mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .end,
+                                                            children: [
+                                                              if (logic
+                                                                  .mPlayerIsInited
+                                                                  .value ==
+                                                                  false)
+                                                                IconButton(
+                                                                  onPressed: () {
+                                                                    logic
+                                                                        .playRecordedAudio();
+                                                                  },
+                                                                  icon: Icon(
+                                                                      FontAwesomeIcons
+                                                                          .solidCirclePlay),
+                                                                ),
+                                                              if (logic
+                                                                  .mPlayerIsInited
+                                                                  .value ==
+                                                                  true)
+                                                                IconButton(
+                                                                  onPressed: logic
+                                                                      .stopPlayer,
+                                                                  icon: Icon(
+                                                                      FontAwesomeIcons
+                                                                          .solidCircleStop),
+                                                                ),
+                                                            ],
+                                                          );
+                                                        }
 
+                                                        return Container();
+                                                      }),
+                                                      Obx(() {
+                                                        if (logic.mRecorderIsInited
+                                                            .value) {
+                                                          return Container();
+                                                        }
+                                                        return Row(
+                                                          mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                          children: [
+                                                            InkWell(
+                                                              onTap: () async {
+                                                                if (logic
+                                                                    .recordedFilePath
+                                                                    ?.value !=
+                                                                    null) {
+                                                                  logic.file.value =
+                                                                      XFile(
+                                                                          "${logic.recordedFilePath!.value}");
+                                                                }
+                                                                Get.back();
+                                                                await logic
+                                                                    .uploadFileMessage();
+                                                                logic
+                                                                    .recordedFilePath!
+                                                                    .value = '';
+                                                              },
+                                                              child: Container(
+                                                                padding: EdgeInsets
+                                                                    .symmetric(
+                                                                    horizontal:
+                                                                    0.05.sw,
+                                                                    vertical:
+                                                                    0.02.sw),
+                                                                decoration:
+                                                                BoxDecoration(
+                                                                  color:
+                                                                  Colors.green,
+                                                                  borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                      50.r),
+                                                                ),
+                                                                child: Text(
+                                                                  'إرسال',
+                                                                  style:
+                                                                  H4WhiteTextStyle,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            InkWell(
+                                                              onTap: () {
+                                                                logic
+                                                                    .recordedFilePath!
+                                                                    .value = '';
+                                                                Get.back();
+                                                              },
+                                                              child: Container(
+                                                                padding: EdgeInsets
+                                                                    .symmetric(
+                                                                    horizontal:
+                                                                    0.05.sw,
+                                                                    vertical:
+                                                                    0.02.sw),
+                                                                decoration:
+                                                                BoxDecoration(
+                                                                  color: RedColor,
+                                                                  borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                      50.r),
+                                                                ),
+                                                                child: Text(
+                                                                  'إلغاء',
+                                                                  style:
+                                                                  H4WhiteTextStyle,
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        );
+                                                      })
+                                                    ],
+                                                  ),
+                                                ));
+                                          },
+                                          icon: const Icon(
+                                            FontAwesomeIcons.microphone,
+                                            color: WhiteColor,
+                                          ));
+                                    }
+                                    return IconButton(
+                                        onPressed: () {
+                                          if (logic.messageController.text
+                                              .trim()
+                                              .isNotEmpty) {
+                                            logic.sendTextMessage();
+                                          }
+                                        },
+                                        icon: const Icon(
+                                          FontAwesomeIcons.paperPlane,
+                                          color: WhiteColor,
+                                        ));
+                                  }),
+                                ),
+                              );
+                            }),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(150.r),
+                              borderSide: const BorderSide(
+                                color: RedColor,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(150.r),
+                              borderSide: const BorderSide(
+                                color: RedColor,
+                              ),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(150.r),
+                              borderSide: const BorderSide(
+                                color: RedColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )),
+                  Transform.rotate(
+                    angle: -0.78,
+                    child: IconButton(
+                        onPressed: () {
+                          logic.pickImage(imagSource: ImageSource.gallery);
+                        },
+                        icon: const Icon(
+                          FontAwesomeIcons.paperclip,
+                          color: GrayDarkColor,
+                        )),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -133,126 +455,305 @@ class ChannelPage extends StatelessWidget {
     return urlRegExp.hasMatch(text);
   }
 
-  Widget myMessage(context,{ required MessageModel message}) {
-    return Container(
-      width: 1.sw,
+  Widget myMessage(context, {required MessageModel message}) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Container(
+              padding: EdgeInsets.only(top: 0.014.sh),
+              child: Container(
+                width: 0.09.sw,
+                height: 0.09.sw,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: CachedNetworkImageProvider(
+                            "${message.user?.image}"),
+                        fit: BoxFit.cover),
+                    shape: BoxShape.circle),
+              ),
+            ),
+            SizedBox(
+              width: 0.01.sw,
+            ),
+            Flexible(
+                child: Text(
+                  "${message.user?.seller_name ?? message.user?.name}",
+                  style: H5OrangeTextStyle,
+                )),
+          ],
+        ),
+        Container(
+          width: 0.75.sw,
+          padding: EdgeInsets.symmetric(vertical: 0.01.sh, horizontal: 0.02.sw),
+          margin: EdgeInsets.only(top: 0.005.sh),
+          decoration: BoxDecoration(
+              color: GrayLightColor, borderRadius: BorderRadius.circular(15.r)),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                child: RichText(
+                  softWrap: true,
+                  text: TextSpan(children: [
+                    ..."${message.body}".split(' ').map((el) {
+                      if (isURL("$el")) {
+                        return TextSpan(
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () async => await openUrl(url: '$el'),
+                          text: ' $el ',
+                          style: H4RedTextStyle,
+                        );
+                      } else {
+                        return TextSpan(
+                            text: ' $el ',
+                            style: H4RegularDark);
+                      }
+                    })
+                  ]),
+                ),
+              ),
+              if (message.type == 'aac')
+                PlayerSoundMessage(
+                  path: message.attach,
+                ),
+              if (message.type != 'aac' && message.type != 'text')
+                InkWell(
+                  child: Container(
+                    width: 0.75.sw,
+                    height: 0.75.sw,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30.r),
+                        image: DecorationImage(
+                            image:
+                            CachedNetworkImageProvider("${message.attach}"),
+                            fit: BoxFit.cover)),
+                  ),
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) =>
+                          Dialog(
+                            insetPadding: EdgeInsets.zero,
+                            backgroundColor: Colors.transparent,
+                            child: Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                CachedNetworkImage(
+                                    imageUrl: '${message.attach}',
+                                    imageBuilder: (context, imageProvider) =>
+                                        Container(
+                                          child: Image(
+                                            image: imageProvider,
+                                          ),
+                                        )),
+                                Positioned(
+                                  top: 10,
+                                  right: 10,
+                                  child: IconButton(
+                                    icon: Container(
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                          color: WhiteColor,
+                                          shape: BoxShape.circle,
+                                          boxShadow: [
+                                            BoxShadow(
+                                                color: DarkColor,
+                                                blurRadius: 0.02.sw)
+                                          ]),
+                                      child: const Icon(Icons.close,
+                                          color: RedColor, size: 30),
+                                    ),
+                                    onPressed: () => Get.back(),
+                                  ),
+                                ),
+                                Positioned(
+                                  bottom: 20,
+                                  left: 20,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 5),
+                                    color: Colors.black.withOpacity(0.7),
+                                    child: Text(
+                                      '${message.body}', // وصف الصورة
+                                      style: H4BlackTextStyle,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                    );
+                  },
+                ),
+              Container(
+                transformAlignment: Alignment.bottomLeft,
+                alignment: Alignment.bottomLeft,
+                child: Text(
+                  "${message.createdAt}",
+                  style: H5GrayTextStyle,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget anotherMessage(context, {required MessageModel message}) {
+    return SizedBox(
+      width: 0.75.sw,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center ,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisSize: MainAxisSize.min,
         children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text(
+                "${message.user?.seller_name ?? message.user?.name}",
+                style: H5OrangeTextStyle.copyWith(color: Colors.brown),
+              ),
+              Container(
+
+                child: Container(
+                  width: 0.09.sw,
+                  height: 0.09.sw,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: CachedNetworkImageProvider(
+                              "${message.user?.image}"),
+                          fit: BoxFit.cover),
+                      shape: BoxShape.circle),
+                ),
+              ),
+            ],
+          ),
           Container(
-            width: 0.8.sw,
-            alignment:  Alignment.centerRight ,
-            child: Text(
-              '${message.createdAt}',
-              style: H4GrayTextStyle,
+            width: 0.7.sw,
+            constraints: BoxConstraints(minWidth: 0.00001.sw),
+            padding:
+            EdgeInsets.symmetric(vertical: 0.01.sh, horizontal: 0.02.sw),
+            margin: EdgeInsets.only(top: 0.005.sh),
+            decoration: BoxDecoration(
+                color: GrayLightColor,
+                borderRadius: BorderRadius.circular(15.r)),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  constraints:
+                  BoxConstraints(minWidth: 0.001.sw, maxWidth: 0.7.sw),
+                  child: RichText(
+                    softWrap: true,
+                    text: TextSpan(children: [
+                      ..."${message.body}".split(' ').map((el) {
+                        if (isURL("$el")) {
+                          return TextSpan(
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async => await openUrl(url: '$el'),
+                            text: ' $el ',
+                            style: H4RedTextStyle,
+                          );
+                        } else {
+                          return TextSpan(
+                              text: ' $el ',
+                              style: H4RegularDark);
+                        }
+                      })
+                    ]),
+                  ),
+                ),
+                if (message.type == 'aac')
+                  PlayerSoundMessage(
+                    path: message.attach,
+                  ),
+                if (message.type != 'aac' && message.type != 'text')
+                  InkWell(
+                    child: Container(
+                      width: 0.75.sw,
+                      height: 0.75.sw,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30.r),
+                          image: DecorationImage(
+                              image:
+                              CachedNetworkImageProvider("${message.attach}"),
+                              fit: BoxFit.cover)),
+                    ),
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) =>
+                            Dialog(
+                              insetPadding: EdgeInsets.zero,
+                              backgroundColor: Colors.transparent,
+                              child: Stack(
+                                fit: StackFit.expand,
+                                children: [
+                                  CachedNetworkImage(
+                                      imageUrl: '${message.attach}',
+                                      imageBuilder: (context, imageProvider) =>
+                                          Container(
+                                            child: Image(
+                                              image: imageProvider,
+                                            ),
+                                          )),
+                                  Positioned(
+                                    top: 10,
+                                    right: 10,
+                                    child: IconButton(
+                                      icon: Container(
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                            color: WhiteColor,
+                                            shape: BoxShape.circle,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: DarkColor,
+                                                  blurRadius: 0.02.sw)
+                                            ]),
+                                        child: const Icon(Icons.close,
+                                            color: RedColor, size: 30),
+                                      ),
+                                      onPressed: () => Get.back(),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    bottom: 20,
+                                    left: 20,
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 5),
+                                      color: Colors.black.withOpacity(0.7),
+                                      child: Text(
+                                        '${message.body}', // وصف الصورة
+                                        style: H4BlackTextStyle,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                      );
+                    },
+                  ),
+                Container(
+                  transformAlignment: Alignment.bottomLeft,
+                  alignment: Alignment.bottomLeft,
+                  child: Text(
+                    "${message.createdAt}",
+                    style: H5GrayTextStyle,
+                  ),
+                ),
+              ],
             ),
           ),
-          SizedBox(height: 0.02.sw,),
-          if (message.type == 'text')
-            Container(
-              width: 0.9.sw,
-              padding:
-              EdgeInsets.symmetric(vertical: 0.009.sh, horizontal: 0.02.sw),
-              decoration: BoxDecoration(
-                color: RedColor ,
-                borderRadius: BorderRadius.circular(30.r),
-              ),
-              child: RichText(
-                softWrap: true,
-                text: TextSpan(children: [
-                  ..."${message.body}".split(' ').map((el) {
-                    if (isURL("$el")) {
-                      return TextSpan(
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () async => await openUrl(url: '$el'),
-                        text: ' $el ',
-                        style:  H3WhiteTextStyle.copyWith(height: 1.5),
-                      );
-                    } else {
-                      return TextSpan(
-                          text: ' $el ',
-                          style:  H3WhiteTextStyle.copyWith(height: 1.5));
-                    }
-                  })
-                ]),
-              ),
-            ),
-          if (message.type == 'wav'||message.type == 'aac')
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 0.004.sw,horizontal:0.004.sw ),
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(150.r),color: RedColor.withOpacity(0.5)),
-              child:  PlayerSoundMessage(
-                path: message.attach,
-              ),
-            ),
-          if (message.type != 'text' && message.type != 'wav'&& message.type != 'aac')
-            InkWell(
-              child: Container(
-                width: 0.9.sw,
-                height: 0.6.sw,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30.r),
-                    image: DecorationImage(
-                        image: CachedNetworkImageProvider("${message.attach}"),
-                        fit: BoxFit.cover)),
-              ),
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => Dialog(
-                    insetPadding: EdgeInsets.zero,
-                    backgroundColor: Colors.transparent,
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        CachedNetworkImage(
-                            imageUrl: '${message.attach}',
-                            imageBuilder: (context, imageProvider) => Container(
-                              child: Image(
-                                image: imageProvider,
-                              ),
-                            )),
-                        Positioned(
-                          top: 10,
-                          right: 10,
-                          child: IconButton(
-                            icon: Container(
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  color: WhiteColor,
-                                  shape: BoxShape.circle,
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: DarkColor, blurRadius: 0.02.sw)
-                                  ]),
-                              child:
-                              Icon(Icons.close, color: RedColor, size: 30),
-                            ),
-                            onPressed: () => Get.back(),
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 20,
-                          left: 20,
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            color: Colors.black.withOpacity(0.7),
-                            child: Text(
-                              'Image Description', // وصف الصورة
-                              style:
-                              TextStyle(color: Colors.white, fontSize: 16),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
-          SizedBox(height: 0.008.sh,),
         ],
       ),
     );

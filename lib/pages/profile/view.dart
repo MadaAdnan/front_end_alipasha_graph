@@ -287,8 +287,8 @@ class ProfilePage extends StatelessWidget {
                                       isVerified: mainController
                                               .authUser.value?.is_verified ??
                                           false,
-                                      sellerName:
-                                          "${mainController.authUser.value?.seller_name}",
+                                      seller:
+                                          mainController.authUser.value,
                                     ),
                                   ),
                                   Container(
@@ -672,7 +672,7 @@ class ProfilePage extends StatelessWidget {
             top: 0.56.sh,
             child: Container(
               width: 1.sw,
-              height: 0.4.sh,
+              height: 0.36.sh,
 
               padding: EdgeInsets.only(bottom: 0.01.sh),
               child: PageView(

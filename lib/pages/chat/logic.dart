@@ -29,7 +29,7 @@ class ChatLogic extends GetxController {
   RxList<MessageModel> messages = RxList<MessageModel>([]);
   CommunityModel communityModel = Get.arguments;
   ScrollController scrollController = ScrollController();
-
+RxnString message=RxnString(null);
   // Audio
 
   RxBool mPlayerIsInited = false.obs;

@@ -310,8 +310,8 @@ class ProductsPage extends StatelessWidget {
                                           isVerified:
                                               logic.seller.value?.is_verified ??
                                                   false,
-                                          sellerName:
-                                              "${logic.seller.value?.seller_name}",
+                                          seller:
+                                              logic.seller.value,
                                         ),
                                       ),
                                       if ((logic.seller.value?.is_verified ==
@@ -633,8 +633,8 @@ class ProductsPage extends StatelessWidget {
                                           isVerified:
                                               logic.seller.value?.is_verified ??
                                                   false,
-                                          sellerName:
-                                              "${logic.seller.value?.seller_name}",
+                                          seller:
+                                             logic.seller.value,
                                         ),
                                       ),
                                       if ((logic.seller.value?.is_verified ==

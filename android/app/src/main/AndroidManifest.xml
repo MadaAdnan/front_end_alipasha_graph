@@ -49,14 +49,16 @@
 
 <!--            DeepLink-->
 
-            <meta-data android:name="flutter_deeplinking_enabled" android:value="true" />
+<!--            <meta-data android:name="flutter_deeplinking_enabled" android:value="true" />-->
            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http" android:host="ali-pasha.com" />
-                <data android:scheme="https" />
+                <data android:scheme="https" android:host="v3.ali-pasha.com" />
+<!--                <data android:scheme="http" />-->
             </intent-filter>
+
+
             <!-- Specifies an Android theme to apply to this Activity as soon as
                  the Android process has started. This theme is visible to the user
                  while the Flutter UI initializes. After that, this theme continues
