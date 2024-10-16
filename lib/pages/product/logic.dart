@@ -15,15 +15,14 @@ class ProductLogic extends GetxController {
   RxBool loadingGetComment = RxBool(false);
   MainController mainController = Get.find<MainController>();
   RxnInt productId = RxnInt(null);
-
+ScrollController scrollController=ScrollController();
   Rxn<ProductModel> product = Rxn<ProductModel>(null);
   RxList<ProductModel> products = RxList<ProductModel>([]);
   RxList<CommentModel> comments = RxList<CommentModel>([]);
   RxBool hasMorePage = RxBool(false);
   RxInt page = RxInt(1);
 
-  Rx<TextEditingController> comment =
-      Rx<TextEditingController>(TextEditingController());
+TextEditingController comment =TextEditingController();
 
   nextPage() {
     if (hasMorePage.value) {
@@ -39,7 +38,7 @@ class ProductLogic extends GetxController {
     ever(productId, (value) {
       page.value = 1;
       comments.clear();
-      comment.value.clear();
+      comment.clear();
       getProduct();
       getComments();
     });
@@ -68,26 +67,34 @@ class ProductLogic extends GetxController {
         id
             name
             expert
-            user {
-            id
-                seller_name
-                
-                image
-                  is_verified
-            }
-            city {
-                name
-            }
-            level
+              level
             price
             discount
             start_date
             end_date
+            created_at
             code
             type
             views_count
             image
             is_discount
+            
+            user {
+              id
+              seller_name
+              image
+              is_verified
+            }
+            city {
+              name
+            }
+            category{
+              name
+            }
+            sub1{
+              name
+            }
+          
         } ''';
 
     mainController.query.value = '''
@@ -98,26 +105,7 @@ class ProductLogic extends GetxController {
           is_rate
           vote_avg
           name
-            user {
-            id
-                seller_name
-                name
-                image
-                is_verified
-            }
-            city {
-                name
-            }
-            category {
-                name
-            }
-            sub1 {
-                name
-            }
-            colors {
-                code
-            }
-            name
+           name
             info
             tags
             is_discount
@@ -144,6 +132,27 @@ class ProductLogic extends GetxController {
             images
             docs
             created_at
+            user {
+            id
+                seller_name
+                name
+                image
+                is_verified
+            }
+            city {
+                name
+            }
+            category {
+                name
+            }
+            sub1 {
+                name
+            }
+            colors {
+                code
+                name
+            }
+           
             
         }
         ${page.value == 1 ? '$productsData' : ''}
@@ -155,10 +164,9 @@ class ProductLogic extends GetxController {
 
     try {
       dio.Response? res = await mainController.fetchData();
-    //  mainController.logger.e(res?.data);
+
       loading.value = false;
       if (res?.data?['data']?['product']['product'] != null) {
-       // mainController.logger.e(res?.data?['data']?['product']);
         product.value =
             ProductModel.fromJson(res?.data?['data']?['product']['product']);
       }
@@ -178,7 +186,7 @@ class ProductLogic extends GetxController {
   Future<void> createComment() async {
     loadingComment.value = true;
     mainController.query.value = '''
-mutation CreateComment {
+      mutation CreateComment {
     createComment(product_id: ${productId.value}, comment: "${comment.value.text}") {
         comment
         created_at
@@ -198,7 +206,7 @@ mutation CreateComment {
       if (res?.data?['data']?['createComment'] != null) {
         comments
             .add(CommentModel.fromJson(res?.data?['data']?['createComment']));
-        comment.value.clear();
+        comment.clear();
       }
     } on CustomException catch (e) {}
     loadingComment.value = false;
@@ -218,6 +226,8 @@ mutation CreateComment {
                     comment
                     created_at
                     user {
+                    id
+                    seller_name
                         name
                         image
                     }
@@ -243,6 +253,7 @@ mutation CreateComment {
             ['data']) {
           comments.add(CommentModel.fromJson(item));
         }
+
       }
     } on CustomException catch (e) {}
     loadingGetComment.value = false;

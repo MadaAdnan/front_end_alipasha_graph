@@ -3,9 +3,11 @@ import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'colors.dart';
@@ -47,9 +49,21 @@ bool isAuth() {
 }
 
 Future<void> openUrl({required String url}) async {
-  if (!await launchUrl(Uri.parse(url))) {
-    throw CustomException(message: 'Could not launch $url');
+  Uri? uri=Uri.tryParse(url);
+  try{
+    if(uri!=null){
+      if (!await launchUrl(uri)) {
+        throw Exception('');
+      }
+    }else{
+      throw Exception('');
+    }
+  }catch(e){
+    Clipboard.setData(ClipboardData(text: "${url}"));
+    messageBox(title: 'تم نسخ الرابط',message: '');
   }
+
+
 }
 
 messageBox({String? title, String? message, bool isError = false}) {

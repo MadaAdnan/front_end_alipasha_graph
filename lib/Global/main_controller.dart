@@ -417,4 +417,34 @@ class MainController extends GetxController {
 
 
   }
+
+  bool isURL(String text) {
+    /*final RegExp urlRegExp =
+    RegExp(r'^(https?:\/\/)?' //  بدء الرابط بـ "http://" أو "https://"
+    r'([a-zA-Z0-9\-_]+\.)+[a-zA-Z]{2,}' // النطاق مثل "example.com"
+    r'(:\d+)?(\/[^\s]*)?$' // اختياري: المنفذ والمسار
+    );*/
+
+     final RegExp urlRegExp = RegExp(
+     //  r'[\n ]'
+          r'^(https?:\/\/)?' // يبدأ بـ "http://" أو "https://"
+          r'([a-zA-Z0-9\-]+\.)+[a-zA-Z]{2,}|' // نطاقات مثل .com, .org, .net وغيرها
+          r'localhost|' // يسمح بـ localhost
+          r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|' // يسمح بالعناوين IP
+          r'\[[0-9a-fA-F:]+\])' // يسمح بالعناوين IPv6
+          r'(:\d+)?' // المنفذ اختياري
+          r'(\/[^\s]*)?$' // المسار يمكن أن يحتوي على أي حرف
+    //   r'[\n ]'
+      );
+
+  /*  final RegExp urlRegExp = RegExp(
+        r'[ \n| ]' // يبدأ بـ \n أو مسافة
+        r'(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-?=%.]+' // الرابط
+        r'[ \n| ]' // ينتهي بـ \n أو مسافة
+    );
+*/
+
+
+    return urlRegExp.hasMatch(text)  && !text.contains('@');
+  }
 }
