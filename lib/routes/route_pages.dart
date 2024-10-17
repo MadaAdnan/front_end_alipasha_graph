@@ -21,6 +21,8 @@ import 'package:ali_pasha_graph/pages/communities/binding.dart';
 import 'package:ali_pasha_graph/pages/communities/view.dart';
 import 'package:ali_pasha_graph/pages/contact/binding.dart';
 import 'package:ali_pasha_graph/pages/contact/view.dart';
+import 'package:ali_pasha_graph/pages/create_community/binding.dart';
+import 'package:ali_pasha_graph/pages/create_community/view.dart';
 import 'package:ali_pasha_graph/pages/create_job/binding.dart';
 import 'package:ali_pasha_graph/pages/create_job/view.dart';
 import 'package:ali_pasha_graph/pages/create_product/binding.dart';
@@ -88,6 +90,9 @@ import 'package:ali_pasha_graph/pages/tenders/binding.dart';
 import 'package:ali_pasha_graph/pages/tenders/view.dart';
 import 'package:ali_pasha_graph/pages/verify_email/binding.dart';
 import 'package:ali_pasha_graph/pages/verify_email/view.dart';
+import 'package:ali_pasha_graph/pages/video_player_post/binding.dart';
+import 'package:ali_pasha_graph/pages/video_player_post/view.dart';
+
 import 'package:ali_pasha_graph/pages/weather/binding.dart';
 import 'package:ali_pasha_graph/pages/weather/view.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
@@ -98,6 +103,9 @@ import '../pages/ask/binding.dart';
 import '../pages/ask/view.dart';
 import '../pages/create_tender/binding.dart';
 import '../pages/create_tender/view.dart';
+
+import '../pages/following/binding.dart';
+import '../pages/following/view.dart';
 import '../pages/news/binding.dart';
 import '../pages/news/view.dart';
 import '../pages/products/binding.dart';
@@ -215,11 +223,36 @@ class AppPages {
       page: () => FollowersPage(),
       binding: FollowersBinding(),
     ),
+
+    GetPage(
+      middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+      name: FOLLOWING_PAGE,
+      page: () => FollowingPage(),
+      binding: FollowingBinding(),
+    ),
+
+    GetPage(
+      middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+      name: CREATE_COMMUNITY_PAGE,
+      page: () => CreateCommunityPage(),
+      binding: CreateCommunityBinding(),
+    ),
+
+
+
     GetPage(
       name: JOBS_PAGE,
       page: () => JobsPage(),
       binding: JobsBinding(),
     ),
+
+    GetPage(
+      name: VIDEO_PLAYER_POST_PAGE,
+      page: () => VideoPlayerPostPage(),
+      binding: VideoPlayerPostBinding(),
+    ),
+
+
     GetPage(
         name: TENDERS_PAGE,
         page: () => TendersPage(),

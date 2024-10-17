@@ -40,14 +40,7 @@ class CommunitiesLogic extends GetxController {
         getCommunities();
       }
     });
-    // mainController.pusher
-    //     .subscribe('private-community.${mainController.authUser.value?.id}')
-    //     .bind('community.create', (event) {
-    //   mainController.logger.e(event);
-    //   if (communities.indexWhere((el) => el.id == event['community']['id']) ==
-    //       -1)
-    //     communities.insert(0, CommunityModel.fromJson(event['community']));
-    // });
+
   }
 
   @override
@@ -66,11 +59,13 @@ class CommunitiesLogic extends GetxController {
          data {
             id
             name
+            image
             type
             last_update
             users_count
             manager{
             id 
+            name
             seller_name
             logo
             }
@@ -79,6 +74,11 @@ class CommunitiesLogic extends GetxController {
                 name
                 seller_name
                 image
+                trust
+            }
+            pivot {
+                is_manager
+                notify
             }
         }
         paginatorInfo {

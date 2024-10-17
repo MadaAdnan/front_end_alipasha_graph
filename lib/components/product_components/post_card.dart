@@ -1,13 +1,14 @@
-import 'dart:math';
+
 
 import 'package:ali_pasha_graph/Global/main_controller.dart';
-import 'package:ali_pasha_graph/components/youtube_player/view.dart';
+
 import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
 import 'package:ali_pasha_graph/helpers/components.dart';
 import 'package:ali_pasha_graph/helpers/enums.dart';
 import 'package:ali_pasha_graph/helpers/queries.dart';
 
 import 'package:ali_pasha_graph/models/product_model.dart';
+
 
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:animated_icon/animated_icon.dart';
@@ -20,6 +21,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../helpers/colors.dart';
 import '../../helpers/style.dart';
+import '../../helpers/components.dart';
 
 class PostCard extends StatelessWidget {
   final ProductModel post;
@@ -54,7 +56,7 @@ class PostCard extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-               Flexible(child:  Row(
+               Flexible(flex: 3,child:  Row(
                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                  children: [
                    InkWell(
@@ -187,9 +189,9 @@ class PostCard extends StatelessWidget {
                      }
                    })
                  ],
-               ),flex: 3,),
+               ),),
                 15.verticalSpace,
-               Flexible(child:  Container(
+               Flexible(flex: 2,child:  Container(
                  width: 1.sw,
 
                  child: Text(
@@ -198,7 +200,7 @@ class PostCard extends StatelessWidget {
                    maxLines: 2,
                    style: H3GrayTextStyle,
                  ),
-               ),flex: 2,)
+               ),)
               ],
             ),
           ),
@@ -218,6 +220,25 @@ class PostCard extends StatelessWidget {
                       fit: BoxFit.cover)),
               child: Stack(
                 children: [
+                  if(post.video!=null && post.video!.length>3)
+                  Positioned(child:Container(
+                    alignment: Alignment.center,
+                    width: 1.sw,
+                    height: 1.sw,
+                    color: Colors.black.withOpacity(0.3),
+                    child:Container(
+                      alignment: Alignment.center,
+                      width: 0.18.sw,
+                      height: 0.18.sw,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: RadialGradient(colors: [WhiteColor.withOpacity(0.5),WhiteColor.withOpacity(0.2),WhiteColor.withOpacity(0.2),GrayLightColor.withOpacity(0.6)])
+                      ),
+                      child: IconButton(onPressed: (){
+                       Get.toNamed(VIDEO_PLAYER_POST_PAGE,arguments: "${post.video}");
+                      }, icon: Icon(FontAwesomeIcons.play,size: 0.08.sw,color: WhiteColor,)),
+                    ),
+                  )),
                   if (post.level == 'special')
                     Positioned(
                       top: 20.h,
@@ -247,6 +268,7 @@ class PostCard extends StatelessWidget {
                       ),
                     ),
                   Visibility(
+                    visible: post.is_discount == true,
                     child: Positioned(
                       bottom: 100.h,
                       right: 40.w,
@@ -276,7 +298,6 @@ class PostCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                    visible: post.is_discount == true,
                   ),
                   Visibility(
                     visible: post.type == 'product',
@@ -297,7 +318,7 @@ class PostCard extends StatelessWidget {
                               text: TextSpan(children: [
                                 TextSpan(
                                     text:
-                                        ' ${post.is_discount == true ? post?.discount : post.price ?? 0} ',
+                                        ' ${post.is_discount == true ? post.discount : post.price ?? 0} ',
                                     style: H2WhiteTextStyle.copyWith(
                                         fontWeight: FontWeight.bold)),
                                 TextSpan(
@@ -331,7 +352,8 @@ class PostCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                  )
+                  ),
+
                 ],
               ),
             ),

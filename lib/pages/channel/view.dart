@@ -1,3 +1,5 @@
+import 'package:ali_pasha_graph/models/community_model.dart';
+import 'package:ali_pasha_graph/pages/communities/logic.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -40,23 +42,23 @@ class ChannelPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              height: 0.085.sh,
-              width: 1.sw,
-              alignment: Alignment.center,
-              color: RedColor,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 1.sw,
-                    alignment: Alignment.center,
-                    height: 0.085.sh,
-                    child: Stack(
+            Obx(() {
+              return Container(
+                height: 0.085.sh,
+                width: 1.sw,
+                alignment: Alignment.center,
+                color: RedColor,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                        child: Container(
                       alignment: Alignment.center,
-                      children: [
-
+                      height: 0.085.sh,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
                           Positioned(
                             right: 0.08.sw,
                             child: Container(
@@ -66,26 +68,129 @@ class ChannelPage extends StatelessWidget {
                                 shape: BoxShape.circle,
                                 image: DecorationImage(
                                   image: CachedNetworkImageProvider(
-                                      "${logic.communityModel.manager?.logo}"),
+                                      "${logic.communityModel.value.image}"),
                                   fit: BoxFit.cover,
                                 ),
                               ),
                             ),
                           ),
+                          Positioned(
+                              right: 0.2.sw,
+                              child: Text(
+                                '${logic.communityModel.value.name}',
+                                style: H3WhiteTextStyle,
+                              )),
+                        ],
+                      ),
+                    )),
+                    PopupMenuButton<String>(
+                      color: WhiteColor,
+                      iconColor: WhiteColor,
+                      onSelected: (value) async {
 
+                        switch (value) {
+                          case '1':
+                            if(mainController.settings.value.support?.id!=null){
+                              mainController.createCommunity(
+                                  sellerId: mainController.settings.value.support!.id!,
+                                  message: ''' السلام عليكم ورحمة الله وبركاته 
+                            إبلاغ  عن القناة ${logic.communityModel.value.name} #${logic.communityModel.value.id}''');
+                            }else{
+                              openUrl(url: "https://wa.me/${mainController.settings.value.social?.phone}");
+                            }
 
-                        Positioned(
-                            right: 0.2.sw,
-                            child: Text(
-                              '${logic.communityModel.name}',
-                              style: H3WhiteTextStyle,
-                            )),
+                            break;
+                          case '2':
+                            CommunityModel? communityNew =
+                                await mainController.muteCommunity(
+                                    communityId:
+                                        logic.communityModel.value.id!);
+                            if (communityNew != null) {
+                              logic.communityModel.value = communityNew;
+                              int? index = Get.find<CommunitiesLogic>()
+                                  ?.communities
+                                  .indexWhere((el) =>
+                                      el.id != logic.communityModel.value.id!);
+                              if (index != null && index != -1) {
+                                Get.find<CommunitiesLogic>()
+                                    ?.communities[index] = communityNew;
+                              }
+                            }
+                            break;
+                          default:
+                            print('default');
+                        }
+                      },
+                      itemBuilder: (context) => [
+                        PopupMenuItem<String>(
+                          value: '1',
+                          child: Row(
+                            children: [
+                              Icon(
+                                FontAwesomeIcons.headset,
+                                color: GrayDarkColor,
+                                size: 0.04.sw,
+                              ),
+                              Text(
+                                "إبلاغ عن القناة",
+                                style: H3RegularDark,
+                              ),
+                              SizedBox(
+                                width: 0.005.sw,
+                              ),
+                            ],
+                          ),
+                        ),
+                        PopupMenuItem<String>(
+                          value: '2',
+                          child: Row(
+                            children: [
+                              Icon(
+                                logic.communityModel.value.pivotCommunity
+                                            ?.notify ==
+                                        true
+                                    ? FontAwesomeIcons.volumeMute
+                                    : FontAwesomeIcons.volumeHigh,
+                                color: GrayDarkColor,
+                                size: 0.04.sw,
+                              ),
+                              SizedBox(
+                                width: 0.005.sw,
+                              ),
+                              Text(
+                                "كتم الإشعارات",
+                                style: H3RegularDark,
+                              ),
+                            ],
+                          ),
+                        ),
+                        if (logic.communityModel.value.manager?.id !=
+                            mainController.authUser.value?.id)
+                          PopupMenuItem<String>(
+                            value: '3',
+                            child: Row(
+                              children: [
+                                Icon(
+                                  FontAwesomeIcons.volumeMute,
+                                  color: GrayDarkColor,
+                                  size: 0.04.sw,
+                                ),
+                                SizedBox(
+                                  width: 0.005.sw,
+                                ),
+                                Text(
+                                  "خروج من القناة",
+                                  style: H3RegularDark,
+                                ),
+                              ],
+                            ),
+                          ),
                       ],
                     ),
-                  ),
-                ],
-              ),
-            ),
+                  ],
+                ),
+              );
+            }),
             Expanded(child: Obx(() {
               return ListView(
                 reverse: true,
@@ -94,8 +199,7 @@ class ChannelPage extends StatelessWidget {
                     vertical: 0.01.sh, horizontal: 0.02.sw),
                 children: [
                   ...List.generate(logic.messages.length, (index) {
-                    return myMessage(context,  message: logic.messages[index]);
-
+                    return myMessage(context, message: logic.messages[index]);
                   }),
                   if (logic.loading.value)
                     Container(
@@ -117,22 +221,24 @@ class ChannelPage extends StatelessWidget {
                 ],
               );
             })),
-            if(logic.communityModel.manager?.id==mainController.authUser.value?.id)
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
-              alignment: Alignment.center,
-              constraints: BoxConstraints(maxHeight: 0.07.sh),
-              width: 1.sw,
-              height: 0.07.sh,
-              decoration: const BoxDecoration(
-                color: GrayWhiteColor,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                      child: Container(
+            Obx(() {
+              if (logic.communityModel.value.manager?.id ==
+                  mainController.authUser.value?.id)
+                return Container(
+                  padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
+                  alignment: Alignment.center,
+                  constraints: BoxConstraints(maxHeight: 0.07.sh),
+                  width: 1.sw,
+                  height: 0.07.sh,
+                  decoration: const BoxDecoration(
+                    color: GrayWhiteColor,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                          child: Container(
                         child: FormBuilderTextField(
                           name: 'msg',
                           controller: logic.messageController,
@@ -145,7 +251,7 @@ class ChannelPage extends StatelessWidget {
                               color: Colors.black.withOpacity(0.3),
                             ),
                             contentPadding:
-                            EdgeInsets.symmetric(horizontal: 0.02.sw),
+                                EdgeInsets.symmetric(horizontal: 0.02.sw),
                             suffixIcon: Obx(() {
                               if (logic.loadingSend.value) {
                                 return Container(
@@ -186,31 +292,30 @@ class ChannelPage extends StatelessWidget {
                                                               .value) {
                                                             return AnimatedContainer(
                                                               constraints:
-                                                              BoxConstraints
-                                                                  .expand(
-                                                                  width: 0.08
-                                                                      .sw,
-                                                                  height: 0.08
-                                                                      .sw),
+                                                                  BoxConstraints.expand(
+                                                                      width: 0.08
+                                                                          .sw,
+                                                                      height: 0.08
+                                                                          .sw),
                                                               duration:
-                                                              const Duration(
-                                                                  milliseconds:
-                                                                  200),
+                                                                  const Duration(
+                                                                      milliseconds:
+                                                                          200),
                                                               height:
-                                                              (logic.mRecordingLevel /
-                                                                  1000)
-                                                                  .sw,
+                                                                  (logic.mRecordingLevel /
+                                                                          1000)
+                                                                      .sw,
                                                               width:
-                                                              (logic.mRecordingLevel /
-                                                                  1000)
-                                                                  .sw,
+                                                                  (logic.mRecordingLevel /
+                                                                          1000)
+                                                                      .sw,
                                                               decoration:
-                                                              BoxDecoration(
+                                                                  BoxDecoration(
                                                                 color: RedColor,
                                                                 borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                    150.r),
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            150.r),
                                                               ),
                                                               child: InkWell(
                                                                 onTap: () {
@@ -232,15 +337,15 @@ class ChannelPage extends StatelessWidget {
                                                           return Container(
                                                             width: 0.15.sw,
                                                             height: 0.15.sw,
-                                                            alignment:
-                                                            Alignment.center,
+                                                            alignment: Alignment
+                                                                .center,
                                                             decoration: BoxDecoration(
                                                                 borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                    100.r),
+                                                                    BorderRadius
+                                                                        .circular(100
+                                                                            .r),
                                                                 color:
-                                                                GrayLightColor),
+                                                                    GrayLightColor),
                                                             child: IconButton(
                                                                 onPressed: () {
                                                                   logic
@@ -250,7 +355,8 @@ class ChannelPage extends StatelessWidget {
                                                                   FontAwesomeIcons
                                                                       .microphone,
                                                                   size: 0.08.sw,
-                                                                  color: WhiteColor,
+                                                                  color:
+                                                                      WhiteColor,
                                                                 )),
                                                           );
                                                         }),
@@ -258,22 +364,23 @@ class ChannelPage extends StatelessWidget {
                                                       SizedBox(height: 0.01.sh),
                                                       Obx(() {
                                                         if (logic.recordedFilePath
-                                                            ?.value !=
-                                                            null &&
+                                                                    ?.value !=
+                                                                null &&
                                                             logic.mRecorderIsInited
-                                                                .value ==
+                                                                    .value ==
                                                                 false) {
                                                           return Row(
                                                             mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .end,
+                                                                MainAxisAlignment
+                                                                    .end,
                                                             children: [
                                                               if (logic
-                                                                  .mPlayerIsInited
-                                                                  .value ==
+                                                                      .mPlayerIsInited
+                                                                      .value ==
                                                                   false)
                                                                 IconButton(
-                                                                  onPressed: () {
+                                                                  onPressed:
+                                                                      () {
                                                                     logic
                                                                         .playRecordedAudio();
                                                                   },
@@ -282,8 +389,8 @@ class ChannelPage extends StatelessWidget {
                                                                           .solidCirclePlay),
                                                                 ),
                                                               if (logic
-                                                                  .mPlayerIsInited
-                                                                  .value ==
+                                                                      .mPlayerIsInited
+                                                                      .value ==
                                                                   true)
                                                                 IconButton(
                                                                   onPressed: logic
@@ -299,22 +406,24 @@ class ChannelPage extends StatelessWidget {
                                                         return Container();
                                                       }),
                                                       Obx(() {
-                                                        if (logic.mRecorderIsInited
+                                                        if (logic
+                                                            .mRecorderIsInited
                                                             .value) {
                                                           return Container();
                                                         }
                                                         return Row(
                                                           mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
+                                                              MainAxisAlignment
+                                                                  .spaceEvenly,
                                                           children: [
                                                             InkWell(
                                                               onTap: () async {
                                                                 if (logic
-                                                                    .recordedFilePath
-                                                                    ?.value !=
+                                                                        .recordedFilePath
+                                                                        ?.value !=
                                                                     null) {
-                                                                  logic.file.value =
+                                                                  logic.file
+                                                                          .value =
                                                                       XFile(
                                                                           "${logic.recordedFilePath!.value}");
                                                                 }
@@ -326,25 +435,24 @@ class ChannelPage extends StatelessWidget {
                                                                     .value = '';
                                                               },
                                                               child: Container(
-                                                                padding: EdgeInsets
-                                                                    .symmetric(
+                                                                padding: EdgeInsets.symmetric(
                                                                     horizontal:
-                                                                    0.05.sw,
+                                                                        0.05.sw,
                                                                     vertical:
-                                                                    0.02.sw),
+                                                                        0.02.sw),
                                                                 decoration:
-                                                                BoxDecoration(
-                                                                  color:
-                                                                  Colors.green,
+                                                                    BoxDecoration(
+                                                                  color: Colors
+                                                                      .green,
                                                                   borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                      50.r),
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              50.r),
                                                                 ),
                                                                 child: Text(
                                                                   'إرسال',
                                                                   style:
-                                                                  H4WhiteTextStyle,
+                                                                      H4WhiteTextStyle,
                                                                 ),
                                                               ),
                                                             ),
@@ -356,24 +464,24 @@ class ChannelPage extends StatelessWidget {
                                                                 Get.back();
                                                               },
                                                               child: Container(
-                                                                padding: EdgeInsets
-                                                                    .symmetric(
+                                                                padding: EdgeInsets.symmetric(
                                                                     horizontal:
-                                                                    0.05.sw,
+                                                                        0.05.sw,
                                                                     vertical:
-                                                                    0.02.sw),
+                                                                        0.02.sw),
                                                                 decoration:
-                                                                BoxDecoration(
-                                                                  color: RedColor,
+                                                                    BoxDecoration(
+                                                                  color:
+                                                                      RedColor,
                                                                   borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                      50.r),
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              50.r),
                                                                 ),
                                                                 child: Text(
                                                                   'إلغاء',
                                                                   style:
-                                                                  H4WhiteTextStyle,
+                                                                      H4WhiteTextStyle,
                                                                 ),
                                                               ),
                                                             )
@@ -426,20 +534,22 @@ class ChannelPage extends StatelessWidget {
                           ),
                         ),
                       )),
-                  Transform.rotate(
-                    angle: -0.78,
-                    child: IconButton(
-                        onPressed: () {
-                          logic.pickImage(imagSource: ImageSource.gallery);
-                        },
-                        icon: const Icon(
-                          FontAwesomeIcons.paperclip,
-                          color: GrayDarkColor,
-                        )),
+                      Transform.rotate(
+                        angle: -0.78,
+                        child: IconButton(
+                            onPressed: () {
+                              logic.pickImage(imagSource: ImageSource.gallery);
+                            },
+                            icon: const Icon(
+                              FontAwesomeIcons.paperclip,
+                              color: GrayDarkColor,
+                            )),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
+                );
+              return Container();
+            })
           ],
         ),
       ),
@@ -448,10 +558,10 @@ class ChannelPage extends StatelessWidget {
 
   bool isURL(String text) {
     final RegExp urlRegExp =
-    RegExp(r'^(https?:\/\/)?' //  بدء الرابط بـ "http://" أو "https://"
-    r'([a-zA-Z0-9\-_]+\.)+[a-zA-Z]{2,}' // النطاق مثل "example.com"
-    r'(:\d+)?(\/[^\s]*)?$' // اختياري: المنفذ والمسار
-    );
+        RegExp(r'^(https?:\/\/)?' //  بدء الرابط بـ "http://" أو "https://"
+            r'([a-zA-Z0-9\-_]+\.)+[a-zA-Z]{2,}' // النطاق مثل "example.com"
+            r'(:\d+)?(\/[^\s]*)?$' // اختياري: المنفذ والمسار
+            );
     return urlRegExp.hasMatch(text);
   }
 
@@ -480,9 +590,9 @@ class ChannelPage extends StatelessWidget {
             ),
             Flexible(
                 child: Text(
-                  "${message.user?.seller_name ?? message.user?.name}",
-                  style: H5OrangeTextStyle,
-                )),
+              "${message.user?.seller_name ?? message.user?.name}",
+              style: H5OrangeTextStyle,
+            )),
           ],
         ),
         Container(
@@ -508,9 +618,7 @@ class ChannelPage extends StatelessWidget {
                           style: H4RedTextStyle,
                         );
                       } else {
-                        return TextSpan(
-                            text: ' $el ',
-                            style: H4RegularDark);
+                        return TextSpan(text: ' $el ', style: H4RegularDark);
                       }
                     })
                   ]),
@@ -529,63 +637,62 @@ class ChannelPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(30.r),
                         image: DecorationImage(
                             image:
-                            CachedNetworkImageProvider("${message.attach}"),
+                                CachedNetworkImageProvider("${message.attach}"),
                             fit: BoxFit.cover)),
                   ),
                   onTap: () {
                     showDialog(
                       context: context,
-                      builder: (context) =>
-                          Dialog(
-                            insetPadding: EdgeInsets.zero,
-                            backgroundColor: Colors.transparent,
-                            child: Stack(
-                              fit: StackFit.expand,
-                              children: [
-                                CachedNetworkImage(
-                                    imageUrl: '${message.attach}',
-                                    imageBuilder: (context, imageProvider) =>
-                                        Container(
-                                          child: Image(
-                                            image: imageProvider,
-                                          ),
-                                        )),
-                                Positioned(
-                                  top: 10,
-                                  right: 10,
-                                  child: IconButton(
-                                    icon: Container(
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                          color: WhiteColor,
-                                          shape: BoxShape.circle,
-                                          boxShadow: [
-                                            BoxShadow(
-                                                color: DarkColor,
-                                                blurRadius: 0.02.sw)
-                                          ]),
-                                      child: const Icon(Icons.close,
-                                          color: RedColor, size: 30),
-                                    ),
-                                    onPressed: () => Get.back(),
-                                  ),
+                      builder: (context) => Dialog(
+                        insetPadding: EdgeInsets.zero,
+                        backgroundColor: Colors.transparent,
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            CachedNetworkImage(
+                                imageUrl: '${message.attach}',
+                                imageBuilder: (context, imageProvider) =>
+                                    Container(
+                                      child: Image(
+                                        image: imageProvider,
+                                      ),
+                                    )),
+                            Positioned(
+                              top: 10,
+                              right: 10,
+                              child: IconButton(
+                                icon: Container(
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                      color: WhiteColor,
+                                      shape: BoxShape.circle,
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color: DarkColor,
+                                            blurRadius: 0.02.sw)
+                                      ]),
+                                  child: const Icon(Icons.close,
+                                      color: RedColor, size: 30),
                                 ),
-                                Positioned(
-                                  bottom: 20,
-                                  left: 20,
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10, vertical: 5),
-                                    color: Colors.black.withOpacity(0.7),
-                                    child: Text(
-                                      '${message.body}', // وصف الصورة
-                                      style: H4BlackTextStyle,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                                onPressed: () => Get.back(),
+                              ),
                             ),
-                          ),
+                            Positioned(
+                              bottom: 20,
+                              left: 20,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                color: Colors.black.withOpacity(0.7),
+                                child: Text(
+                                  '${message.body}', // وصف الصورة
+                                  style: H4BlackTextStyle,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     );
                   },
                 ),
@@ -620,7 +727,6 @@ class ChannelPage extends StatelessWidget {
                 style: H5OrangeTextStyle.copyWith(color: Colors.brown),
               ),
               Container(
-
                 child: Container(
                   width: 0.09.sw,
                   height: 0.09.sw,
@@ -638,7 +744,7 @@ class ChannelPage extends StatelessWidget {
             width: 0.7.sw,
             constraints: BoxConstraints(minWidth: 0.00001.sw),
             padding:
-            EdgeInsets.symmetric(vertical: 0.01.sh, horizontal: 0.02.sw),
+                EdgeInsets.symmetric(vertical: 0.01.sh, horizontal: 0.02.sw),
             margin: EdgeInsets.only(top: 0.005.sh),
             decoration: BoxDecoration(
                 color: GrayLightColor,
@@ -649,7 +755,7 @@ class ChannelPage extends StatelessWidget {
               children: [
                 Container(
                   constraints:
-                  BoxConstraints(minWidth: 0.001.sw, maxWidth: 0.7.sw),
+                      BoxConstraints(minWidth: 0.001.sw, maxWidth: 0.7.sw),
                   child: RichText(
                     softWrap: true,
                     text: TextSpan(children: [
@@ -662,9 +768,7 @@ class ChannelPage extends StatelessWidget {
                             style: H4RedTextStyle,
                           );
                         } else {
-                          return TextSpan(
-                              text: ' $el ',
-                              style: H4RegularDark);
+                          return TextSpan(text: ' $el ', style: H4RegularDark);
                         }
                       })
                     ]),
@@ -682,64 +786,63 @@ class ChannelPage extends StatelessWidget {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30.r),
                           image: DecorationImage(
-                              image:
-                              CachedNetworkImageProvider("${message.attach}"),
+                              image: CachedNetworkImageProvider(
+                                  "${message.attach}"),
                               fit: BoxFit.cover)),
                     ),
                     onTap: () {
                       showDialog(
                         context: context,
-                        builder: (context) =>
-                            Dialog(
-                              insetPadding: EdgeInsets.zero,
-                              backgroundColor: Colors.transparent,
-                              child: Stack(
-                                fit: StackFit.expand,
-                                children: [
-                                  CachedNetworkImage(
-                                      imageUrl: '${message.attach}',
-                                      imageBuilder: (context, imageProvider) =>
-                                          Container(
-                                            child: Image(
-                                              image: imageProvider,
-                                            ),
-                                          )),
-                                  Positioned(
-                                    top: 10,
-                                    right: 10,
-                                    child: IconButton(
-                                      icon: Container(
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                            color: WhiteColor,
-                                            shape: BoxShape.circle,
-                                            boxShadow: [
-                                              BoxShadow(
-                                                  color: DarkColor,
-                                                  blurRadius: 0.02.sw)
-                                            ]),
-                                        child: const Icon(Icons.close,
-                                            color: RedColor, size: 30),
-                                      ),
-                                      onPressed: () => Get.back(),
-                                    ),
+                        builder: (context) => Dialog(
+                          insetPadding: EdgeInsets.zero,
+                          backgroundColor: Colors.transparent,
+                          child: Stack(
+                            fit: StackFit.expand,
+                            children: [
+                              CachedNetworkImage(
+                                  imageUrl: '${message.attach}',
+                                  imageBuilder: (context, imageProvider) =>
+                                      Container(
+                                        child: Image(
+                                          image: imageProvider,
+                                        ),
+                                      )),
+                              Positioned(
+                                top: 10,
+                                right: 10,
+                                child: IconButton(
+                                  icon: Container(
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        color: WhiteColor,
+                                        shape: BoxShape.circle,
+                                        boxShadow: [
+                                          BoxShadow(
+                                              color: DarkColor,
+                                              blurRadius: 0.02.sw)
+                                        ]),
+                                    child: const Icon(Icons.close,
+                                        color: RedColor, size: 30),
                                   ),
-                                  Positioned(
-                                    bottom: 20,
-                                    left: 20,
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 5),
-                                      color: Colors.black.withOpacity(0.7),
-                                      child: Text(
-                                        '${message.body}', // وصف الصورة
-                                        style: H4BlackTextStyle,
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                  onPressed: () => Get.back(),
+                                ),
                               ),
-                            ),
+                              Positioned(
+                                bottom: 20,
+                                left: 20,
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 5),
+                                  color: Colors.black.withOpacity(0.7),
+                                  child: Text(
+                                    '${message.body}', // وصف الصورة
+                                    style: H4BlackTextStyle,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       );
                     },
                   ),

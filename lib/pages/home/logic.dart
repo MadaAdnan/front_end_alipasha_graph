@@ -142,18 +142,9 @@ class HomeLogic extends GetxController {
   
 }
     ''');
-    /*  ${mainController.sliders.length == 0 ? '''
-    sliders {
-        category {
-            type
-        }
-        url
-        image
-    }
 
-   ''' : ''}*/
     dio.Response? res = await mainController.fetchData();
-    mainController.logger.e(res?.data);
+
     if (res != null) {
       hasMorePage(
           res.data['data']['products']['paginatorInfo']['hasMorePages']);

@@ -32,7 +32,7 @@ class ShippingPage extends StatelessWidget {
           Container(
             padding: EdgeInsets.symmetric(
                 horizontal: 0.02.sw, vertical: 0.004.sh),
-            decoration: BoxDecoration(color: WhiteColor,
+            decoration: const BoxDecoration(color: WhiteColor,
                 border: Border(bottom: BorderSide(color: GrayDarkColor))),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -110,7 +110,7 @@ class ShippingPage extends StatelessWidget {
                 key: _formKey,
                 child: Obx(() {
                   if (logic.mainController.loading.value) {
-                    return Center(
+                    return const Center(
                       child: CircularProgressIndicator(),
                     );
                   }
@@ -126,6 +126,7 @@ class ShippingPage extends StatelessWidget {
                           selectDataController: logic.fromController),
                       Obx(() {
                         return Visibility(
+                          visible: logic.errorFrom.value != null,
                           child: Align(
                             alignment: Alignment.centerRight,
                             child: Text(
@@ -133,7 +134,6 @@ class ShippingPage extends StatelessWidget {
                               style: H4RedTextStyle,
                             ),
                           ),
-                          visible: logic.errorFrom.value != null,
                         );
                       }),
                       35.verticalSpace,
@@ -170,7 +170,7 @@ class ShippingPage extends StatelessWidget {
                           controller: logic.addressSenderController,
                         ),
                       ),
-                     Divider(),
+                     const Divider(),
                       Select2Component(
                           label: 'مدينة المرسل إليه',
                           width: 0.5.sw,
@@ -180,6 +180,7 @@ class ShippingPage extends StatelessWidget {
                           selectDataController: logic.toController),
                       Obx(() {
                         return Visibility(
+                          visible: logic.errorTo.value != null,
                           child: Align(
                             alignment: Alignment.centerRight,
                             child: Text(
@@ -187,7 +188,6 @@ class ShippingPage extends StatelessWidget {
                               style: H4RedTextStyle,
                             ),
                           ),
-                          visible: logic.errorTo.value != null,
                         );
                       }),
                       35.verticalSpace,
@@ -243,7 +243,7 @@ class ShippingPage extends StatelessWidget {
                           controller: logic.phoneReceiveController,
                         ),
                       ),
-                      Divider(),
+                      const Divider(),
                       Row(
                         children: [
                           
@@ -444,7 +444,7 @@ class ShippingPage extends StatelessWidget {
                       ),
                       SizedBox(
                         width: 1.sw,
-                        child: Divider(
+                        child: const Divider(
                           color: GrayDarkColor,
                         ),
                       ),
@@ -452,7 +452,7 @@ class ShippingPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Flexible(child: Container(
+                          Flexible(flex: 4,child: Container(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -506,8 +506,8 @@ class ShippingPage extends StatelessWidget {
                                 ),
                               ],
                             ),
-                          ),flex: 4,),
-                         Flexible(child:  Container(
+                          ),),
+                         Flexible(flex: 1,child:  Container(
                            alignment: Alignment.center,
 
                            child: Column(
@@ -515,7 +515,16 @@ class ShippingPage extends StatelessWidget {
                              crossAxisAlignment: CrossAxisAlignment.center,
                              children: [
                                InkWell(
-                                 onTap: () {},
+                                 onTap: () {
+
+                                   if(mainController.settings.value.delivery?.id!=null){
+                                     mainController.createCommunity(sellerId: mainController.settings.value.delivery!.id!);
+                                   }else{
+                                     openUrl(url: "https://wa.me/${mainController.settings.value.social?.phone}");
+                                   }
+
+
+                                 },
                                  child: Container(
                                    alignment: Alignment.center,
                                    width: 0.15.sw,
@@ -524,7 +533,7 @@ class ShippingPage extends StatelessWidget {
                                      color: GrayLightColor,
                                      borderRadius: BorderRadius.circular(15.r),
                                    ),
-                                   child: Icon(FontAwesomeIcons.question),
+                                   child: const Icon(FontAwesomeIcons.question),
                                  ),
                                ),
                                15.verticalSpace,
@@ -540,7 +549,7 @@ class ShippingPage extends StatelessWidget {
                                )
                              ],
                            ),
-                         ),flex: 1,)
+                         ),)
                         ],
                       ),
                       SizedBox(height: 0.01.sh,),
@@ -620,21 +629,21 @@ class ShippingPage extends StatelessWidget {
           await logic.sendOrder();
           Get.back();
         },
+        color: RedColor,
         child: Text(
           'تقديم الطلب',
           style: H3WhiteTextStyle,
         ),
-        color: RedColor,
       ),
       cancel: MaterialButton(
         onPressed: () {
           Get.back();
         },
+        color: GrayDarkColor,
         child: Text(
           'إلغاء',
           style: H3WhiteTextStyle,
         ),
-        color: GrayDarkColor,
       ),
       textCancel: 'إلغاء',
     );

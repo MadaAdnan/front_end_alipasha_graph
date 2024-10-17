@@ -43,7 +43,8 @@ class FollowersLogic extends GetxController {
         data {
             seller {
                 seller_name
-                logo
+                name
+                image
                 address
                 id
             }

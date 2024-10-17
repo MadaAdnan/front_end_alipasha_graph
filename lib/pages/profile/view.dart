@@ -287,26 +287,23 @@ class ProfilePage extends StatelessWidget {
                                       isVerified: mainController
                                               .authUser.value?.is_verified ??
                                           false,
-                                      seller:
-                                          mainController.authUser.value,
+                                      seller: mainController.authUser.value,
                                     ),
                                   ),
                                   Container(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 0.01.sh),
-                                    child:     Visibility(
-                                      child:Text(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 0.01.sh),
+                                    child: Visibility(
+                                      child: Text(
                                         "${mainController.authUser.value?.info}",
                                         style: H4GrayTextStyle,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                       visible: !(mainController
-                                          .authUser.value?.is_verified ==
+                                              .authUser.value?.is_verified ==
                                           true),
                                     ),
-                                  )
-                                 ,
-
+                                  ),
                                   if ((mainController.authUser.value?.address !=
                                           null &&
                                       mainController.authUser.value?.address !=
@@ -339,6 +336,9 @@ class ProfilePage extends StatelessWidget {
                                             MainAxisAlignment.spaceAround,
                                         children: [
                                           InkWell(
+                                            onTap: () {
+                                              Get.toNamed(FOLLOWING_PAGE);
+                                            },
                                             child: Column(
                                               children: [
                                                 Obx(() {
@@ -673,7 +673,6 @@ class ProfilePage extends StatelessWidget {
             child: Container(
               width: 1.sw,
               height: 0.36.sh,
-
               padding: EdgeInsets.only(bottom: 0.01.sh),
               child: PageView(
                 controller: logic.pageController,

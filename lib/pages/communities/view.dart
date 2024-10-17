@@ -24,6 +24,59 @@ class CommunitiesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+      floatingActionButton: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            if (mainController.authUser.value?.is_verified != true)
+              InkWell(
+                onTap: () {
+                  Get.toNamed(CREATE_COMMUNITY_PAGE, arguments: 'channel');
+                },
+                child: Container(
+                  padding: EdgeInsets.all(0.02.sw),
+                  decoration: BoxDecoration(
+                    color: RedColor.withOpacity(0.5),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Tooltip(
+                    child: Icon(
+                      FontAwesomeIcons.bullhorn,
+                      color: WhiteColor,
+                      size: 0.05.sw,
+                    ),
+                    message: 'إنشاء قناة',
+                    textStyle: H3WhiteTextStyle,
+                    verticalOffset: -0.07.sh,
+                  ),
+                ),
+              ),
+            SizedBox(
+              height: 0.02.sh,
+            ),
+            if (mainController.authUser.value?.is_verified != true)
+              InkWell(
+                onTap: () {
+                  Get.toNamed(CREATE_COMMUNITY_PAGE, arguments: 'group');
+                },
+                child: Container(
+                  padding: EdgeInsets.all(0.02.sw),
+                  decoration: BoxDecoration(
+                    color: RedColor.withOpacity(0.5),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    FontAwesomeIcons.users,
+                    color: WhiteColor,
+                    size: 0.05.sw,
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
       backgroundColor: WhiteColor,
       body: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollInfo) {
@@ -123,7 +176,7 @@ class CommunitiesPage extends StatelessWidget {
                                   decoration: BoxDecoration(
                                       image: DecorationImage(
                                           image: CachedNetworkImageProvider(
-                                              "${friend?.image}"),
+                                              "${logic.communities[index].type == 'chat' ? friend?.image : logic.communities[index].image}"),
                                           fit: BoxFit.cover),
                                       shape: BoxShape.circle),
                                 ),
@@ -143,6 +196,7 @@ class CommunitiesPage extends StatelessWidget {
                                             if (logic.communities[index].type ==
                                                 'chat')
                                               WidgetSpan(
+                                                  alignment: PlaceholderAlignment.top,
                                                   child: Container(
                                                 child: Text(' (محادثة) ',
                                                     style: H5RedTextStyle),
@@ -150,6 +204,7 @@ class CommunitiesPage extends StatelessWidget {
                                             if (logic.communities[index].type ==
                                                 'group')
                                               WidgetSpan(
+                                                  alignment: PlaceholderAlignment.top,
                                                   child: Container(
                                                 child: Text(' (مجموعة) ',
                                                     style: H5RedTextStyle),
@@ -157,6 +212,7 @@ class CommunitiesPage extends StatelessWidget {
                                             if (logic.communities[index].type ==
                                                 'channel')
                                               WidgetSpan(
+                                                  alignment: PlaceholderAlignment.top,
                                                   child: Container(
                                                 child: Text(' (قناة) ',
                                                     style: H5RedTextStyle),
@@ -165,22 +221,46 @@ class CommunitiesPage extends StatelessWidget {
                                                 child: SizedBox(
                                               child: Flexible(
                                                 flex: 2,
-                                                child:Builder(builder: (context){
-                                                  String? name='';
+                                                child:
+                                                    Builder(builder: (context) {
+                                                  String? name = '';
 
-                                                  if(logic.communities[index].type != 'chat'){
-                                                   name=logic.communities[index].name;
-                                                  }else{
-                                                    name=friend?.seller_name!.length != 0 ? friend?.seller_name : friend?.name;
+                                                  if (logic.communities[index]
+                                                          .type !=
+                                                      'chat') {
+                                                    name = logic
+                                                        .communities[index]
+                                                        .name;
+                                                  } else {
+                                                    name = friend?.seller_name!
+                                                                .length !=
+                                                            0
+                                                        ? friend?.seller_name
+                                                        : friend?.name;
                                                   }
-                                                  return  Text(
-                                                    '$name',
-                                                    style:
-                                                    H3BlackTextStyle.copyWith(
-                                                      overflow:
-                                                      TextOverflow.ellipsis,
+                                                  return RichText(
+                                                      text: TextSpan(children: [
+                                                    if (friend?.trust == true &&
+                                                        logic.communities[index]
+                                                                .type ==
+                                                            'chat')
+                                                      WidgetSpan(
+                                                        alignment: PlaceholderAlignment.middle,
+                                                          child: Icon(
+                                                        FontAwesomeIcons
+                                                            .rust,
+                                                        size: 0.04.sw,
+                                                        color: OrangeColor,
+                                                      )),
+                                                    TextSpan(
+                                                      text: ' $name',
+                                                      style: H3BlackTextStyle
+                                                          .copyWith(
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      ),
                                                     ),
-                                                  );
+                                                  ]));
                                                 }),
                                               ),
                                             )),
@@ -250,8 +330,11 @@ class CommunitiesPage extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.end,
                                       children: [
-                                        if(logic.communities[index].unRead!>0)
-                                        Badge.count(count: logic.communities[index].unRead!),
+                                        if (logic.communities[index].unRead! >
+                                            0)
+                                          Badge.count(
+                                              count: logic
+                                                  .communities[index].unRead!),
                                         20.verticalSpace,
                                         Text(
                                           '${logic.communities[index].lastChange}',

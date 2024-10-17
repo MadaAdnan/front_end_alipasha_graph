@@ -1,4 +1,5 @@
 import 'package:ali_pasha_graph/models/social_model.dart';
+import 'package:ali_pasha_graph/models/user_model.dart';
 
 class SettingModel {
   SocialModel? social;
@@ -25,7 +26,8 @@ class SettingModel {
 
   ExchangeCur? dollar;
   String? createdAt;
-
+ UserModel? delivery;
+  UserModel? support;
   SettingModel({
     this.longitude,
     this.about,
@@ -50,6 +52,8 @@ class SettingModel {
     this.gold,
     this.dollar,
     this.createdAt,
+    this.support,
+    this.delivery,
   });
 
   factory SettingModel.fromJson(Map<String, dynamic> data) {
@@ -94,6 +98,8 @@ class SettingModel {
       dollar:
           data['dollar'] != null ? ExchangeCur.fromJson(data['dollar']) : null,
       createdAt: "${data['created_at']??''}",
+      delivery: data['delivery']!=null? UserModel.fromJson(data['delivery']):null,
+      support: data['support']!=null? UserModel.fromJson(data['support']):null,
     );
   }
 }

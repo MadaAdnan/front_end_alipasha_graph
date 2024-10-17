@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:ali_pasha_graph/helpers/cart_helper.dart';
 import 'package:ali_pasha_graph/helpers/components.dart';
 import 'package:ali_pasha_graph/helpers/google_auth.dart';
+import 'package:ali_pasha_graph/helpers/queries.dart';
 import 'package:ali_pasha_graph/models/advice_model.dart';
 import 'package:ali_pasha_graph/models/cart_model.dart';
 import 'package:ali_pasha_graph/models/category_model.dart';
@@ -21,6 +22,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+
 // import 'package:laravel_flutter_pusher_plus/laravel_flutter_pusher_plus.dart';
 import 'package:logger/logger.dart';
 import 'package:pusher_client_socket/pusher_client_socket.dart';
@@ -62,13 +64,14 @@ class MainController extends GetxController {
     });
     try {
       pusher = PusherService.init(token: "$token");
-
     } catch (e) {}
 
-    getAdvices();
-
     ever(token, (value) {
-      //logger.e(token.value);
+      logger.d(value);
+     if(value!=null && value.length>30){
+
+       getMe();
+     }
       try {
         pusher = PusherService.init(token: "$token");
       } catch (e) {}
@@ -85,28 +88,14 @@ class MainController extends GetxController {
   @override
   void onReady() {
     getUserFromStorage();
-
-    FlutterBranchSdk.initSession().listen((deepLinkData) {
-      // استخراج بيانات الرابط العميق من deepLinkData
-      if (deepLinkData.containsKey('+clicked_branch_link') &&
-          deepLinkData['+clicked_branch_link'] == true) {
-        String? page = deepLinkData['page'];
-        logger.w('DEEP LINKS ${deepLinkData}');
-        if (page != null) {
-          // الانتقال إلى صفحة معينة باستخدام GetX
-          Get.toNamed('/$page');
-        }
-      }
-    });
+    getAdvices();
 
 
-   /* pusher.connect(
+    /* pusher.connect(
       onConnectionStateChange: (p0) =>
           logger.e("STATE NOW: " + p0.currentState),
     );*/
   }
-
-
 
   Future<dio.Response?> fetchData() async {
     loading.value = true;
@@ -120,7 +109,7 @@ class MainController extends GetxController {
       Duration responseTime = endDate.difference(startDate);
       logger.i(
           "Duration Response : ${responseTime.inMilliseconds / 1000} Seconds");
-      logger.i("Response Size: ${res.data.toString().length/1024} KB");
+      logger.i("Response Size: ${res.data.toString().length / 1024} KB");
       return res;
     } on dio.DioException catch (e) {
       loading.value = false;
@@ -189,9 +178,7 @@ class MainController extends GetxController {
     Get.offAndToNamed(HOME_PAGE);
   }
 
-
-
-  createCommunity({required int sellerId,String? message}) async {
+  createCommunity({required int sellerId, String? message}) async {
     if (authUser.value == null) return;
     query.value = '''
    mutation CreateChat {
@@ -199,11 +186,20 @@ class MainController extends GetxController {
         id
         name
         type
+        url
+        users_count
         last_update
+        image
+        created_at
         users {
             id
             name
+            seller_name
+            is_verified
             image
+        }
+        manager {
+            id
         }
     }
 }
@@ -214,7 +210,8 @@ class MainController extends GetxController {
       if (res?.data?['data']['createChat'] != null) {
         CommunityModel community =
             CommunityModel.fromJson(res?.data?['data']['createChat']);
-        Get.toNamed(CHAT_PAGE, arguments: community,parameters: {"msg":"$message"});
+        Get.toNamed(CHAT_PAGE,
+            arguments: community, parameters: {"msg": "${message??''}"});
       }
     } catch (e) {
       logger.e("Error Create Community $e");
@@ -251,6 +248,7 @@ class MainController extends GetxController {
             phone
             sub_phone
         }
+        
         address
         weather_api
         current_version
@@ -263,19 +261,31 @@ class MainController extends GetxController {
         privacy
         active_live
         live_id
+        support{
+          id
+          name
+        }
+        delivery{
+          id
+          name
+        }
     }
-    
+   
 }
     ''';
     try {
       dio.Response? res = await fetchData();
+
+      if(res?.data?['data']['me']!=null){
+        logger.d(res?.data?['data']['me']);
+      }
       if (res?.data?['data']['advices'] != null) {
         for (var item in res?.data?['data']['advices']) {
           advices.add(AdviceModel.fromJson(item));
         }
       }
-      if(res?.data?['data']['settings'] != null){
-        settings.value=SettingModel.fromJson(res?.data?['data']['settings']);
+      if (res?.data?['data']['settings'] != null) {
+        settings.value = SettingModel.fromJson(res?.data?['data']['settings']);
         logger.w(settings.value.weather_api);
       }
     } catch (e) {
@@ -327,7 +337,6 @@ class MainController extends GetxController {
         maxHeight: 300,
         compressQuality: 80,
         aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
-
         uiSettings: [
           AndroidUiSettings(
             toolbarTitle: 'قص الصورة',
@@ -338,10 +347,8 @@ class MainController extends GetxController {
             toolbarWidgetColor: Colors.white,
             initAspectRatio: CropAspectRatioPreset.square,
             lockAspectRatio: true,
-
           ),
           IOSUiSettings(
-
             minimumAspectRatio: 1.0,
           ),
         ],
@@ -356,66 +363,71 @@ class MainController extends GetxController {
   }
 
   Future<void> addToCart({required ProductModel product}) async {
-    cartLoading.value=true;
-    try{
-    List<CartModel> cartsItem = await CartHelper.addToCart(product: product);
-    carts(cartsItem);
-    messageBox(message: 'تم إضافة المنتج إلى السلة',title: 'نجاح العملية');
-    }catch(e){}
-    cartLoading.value=false;
+    cartLoading.value = true;
+    try {
+      List<CartModel> cartsItem = await CartHelper.addToCart(product: product);
+      carts(cartsItem);
+      messageBox(message: 'تم إضافة المنتج إلى السلة', title: 'نجاح العملية');
+    } catch (e) {}
+    cartLoading.value = false;
   }
-  Future<void> removeBySeller({ int? sellerId}) async {
-    cartLoading.value=true;
-    try{
-    List<CartModel> cartsItem = await CartHelper.removeBySeller(sellerId: sellerId);
-    carts(cartsItem);
-    }catch(e){}
-    cartLoading.value=false;
+
+  Future<void> removeBySeller({int? sellerId}) async {
+    cartLoading.value = true;
+    try {
+      List<CartModel> cartsItem =
+          await CartHelper.removeBySeller(sellerId: sellerId);
+      carts(cartsItem);
+    } catch (e) {}
+    cartLoading.value = false;
   }
 
   Future<void> minFromCart({required ProductModel product}) async {
-    cartLoading.value=true;
-    try{
-    List<CartModel> cartsItem = await CartHelper.minFromCart(product: product);
-    carts(cartsItem);
-    }catch(e){}
-    cartLoading.value=false;
+    cartLoading.value = true;
+    try {
+      List<CartModel> cartsItem =
+          await CartHelper.minFromCart(product: product);
+      carts(cartsItem);
+    } catch (e) {}
+    cartLoading.value = false;
   }
 
   Future<void> deleteFromCart({required ProductModel product}) async {
-    cartLoading.value=true;
-    try{
-    List<CartModel> cartsItem = await CartHelper.removeCart(product: product);
-    carts(cartsItem);
-    }catch(e){}
-    cartLoading.value=false;
+    cartLoading.value = true;
+    try {
+      List<CartModel> cartsItem = await CartHelper.removeCart(product: product);
+      carts(cartsItem);
+    } catch (e) {}
+    cartLoading.value = false;
   }
 
   Future<void> emptyCart() async {
-    cartLoading.value=true;
-    try{
-    List<CartModel> cartsItem = await CartHelper.emptyCart();
-    carts(cartsItem);
-    }catch(e){}
-    cartLoading.value=false;
-  }
-  Future<void> increaseQty({required int productId}) async {
-    cartLoading.value=true;
-    try{
-    List<CartModel> cartsItem = await CartHelper.increaseQty(productId: productId);
-    carts(cartsItem);
-    }catch(e){}
-    cartLoading.value=false;
-  }
-  Future<void> decreaseQty({required int productId}) async {
-    cartLoading.value=true;
-    try{
-      List<CartModel> cartsItem = await CartHelper.decreaseQty(productId: productId);
+    cartLoading.value = true;
+    try {
+      List<CartModel> cartsItem = await CartHelper.emptyCart();
       carts(cartsItem);
-    }catch(e){}
-    cartLoading.value=false;
+    } catch (e) {}
+    cartLoading.value = false;
+  }
 
+  Future<void> increaseQty({required int productId}) async {
+    cartLoading.value = true;
+    try {
+      List<CartModel> cartsItem =
+          await CartHelper.increaseQty(productId: productId);
+      carts(cartsItem);
+    } catch (e) {}
+    cartLoading.value = false;
+  }
 
+  Future<void> decreaseQty({required int productId}) async {
+    cartLoading.value = true;
+    try {
+      List<CartModel> cartsItem =
+          await CartHelper.decreaseQty(productId: productId);
+      carts(cartsItem);
+    } catch (e) {}
+    cartLoading.value = false;
   }
 
   bool isURL(String text) {
@@ -425,26 +437,87 @@ class MainController extends GetxController {
     r'(:\d+)?(\/[^\s]*)?$' // اختياري: المنفذ والمسار
     );*/
 
-     final RegExp urlRegExp = RegExp(
-     //  r'[\n ]'
-          r'^(https?:\/\/)?' // يبدأ بـ "http://" أو "https://"
-          r'([a-zA-Z0-9\-]+\.)+[a-zA-Z]{2,}|' // نطاقات مثل .com, .org, .net وغيرها
-          r'localhost|' // يسمح بـ localhost
-          r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|' // يسمح بالعناوين IP
-          r'\[[0-9a-fA-F:]+\])' // يسمح بالعناوين IPv6
-          r'(:\d+)?' // المنفذ اختياري
-          r'(\/[^\s]*)?$' // المسار يمكن أن يحتوي على أي حرف
-    //   r'[\n ]'
-      );
+    final RegExp urlRegExp = RegExp(
+        //  r'[\n ]'
+        r'^(https?:\/\/)?' // يبدأ بـ "http://" أو "https://"
+        r'([a-zA-Z0-9\-]+\.)+[a-zA-Z]{2,}|' // نطاقات مثل .com, .org, .net وغيرها
+        r'localhost|' // يسمح بـ localhost
+        r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|' // يسمح بالعناوين IP
+        r'\[[0-9a-fA-F:]+\])' // يسمح بالعناوين IPv6
+        r'(:\d+)?' // المنفذ اختياري
+        r'(\/[^\s]*)?$' // المسار يمكن أن يحتوي على أي حرف
+        //   r'[\n ]'
+        );
 
-  /*  final RegExp urlRegExp = RegExp(
+    /*  final RegExp urlRegExp = RegExp(
         r'[ \n| ]' // يبدأ بـ \n أو مسافة
         r'(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-?=%.]+' // الرابط
         r'[ \n| ]' // ينتهي بـ \n أو مسافة
     );
 */
 
-
-    return urlRegExp.hasMatch(text)  && !text.contains('@');
+    return urlRegExp.hasMatch(text) && !text.contains('@');
   }
+
+  Future<CommunityModel?> muteCommunity({required int communityId}) async {
+    query.value = '''
+    mutation MuteCommunity {
+    muteCommunity(communityId: "$communityId") {
+        id
+        name
+        image
+        type
+        manager {
+            id
+            name
+            seller_name
+            image
+            is_verified
+        }
+        type
+        url
+        users {
+            id
+            name
+            seller_name
+            is_verified
+            image
+        }
+        users_count
+        last_update
+        image
+        created_at
+        pivot {
+            is_manager
+            notify
+        }
+    }
+}
+
+    ''';
+    try{
+      dio.Response? res = await fetchData();
+      logger.d(res?.data?['data']?['muteCommunity']);
+      if (res?.data?['data']?['muteCommunity'] != null) {
+        return CommunityModel.fromJson(res?.data?['data']?['muteCommunity']);
+      }
+    }catch(e){
+
+    }
+
+  }
+
+  Future<void> getMe()async{
+    query.value= ''' query Me {
+    me {$AUTH_FIELDS} }''';
+    try{
+      dio.Response? res = await fetchData();
+      if (res?.data?['data']?['me'] != null) {
+      setUserJson(json: res?.data?['data']?['me']);
+      }
+    }catch(e){
+
+    }
+  }
+
 }

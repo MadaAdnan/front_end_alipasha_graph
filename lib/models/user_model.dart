@@ -30,6 +30,7 @@ class UserModel {
   List<PlanModel>? plans;
   CityModel? city;
   bool? is_special;
+  bool? trust;
   double? totalBalance;
   double? totalPoint;
   int? followingCount;
@@ -67,6 +68,7 @@ SocialModel? social;
     this.is_verified=false,
     this.social,
     this.total_views,
+    this.trust,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> data) {
@@ -96,6 +98,7 @@ SocialModel? social;
       info: "${data['info'] ?? ''}",
       affiliate: "${data['affiliate'] ?? ''}",
       is_special: bool.tryParse("${data['is_special']}")?? false,
+      trust: bool.tryParse("${data['trust']}")?? false,
       is_verified: bool.tryParse("${data['is_verified']}")?? false,
       is_restaurant: bool.tryParse("${data['is_restaurant']}")?? false,
       is_delivery: bool.tryParse("${data['is_delivery']}")?? false,

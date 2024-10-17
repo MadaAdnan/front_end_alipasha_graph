@@ -21,6 +21,8 @@ const String Edit_PROFILE_PAGE = '/edit_profile_page';
 const String BALANCES_PAGE = '/balances';
 const String SHIPPING_PAGE = '/shipping';
 const String FOLLOWERS_PAGE = '/followers_page';
+const String FOLLOWING_PAGE = '/following_page';
+const String CREATE_COMMUNITY_PAGE = '/create_community_page';
 
 // Other Page
 
@@ -35,6 +37,7 @@ const String PRODUCT_PAGE = '/product_page';
 const String PRODUCTS_PAGE = '/products_page';
 
 const String JOBS_PAGE = '/jobs_page';
+const String VIDEO_PLAYER_POST_PAGE = '/video_player_post_page';
 
 const String TENDERS_PAGE = '/tender_page';
 const String NEWS_PAGE = '/news_page';

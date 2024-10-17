@@ -25,7 +25,7 @@ class ChannelLogic extends GetxController {
   RxBool hasMorePage = RxBool(false);
   RxInt page = RxInt(1);
   RxList<MessageModel> messages = RxList<MessageModel>([]);
-  CommunityModel communityModel = Get.arguments;
+  Rx<CommunityModel> communityModel = Rx<CommunityModel>(Get.arguments);
   ScrollController scrollController = ScrollController();
 RxnString message=RxnString(null);
   // Audio
@@ -107,7 +107,7 @@ RxnString message=RxnString(null);
     mainController.query.value = '''
     
 query GetMessages {
-    getMessages(communityId: ${communityModel.id}, first: 15, page: ${page.value}) {
+    getMessages(communityId: ${communityModel.value.id}, first: 15, page: ${page.value}) {
         paginatorInfo {
             hasMorePages
         }
@@ -153,7 +153,7 @@ query GetMessages {
 
     mainController.query.value = '''
   mutation CreateMessage {
-    CreateMessage(communityId: ${communityModel.id}, body: "${messageController.text}") {
+    CreateMessage(communityId: ${communityModel.value.id}, body: "${messageController.text}") {
         body
         type
         created_at
@@ -188,9 +188,9 @@ query GetMessages {
     }
     loadingSend.value = true;
     int? sellerId =
-    mainController.authUser.value?.id == communityModel.manager?.id
-        ? communityModel.manager?.id
-        : communityModel.manager?.id;
+    mainController.authUser.value?.id == communityModel.value.manager?.id
+        ? communityModel.value.manager?.id
+        : communityModel.value.manager?.id;
     Map<String, dynamic> datajson = {
       "query":
       r"""mutation CreateMessage($communityId:Int!, $body: String!, $attach: Upload) {
@@ -207,7 +207,7 @@ query GetMessages {
       }
       }""",
       "variables": <String, dynamic>{
-        "communityId": communityModel.id,
+        "communityId": communityModel.value.id,
         "body": "",
         "attach": null
       }

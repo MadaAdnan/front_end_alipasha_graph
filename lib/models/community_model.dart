@@ -1,7 +1,15 @@
 import 'package:ali_pasha_graph/models/user_model.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
+class PivotCommunity{
+  bool?is_manager;
+  bool? notify;
+  PivotCommunity({this.is_manager,this.notify});
 
+  factory PivotCommunity.fromJson(Map<String,dynamic> data){
+    return PivotCommunity(is_manager: bool.tryParse("${data['is_manager']}")??false,notify: bool.tryParse("${data['notify']}")??false);
+  }
+}
 class CommunityModel {
   int? id;
   List<UserModel>? users;
@@ -13,6 +21,8 @@ class CommunityModel {
   String? type;
   int? users_count;
 int? unRead;
+String? image;
+PivotCommunity? pivotCommunity;
 
   CommunityModel({
     this.manager,
@@ -24,6 +34,8 @@ int? unRead;
     this.name,
     this.url,
     this.unRead,
+    this.image,
+    this.pivotCommunity,
   });
 
   factory CommunityModel.fromJson(Map<String, dynamic> data) {
@@ -34,7 +46,7 @@ int? unRead;
       }
     }
 
-    var comm = CommunityModel(
+    return CommunityModel(
       users: subscribes,
       manager: data['manager'] != null ? UserModel.fromJson(data['manager']) : null,
       id: int.tryParse("${data['id']}"),
@@ -44,10 +56,9 @@ int? unRead;
       name: "${data['name'] ?? ''}",
       type: "${data['type'] ?? ''}",
       url: "${data['url'] ?? ''}",
-
+      image: "${data['image'] ?? ''}",
+      pivotCommunity: data['pivot']!=null ? PivotCommunity.fromJson(data['pivot']) :null
     );
-   /* comm.receiveMessagesCount.value =
-        int.tryParse("${data['not_seen_count']}") ?? 0;*/
-    return comm;
+
   }
 }

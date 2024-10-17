@@ -1,4 +1,5 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
+import 'package:ali_pasha_graph/components/youtube_player/view.dart';
 import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:flutter/cupertino.dart';
@@ -31,7 +32,7 @@ String? getName() {
 
 String? getLogo() {
   MainController mainController = Get.find<MainController>();
- /* if (mainController.authUser.value?.logo != null &&
+  /* if (mainController.authUser.value?.logo != null &&
       mainController.authUser.value?.logo !=
           mainController.authUser.value?.image) {
     return mainController.authUser.value?.logo;
@@ -49,21 +50,19 @@ bool isAuth() {
 }
 
 Future<void> openUrl({required String url}) async {
-  Uri? uri=Uri.tryParse(url);
-  try{
-    if(uri!=null){
+  Uri? uri = Uri.tryParse(url);
+  try {
+    if (uri != null) {
       if (!await launchUrl(uri)) {
         throw Exception('');
       }
-    }else{
+    } else {
       throw Exception('');
     }
-  }catch(e){
+  } catch (e) {
     Clipboard.setData(ClipboardData(text: "${url}"));
-    messageBox(title: 'تم نسخ الرابط',message: '');
+    messageBox(title: 'تم نسخ الرابط', message: '');
   }
-
-
 }
 
 messageBox({String? title, String? message, bool isError = false}) {
@@ -98,24 +97,29 @@ void showAutoCloseDialog(
           style: H3OrangeTextStyle,
         ),
       ),
-      content:Container(
+      content: Container(
         width: 0.7.sw,
         height: 0.2.sh,
-        child:  Column(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-           isSuccess? Icon(
-              FontAwesomeIcons.circleCheck,
-              size: 0.3.sw,
-              color: Colors.green,
-            ): Icon(
-             FontAwesomeIcons.circleXmark,
-             size: 0.3.sw,
-             color: Colors.red,
-           ),
+            isSuccess
+                ? Icon(
+                    FontAwesomeIcons.circleCheck,
+                    size: 0.3.sw,
+                    color: Colors.green,
+                  )
+                : Icon(
+                    FontAwesomeIcons.circleXmark,
+                    size: 0.3.sw,
+                    color: Colors.red,
+                  ),
             30.verticalSpace,
-            Text('$message',style: H3GrayTextStyle,),
+            Text(
+              '$message',
+              style: H3GrayTextStyle,
+            ),
           ],
         ),
       ),
@@ -136,6 +140,27 @@ void showAutoCloseDialog(
       Get.back();
     }
   });
+}
 
-  VerifiedMsg(){}
+VerifiedMsg() {}
+
+playVideo(BuildContext context,{String? url}) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog.adaptive(
+        contentPadding: EdgeInsets.zero,
+        content: AspectRatio(
+          aspectRatio: 1.sw/1.sh,
+          child: Container(
+            width: MediaQuery.of(context).size.width, // تعديل العرض بناءً على حجم الشاشة
+            child: YoutubeVideoPlayer(
+              videoId: '$url',
+              onFullScreenChange: (value) {},
+            ),
+          ),
+        ),
+      );
+    },
+  );
 }

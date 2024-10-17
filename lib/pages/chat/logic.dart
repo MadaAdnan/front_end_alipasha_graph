@@ -21,15 +21,16 @@ class ChatLogic extends GetxController {
   MainController mainController = Get.find<MainController>();
   RxBool loadingSend = RxBool(false);
   TextEditingController messageController =
-      TextEditingController(text: "${Get.parameters['msg'] ?? ''}");
+      TextEditingController(text: "${Get.parameters['msg'].toString().isNotEmpty?Get.parameters['msg']: ''}");
   Rxn<XFile> file = Rxn<XFile>(null);
   RxBool loading = RxBool(false);
   RxBool hasMorePage = RxBool(false);
   RxInt page = RxInt(1);
   RxList<MessageModel> messages = RxList<MessageModel>([]);
-  CommunityModel communityModel = Get.arguments;
+  Rxn<CommunityModel> communityModel = Rxn<CommunityModel>(null);
   ScrollController scrollController = ScrollController();
-RxnString message=RxnString(null);
+  RxnString message = RxnString(null);
+
   // Audio
 
   RxBool mPlayerIsInited = false.obs;
@@ -46,14 +47,13 @@ RxnString message=RxnString(null);
   RxString? recordedFilePath = RxString('');
   RxDouble mRecordingLevel = RxDouble(0);
   RecorderManager recorder = RecorderManager();
-  Future<void> startRecording() async {
 
+  Future<void> startRecording() async {
     await recorder.startRecording();
     mRecorderIsInited.value = true;
   }
 
   Future<void> stopRecorder() async {
-
     await recorder.stopRecording().then((path) {
       if (path != null) {
         recordedFilePath!.value = path;
@@ -87,7 +87,6 @@ RxnString message=RxnString(null);
 
   // Audio
 
-
   nextPage() {
     if (hasMorePage.value) {
       page.value++;
@@ -106,7 +105,9 @@ RxnString message=RxnString(null);
 
     // TODO: implement onInit
     super.onInit();
-
+    communityModel.value = Get.arguments;
+    mainController.logger.w('COMMUNITY IS');
+    mainController.logger.w(Get.arguments.users[1].name);
     ever(page, (value) {
       getMessages();
     });
@@ -129,7 +130,7 @@ RxnString message=RxnString(null);
     mainController.query.value = '''
     
 query GetMessages {
-    getMessages(communityId: ${communityModel.id}, first: 15, page: ${page.value}) {
+    getMessages(communityId: ${communityModel.value?.id}, first: 15, page: ${page.value}) {
         paginatorInfo {
             hasMorePages
         }
@@ -141,6 +142,7 @@ query GetMessages {
             user {
                 id
                 name
+                trust
                 seller_name
                 image
             }
@@ -176,7 +178,7 @@ query GetMessages {
 
     mainController.query.value = '''
   mutation CreateMessage {
-    CreateMessage(communityId: ${communityModel.id}, body: "${messageController.text}") {
+    CreateMessage(communityId: ${communityModel.value?.id}, body: "${messageController.text}") {
         body
         type
         created_at
@@ -193,7 +195,7 @@ query GetMessages {
     ''';
     try {
       dio.Response? res = await mainController.fetchData();
-       mainController.logger.e(res?.data);
+      mainController.logger.e(res?.data);
       if (res?.data?['data']['CreateMessage'] != null) {
         messageController.clear();
         messages.insert(
@@ -211,9 +213,9 @@ query GetMessages {
     }
     loadingSend.value = true;
     int? sellerId =
-        mainController.authUser.value?.id == communityModel.manager?.id
-            ? communityModel.manager?.id
-            : communityModel.manager?.id;
+        mainController.authUser.value?.id == communityModel.value?.manager?.id
+            ? communityModel.value?.manager?.id
+            : communityModel.value?.manager?.id;
     Map<String, dynamic> datajson = {
       "query":
           r"""mutation CreateMessage($communityId:Int!, $body: String!, $attach: Upload) {
@@ -230,7 +232,7 @@ query GetMessages {
       }
       }""",
       "variables": <String, dynamic>{
-        "communityId": communityModel.id,
+        "communityId": communityModel.value?.id,
         "body": "",
         "attach": null
       }
