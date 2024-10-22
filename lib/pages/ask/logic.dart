@@ -40,9 +40,12 @@ query Question {
 
      ''';
     try {
-      dio.Response? response = await mainController.fetchData();
-      if (response?.data['data']['question'] != null) {
-        ask.value = AskModel.fromJson(response?.data['data']['question']);
+      dio.Response? res = await mainController.fetchData();
+      if (res?.data['data']['question'] != null) {
+        ask.value = AskModel.fromJson(res?.data['data']['question']);
+      }
+      if(res?.data?['errors']?[0]?['message']!=null){
+        mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
       }
     } catch (e) {
       mainController.logger.e("Error get Asks $e");

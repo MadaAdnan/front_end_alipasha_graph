@@ -26,8 +26,10 @@ class SettingModel {
 
   ExchangeCur? dollar;
   String? createdAt;
- UserModel? delivery;
+  UserModel? delivery;
   UserModel? support;
+  UrlDownload? urlDownload;
+
   SettingModel({
     this.longitude,
     this.about,
@@ -54,6 +56,7 @@ class SettingModel {
     this.createdAt,
     this.support,
     this.delivery,
+    this.urlDownload
   });
 
   factory SettingModel.fromJson(Map<String, dynamic> data) {
@@ -97,9 +100,14 @@ class SettingModel {
       gold: data['gold'] != null ? ExchangeGold.fromJson(data['gold']) : null,
       dollar:
           data['dollar'] != null ? ExchangeCur.fromJson(data['dollar']) : null,
-      createdAt: "${data['created_at']??''}",
-      delivery: data['delivery']!=null? UserModel.fromJson(data['delivery']):null,
-      support: data['support']!=null? UserModel.fromJson(data['support']):null,
+      createdAt: "${data['created_at'] ?? ''}",
+      delivery: data['delivery'] != null
+          ? UserModel.fromJson(data['delivery'])
+          : null,
+      support:
+          data['support'] != null ? UserModel.fromJson(data['support']) : null,
+      urlDownload:
+      data['url_for_download'] != null ? UrlDownload.fromJson(data['url_for_download']) : null,
     );
   }
 }
@@ -168,7 +176,7 @@ class GoldModel {
   Sale? gold18;
   Sale? sliver;
 
-  GoldModel({this.gold18, this.gold21, this.gold24,this.sliver});
+  GoldModel({this.gold18, this.gold21, this.gold24, this.sliver});
 
   factory GoldModel.fromJson(Map<String, dynamic> data) {
     return GoldModel(
@@ -192,6 +200,22 @@ class DollarModel {
       eur: data['eur'] != null ? Sale.fromJson(data['eur']) : null,
       usd: data['usd'] != null ? Sale.fromJson(data['usd']) : null,
       syr: data['syr'] != null ? Sale.fromJson(data['syr']) : null,
+    );
+  }
+}
+
+class UrlDownload {
+  String? up_down;
+  String? play;
+  String? direct;
+
+  UrlDownload({this.play, this.up_down,this.direct});
+
+  factory UrlDownload.fromJson(Map<String, dynamic> data) {
+    return UrlDownload(
+      play: "${data['play']}",
+      up_down: "${data['up_down']}",
+      direct: "${data['direct']}",
     );
   }
 }

@@ -73,6 +73,9 @@ query GetLiveMessages {
           messages.insert(0,MessageModel.fromJson(item));
         }
       }
+      if(res?.data?['errors']?[0]?['message']!=null){
+        mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
+      }
     } catch (e) {
       mainController.logger.e("Error GetCommunity");
     }
@@ -108,6 +111,9 @@ mutation CreateLiveMessage {
         messages.add(
             MessageModel.fromJson(res?.data?['data']?['createLiveMessage']));
         goScrollTo(position: scrollController.position.maxScrollExtent);
+      }
+      if(res?.data?['errors']?[0]?['message']!=null){
+        mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
       }
     } catch (e) {
 

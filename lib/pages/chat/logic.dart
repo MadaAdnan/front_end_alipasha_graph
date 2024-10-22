@@ -21,7 +21,7 @@ class ChatLogic extends GetxController {
   MainController mainController = Get.find<MainController>();
   RxBool loadingSend = RxBool(false);
   TextEditingController messageController =
-      TextEditingController(text: "${Get.parameters['msg'].toString().isNotEmpty?Get.parameters['msg']: ''}");
+      TextEditingController(text: "${Get.parameters['msg']!=null?Get.parameters['msg']: ''}");
   Rxn<XFile> file = Rxn<XFile>(null);
   RxBool loading = RxBool(false);
   RxBool hasMorePage = RxBool(false);
@@ -29,7 +29,7 @@ class ChatLogic extends GetxController {
   RxList<MessageModel> messages = RxList<MessageModel>([]);
   Rxn<CommunityModel> communityModel = Rxn<CommunityModel>(null);
   ScrollController scrollController = ScrollController();
-  RxnString message = RxnString(null);
+  RxnString message = RxnString(Get.parameters['msg']);
 
   // Audio
 
@@ -164,6 +164,9 @@ query GetMessages {
           messages.add(MessageModel.fromJson(item));
         }
       }
+      if(res?.data?['errors']?[0]?['message']!=null){
+        mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
+      }
     } catch (e) {
       mainController.logger.e(e);
     }
@@ -200,6 +203,9 @@ query GetMessages {
         messageController.clear();
         messages.insert(
             0, MessageModel.fromJson(res?.data?['data']['CreateMessage']));
+      }
+      if(res?.data?['errors']?[0]?['message']!=null){
+        mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
       }
     } catch (e) {
       mainController.logger.e("Error Send ${e}");

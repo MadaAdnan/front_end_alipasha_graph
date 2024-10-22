@@ -46,7 +46,7 @@ class SellerHomePageCard extends StatelessWidget {
                   color: GrayLightColor,
                   borderRadius: BorderRadius.circular(150.r),
                   image:
-                      DecorationImage(image: NetworkImage('${seller?.logo}'))),
+                      DecorationImage(image: NetworkImage('${seller?.image}'),fit: BoxFit.cover)),
             ),
           ),
         ),

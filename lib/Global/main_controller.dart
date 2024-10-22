@@ -4,6 +4,7 @@ import 'package:ali_pasha_graph/helpers/cart_helper.dart';
 import 'package:ali_pasha_graph/helpers/components.dart';
 import 'package:ali_pasha_graph/helpers/google_auth.dart';
 import 'package:ali_pasha_graph/helpers/queries.dart';
+import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:ali_pasha_graph/models/advice_model.dart';
 import 'package:ali_pasha_graph/models/cart_model.dart';
 import 'package:ali_pasha_graph/models/category_model.dart';
@@ -13,10 +14,13 @@ import 'package:ali_pasha_graph/models/setting_model.dart';
 import 'package:ali_pasha_graph/models/slider_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
+import 'package:cherry_toast/cherry_toast.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -49,7 +53,8 @@ class MainController extends GetxController {
   RxList<ColorModel> colors = RxList<ColorModel>([]);
   RxList<AdviceModel> advices = RxList<AdviceModel>([]);
   RxList<SliderModel> sliders = RxList<SliderModel>([]);
-
+  String versionAPK = "3.0.0";
+  RxBool startApp = RxBool(true); //for fill data from storage
   Rx<SettingModel> settings =
       Rx(SettingModel(weather_api: '02b438a76f5345c3857124556240809'));
   RxBool is_show_home_appbar = RxBool(true);
@@ -59,6 +64,9 @@ class MainController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    checkStatusApp().then(
+        (value) => value != true ? Get.offAndToNamed(MAINTENANCE_PAGE) : null);
+
     CartHelper.getCart().then((value) {
       carts(value);
     });
@@ -68,10 +76,9 @@ class MainController extends GetxController {
 
     ever(token, (value) {
       logger.d(value);
-     if(value!=null && value.length>30){
-
-       getMe();
-     }
+      if (value != null && value.length > 30) {
+        getMe();
+      }
       try {
         pusher = PusherService.init(token: "$token");
       } catch (e) {}
@@ -89,7 +96,6 @@ class MainController extends GetxController {
   void onReady() {
     getUserFromStorage();
     getAdvices();
-
 
     /* pusher.connect(
       onConnectionStateChange: (p0) =>
@@ -122,7 +128,18 @@ class MainController extends GetxController {
       throw CustomException(errors: {"errors": e}, message: "خطأ بالسيرفر");
     }
   }
+  void showToast({String? text,String type='success'}) {
+    if(type=='success'){
+      CherryToast.success(
+        title: Text("${text??'نجاح العملية'}", style: TextStyle(color: Colors.black)),
+      ).show(Get.context as BuildContext);
+    }else{
+      CherryToast.error(
+        title: Text("${text??'فشل العملية'}", style: TextStyle(color: Colors.black)),
+      ).show(Get.context  as BuildContext);
+    }
 
+  }
   getUser() {
     if (storage.hasData('user')) {
       var json = storage.read('user');
@@ -211,7 +228,7 @@ class MainController extends GetxController {
         CommunityModel community =
             CommunityModel.fromJson(res?.data?['data']['createChat']);
         Get.toNamed(CHAT_PAGE,
-            arguments: community, parameters: {"msg": "${message??''}"});
+            arguments: community, parameters: {"msg": "${message ?? ''}"});
       }
     } catch (e) {
       logger.e("Error Create Community $e");
@@ -275,8 +292,9 @@ class MainController extends GetxController {
     ''';
     try {
       dio.Response? res = await fetchData();
-
-      if(res?.data?['data']['me']!=null){
+      logger.d("Settings");
+      logger.d(res?.data?['data']['settings']);
+      if (res?.data?['data']['me'] != null) {
         logger.d(res?.data?['data']['me']);
       }
       if (res?.data?['data']['advices'] != null) {
@@ -286,7 +304,148 @@ class MainController extends GetxController {
       }
       if (res?.data?['data']['settings'] != null) {
         settings.value = SettingModel.fromJson(res?.data?['data']['settings']);
-        logger.w(settings.value.weather_api);
+        if (settings.value.force_upgrade == true &&
+            settings.value.current_version != versionAPK) {
+          Get.dialog(
+              AlertDialog(
+                backgroundColor: WhiteColor,
+                content: Container(
+                  height: 0.4.sh,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                                text: 'يرجى تحديث التطبيق إلى النسخة ',
+                                style: H3BlackTextStyle),
+                            TextSpan(
+                                text: ' ${settings.value.current_version}',
+                                style: H3RedTextStyle),
+                          ],
+                        ),
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                                text: 'الإصدار الحالي ',
+                                style: H3BlackTextStyle),
+                            TextSpan(
+                                text: '$versionAPK', style: H3RedTextStyle),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        child: Text(
+                          'حمل النسخة الجديدة من',
+                          style: H2OrangeTextStyle,
+                        ),
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 0.02.sh, horizontal: 0.02.sw),
+                            decoration: BoxDecoration(
+                              color: Colors.green.withOpacity(0.3),
+                              borderRadius: BorderRadius.circular(30.r),
+                            ),
+                            child: InkWell(
+                              onTap: () {
+                                openUrl(
+                                    url: "${settings.value.urlDownload?.play}");
+                              },
+                              borderRadius: BorderRadius.circular(30.r),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'متجر GOOGLE PLAY',
+                                    style: H3RegularDark,
+                                  ),
+                                  Icon(FontAwesomeIcons.googlePlay),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 0.01.sh,
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 0.02.sh, horizontal: 0.02.sw),
+                            decoration: BoxDecoration(
+                              color: Colors.orange.withOpacity(0.3),
+                              borderRadius: BorderRadius.circular(30.r),
+                            ),
+                            child: InkWell(
+                              onTap: () {
+                                openUrl(
+                                    url:
+                                        "${settings.value.urlDownload?.direct ?? 'https://ali-pasha.com/app'}");
+                              },
+                              borderRadius: BorderRadius.circular(30.r),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'تحميل مباشر APK',
+                                    style: H3RegularDark,
+                                  ),
+                                  Icon(FontAwesomeIcons.mobileScreen),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 0.01.sh,
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 0.02.sh, horizontal: 0.02.sw),
+                            decoration: BoxDecoration(
+                              color: Colors.blue.withOpacity(0.3),
+                              borderRadius: BorderRadius.circular(30.r),
+                            ),
+                            child: InkWell(
+                              onTap: () {
+                                openUrl(
+                                    url:
+                                        "${settings.value.urlDownload?.up_down}");
+                              },
+                              borderRadius: BorderRadius.circular(30.r),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'من موفع AppToDown',
+                                    style: H3RegularDark,
+                                  ),
+                                  Icon(FontAwesomeIcons.circleDown),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              barrierDismissible: false,
+              name: 'upgrade');
+        }
       }
     } catch (e) {
       logger.e("Error GetAdvices $e");
@@ -328,15 +487,15 @@ class MainController extends GetxController {
     }
   }
 
-  Future<XFile?> cropImage(XFile file) async {
+  Future<XFile?> cropImage(XFile file,{CropAspectRatio? ratio}) async {
     try {
       CroppedFile? cropped = await ImageCropper().cropImage(
         compressFormat: ImageCompressFormat.png,
         sourcePath: file.path,
-        maxWidth: 300,
+        maxWidth: 300 ,
         maxHeight: 300,
         compressQuality: 80,
-        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+        aspectRatio: ratio ?? CropAspectRatio(ratioX: 1, ratioY: 1),
         uiSettings: [
           AndroidUiSettings(
             toolbarTitle: 'قص الصورة',
@@ -459,6 +618,7 @@ class MainController extends GetxController {
     return urlRegExp.hasMatch(text) && !text.contains('@');
   }
 
+// Mute Notify Community
   Future<CommunityModel?> muteCommunity({required int communityId}) async {
     query.value = '''
     mutation MuteCommunity {
@@ -495,29 +655,57 @@ class MainController extends GetxController {
 }
 
     ''';
-    try{
+    try {
       dio.Response? res = await fetchData();
       logger.d(res?.data?['data']?['muteCommunity']);
       if (res?.data?['data']?['muteCommunity'] != null) {
         return CommunityModel.fromJson(res?.data?['data']?['muteCommunity']);
       }
-    }catch(e){
-
-    }
-
+    } catch (e) {}
   }
 
-  Future<void> getMe()async{
-    query.value= ''' query Me {
+// Get Auth Data
+  Future<void> getMe() async {
+    query.value = ''' query Me {
     me {$AUTH_FIELDS} }''';
-    try{
+    try {
       dio.Response? res = await fetchData();
       if (res?.data?['data']?['me'] != null) {
-      setUserJson(json: res?.data?['data']?['me']);
+        setUserJson(json: res?.data?['data']?['me']);
       }
-    }catch(e){
-
-    }
+    } catch (e) {}
   }
 
+// Check Status Maintenance App
+  Future<bool> checkStatusApp() async {
+    bool status = true;
+    try {
+      dio.Response res = await dio.Dio().get("https://status.pazarpasha.com/");
+      status = res.data == null || res.data['status'] || res.statusCode != 200;
+    } catch (e) {
+      status = true;
+    }
+    return status;
+  }
+
+  follow({required int sellerId}) async {
+    loading.value = true;
+    try {
+      query.value = '''
+      mutation FollowAccount {
+    followAccount(id: "$sellerId") {
+       $AUTH_FIELDS
+    }
+}
+      ''';
+      dio.Response? res = await fetchData();
+      //  mainController.logger.e(res?.data);
+      if (res?.data?['data']?['followAccount'] != null) {
+        setUserJson(json: res?.data?['data']?['followAccount']);
+      }
+    } on CustomException catch (e) {
+      logger.e(e);
+    }
+    loading.value = false;
+  }
 }

@@ -52,6 +52,9 @@ mutation Login {
             isWrite: true, token: res?.data?['data']?['login']?['token']);
         Get.offAndToNamed(HOME_PAGE);
       }
+      if(res?.data?['errors']?[0]?['message']!=null){
+        mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
+      }
     } catch (e) {
       mainController.logger.e("Login Error ${e}");
     }
@@ -97,6 +100,9 @@ mutation CreateGoogleUser {
       }
       if (res?.data?['errors']?[0]?['extensions']['validation'] != null) {
 
+      }
+      if(res?.data?['errors']?[0]?['message']!=null){
+        mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
       }
     } on CustomException catch (e) {
       print(e);

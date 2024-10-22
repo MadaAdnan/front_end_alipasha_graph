@@ -13,7 +13,7 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="Manifest.permission.CAPTURE_AUDIO_OUTPUT" />
     <application
-        android:label="ali_pasha_graph"
+        android:label="علي باشا"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:networkSecurityConfig="@xml/network_security_config"

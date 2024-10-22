@@ -42,6 +42,9 @@ class AsksLogic extends GetxController {
           asks.add(AskModel.fromJson(item));
         }
       }
+      if(response?.data?['errors']?[0]?['message']!=null){
+        mainController.showToast(text:'${response?.data['errors'][0]['message']}',type: 'error' );
+      }
     } catch (e) {
       mainController.logger.e("Error get Asks $e");
     }

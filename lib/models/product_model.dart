@@ -198,7 +198,7 @@ class ProductModel {
   }
 
   toJson() {
-    return {'video': video, "expert": expert};
+    return {'video': video, "expert": expert,"name":name,"info":info};
   }
 }
 

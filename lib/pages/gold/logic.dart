@@ -122,6 +122,9 @@ query Settings {
         setting.value =
             SettingModel.fromJson(res?.data?['data']?['settings']);
       }
+      if(res?.data?['errors']?[0]?['message']!=null){
+        mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
+      }
     } catch (e) {
       mainController.logger.e("Error get Gold Exchange $e");
     }

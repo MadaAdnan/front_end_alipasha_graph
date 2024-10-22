@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
+import 'package:ali_pasha_graph/main.dart';
 import 'package:ali_pasha_graph/models/advice_model.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
 import 'package:ali_pasha_graph/models/slider_model.dart';
+import 'package:cherry_toast/cherry_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
@@ -10,11 +14,15 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:get/state_manager.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:image_picker/image_picker.dart';
+
+import '../../helpers/style.dart';
 
 class ProfileLogic extends GetxController {
   RxInt pageSelected = RxInt(0);
   TextEditingController searchController = TextEditingController();
   RxBool loading = RxBool(false);
+
 
   // Data From Api
   //  products Page
@@ -58,6 +66,7 @@ class ProfileLogic extends GetxController {
         page.value = 1;
       }
     });
+
   }
 
   @override
@@ -117,13 +126,15 @@ class ProfileLogic extends GetxController {
     try {
       dio.Response? res = await mainController.fetchData();
 
-
       if (res?.data?['data']?['myProducts'] != null) {
         hasMorePage(
             res?.data['data']?['myProducts']['paginatorInfo']['hasMorePages']);
         for (var item in res?.data['data']['myProducts']['data']) {
           products.add(ProductModel.fromJson(item));
         }
+      }
+      if(res?.data['errors']?[0]?['message']!=null){
+        mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
       }
     } on CustomException catch (e) {
       mainController.logger.e(e);
@@ -182,7 +193,6 @@ class ProfileLogic extends GetxController {
     dio.Response? res = await mainController.fetchData();
 
     if (res != null) {
-
       if (res.data['data']['myAdvice']['advices'] != null) {
         for (var item in res.data['data']['myAdvice']['advices']) {
           myAdvices.add(AdviceModel.fromJson(item));
@@ -194,7 +204,7 @@ class ProfileLogic extends GetxController {
           sliders.add(SliderModel.fromJson(item));
         }
       }
- if (res.data['data']['mySpecialProducts'] != null) {
+      if (res.data['data']['mySpecialProducts'] != null) {
         for (var item in res.data['data']['mySpecialProducts']) {
           myProducts.add(ProductModel.fromJson(item));
         }
@@ -214,4 +224,6 @@ class ProfileLogic extends GetxController {
           double.tryParse("${res.data['data']['myAdvice']['my_wins']}") ?? 0;
     }
   }
+
+
 }

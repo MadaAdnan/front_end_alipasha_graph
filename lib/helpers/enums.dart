@@ -130,6 +130,20 @@ extension CategoryTypeEnum on String {
         return this;
     }
   }
+
+  String OrderStatus() {
+    switch (this) {
+      case 'pending':
+        return "بالإنتظار";
+
+      case 'success':
+        return "منتهي";
+      case 'canceled':
+        return "ملغي";
+        default:
+          return this;
+    }
+  }
 }
 
 extension FormatNumber on String {

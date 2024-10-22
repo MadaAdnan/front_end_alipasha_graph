@@ -535,17 +535,15 @@ width: 0.67.sw,
       dio.Response? res = await mainController.fetchData();
 
       if (res?.data?['data']?['changeAvilable'] != null) {
-        Get.snackbar('', '',
-            titleText: Center(
-                child: Text(
-              'تمت العملية بنجاح',
-              style: H5RedTextStyle,
-            )));
+        mainController.showToast(text:'تمت العملية بنجاح', );
         int index = logic.products.indexWhere((el) => el.id == post.id);
         logic.products.removeAt(index);
         ProductModel newPost =
             ProductModel.fromJson(res?.data?['data']?['changeAvilable']);
         logic.products.insert(index, newPost);
+      }
+      if(res?.data?['errors']?[0]?['message']!=null){
+        mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
       }
     } on CustomException catch (e) {}
     loading.value = false;
@@ -568,14 +566,12 @@ width: 0.67.sw,
       dio.Response? res = await mainController.fetchData();
 
       if (res?.data?['data']?['deleteProduct'] != null) {
-        Get.snackbar('', '',
-            titleText: Center(
-                child: Text(
-              'تمت العملية بنجاح',
-              style: H5RedTextStyle,
-            )));
+        mainController.showToast(text:'تمت العملية بنجاح', );
         int index = logic.products.indexWhere((el) => el.id == post.id);
         logic.products.removeAt(index);
+      }
+      if(res?.data?['errors']?[0]?['message']!=null){
+        mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
       }
     } on CustomException catch (e) {}
     loading.value = false;

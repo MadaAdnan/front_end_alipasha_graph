@@ -4,10 +4,12 @@ import 'package:ali_pasha_graph/components/product_components/job_card.dart';
 import 'package:ali_pasha_graph/components/product_components/minimize_details_product_component.dart';
 import 'package:ali_pasha_graph/components/product_components/minimize_details_product_component_loading.dart';
 import 'package:ali_pasha_graph/components/product_components/post_card.dart';
+import 'package:ali_pasha_graph/components/progress_loading.dart';
 import 'package:ali_pasha_graph/models/category_model.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -21,17 +23,41 @@ class SectionPage extends StatelessWidget {
 
   final logic = Get.find<SectionLogic>();
   MainController mainController = Get.find<MainController>();
-
+ScrollController _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+      floatingActionButton:
+      (mainController.carts.length>0)?
+      Stack(
+        children: [
+          InkWell(
+            onTap: () {
+              Get.toNamed(CART_SELLER);
+            },
+            child: Container(
+              padding: EdgeInsets.all(0.02.sw),
+              decoration:  BoxDecoration(
+                color: RedColor.withOpacity(0.5),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(FontAwesomeIcons.cartShopping, color: WhiteColor,),
+            ),
+          ),
+          Positioned(top: 0, right: 0,child: Badge.count(
+            count: mainController.carts.length,
+            backgroundColor: RedColor,),)
+        ],
+      ):Container(),
       backgroundColor: WhiteColor,
       body: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollInfo) {
           if (scrollInfo.metrics.pixels >=
                   scrollInfo.metrics.maxScrollExtent * 0.80 &&
               !mainController.loading.value &&
-              logic.hasMorePage.value) {
+              logic.hasMorePage.value &&  _scrollController.position.context.notificationContext ==scrollInfo.context) {
             logic.nextPage();
           }
 
@@ -60,14 +86,14 @@ class SectionPage extends StatelessWidget {
 
                   scrollDirection: Axis.horizontal,
                   children: [
-                    if (logic.loading.value)
+                    if (logic.loadingProduct.value)
                       ...List.generate(4, (index) {
                         return Shimmer.fromColors(
                             baseColor: GrayLightColor,
                             highlightColor: GrayWhiteColor,
                             child: _loadingbuildSubSection());
                       }),
-                    if (!logic.loading.value)
+                    if (!logic.loadingProduct.value)
                       ...List.generate(logic.category.value!.children!.length,
                           (index) {
                         return _buildSubSection(
@@ -79,15 +105,12 @@ class SectionPage extends StatelessWidget {
             ),
             Expanded(
               child: SingleChildScrollView(
+                controller: _scrollController,
                 padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
                 child: Obx(() {
                   return Column(
                     children: [
-                      if (logic.loading.value)
-                       ...List.generate(4, (index)=> Shimmer.fromColors(
-                           baseColor: GrayLightColor,
-                           highlightColor: GrayWhiteColor,
-                           child:MinimizeDetailsProductComponentLoading())),
+
                       ...List.generate(logic.products.length, (index) {
                         return Column(
                           children: [
@@ -104,11 +127,17 @@ class SectionPage extends StatelessWidget {
                           ],
                         );
                       }),
-                      if(logic.loading.value)
-                        Shimmer.fromColors(
+                      if (logic.loading.value && logic.page.value==1)
+                        ...List.generate(4, (index)=> Shimmer.fromColors(
                             baseColor: GrayLightColor,
                             highlightColor: GrayWhiteColor,
-                            child:MinimizeDetailsProductComponentLoading()),
+                            child:MinimizeDetailsProductComponentLoading())),
+                      if (logic.loading.value && logic.page.value>1)
+                        Container(
+                          alignment: Alignment.center,
+                          width: 0.1.sw,
+                          child: ProgressLoading(),
+                        ),
                       if (!logic.hasMorePage.value && !logic.loading.value)
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),

@@ -148,6 +148,9 @@ query GetMessages {
           messages.add(MessageModel.fromJson(item));
         }
       }
+      if(res?.data?['errors']?[0]?['message']!=null){
+        mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
+      }
     } catch (e) {
       mainController.logger.e(e);
     }
@@ -184,6 +187,9 @@ query GetMessages {
         messageController.clear();
         messages.insert(
             0, MessageModel.fromJson(res?.data?['data']['CreateMessage']));
+      }
+      if(res?.data?['errors']?[0]?['message']!=null){
+        mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
       }
     } catch (e) {
       mainController.logger.e("Error Send ${e}");

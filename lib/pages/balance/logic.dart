@@ -52,5 +52,8 @@ class BalanceLogic extends GetxController {
       hasMore.value =
           res?.data['data']['balances']['paginatorInfo']['hasMorePages'];
     }
+    if(res?.data?['errors']?[0]?['message']!=null){
+      mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
+    }
   }
 }

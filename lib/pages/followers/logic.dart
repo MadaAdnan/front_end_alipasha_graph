@@ -46,6 +46,7 @@ class FollowersLogic extends GetxController {
                 name
                 image
                 address
+                is_verified
                 id
             }
         }

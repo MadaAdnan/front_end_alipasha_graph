@@ -119,6 +119,9 @@ class AdviceComponent extends StatelessWidget {
               UserModel.fromJson(res?.data?['data']?['followAccount']);*/
           mainController.setUserJson(json: res?.data?['data']?['followAccount']);
         }
+        if(res?.data?['errors']?[0]?['message']!=null){
+          mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
+        }
       } catch (e) {
         mainController.logger.e(e);
       }

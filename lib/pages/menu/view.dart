@@ -453,7 +453,7 @@ class MenuPage extends StatelessWidget {
                         title: 'مشاركة التطبيق'),
                     _buildWidget(
                         onTap: () {
-                          Get.offAndToNamed(SHIPPING_PAGE);
+                          Get.offAndToNamed(MY_ORDER_SHIPPING_PAGE);
                         },
                         image: 'assets/images/png/shipping.png',
                         title: 'خدمة الشحن'),

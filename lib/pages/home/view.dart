@@ -44,28 +44,7 @@ class HomePage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              if(mainController.carts.length > 0)
-                Stack(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Get.toNamed(CART_SELLER);
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(0.02.sw),
-                        decoration:  BoxDecoration(
-                          color: RedColor.withOpacity(0.5),
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(Icons.shopping_cart, color: WhiteColor,),
-                      ),
-                    ),
-                    Positioned(child: Badge.count(
-                      count: mainController.carts.length,
-                      backgroundColor: RedColor,), top: 0, right: 0,)
-                  ],
-                ),
-              SizedBox(height: 0.02.sh,),
+
               InkWell(
                 onTap: () {
                   Get.toNamed(CREATE_PRODUCT_PAGE);
@@ -79,6 +58,28 @@ class HomePage extends StatelessWidget {
                   child: const Icon(FontAwesomeIcons.plus, color: WhiteColor,),
                 ),
               ),
+              if(mainController.carts.length > 0)
+                Stack(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Get.toNamed(CART_SELLER);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(0.02.sw),
+                        decoration:  BoxDecoration(
+                          color: RedColor.withOpacity(0.5),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(FontAwesomeIcons.cartShopping, color: WhiteColor,),
+                      ),
+                    ),
+                    Positioned(child: Badge.count(
+                      count: mainController.carts.length,
+                      backgroundColor: RedColor,), top: 0, right: 0,)
+                  ],
+                ),
+              SizedBox(height: 0.02.sh,),
             ],
           ),
         );
@@ -222,6 +223,7 @@ class HomePage extends StatelessWidget {
                         ],
                       ),
                     ),
+                    // seller
                     Container(
                       height: 0.157.sh,
                       width: double.infinity,
@@ -248,7 +250,7 @@ class HomePage extends StatelessWidget {
                       color: GrayDarkColor,
                       height: 0.0017.sh,
                     ),
-                    if (logic.loading.value)
+                    if (logic.loading.value && logic.products.length==0)
                       ...List.generate(4, (index) => PostCardLoading()),
                     ...List.generate(
                       logic.products.length + (logic.loading.value ? 1 : 0),

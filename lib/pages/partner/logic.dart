@@ -67,6 +67,9 @@ class PartnerLogic extends GetxController {
           partners.add(PartnerModel.fromJson(item));
         }
       }
+      if(response?.data?['errors']?[0]?['message']!=null){
+        mainController.showToast(text:'${response?.data['errors'][0]['message']}',type: 'error' );
+      }
     } catch (e) {}
     loading.value = false;
   }

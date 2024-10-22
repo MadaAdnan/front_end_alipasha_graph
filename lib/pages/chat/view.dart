@@ -53,12 +53,12 @@ class ChatPage extends StatelessWidget {
                 alignment: Alignment.center,
                 color: RedColor,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
+                    Flexible(child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
-                      width: 1.sw,
+
                       alignment: Alignment.center,
                       height: 0.085.sh,
                       child: Row(
@@ -103,7 +103,51 @@ class ChatPage extends StatelessWidget {
                           }),
                         ],
                       ),
-                    ),
+                    )),
+                    Flexible(child: PopupMenuButton<String>(
+                      color: WhiteColor,
+                      iconColor: WhiteColor,
+                      onSelected: (value) async {
+
+                        switch (value) {
+                          case '1':
+                            if(mainController.settings.value.support?.id!=null){
+                              mainController.createCommunity(
+                                  sellerId: mainController.settings.value.support!.id!,
+                                  message: ''' السلام عليكم ورحمة الله وبركاته 
+                            إبلاغ  عن المحادثة ${logic.communityModel.value?.name} #${logic.communityModel.value?.id}''');
+                            }else{
+                              openUrl(url: "https://wa.me/${mainController.settings.value.social?.phone}");
+                            }
+
+                            break;
+                          default:
+                            print('default');
+                        }
+                      },
+                      itemBuilder: (context) => [
+                        PopupMenuItem<String>(
+                          value: '1',
+                          child: Row(
+                            children: [
+                              Icon(
+                                FontAwesomeIcons.headset,
+                                color: GrayDarkColor,
+                                size: 0.04.sw,
+                              ),
+                              SizedBox(
+                                width: 0.02.sw,
+                              ),
+                              Text(
+                                "إبلاغ عن المحادثة",
+                                style: H3RegularDark,
+                              ),
+
+                            ],
+                          ),
+                        ),
+                      ],
+                    )),
                   ],
                 ),
               ),
@@ -145,322 +189,6 @@ class ChatPage extends StatelessWidget {
                 );
               })),
 
-              // Container(
-              //      width: 1.sw,
-              //      height: 0.07.sh,
-              //      child: Row(
-              //        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //        crossAxisAlignment: CrossAxisAlignment.center,
-              //        children: [
-              //          Container(
-              //              width: 0.85.sw,
-              //              height: 0.06.sh,
-              //              child: FormBuilderTextField(
-              //                name: 'msg',
-              //                controller: logic.messageController,
-              //                style: H4BlackTextStyle,
-              //                textAlign: TextAlign.start,
-              //                decoration: InputDecoration(
-              //                  border: OutlineInputBorder(
-              //                      borderRadius: BorderRadius.circular(15.r),
-              //                      borderSide: BorderSide(color: GrayLightColor)),
-              //                  suffixIcon: Container(
-              //                    width: 0.1.sw,
-              //                    child: Row(
-              //                      mainAxisAlignment: MainAxisAlignment.end,
-              //                      children: [
-              //                        Container(
-              //                          child: IconButton(
-              //                            onPressed: () {
-              //                              logic.pickImage(
-              //                                  imagSource: ImageSource.gallery);
-              //                            },
-              //                            icon: Icon(
-              //                              FontAwesomeIcons.paperclip,
-              //                              size: 0.04.sw,
-              //                            ),
-              //                          ),
-              //                          width: 0.05.sw,
-              //                        ),
-              //                        Obx(() {
-              //                          if (!logic.mRecorderIsInited.value) {
-              //                            return Container(
-              //                              width: 0.05.sw,
-              //                              child: IconButton(
-              //                                onPressed: () {
-              //                                  logic.startRecording();
-              //                                  Get.defaultDialog(
-              //                                      title: ' ',
-              //                                      content: Container(
-              //                                        child: Column(
-              //                                          children: [
-              //                                            Container(
-              //                                              width: 0.12.sw,
-              //                                              height: 0.12.sw,
-              //                                              child: Obx(() {
-              //                                                if (logic
-              //                                                    .mRecorderIsInited
-              //                                                    .value) {
-              //                                                  return AnimatedContainer(
-              //                                                    constraints:
-              //                                                        BoxConstraints.expand(
-              //                                                            width:
-              //                                                                0.08.sw,
-              //                                                            height: 0.08
-              //                                                                .sw),
-              //                                                    duration: Duration(
-              //                                                        milliseconds:
-              //                                                            200),
-              //                                                    height:
-              //                                                        (logic.mRecordingLevel /
-              //                                                                1000)
-              //                                                            .sw,
-              //                                                    width:
-              //                                                        (logic.mRecordingLevel /
-              //                                                                1000)
-              //                                                            .sw,
-              //                                                    decoration:
-              //                                                        BoxDecoration(
-              //                                                      color: RedColor,
-              //                                                      borderRadius:
-              //                                                          BorderRadius
-              //                                                              .circular(
-              //                                                                  150.r),
-              //                                                    ),
-              //                                                    child: InkWell(
-              //                                                      onTap: () {
-              //                                                        logic
-              //                                                            .stopRecorder();
-              //                                                      },
-              //                                                      child: Center(
-              //                                                        child: Icon(
-              //                                                          Icons.stop,
-              //                                                          color: Colors
-              //                                                              .white,
-              //                                                          size: 0.08
-              //                                                              .sw, // تغيير حجم الأيقونة بناءً على شدة الصوت
-              //                                                        ),
-              //                                                      ),
-              //                                                    ),
-              //                                                  );
-              //                                                }
-              //                                                return Container(
-              //                                                  width: 0.15.sw,
-              //                                                  height: 0.15.sw,
-              //                                                  alignment:
-              //                                                      Alignment.center,
-              //                                                  decoration: BoxDecoration(
-              //                                                      borderRadius:
-              //                                                          BorderRadius
-              //                                                              .circular(
-              //                                                                  100
-              //                                                                      .r),
-              //                                                      color:
-              //                                                          GrayLightColor),
-              //                                                  child: IconButton(
-              //                                                      onPressed: () {
-              //                                                        logic
-              //                                                            .startRecording();
-              //                                                      },
-              //                                                      icon: Icon(
-              //                                                        FontAwesomeIcons
-              //                                                            .microphone,
-              //                                                        size: 0.08.sw,
-              //                                                        color:
-              //                                                            WhiteColor,
-              //                                                      )),
-              //                                                );
-              //                                              }),
-              //                                            ),
-              //                                            SizedBox(height: 0.01.sh),
-              //                                            Obx(() {
-              //                                              if (logic.recordedFilePath
-              //                                                          ?.value !=
-              //                                                      null &&
-              //                                                  logic.mRecorderIsInited
-              //                                                          .value ==
-              //                                                      false) {
-              //                                                return Row(
-              //                                                  mainAxisAlignment:
-              //                                                      MainAxisAlignment
-              //                                                          .end,
-              //                                                  children: [
-              //                                                    if (logic
-              //                                                            .mPlayerIsInited
-              //                                                            .value ==
-              //                                                        false)
-              //                                                      IconButton(
-              //                                                        onPressed: () {
-              //                                                          logic
-              //                                                              .playRecordedAudio();
-              //                                                        },
-              //                                                        icon: Icon(
-              //                                                            FontAwesomeIcons
-              //                                                                .solidCirclePlay),
-              //                                                      ),
-              //                                                    if (logic
-              //                                                            .mPlayerIsInited
-              //                                                            .value ==
-              //                                                        true)
-              //                                                      IconButton(
-              //                                                        onPressed: logic
-              //                                                            .stopPlayer,
-              //                                                        icon: Icon(
-              //                                                            FontAwesomeIcons
-              //                                                                .solidCircleStop),
-              //                                                      ),
-              //                                                  ],
-              //                                                );
-              //                                              }
-              //
-              //                                              return Container();
-              //                                            }),
-              //                                            Obx(() {
-              //                                              if (logic
-              //                                                  .mRecorderIsInited
-              //                                                  .value) {
-              //                                                return Container();
-              //                                              }
-              //                                              return Row(
-              //                                                mainAxisAlignment:
-              //                                                    MainAxisAlignment
-              //                                                        .spaceEvenly,
-              //                                                children: [
-              //                                                  InkWell(
-              //                                                    onTap: () async {
-              //                                                      if (logic
-              //                                                              .recordedFilePath
-              //                                                              ?.value !=
-              //                                                          null) {
-              //                                                        logic.file
-              //                                                                .value =
-              //                                                            XFile(
-              //                                                                "${logic.recordedFilePath!.value}");
-              //                                                      }
-              //                                                      Get.back();
-              //                                                      await logic
-              //                                                          .uploadFileMessage();
-              //                                                      logic
-              //                                                          .recordedFilePath!
-              //                                                          .value = '';
-              //                                                    },
-              //                                                    child: Container(
-              //                                                      padding: EdgeInsets
-              //                                                          .symmetric(
-              //                                                              horizontal:
-              //                                                                  0.05
-              //                                                                      .sw,
-              //                                                              vertical:
-              //                                                                  0.02.sw),
-              //                                                      decoration:
-              //                                                          BoxDecoration(
-              //                                                        color: Colors
-              //                                                            .green,
-              //                                                        borderRadius:
-              //                                                            BorderRadius
-              //                                                                .circular(
-              //                                                                    50.r),
-              //                                                      ),
-              //                                                      child: Text(
-              //                                                        'إرسال',
-              //                                                        style:
-              //                                                            H4WhiteTextStyle,
-              //                                                      ),
-              //                                                    ),
-              //                                                  ),
-              //                                                  InkWell(
-              //                                                    onTap: () {
-              //                                                      logic
-              //                                                          .recordedFilePath!
-              //                                                          .value = '';
-              //                                                      Get.back();
-              //                                                    },
-              //                                                    child: Container(
-              //                                                      padding: EdgeInsets
-              //                                                          .symmetric(
-              //                                                              horizontal:
-              //                                                                  0.05
-              //                                                                      .sw,
-              //                                                              vertical:
-              //                                                                  0.02.sw),
-              //                                                      decoration:
-              //                                                          BoxDecoration(
-              //                                                        color: RedColor,
-              //                                                        borderRadius:
-              //                                                            BorderRadius
-              //                                                                .circular(
-              //                                                                    50.r),
-              //                                                      ),
-              //                                                      child: Text(
-              //                                                        'إلغاء',
-              //                                                        style:
-              //                                                            H4WhiteTextStyle,
-              //                                                      ),
-              //                                                    ),
-              //                                                  )
-              //                                                ],
-              //                                              );
-              //                                            })
-              //                                          ],
-              //                                        ),
-              //                                      ));
-              //                                },
-              //                                icon: Icon(
-              //                                  FontAwesomeIcons.microphone,
-              //                                  size: 0.04.sw,
-              //                                ),
-              //                              ),
-              //                            );
-              //                          } else {
-              //                            return Container(
-              //                              width: 0.05.sw,
-              //                              child: IconButton(
-              //                                onPressed: () {
-              //                                  logic.stopRecorder();
-              //                                },
-              //                                icon: Icon(
-              //                                  FontAwesomeIcons.stop,
-              //                                  size: 0.04.sw,
-              //                                ),
-              //                              ),
-              //                            );
-              //                          }
-              //                        }),
-              //                      ],
-              //                    ),
-              //                  ),
-              //                ),
-              //              )),
-              //          Obx(() {
-              //            if (logic.loadingSend.value)
-              //              return Center(
-              //                child: CircularProgressIndicator(),
-              //              );
-              //            return InkWell(
-              //              onTap: () {
-              //                if (logic.messageController.text.length > 0) {
-              //                  logic.sendTextMessage();
-              //                }
-              //              },
-              //              child: Container(
-              //                height: 0.06.sh,
-              //                alignment: Alignment.center,
-              //                padding: EdgeInsets.symmetric(
-              //                    horizontal: 0.03.sw, vertical: 0.02.sw),
-              //                decoration: BoxDecoration(
-              //                  color: OrangeColor,
-              //                  borderRadius: BorderRadius.circular(15.r),
-              //                ),
-              //                child: Text(
-              //                  'إرسال',
-              //                  style: H4WhiteTextStyle,
-              //                ),
-              //              ),
-              //            );
-              //          })
-              //        ],
-              //      ),
-              //    ),
 /* end*/
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
@@ -512,7 +240,7 @@ class ChatPage extends StatelessWidget {
                                     flipX: true,
                                     child: Obx(() {
                                       if (logic.message.value == null ||
-                                          logic.message.value!.isEmpty) {
+                                          logic.message.value!.isEmpty ) {
                                         return IconButton(
                                             onPressed: () {
                                               logic.startRecording();

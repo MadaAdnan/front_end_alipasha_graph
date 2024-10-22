@@ -173,6 +173,9 @@ query MainCategories {
             .where((el) => el.id == tender.value?.sub3?.id)
             .first;
       }
+      if(res?.data?['errors']?[0]?['message']!=null){
+        mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
+      }
     } catch (e) {
       mainController.logger.e("Error Get Tender: $tenderId - $e");
     }
@@ -266,7 +269,11 @@ query MainCategories {
         if (index > -1) {
           attachments.removeAt(index);
         }
-        showAutoCloseDialog(message: 'تم حذف المرفق بنجاح');
+
+        mainController.showToast(text:'تم حذف المرفق بنجاح' );
+      }
+      if(res?.data?['errors']?[0]?['message']!=null){
+        mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
       }
     } catch (e) {}
     loading.value=false;

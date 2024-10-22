@@ -1,12 +1,14 @@
 import 'package:ali_pasha_graph/components/progress_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 import '../../Global/main_controller.dart';
 import '../../helpers/colors.dart';
 import '../../helpers/style.dart';
 import '../../models/user_model.dart';
+import '../../routes/routes_url.dart';
 import 'logic.dart';
 
 class FollowingPage extends StatelessWidget {
@@ -71,7 +73,7 @@ class FollowingPage extends StatelessWidget {
                       ...List.generate(
                           logic.users.length,
                               (index) =>
-                              _buildSellerCard(seller: logic.users[index]))
+                              _buildSellerCard2(seller: logic.users[index]))
                     else
                       Container(
                         width: 1.sw,
@@ -93,7 +95,102 @@ class FollowingPage extends StatelessWidget {
       ),
     );
   }
+_buildSellerCard2({required UserModel seller}){
+  return Container(
+    width: 1.sw,
+    padding: EdgeInsets.symmetric(vertical: 0.01.sw, horizontal: 0.01.sw),
+    margin: EdgeInsets.symmetric(vertical: 0.01.sw),
+    decoration: BoxDecoration(
+        border: Border.all(color: GrayLightColor),
+        borderRadius: BorderRadius.circular(15.r),
+        color: WhiteColor),
+    child: Row(
+      children: [
+        Container(
+          width: 0.2.sw,
+          height: 0.2.sw,
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: NetworkImage('${seller.image}'),
+                  fit: BoxFit.fitHeight),
+              borderRadius: BorderRadius.circular(15.r)),
+        ),
+        Expanded(
 
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(
+                    horizontal: 0.01.sw),
+                alignment: Alignment.topRight,
+                child: Expanded(child: Column(mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    InkWell(
+                     /* onTap: (){
+                        Get.toNamed(PRODUCTS_PAGE,arguments: seller);
+                      },*/
+                      child: Text(
+                        "${seller.seller_name?.length != 0 ? seller.seller_name : seller.name}",
+                        style: H3BlackTextStyle,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    Text(
+                      "${seller.address}",
+                      style: H5RegularDark,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                )),
+              ),
+              Transform.translate(offset: Offset(0, -0.02.sh),child:  Container(
+                padding: EdgeInsets.symmetric(
+                    horizontal: 0.001.sw),
+                alignment: Alignment.topRight,
+                child: PopupMenuButton<String>(
+                  color: WhiteColor,
+                  onSelected: (value){
+                    if(value=='1'){
+                      logic.unFollowing(seller.id!);
+                    }
+                  },
+                  itemBuilder: (context) => [
+                    PopupMenuItem<String>(
+                      value: '1',
+                      child: Row(
+                        children: [
+                          Icon(
+                            FontAwesomeIcons.heartCrack,
+                            color: RedColor,
+                            size: 0.05.sw,
+                          ),
+                          SizedBox(
+                            width: 0.03.sw,
+                          ),
+                          Text(
+                            "حذف من قائمة المتابعين",
+                            style: H3RegularDark,
+                          ),
+                          SizedBox(
+                            width: 0.005.sw,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),),
+
+            ],
+          ),
+        )
+      ],
+    ),
+  );
+}
   Widget _buildSellerCard({required UserModel seller}) {
     RxBool loading = RxBool(false);
     return Container(

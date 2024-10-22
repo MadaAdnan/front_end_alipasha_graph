@@ -1,11 +1,14 @@
 import 'dart:io';
 
+import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/components/fields_components/input_component.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -13,7 +16,7 @@ import 'package:get/get.dart';
 
 import 'package:image_picker/image_picker.dart';
 
-
+import '../../helpers/components.dart';
 import 'logic.dart';
 
 class EditProfilePage extends StatelessWidget {
@@ -23,26 +26,23 @@ class EditProfilePage extends StatelessWidget {
   GlobalKey<FormState> state = GlobalKey<FormState>();
   RxBool isScure = true.obs;
   RxBool isScureConfirm = true.obs;
+  MainController mainController = Get.find<MainController>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: WhiteColor,
+      appBar: AppBar(
+        backgroundColor: WhiteColor,
+        title:Text('تعديل الملف الشخصي ',style: H2RegularDark,),
+        centerTitle: true,
+      ),
       body: Column(
         children: [
-          Container(
-            width: 1.sw,
-            height: 0.06.sh,
-            alignment: Alignment.center,
-            color: RedColor,
-            child: Text(
-              'تعديل الملف الشخصي',
-              style: H2WhiteTextStyle,
-            ),
-          ),
+          
           Expanded(child: Obx(() {
             if (logic.loading.value) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }
@@ -52,12 +52,119 @@ class EditProfilePage extends StatelessWidget {
                 key: state,
                 child: Column(
                   children: [
-                    35.verticalSpace,
+                    Stack(
+                      children: [
+                        Obx(() {
+                          return Container(
+                            width: 0.3.sw,
+                            height: 0.3.sw,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                  color: GrayLightColor, width: 0.01.sw),
+                              image: DecorationImage(
+                                  image:  logic.avatar.value !=null ? FileImage( File.fromUri(Uri.file("${logic.avatar.value!.path}"))) :CachedNetworkImageProvider(
+                                      "${logic.user.value?.image}"),
+                                  fit: BoxFit.cover),
+                            ),
+                          );
+                        }),
+                        Positioned(bottom: 0, right: -0.02.sw,child: IconButton(
+                          onPressed: () {
+                            logic.pickAvatar(
+                                imagSource: ImageSource.gallery,
+                                onChange: (file, size) {
+                                  logic.avatar.value = file;
+                                });
+                          },
+                          icon: Icon(FontAwesomeIcons.camera,
+                            color: RedColor.withOpacity(0.6),),
+                        ),)
+                      ],
+                    ),
+                    SizedBox(
+                      height: 0.01.sh,
+                    ),
+                    if (logic.user.value?.is_verified != true)
+                      InkWell(
+                          onTap: () {
+                            openUrl(
+                                url:
+                                "https://wa.me/${mainController.settings.value
+                                    .social?.phone}");
+                          },
+                          child: Container(
+                            width: 0.35.sw,
+                            padding: EdgeInsets.symmetric(
+                                vertical: 0.01.sh, horizontal: 0.02.sw),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15.r),
+                                color: RedColor),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  child: Text(
+                                    'تـوثيق الحسـاب ',
+                                    style: H4WhiteTextStyle,
+                                  ),
+                                ),
+                                Container(
+                                  width: 0.04.sw,
+                                  height: 0.04.sw,
+                                  decoration: const BoxDecoration(
+                                      image: DecorationImage(
+                                          image: Svg(
+                                            "assets/images/svg/verified_white.svg",
+                                            color: WhiteColor,
+                                          ),
+                                          fit: BoxFit.cover)),
+                                )
+                              ],
+                            ),
+                          )),
+                    if (logic.user.value?.is_verified == true)
+                      Container(
+                        width: 0.35.sw,
+                        padding: EdgeInsets.symmetric(
+                            vertical: 0.01.sh, horizontal: 0.02.sw),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15.r),
+                            color: RedColor),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              child: Text(
+                                'الحسـاب مـوثق',
+                                style: H4WhiteTextStyle,
+                              ),
+                            ),
+                            10.horizontalSpace,
+                            Container(
+                              width: 0.04.sw,
+                              height: 0.04.sw,
+                              decoration: const BoxDecoration(
+                                  image: DecorationImage(
+                                      image: Svg(
+                                        "assets/images/svg/verified_white.svg",
+                                        color: WhiteColor,
+                                      ),
+                                      fit: BoxFit.cover)),
+                            )
+                          ],
+                        ),
+                      ),
+                    SizedBox(
+                      height: 0.01.sh,
+                    ),
                     InputComponent(
                       name: 'name',
                       isRequired: true,
                       width: 1.sw,
-                      radius: 150.r,
+                      radius: 30.r,
                       hint: 'الاسم',
                       controller: logic.nameController,
                       fill: WhiteColor,
@@ -75,7 +182,7 @@ class EditProfilePage extends StatelessWidget {
                         name: 'email',
                         isRequired: true,
                         width: 1.sw,
-                        radius: 150.r,
+                        radius: 30.r,
                         hint: 'البريد الإلكتروني',
                         controller: logic.emailController,
                         fill: WhiteColor,
@@ -92,7 +199,7 @@ class EditProfilePage extends StatelessWidget {
                         name: 'phone',
                         isRequired: true,
                         width: 1.sw,
-                        radius: 150.r,
+                        radius: 30.r,
                         hint: 'رقم الهاتف',
                         controller: logic.phoneController,
                         fill: WhiteColor,
@@ -111,7 +218,7 @@ class EditProfilePage extends StatelessWidget {
                         name: 'address',
                         isRequired: true,
                         width: 1.sw,
-                        radius: 150.r,
+                        radius: 30.r,
                         hint: 'العنوان',
                         controller: logic.addressController,
                         fill: WhiteColor,
@@ -139,36 +246,40 @@ class EditProfilePage extends StatelessWidget {
                                 ]),
                               ),
                               border: OutlineInputBorder(
-                                borderSide: BorderSide(color: GrayDarkColor),
-                                borderRadius: BorderRadius.circular(150.r),
+                                borderSide:
+                                const BorderSide(color: GrayDarkColor),
+                                borderRadius: BorderRadius.circular(30.r),
                               ),
                               contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 0.02.sw),
+                              EdgeInsets.symmetric(horizontal: 0.02.sw),
                             ),
                             items: [
                               ...List.generate(
                                 logic.cities.length,
-                                (index) => DropdownMenuItem<int>(
-                                  child: Text(
-                                    '${logic.cities[index].name}',
-                                    style: H3GrayTextStyle,
-                                  ),
-                                  value: logic.cities[index].id,
-                                ),
+                                    (index) =>
+                                    DropdownMenuItem<int>(
+                                      value: logic.cities[index].id,
+                                      child: Text(
+                                        '${logic.cities[index].name}',
+                                        style: H3GrayTextStyle,
+                                      ),
+                                    ),
                               )
                             ]),
                       );
                     }),
                     40.verticalSpace,
-                    if (logic.user.value?.is_seller == true)
+
                       InputComponent(
                         name: 'seller_name',
                         isRequired: true,
                         width: 1.sw,
-                        radius: 150.r,
+                        radius: 30.r,
+
                         hint: 'اسم المتجر',
                         controller: logic.sellerNameController,
-                        fill: WhiteColor,
+                        enabled: logic.user.value?.is_verified == true,
+                        fill: logic.user.value?.is_verified == true? WhiteColor : GrayLightColor,
                         textInputType: TextInputType.text,
                         validation: (text) {
                           if (text == '' || text == null) {
@@ -179,29 +290,31 @@ class EditProfilePage extends StatelessWidget {
                           return null;
                         },
                       ),
-                    if (logic.user.value?.is_seller == true)
+
                       InputComponent(
                         name: 'open_at',
                         isRequired: true,
                         width: 1.sw,
-                        radius: 150.r,
+                        radius: 30.r,
                         hint: 'يفتح الساعة',
                         controller: logic.openTimeController,
-                        fill: WhiteColor,
+                        enabled: logic.user.value?.is_verified == true,
+                        fill: logic.user.value?.is_verified == true? WhiteColor : GrayLightColor,
                         textInputType: TextInputType.datetime,
                       ),
-                    if (logic.user.value?.is_seller == true)
+
                       InputComponent(
                         name: 'close_at',
                         isRequired: true,
                         width: 1.sw,
-                        radius: 150.r,
+                        radius: 30.r,
                         hint: 'يغلق الساعة',
                         controller: logic.closeTimeController,
-                        fill: WhiteColor,
+                        enabled: logic.user.value?.is_verified == true,
+                        fill: logic.user.value?.is_verified == true? WhiteColor : GrayLightColor,
                         textInputType: TextInputType.datetime,
                       ),
-                    if (logic.user.value?.is_seller == true && logic.user.value?.is_verified == true)
+
                       Column(
                         children: [
                           InputComponent(
@@ -212,7 +325,8 @@ class EditProfilePage extends StatelessWidget {
                             radius: 15.r,
                             hint: 'وصف مختصر عن المتجر',
                             controller: logic.infoController,
-                            fill: WhiteColor,
+                            enabled: logic.user.value?.is_verified == true,
+                            fill: logic.user.value?.is_verified == true? WhiteColor : GrayLightColor,
                             textInputType: TextInputType.multiline,
                           ),
                           25.verticalSpace,
@@ -223,8 +337,9 @@ class EditProfilePage extends StatelessWidget {
                               name: 'facebook',
                               hint: 'رابط فيسبوك',
                               suffixIcon: FontAwesomeIcons.facebook,
-                              radius: 150.r,
-                              fill: WhiteColor,
+                              radius: 30.r,
+                              enabled: logic.user.value?.is_verified == true,
+                              fill: logic.user.value?.is_verified == true? WhiteColor : GrayLightColor,
                             ),
                           ),
                           25.verticalSpace,
@@ -235,8 +350,9 @@ class EditProfilePage extends StatelessWidget {
                               name: 'instagram',
                               suffixIcon: FontAwesomeIcons.instagram,
                               hint: 'رابط إنستغرام',
-                              radius: 150.r,
-                              fill: WhiteColor,
+                              radius: 30.r,
+                              enabled: logic.user.value?.is_verified == true,
+                              fill: logic.user.value?.is_verified == true? WhiteColor : GrayLightColor,
                             ),
                           ),
                           25.verticalSpace,
@@ -247,8 +363,9 @@ class EditProfilePage extends StatelessWidget {
                               name: 'twitter',
                               suffixIcon: FontAwesomeIcons.xTwitter,
                               hint: 'رابط تويتر',
-                              radius: 150.r,
-                              fill: WhiteColor,
+                              radius: 30.r,
+                              enabled: logic.user.value?.is_verified == true,
+                              fill: logic.user.value?.is_verified == true? WhiteColor : GrayLightColor,
                             ),
                           ),
                           25.verticalSpace,
@@ -259,8 +376,9 @@ class EditProfilePage extends StatelessWidget {
                               name: 'linkedin',
                               suffixIcon: FontAwesomeIcons.linkedin,
                               hint: 'رابط لينكد إن',
-                              radius: 150.r,
-                              fill: WhiteColor,
+                              radius: 30.r,
+                              enabled: logic.user.value?.is_verified == true,
+                              fill: logic.user.value?.is_verified == true? WhiteColor : GrayLightColor,
                             ),
                           ),
                           25.verticalSpace,
@@ -271,8 +389,9 @@ class EditProfilePage extends StatelessWidget {
                               name: 'tiktok',
                               suffixIcon: FontAwesomeIcons.tiktok,
                               hint: 'رابط تيكتوك',
-                              radius: 150.r,
-                              fill: WhiteColor,
+                              radius: 30.r,
+                              enabled: logic.user.value?.is_verified == true,
+                              fill: logic.user.value?.is_verified == true? WhiteColor : GrayLightColor,
                             ),
                           ),
                           25.verticalSpace,
@@ -280,16 +399,21 @@ class EditProfilePage extends StatelessWidget {
                             height: 0.07.sh,
                             child: FormBuilderColorPickerField(
                               name: 'colorId',
+                              enabled: logic.user.value?.is_verified == true,
+
                               initialValue:
-                                  logic.colorIdController.text.toColor(),
+                              logic.colorIdController.text.toColor(),
                               controller: logic.colorIdController,
                               decoration: InputDecoration(
+                              filled: true,
+
+                                fillColor: logic.user.value?.is_verified == true? WhiteColor : GrayLightColor,
                                 label: Text(
                                   'لون المتجر الأساسي',
                                   style: H3GrayTextStyle,
                                 ),
                                 contentPadding:
-                                    EdgeInsets.symmetric(horizontal: 0.02.sw),
+                                EdgeInsets.symmetric(horizontal: 0.02.sw),
                                 suffixIconColor: Colors.red,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(150.r),
@@ -301,7 +425,7 @@ class EditProfilePage extends StatelessWidget {
                       ),
                     25.verticalSpace,
                     Container(
-                      padding: EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15.r),
                         border: Border.all(color: GrayDarkColor),
@@ -323,7 +447,7 @@ class EditProfilePage extends StatelessWidget {
                               },
                               isSecure: isScure.value,
                               width: 1.sw,
-                              radius: 150.r,
+                              radius: 30.r,
                               hint: 'كلمة المرور',
                               controller: logic.passwordController,
                               fill: WhiteColor,
@@ -349,7 +473,7 @@ class EditProfilePage extends StatelessWidget {
                               },
                               isSecure: isScureConfirm.value,
                               width: 1.sw,
-                              radius: 150.r,
+                              radius: 30.r,
                               hint: 'تأكيد كلمة المرور',
                               controller: logic.confirmPasswordController,
                               fill: WhiteColor,
@@ -371,46 +495,7 @@ class EditProfilePage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Column(
-                          children: [
-                            Text(
-                              "صورة الحساب",
-                              style: H4BlackTextStyle,
-                            ),
-                            Container(
-                              child: InkWell(
-                                onTap: () {
-                                  logic.pickAvatar(
-                                      imagSource: ImageSource.gallery,
-                                      onChange: (file, size) {
-                                        logic.avatar.value = file;
-                                      });
-                                },
-                                child: Obx(() {
-                                  return Container(
-                                    width: 0.25.sw,
-                                    height: 0.25.sw,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        image: DecorationImage(
-                                          image: logic.avatar.value == null
-                                              ? NetworkImage(
-                                                      '${logic.mainController.authUser.value?.image}')
-                                                  as ImageProvider
-                                              : FileImage(
-                                                  File.fromUri(
-                                                    Uri.file(
-                                                        "${logic.avatar.value!.path}"),
-                                                  ),
-                                                ),
-                                          fit: BoxFit.cover,
-                                        )),
-                                  );
-                                }),
-                              ),
-                            ),
-                          ],
-                        ),
+
                         if (logic.user.value?.is_seller == true)
                           Column(
                             children: [
@@ -422,30 +507,36 @@ class EditProfilePage extends StatelessWidget {
                                 child: InkWell(
                                   onTap: () {
                                     logic.pickAvatar(
-                                        imagSource: ImageSource.gallery,width: 400,height: 200,
+                                        imagSource: ImageSource.gallery,
+                                        width: 400,
+                                        height: 200,
                                         onChange: (file, size) {
                                           logic.logo.value = file;
                                           print(
-                                              "Size: ${size! / (1024 * 1024)} MB");
+                                              "Size: ${size! /
+                                                  (1024 * 1024)} MB");
                                         });
                                   },
                                   child: Obx(() {
                                     return Container(
-                                      width: 0.25.sw,
-                                      height: 0.25.sw,
+                                      width: 0.7.sw,
+                                      height: 0.35.sw,
                                       decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
+                                          shape: BoxShape.rectangle,
+                                          borderRadius: BorderRadius.circular(15.r),
                                           image: DecorationImage(
                                             image: logic.logo.value == null
                                                 ? NetworkImage(
-                                                        '${logic.mainController.authUser.value?.logo}')
-                                                    as ImageProvider
+                                                '${logic.mainController.authUser
+                                                    .value?.logo}')
+                                            as ImageProvider
                                                 : FileImage(
-                                                    File.fromUri(
-                                                      Uri.file(
-                                                          "${logic.logo.value!.path}"),
-                                                    ),
-                                                  ),
+                                              File.fromUri(
+                                                Uri.file(
+                                                    "${logic.logo.value!
+                                                        .path}"),
+                                              ),
+                                            ),
                                             fit: BoxFit.cover,
                                           )),
                                     );

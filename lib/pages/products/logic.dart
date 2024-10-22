@@ -2,6 +2,7 @@ import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/models/advice_model.dart';
 import 'package:ali_pasha_graph/models/category_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
 
@@ -10,14 +11,19 @@ import '../../models/product_model.dart';
 
 class ProductsLogic extends GetxController {
   MainController mainController = Get.find<MainController>();
+  TextEditingController searchController = TextEditingController();
   RxBool hasMorePage = RxBool(false);
   RxBool loading = RxBool(false);
+  RxBool loadingProducts = RxBool(false);
   RxInt page = RxInt(1);
-  Rxn<UserModel> seller = Rxn<UserModel>(Get.arguments);
+  RxnInt sellerId = RxnInt(Get.arguments?.id??Get.parameters['id'] ?? null);
+  Rxn<UserModel> seller = Rxn<UserModel>(null);
   RxList<ProductModel> products = RxList<ProductModel>([]);
   RxList<CategoryModel> categories = RxList<CategoryModel>([]);
   RxList<AdviceModel> advices = RxList<AdviceModel>([]);
-RxnInt categoryId=RxnInt(null);
+  RxString search = RxString('');
+  RxnInt categoryId = RxnInt(null);
+
   void nextPage() {
     if (hasMorePage.value) {
       page.value++;
@@ -31,13 +37,19 @@ RxnInt categoryId=RxnInt(null);
     ever(page, (value) {
       getProducts();
     });
-    ever(categoryId,(value){
-      if(page.value==1){
+    ever(categoryId, (value) {
+      if (page.value == 1) {
         getProducts();
-      }else{
-        page.value=1;
+      } else {
+        page.value = 1;
       }
-
+    });
+    ever(search, (value) {
+      if (page.value > 1) {
+        page.value = 1;
+      } else {
+        getProducts();
+      }
     });
   }
 
@@ -49,11 +61,14 @@ RxnInt categoryId=RxnInt(null);
   }
 
   getProducts() async {
-    loading.value = true;
-
+    if (seller.value ==null) {
+      loading.value = true;
+    } else {
+      loadingProducts.value = true;
+    }
     mainController.query.value = '''
    query Products {
-    products(sub1_id:${categoryId.value},user_id: ${seller.value?.id}, first: 15, page: ${page.value}) {
+    products(search: "${search.value}" sub1_id:${categoryId.value},user_id: ${sellerId.value}, first: 15, page: ${page.value}) {
         paginatorInfo {
             hasMorePages
         }
@@ -93,8 +108,8 @@ RxnInt categoryId=RxnInt(null);
         }
     }
    
-    ${page.value == 1 ? '''  
-     advices (user_id: ${seller.value?.id}) {
+    ${page.value == 1 ? '''
+     advices (user_id: ${sellerId.value}) {
         name
         user {
             id
@@ -105,21 +120,21 @@ RxnInt categoryId=RxnInt(null);
         image
         id
     }
-    user(id:${seller.value?.id}){$AUTH_FIELDS}
-    categoryBySeller(sellerId:${seller.value?.id}) {id name}''' : ''}
+    user(id:${sellerId.value}){$AUTH_FIELDS}
+    categoryBySeller(sellerId:${sellerId.value}) {id name}''' : ''}
 }
 
   ''';
     try {
       dio.Response? res = await mainController.fetchData();
-      //  mainController.logger.e(res?.data);
+      mainController.logger.e(res?.data?['data']?['user']);
       if (res?.data?['data']?['products']?['paginatorInfo'] == null) {
         hasMorePage.value =
             res?.data?['data']?['products']?['paginatorInfo']['hasMorePages'];
       }
       //mainController.logger.w(products.length);
       if (res?.data?['data']?['products']?['data'] != null) {
-        if(page.value==1){
+        if (page.value == 1) {
           products.clear();
         }
         for (var item in res?.data?['data']?['products']?['data']) {
@@ -148,5 +163,6 @@ RxnInt categoryId=RxnInt(null);
     }
 
     loading.value = false;
+    loadingProducts.value = false;
   }
 }

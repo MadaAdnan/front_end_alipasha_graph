@@ -1,4 +1,5 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
+import 'package:ali_pasha_graph/helpers/queries.dart';
 import 'package:ali_pasha_graph/models/city_model.dart';
 import 'package:ali_pasha_graph/models/pricing_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
@@ -189,29 +190,7 @@ class ShippingLogic extends GetxController {
             price
         }
          user {
-            id
-            name
-            seller_name
-            email
-            phone
-            address
-            image
-            logo
-            city {
-                id
-                name
-            }
-            is_special
-            total_balance
-            total_point
-            level
-            plans {
-                id
-                name
-                pivot {
-                    expired_date
-                }
-            }
+           $AUTH_FIELDS
         }
     }
 }
@@ -224,6 +203,8 @@ class ShippingLogic extends GetxController {
       if (res?.data?['data']?['createOrder'] != null) {
 
         mainController.setUserJson(json:res?.data?['data']?['createOrder']['user'] );
+        totalBalance.value = double.tryParse(
+            "${res?.data?['data']?['createOrder']?['user']?['total_balance'] ?? 0}")!;
       }
     } catch (e) {
       //mainController.logger.i("Error =>");

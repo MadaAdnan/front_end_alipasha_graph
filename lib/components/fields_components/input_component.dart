@@ -27,8 +27,8 @@ class InputComponent extends StatelessWidget {
     this.radius,
     this.maxLine,
     this.minLine,
-    this.textStyle
-
+    this.textStyle,
+this.enabled,
 
   });
 
@@ -38,6 +38,7 @@ class InputComponent extends StatelessWidget {
   final double width;
   final double? height;
   final bool isRequired;
+  final bool? enabled;
   final bool isSecure;
   final Color? fill;
   final double? radius;
@@ -58,6 +59,7 @@ final TextStyle? textStyle;
       width: width,
       height: height ?? 0.08.sh,
       child: FormBuilderTextField(
+        enabled: enabled ??true,
         minLines: minLine,
         obscureText: isSecure,
         onChanged: onChanged,

@@ -27,7 +27,7 @@ class ChannelLogic extends GetxController {
   RxList<MessageModel> messages = RxList<MessageModel>([]);
   Rx<CommunityModel> communityModel = Rx<CommunityModel>(Get.arguments);
   ScrollController scrollController = ScrollController();
-RxnString message=RxnString(null);
+RxnString message=RxnString(Get.parameters['msg'] );
   // Audio
 
   RxBool mPlayerIsInited = false.obs;
@@ -139,6 +139,9 @@ query GetMessages {
           messages.add(MessageModel.fromJson(item));
         }
       }
+      if(res?.data?['errors']?[0]?['message']!=null){
+        mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
+      }
     } catch (e) {
       mainController.logger.e(e);
     }
@@ -175,6 +178,9 @@ query GetMessages {
         messageController.clear();
         messages.insert(
             0, MessageModel.fromJson(res?.data?['data']['CreateMessage']));
+      }
+      if(res?.data?['errors']?[0]?['message']!=null){
+        mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
       }
     } catch (e) {
       mainController.logger.e("Error Send ${e}");

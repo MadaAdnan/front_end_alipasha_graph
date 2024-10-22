@@ -44,6 +44,8 @@ import 'package:ali_pasha_graph/pages/filter/binding.dart';
 import 'package:ali_pasha_graph/pages/filter/view.dart';
 import 'package:ali_pasha_graph/pages/followers/binding.dart';
 import 'package:ali_pasha_graph/pages/followers/view.dart';
+import 'package:ali_pasha_graph/pages/gallery/binding.dart';
+import 'package:ali_pasha_graph/pages/gallery/view.dart';
 import 'package:ali_pasha_graph/pages/gold/binding.dart';
 import 'package:ali_pasha_graph/pages/gold/view.dart';
 import 'package:ali_pasha_graph/pages/group/binding.dart';
@@ -56,9 +58,13 @@ import 'package:ali_pasha_graph/pages/live/binding.dart';
 import 'package:ali_pasha_graph/pages/live/view.dart';
 import 'package:ali_pasha_graph/pages/login/binding.dart';
 import 'package:ali_pasha_graph/pages/login/view.dart';
+import 'package:ali_pasha_graph/pages/maintenance/binding.dart';
+import 'package:ali_pasha_graph/pages/maintenance/view.dart';
 
 import 'package:ali_pasha_graph/pages/menu/binding.dart';
 import 'package:ali_pasha_graph/pages/menu/view.dart';
+import 'package:ali_pasha_graph/pages/orders/binding.dart';
+import 'package:ali_pasha_graph/pages/orders/view.dart';
 import 'package:ali_pasha_graph/pages/partner/binding.dart';
 import 'package:ali_pasha_graph/pages/partner/view.dart';
 import 'package:ali_pasha_graph/pages/plan/binding.dart';
@@ -122,11 +128,36 @@ class AppPages {
       binding: HomeBinding(),
       middlewares: [],
     ),
+
+
+    GetPage(
+      name: MAINTENANCE_PAGE,
+      page: () => MaintenancePage(),
+      binding: MaintenanceBinding(),
+      middlewares: [],
+    ),
+
+    GetPage(
+      name: GALLERY_PAGE,
+      page: () => GalleryPage(),
+      binding: GalleryBinding(),
+      middlewares: [],
+    ),
+
+
+
+
     GetPage(
         middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
         name: CREATE_PRODUCT_PAGE,
         page: () => CreateProductPage(),
         binding: CreateProductBinding()),
+
+    GetPage(
+        middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+        name: MY_ORDER_SHIPPING_PAGE,
+        page: () => OrdersPage(),
+        binding: OrdersBinding()),
     GetPage(
         middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
         name: CREATE_JOB_PAGE,

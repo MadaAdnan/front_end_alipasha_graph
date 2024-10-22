@@ -35,6 +35,7 @@ class UserModel {
   double? totalPoint;
   int? followingCount;
   int? total_views;
+  List<DataImageModel>? gallery;
 SocialModel? social;
   UserModel({
     this.name,
@@ -69,11 +70,13 @@ SocialModel? social;
     this.social,
     this.total_views,
     this.trust,
+    this.gallery,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> data) {
     List<ProductModel> listProducts = [];
     List<PlanModel> listPlans = [];
+    List<DataImageModel> listGallery = [];
     List<FollowerModel> listFollowers = [];
     if (data['products'] != null) {
       for (var item in data['products']) {
@@ -88,6 +91,11 @@ SocialModel? social;
     if (data['followers'] != null) {
       for (var item in data['followers']) {
         listFollowers.add(FollowerModel.fromJson(item));
+      }
+    }
+    if (data['gallery'] != null) {
+      for (var item in data['gallery']) {
+        listGallery.add(DataImageModel.fromJson(item));
       }
     }
 
@@ -124,6 +132,7 @@ SocialModel? social;
       products: listProducts.toList(),
       plans: listPlans.toList(),
       followers: listFollowers.toList(),
+      gallery: listGallery.toList(),
 
     );
   }

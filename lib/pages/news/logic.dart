@@ -74,6 +74,9 @@ query Products {
           news.add(ProductModel.fromJson(item));
         }
       }
+      if(res?.data?['errors']?[0]?['message']!=null){
+        mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
+      }
     } catch (e) {
       mainController.logger.e("Error get News $e");
     }

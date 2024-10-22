@@ -51,6 +51,9 @@ class ContactLogic extends GetxController {
       if(res?.data?['data']?['settings']?['social']!=null){
         social.value=SocialModel.fromJson(res?.data?['data']?['settings']?['social']);
       }
+      if(res?.data?['errors']?[0]?['message']!=null){
+        mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
+      }
     } catch (e) {
       mainController.logger.e("Error Get Social: $e");
     }

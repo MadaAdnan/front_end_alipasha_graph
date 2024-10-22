@@ -159,6 +159,9 @@ query MainCategories {
           .where((el) => el.id == service.value?.sub1?.id)
           .first;
     }
+    if(res?.data?['errors']?[0]?['message']!=null){
+      mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
+    }
 
     loading.value = false;
   }

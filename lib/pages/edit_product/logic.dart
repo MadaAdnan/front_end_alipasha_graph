@@ -199,6 +199,9 @@ query MainCategories {
 
      //   mainController.logger.i(colorIds);
       }
+      if(res?.data?['errors']?[0]?['message']!=null){
+        mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
+      }
     } catch (e) {
       mainController.logger.e('Error Get  Product $productId -Error : $e');
     }
@@ -248,8 +251,10 @@ query MainCategories {
               map: map, files: data);
 
       if (res.data?['data']?['updateProduct'] != null) {
-        showAutoCloseDialog(
-            message: "تم إرسال المنتج للمراجعة بنجاح", isSuccess: true);
+        mainController.showToast(text:'تم إرسال المنتج للمراجعة بنجاح');
+      }
+      if(res.data?['errors']?[0]?['message']!=null){
+        mainController.showToast(text:'${res.data?['errors']?[0]?['message']}',type: 'error');
       }
     } catch (e) {
       mainController.logger.e("Error get Profile $e");
@@ -276,7 +281,10 @@ query MainCategories {
         if (index > -1) {
           attachments.removeAt(index);
         }
-        showAutoCloseDialog(message: 'تم حذف المرفق بنجاح');
+        mainController.showToast(text:'تم حذف المرفق بنجاح' );
+      }
+      if(res?.data?['errors']?[0]?['message']!=null){
+        mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
       }
     } catch (e) {}
     loading.value = false;

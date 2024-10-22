@@ -98,6 +98,9 @@ class FollowingLogic extends GetxController {
           users.removeAt(index);
         }
       }
+      if(res?.data?['errors']?[0]?['message']!=null){
+        mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
+      }
     }  catch (e) {
       mainController.logger.e(e);
     }

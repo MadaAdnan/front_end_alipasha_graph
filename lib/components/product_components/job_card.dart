@@ -6,6 +6,7 @@ import 'package:ali_pasha_graph/main.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -60,7 +61,7 @@ class JobCard extends StatelessWidget {
                       children: [
                         CircleAvatar(
                           backgroundColor: GrayLightColor,
-                          backgroundImage: NetworkImage("${post?.user?.logo}"),
+                          backgroundImage: CachedNetworkImageProvider("${post?.user?.image}"),
                           minRadius: 0.018.sh,
                           maxRadius: 0.023.sh,
                         ),
@@ -197,8 +198,8 @@ class JobCard extends StatelessWidget {
               decoration: BoxDecoration(
                   color: GrayDarkColor,
                   image: DecorationImage(
-                      image: NetworkImage(
-                        "${post?.user?.logo}",
+                      image: CachedNetworkImageProvider(
+                        "${post?.user?.image}",
                       ),
                       fit: BoxFit.cover)),
               child: Stack(
@@ -232,7 +233,7 @@ class JobCard extends StatelessWidget {
                       ),
                     ),
                   Visibility(
-                    visible: post?.type == 'job',
+                    visible: (post?.type == 'job' || post?.type == 'search_job' ||post?.type == 'tender') && post!.code!.length>0,
                     child: Positioned(
                       bottom: 20.h,
                       right: 10.w,
@@ -381,6 +382,9 @@ class JobCard extends StatelessWidget {
        // mainController.logger.e(res?.data);
         if (res?.data?['data']?['followAccount'] != null) {
           mainController.setUserJson(json: res?.data?['data']?['followAccount']);
+        }
+        if(res?.data?['errors']?[0]?['message']!=null){
+          mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
         }
       } on CustomException catch (e) {
         mainController.logger.e(e);

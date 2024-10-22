@@ -119,6 +119,9 @@ query MainCategories {
         categories.add(CategoryModel.fromJson(item));
       }
     }
+    if(res?.data?['errors']?[0]?['message']!=null){
+      mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
+    }
   }catch(e){
     mainController.logger.e('ERROR GET DATA TENDER : $e');
   }

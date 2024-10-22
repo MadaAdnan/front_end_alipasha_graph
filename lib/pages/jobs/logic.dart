@@ -88,6 +88,9 @@ class JobsLogic extends GetxController {
           jobs.add(ProductModel.fromJson(item));
         }
       }
+      if(res?.data?['errors']?[0]?['message']!=null){
+        mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
+      }
     } on CustomException catch (e) {
       mainController.logger.e("Error Jobs Pge ${e.message}");
     }

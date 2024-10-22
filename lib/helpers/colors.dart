@@ -48,14 +48,16 @@ extension ToColorExtention on String {
       return null;
     }
     String? hexString = this.replaceAll("#", ""); // إزالة علامة #
-
+if(hexString.length>6){
+  hexString=hexString.substring(0,6);
+}
     if (hexString.length == 6) {
       hexString = "FF" +"${hexString}".toUpperCase(); // إضافة قيمة ألفا إذا كانت غير موجودة
     }
     int? colorNumber = int.tryParse(hexString, radix: 16);
     if (colorNumber == null) {
-      return null;
+      colorNumber = int.tryParse( "FFE20613", radix: 16);
     }
-    return Color(colorNumber);
+    return Color(colorNumber!);
   }
 }

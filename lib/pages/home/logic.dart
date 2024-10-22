@@ -27,15 +27,14 @@ class HomeLogic extends GetxController {
   void onInit() {
     super.onInit();
     page = 1;
+    getDataFromStorage();
     getProduct();
-
   }
 
   @override
   void onReady() {
     // TODO: implement onReady
     super.onReady();
-
   }
 
   nextPage() {
@@ -45,9 +44,7 @@ class HomeLogic extends GetxController {
 
   getProduct() async {
     loading.value = true;
-    if (page == 1) {
-      products.clear();
-    }
+
     mainController.query('''
     query Products {
     products(first:35, page: ${page}) {
@@ -71,6 +68,7 @@ class HomeLogic extends GetxController {
             user {
             id
             name
+            id_color
                 seller_name
                 image
                 logo
@@ -120,7 +118,7 @@ class HomeLogic extends GetxController {
     id
     name
     seller_name
-    logo
+    image
     custom
     }
     
@@ -143,44 +141,74 @@ class HomeLogic extends GetxController {
 }
     ''');
 
-    dio.Response? res = await mainController.fetchData();
+    try {
+      dio.Response? res = await mainController.fetchData();
 
-    if (res != null) {
-      hasMorePage(
-          res.data['data']['products']['paginatorInfo']['hasMorePages']);
-      for (var item in res.data['data']['products']['data']) {
-        products.add(ProductModel.fromJson(item));
+      if (res?.data['data']['products']['paginatorInfo']['hasMorePages'] !=
+          null) {
+        hasMorePage(
+            res?.data['data']['products']['paginatorInfo']['hasMorePages']);
       }
-      if (res.data['data']['mainCategories'] != null) {
-        for (var item in res.data['data']['mainCategories']) {
+      if (res?.data['data']['products']['data'] != null) {
+        if (page == 1) {
+          products.clear();
+        }
+        for (var item in res?.data['data']['products']['data']) {
+          products.add(ProductModel.fromJson(item));
+
+        }
+        mainController.storage.write('products',  res?.data['data']['products']['data']);
+      }
+      if (res?.data['data']['mainCategories'] != null) {
+        if (page == 1) {
+          mainController.categories.clear();
+        }
+        for (var item in res?.data['data']['mainCategories']) {
           mainController.categories.add(CategoryModel.fromJson(item));
         }
+        mainController.storage.write('mainCategories',  res?.data['data']['mainCategories']);
       }
-      if (res.data['data']['cities'] != null) {
-        for (var item in res.data['data']['cities']) {
+
+      if (res?.data['data']['cities'] != null) {
+        for (var item in res?.data['data']['cities']) {
           mainController.cities.add(CityModel.fromJson(item));
         }
       }
 
-      if (res.data['data']['colors'] != null) {
-        for (var item in res.data['data']['colors']) {
+      if (res?.data['data']['colors'] != null) {
+        for (var item in res?.data['data']['colors']) {
           mainController.colors.add(ColorModel.fromJson(item));
         }
       }
 
-      if (res.data['data']['specialSeller'] != null) {
-        for (var item in res.data['data']['specialSeller']) {
+      if (res?.data['data']['specialSeller'] != null) {
+        if (page == 1) {
+          sellers.clear();
+        }
+        for (var item in res?.data['data']['specialSeller']) {
           sellers.add(UserModel.fromJson(item));
         }
+        mainController.storage.write('specialSeller', res?.data['data']['specialSeller']);
       }
+    } catch (e) {}
 
-      /* mainController.logger.i(res.data['data']['sliders']);
-      if (res.data['data']['sliders'] != null) {
-        for (var item in res.data['data']['sliders']) {
-          mainController.sliders.add(SliderModel.fromJson(item));
-        }
-      }*/
-    }
     loading.value = false;
+  }
+
+  getDataFromStorage() {
+    var listProduct = mainController.storage.read('products')??[];
+    var listCategories = mainController.storage.read('mainCategories')??[];
+    var listSeller = mainController.storage.read('specialSeller')??[];
+    for (var item in listProduct) {
+      products.add(ProductModel.fromJson(item));
+    }
+    for (var item in listCategories) {
+      mainController.categories.add(CategoryModel.fromJson(item));
+    }
+    for (var item in listSeller) {
+      sellers.add(UserModel.fromJson(item));
+    }
+    mainController.logger.d("Products ${products.length}");
+    mainController.logger.d("Products ${sellers.length}");
   }
 }

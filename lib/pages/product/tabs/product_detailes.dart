@@ -30,8 +30,9 @@ class ProductDetailes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Expanded(child: ListView(
+    return  ListView(
       children: [
+
         Container(
           constraints: BoxConstraints(minHeight: 0.2.sh,),
           padding: EdgeInsets.symmetric(horizontal: 0.02.sw, vertical: 0.01.sh),
@@ -76,6 +77,8 @@ class ProductDetailes extends StatelessWidget {
             ],
           ),
         SizedBox(height: 0.01.sh,),
+        Text('منتجات ذات صلة',style: H3RedTextStyle.copyWith(decoration: TextDecoration.underline,decorationColor: RedColor),),
+        SizedBox(height: 0.01.sh,),
         ...List.generate(products.length, (index){
           switch(products[index].type){
             case 'product':
@@ -102,6 +105,6 @@ class ProductDetailes extends StatelessWidget {
         })
       ],
 
-    ));
+    );
   }
 }

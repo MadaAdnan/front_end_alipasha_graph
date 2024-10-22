@@ -48,87 +48,132 @@ class GroupPage extends StatelessWidget {
               alignment: Alignment.center,
               color: RedColor,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                    width: 1.sw,
-                    alignment: Alignment.center,
-                    height: 0.085.sh,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        if (logic.communityModel.users!.length > 0)
-                          Positioned(
-                            right: 0.08.sw,
-                            child: Container(
-                              width: 0.1.sw,
-                              height: 0.1.sw,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  image: CachedNetworkImageProvider(
-                                      "${logic.communityModel.users?[0]
-                                          .image}"),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          ),
-                        if (logic.communityModel.users!.length > 1)
-                          Positioned(
-                            right: 0.12.sw,
-                            child: Container(
-                              width: 0.1.sw,
-                              height: 0.1.sw,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  image: CachedNetworkImageProvider(
-                                      "${logic.communityModel.users?[1]
-                                          .image}"),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          ),
-                        if (logic.communityModel.users!.length > 2)
-                          Positioned(
-                            right: 0.16.sw,
-                            child: Container(
-                              width: 0.1.sw,
-                              height: 0.1.sw,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  image: CachedNetworkImageProvider(
-                                      "${logic.communityModel.users?[2]
-                                          .image}"),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          ),
-                        Positioned(
-                            right: 0.3.sw,
-                            child: RichText(
-                              textDirection: TextDirection.rtl,
-                              text: TextSpan(children: [
-                                TextSpan(text: 'عدد المشتركين : ',
-                                  style: H4RegularDark.copyWith(
-                                    color: WhiteColor,),),
-                                TextSpan(
-                                  text: '${logic.communityModel.users_count}'
-                                      .toFormatNumberK(),
-                                  style: H4RegularDark.copyWith(
-                                      color: WhiteColor,
-                                     ),),
-                              ],),
+                 Flexible(child:  Container(
+                   width: 1.sw,
+                   alignment: Alignment.center,
+                   height: 0.085.sh,
+                   child: Stack(
+                     alignment: Alignment.center,
+                     children: [
+                       if (logic.communityModel.users!.length > 0)
+                         Positioned(
+                           right: 0.08.sw,
+                           child: Container(
+                             width: 0.1.sw,
+                             height: 0.1.sw,
+                             decoration: BoxDecoration(
+                               shape: BoxShape.circle,
+                               image: DecorationImage(
+                                 image: CachedNetworkImageProvider(
+                                     "${logic.communityModel.users?[0]
+                                         .image}"),
+                                 fit: BoxFit.cover,
+                               ),
+                             ),
+                           ),
+                         ),
+                       if (logic.communityModel.users!.length > 1)
+                         Positioned(
+                           right: 0.12.sw,
+                           child: Container(
+                             width: 0.1.sw,
+                             height: 0.1.sw,
+                             decoration: BoxDecoration(
+                               shape: BoxShape.circle,
+                               image: DecorationImage(
+                                 image: CachedNetworkImageProvider(
+                                     "${logic.communityModel.users?[1]
+                                         .image}"),
+                                 fit: BoxFit.cover,
+                               ),
+                             ),
+                           ),
+                         ),
+                       if (logic.communityModel.users!.length > 2)
+                         Positioned(
+                           right: 0.16.sw,
+                           child: Container(
+                             width: 0.1.sw,
+                             height: 0.1.sw,
+                             decoration: BoxDecoration(
+                               shape: BoxShape.circle,
+                               image: DecorationImage(
+                                 image: CachedNetworkImageProvider(
+                                     "${logic.communityModel.users?[2]
+                                         .image}"),
+                                 fit: BoxFit.cover,
+                               ),
+                             ),
+                           ),
+                         ),
+                       Positioned(
+                           right: 0.3.sw,
+                           child: RichText(
+                             textDirection: TextDirection.rtl,
+                             text: TextSpan(children: [
+                               TextSpan(text: 'عدد المشتركين : ',
+                                 style: H4RegularDark.copyWith(
+                                   color: WhiteColor,),),
+                               TextSpan(
+                                 text: '${logic.communityModel.users_count}'
+                                     .toFormatNumberK(),
+                                 style: H4RegularDark.copyWith(
+                                   color: WhiteColor,
+                                 ),),
+                             ],),
 
-                            )),
-                      ],
-                    ),
-                  ),
+                           )),
+                     ],
+                   ),
+                 )),
+                  Flexible(child: PopupMenuButton<String>(
+                    color: WhiteColor,
+                    iconColor: WhiteColor,
+                    onSelected: (value) async {
+
+                      switch (value) {
+                        case '1':
+                          mainController.logger.w(mainController.settings.value.support?.id);
+                          if(mainController.settings.value.support?.id!=null){
+                            mainController.createCommunity(
+                                sellerId: mainController.settings.value.support!.id!,
+                                message: ''' السلام عليكم ورحمة الله وبركاته 
+                            إبلاغ  عن المجموعة ${logic.communityModel.name} #${logic.communityModel.id}'''.toString());
+                          }else{
+                            openUrl(url: "https://wa.me/${mainController.settings.value.social?.phone}");
+                          }
+
+                          break;
+                        default:
+                          print('default');
+                      }
+                    },
+                    itemBuilder: (context) => [
+                      PopupMenuItem<String>(
+                        value: '1',
+                        child: Row(
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.headset,
+                              color: GrayDarkColor,
+                              size: 0.04.sw,
+                            ),
+                            SizedBox(
+                              width: 0.02.sw,
+                            ),
+                            Text(
+                              "إبلاغ عن المحادثة",
+                              style: H3RegularDark,
+                            ),
+
+                          ],
+                        ),
+                      ),
+                    ],
+                  )),
                 ],
               ),
             ),

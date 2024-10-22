@@ -1,6 +1,7 @@
 
 
 import 'package:ali_pasha_graph/Global/main_controller.dart';
+import 'package:ali_pasha_graph/components/seller_name_component.dart';
 
 import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
 import 'package:ali_pasha_graph/helpers/components.dart';
@@ -12,6 +13,7 @@ import 'package:ali_pasha_graph/models/product_model.dart';
 
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:animated_icon/animated_icon.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -78,11 +80,8 @@ class PostCard extends StatelessWidget {
                              if (post.user?.seller_name != null)
                                Container(
                                  width: 0.6.sw,
-                                 child: Text(
-                                   "${post.user?.seller_name}",
-                                   style: H1BlackTextStyle,
-                                   overflow: TextOverflow.ellipsis,
-                                 ),
+                                 child:SellerNameComponent(isVerified: post.user?.is_verified==true,text: "${post.user?.seller_name}",
+                                   textStyle: H1BlackTextStyle,seller: post.user,),
                                ),
                              Container(
                                width: 0.6.sw,
@@ -214,7 +213,7 @@ class PostCard extends StatelessWidget {
               decoration: BoxDecoration(
                   color: GrayDarkColor,
                   image: DecorationImage(
-                      image: NetworkImage(
+                      image: CachedNetworkImageProvider(
                         "${post.image}",
                       ),
                       fit: BoxFit.cover)),
@@ -481,6 +480,9 @@ class PostCard extends StatelessWidget {
         if (res?.data?['data']?['followAccount'] != null) {
           mainController.setUserJson(
               json: res?.data?['data']?['followAccount']);
+        }
+        if(res?.data?['errors']?[0]?['message']!=null){
+          mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
         }
       } on CustomException catch (e) {
         mainController.logger.e(e);

@@ -9,6 +9,7 @@ import "package:dio/dio.dart" as dio;
 class SectionLogic extends GetxController {
   MainController mainController = Get.find<MainController>();
   RxBool loading = RxBool(false);
+  RxBool loadingProduct = RxBool(false);
   RxBool hasMorePage = RxBool(false);
   RxInt page = RxInt(1);
   RxnInt categoryId = RxnInt(null);
@@ -50,6 +51,9 @@ class SectionLogic extends GetxController {
   Future<void> getPosts() async {
 
     loading.value = true;
+    if(category.value ==null){
+      loadingProduct.value=true;
+    }
     mainController.query.value = '''
     query Products {
     products(category_id: ${mainCategory.value ?? null},sub1_id:${categoryId.value ?? null}, page: ${page.value}, first: 25) {
@@ -158,6 +162,7 @@ class SectionLogic extends GetxController {
     }
 
     loading.value = false;
+    loadingProduct.value= false;
   }
 
   changeCategory(CategoryModel categorymodel) {

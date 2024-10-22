@@ -3,8 +3,10 @@ import 'dart:math';
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
+import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 import '../../exceptions/custom_exception.dart';
@@ -116,65 +118,75 @@ class FollowersPage extends StatelessWidget {
                     fit: BoxFit.fitHeight),
                 borderRadius: BorderRadius.circular(15.r)),
           ),
-          SizedBox(
-            width: 0.73.sw,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+          Expanded(
+
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  width: 0.45.sw,
-                  height: 0.12.sw,
                   padding: EdgeInsets.symmetric(
-                      vertical: 0.02.sw, horizontal: 0.02.sw),
+                       horizontal: 0.01.sw),
                   alignment: Alignment.topRight,
-                  child: Text(
-                    "${seller.seller_name?.length !=0 ? seller.seller_name :seller.name}",
-                    style: H3BlackTextStyle,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                Obx(() {
-                  if (loading.value) {
-                    return Container(
-                      width: 0.04.sw,
-                      height: 0.04.sw,
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    );
-                  }
-                  return Container(
-                    alignment: Alignment.bottomLeft,
-                    child: InkWell(
-                      onTap: () async {
-                        loading.value = true;
-                        try {
-                          await unFollowers(seller.id!);
-                        } catch (e) {}
-
-                        loading.value = false;
-                      },
-                      child: Container(
-                        width: 0.3.sw,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15.r),
-                          border: Border.all(color: RedColor),
-                          color: RedColor,
-                        ),
-                        padding: EdgeInsets.symmetric(
-                            vertical: 0.015.sw, horizontal: 0.02.sw),
-
-                        alignment: Alignment.center,
+                  child: Expanded(child: Column(mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      InkWell(
+                        onTap: (){
+                          Get.toNamed(PRODUCTS_PAGE,arguments: seller);
+                        },
                         child: Text(
-                          "إلغاء المتابعة",
-                          style: H3WhiteTextStyle,
+                          "${seller.seller_name?.length != 0 ? seller.seller_name : seller.name}",
+                          style: H3BlackTextStyle,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                    ),
-                  );
-                })
+                      Text(
+                        "${seller.address}",
+                        style: H5RegularDark,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  )),
+                ),
+               Transform.translate(offset: Offset(0, -0.02.sh),child:  Container(
+                 padding: EdgeInsets.symmetric(
+                     horizontal: 0.001.sw),
+                 alignment: Alignment.topRight,
+                 child: PopupMenuButton<String>(
+                   color: WhiteColor,
+                   onSelected: (value){
+                     if(value=='1'){
+                       unFollowers(seller.id!);
+                     }
+                   },
+                   itemBuilder: (context) => [
+                     PopupMenuItem<String>(
+                       value: '1',
+                       child: Row(
+                         children: [
+                           Icon(
+                             FontAwesomeIcons.heartCrack,
+                             color: RedColor,
+                             size: 0.05.sw,
+                           ),
+                           SizedBox(
+                             width: 0.03.sw,
+                           ),
+                           Text(
+                             "إلغاء المتابعة",
+                             style: H3RegularDark,
+                           ),
+                           SizedBox(
+                             width: 0.005.sw,
+                           ),
+                         ],
+                       ),
+                     ),
+                   ],
+                 ),
+               ),),
+
               ],
             ),
           )
@@ -193,9 +205,9 @@ class FollowersPage extends StatelessWidget {
 }
       ''';
       dio.Response? res = await mainController.fetchData();
-     // mainController.logger.e(res?.data);
+      // mainController.logger.e(res?.data);
       if (res?.data?['data']?['followAccount'] != null) {
-        mainController.setUserJson(json:res?.data?['data']?['followAccount']);
+        mainController.setUserJson(json: res?.data?['data']?['followAccount']);
         int index = logic.sellers.indexWhere((el) => el.id == sellerId);
         if (index > -1) {
           logic.sellers.removeAt(index);

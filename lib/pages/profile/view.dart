@@ -16,6 +16,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../components/expand_search.dart';
 import 'logic.dart';
@@ -37,6 +39,27 @@ class ProfilePage extends StatelessWidget {
         : DarkColor;
     return Scaffold(
       backgroundColor: WhiteColor,
+      floatingActionButton: Container(
+        width: 0.28.sw,
+        decoration: BoxDecoration(
+          color: RedColor,
+          borderRadius: BorderRadius.circular(30.r)
+        ),
+        child: IconButton(
+          onPressed: () async {
+           Get.toNamed(GALLERY_PAGE,arguments: mainController.authUser.value?.id );
+          },
+          icon: Row(
+            children: [
+              Icon(FontAwesomeIcons.solidImages),
+              SizedBox(width: 0.01.sw,),
+              Text('معرض الصور',style: H4WhiteTextStyle,),
+            ],
+          ),
+          color: WhiteColor,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       body: Stack(
         children: [
           Positioned(
@@ -63,6 +86,7 @@ class ProfilePage extends StatelessWidget {
                         height: 0.06.sh,
                         child: Obx(() {
                           return Visibility(
+                            visible: logic.pageSelected.value == 0,
                             child: ExpandSearch(
                               controller: logic.searchController,
                               onEditDone: () {
@@ -71,10 +95,12 @@ class ProfilePage extends StatelessWidget {
                                 return logic.searchController.text;
                               },
                             ),
-                            visible: logic.pageSelected.value == 0,
                           );
                         })),
                     InkWell(
+                      onTap: (){
+                        Share.share('https://ali-pasha.com/products?id=${mainController.authUser.value?.id}');
+                      },
                       child: Container(
                         width: 0.07.sw,
                         padding: EdgeInsets.symmetric(
@@ -294,14 +320,14 @@ class ProfilePage extends StatelessWidget {
                                     padding:
                                         EdgeInsets.symmetric(vertical: 0.01.sh),
                                     child: Visibility(
+                                      visible: !(mainController
+                                              .authUser.value?.is_verified ==
+                                          true),
                                       child: Text(
                                         "${mainController.authUser.value?.info}",
                                         style: H4GrayTextStyle,
                                         overflow: TextOverflow.ellipsis,
                                       ),
-                                      visible: !(mainController
-                                              .authUser.value?.is_verified ==
-                                          true),
                                     ),
                                   ),
                                   if ((mainController.authUser.value?.address !=

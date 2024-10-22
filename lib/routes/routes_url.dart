@@ -22,11 +22,14 @@ const String BALANCES_PAGE = '/balances';
 const String SHIPPING_PAGE = '/shipping';
 const String FOLLOWERS_PAGE = '/followers_page';
 const String FOLLOWING_PAGE = '/following_page';
+const String MY_ORDER_SHIPPING_PAGE = '/my_order_shipping_page';
 const String CREATE_COMMUNITY_PAGE = '/create_community_page';
 
 // Other Page
 
 const String LOGIN_PAGE = '/login';
+const String GALLERY_PAGE = '/gallery_page';
+const String MAINTENANCE_PAGE = '/maintenance_page';
 const String REGISTER_PAGE = '/register';
 const String VERIFY_EMAIL_PAGE = '/verify_email_page';
 

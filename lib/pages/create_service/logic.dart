@@ -114,6 +114,9 @@ query MainCategories {
         cities.add(CityModel.fromJson(item));
       }
     }
+    if(res?.data?['errors']?[0]?['message']!=null){
+      mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
+    }
     loading.value=false;
   }
 
@@ -184,11 +187,11 @@ query MainCategories {
 
         // جلب أول قيمة من الكائن بغض النظر عن ال key
         String firstErrorMessage = validation.values.first.first;
+        mainController.showToast(text:'فشل العملية',type: 'error' );
 
-        showAutoCloseDialog(
-            title: 'فشل العملية',
-            message: "$firstErrorMessage",
-            isSuccess: false);
+      }
+      if(res.data['errors'][0]['message']!=null){
+        mainController.showToast(text:'${res.data['errors'][0]['message']}',type: 'error' );
       }
     } catch (e) {
       mainController.logger.e("Error get Profile $e");
