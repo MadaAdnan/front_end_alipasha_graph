@@ -174,8 +174,10 @@ class ProductPage extends StatelessWidget {
                         ],
                       ),
                     ),
+                    if(isAuth())
                     Row(
                       children: [
+
                         Obx(() {
                           int index = mainController.authUser.value!.followers!
                               .indexWhere(

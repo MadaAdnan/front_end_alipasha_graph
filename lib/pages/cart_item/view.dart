@@ -1,5 +1,6 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
+import 'package:ali_pasha_graph/helpers/components.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:ali_pasha_graph/models/cart_model.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
@@ -139,20 +140,22 @@ class CartItemPage extends StatelessWidget {
             return Visibility(
               visible: logic.carts.length > 0,
               child: Container(
-                padding: EdgeInsets.symmetric(vertical: 0.01.sh),
+                padding: EdgeInsets.symmetric(vertical: 0.01.sh,horizontal: 0.02.sw),
                 height: 0.08.sh,
                 width: 1.sw,
                 alignment: Alignment.center,
                 color: GrayLightColor,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                        Expanded(child:  Container(
-padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
+padding: EdgeInsets.symmetric(horizontal: 0.02.sw ,vertical: 0.02.sh),
                          alignment: Alignment.centerRight,
                          child: RichText(
                              text: TextSpan(children: [
@@ -168,35 +171,11 @@ padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
                                    style: H3RedTextStyle),
                              ])),
                        )),
+                        if(isAuth())
                         MaterialButton(
                           color: RedColor,
                           onPressed: () async {
                             if (logic.cart.value?.seller?.id != null) {
-                            /*  String message = "";
-                              for (var item in logic.carts) {
-                                message +=
-                                    '''معرف المنتج : ${item.productId} '''
-                                        ''' 
-                                        المنتج : ${item.productName} '''
-                                        ''' 
-                                        العدد : ${item.qty} '''
-                                        '''
-                                         سعر الوحدة : ${item.price} '''
-                               ''' 
-                                -------------------------
-                                ''';
-                              }
-                              message+='''
-                              ==========================''';
-                              message+='''
-                              المجموع : ${logic.carts.length > 0 ? logic.carts.fold(0.0, (previousValue, element) {
-                                double elementPrice = element.price ?? 0.0;
-                                int elementQty = element.qty ?? 0;
-                                return previousValue +
-                                    (elementPrice * elementQty);
-                              }) : 0} '''r'''$''';
-                              message+='''
-                               ==========================''';*/
                               String message = "";
                               for (var item in logic.carts) {
                                 message += '''معرف المنتج : ${item.productId} '''
@@ -229,6 +208,17 @@ padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
                           },
                           child: Text(
                             'إطلب من خلال الدردشة',
+                            style: H4WhiteTextStyle,
+                          ),
+                        ),
+                      if(!isAuth())
+                        MaterialButton(
+                          color: RedColor,
+                          onPressed: () async {
+                           Get.toNamed(LOGIN_PAGE);
+                          },
+                          child: Text(
+                            'تسجيل الدخول',
                             style: H4WhiteTextStyle,
                           ),
                         ),
