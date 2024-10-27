@@ -21,6 +21,7 @@ class EditProfileLogic extends GetxController {
   Rxn<UserModel> user = Rxn<UserModel>(null);
   RxList<CityModel> cities = RxList<CityModel>([]);
   RxBool loading = RxBool(false);
+  RxBool loadingPassword = RxBool(false);
   RxnInt cityId = RxnInt(null);
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -34,6 +35,8 @@ class EditProfileLogic extends GetxController {
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController colorIdController =
       TextEditingController(text: '#FF0000');
+  RxnInt colorHex = RxnInt(null);
+
 
   // Social
 
@@ -123,8 +126,9 @@ class EditProfileLogic extends GetxController {
           cities.add(CityModel.fromJson(item));
         }
       }
-      if(res?.data?['errors']?[0]?['message']!=null){
-        mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
+      if (res?.data?['errors']?[0]?['message'] != null) {
+        mainController.showToast(
+            text: '${res?.data['errors'][0]['message']}', type: 'error');
       }
     } catch (e) {
       mainController.logger.e("Error get Profile $e");
@@ -206,11 +210,12 @@ class EditProfileLogic extends GetxController {
       {required ImageSource imagSource,
       required Function(XFile? file, int? fileSize) onChange,
       int? width,
-      int? height}) async {
+      int? height,
+      CropStyle? cropStyle}) async {
     XFile? selected = await ImagePicker().pickImage(source: imagSource);
     if (selected != null) {
-      XFile? response =
-          await cropAvatar(selected, width: width, height: height);
+      XFile? response = await cropAvatar(selected,
+          width: width, height: height, cropStyle: cropStyle);
       if (response != null) {
         File compressedFile = File(response.path);
         int fileSize = await compressedFile.length();
@@ -219,11 +224,12 @@ class EditProfileLogic extends GetxController {
     }
   }
 
-  Future<XFile?> cropAvatar(XFile file, {int? width, int? height}) async {
+  Future<XFile?> cropAvatar(XFile file,
+      {int? width, int? height, CropStyle? cropStyle}) async {
     try {
-      double ratioY=1;
-      if(width!=null && height!=null && width>0){
-        ratioY=height/width;
+      double ratioY = 1;
+      if (width != null && height != null && width > 0) {
+        ratioY = height / width;
       }
       CroppedFile? cropped = await ImageCropper().cropImage(
         compressFormat: ImageCompressFormat.png,
@@ -235,7 +241,7 @@ class EditProfileLogic extends GetxController {
         uiSettings: [
           AndroidUiSettings(
             toolbarTitle: 'قص الصورة',
-            cropStyle: CropStyle.rectangle,
+            cropStyle: cropStyle ?? CropStyle.rectangle,
             activeControlsWidgetColor: Colors.red,
             backgroundColor: Colors.grey.withOpacity(0.4),
             toolbarColor: Colors.deepOrange,
@@ -255,5 +261,30 @@ class EditProfileLogic extends GetxController {
     } catch (e) {
       return file;
     }
+  }
+
+  changePassword()async{
+    loadingPassword.value=true;
+    mainController.query.value='''  
+    mutation ChangePassword {
+    changePassword(password: "${passwordController.text}", confirm: "${confirmPasswordController.text}")
+}
+    ''';
+    try{
+      dio.Response? res=await mainController.fetchData();
+      if(res?.data['data']?['changePassword']==true){
+        mainController.showToast(text: 'تم تعديل كلمة المرور بنجاح');
+        passwordController.value=TextEditingValue();
+        confirmPasswordController.value=TextEditingValue();
+      }
+      if(res?.data?['errors']?[0]?['message']!=null){
+        mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
+      }
+    }catch(e){
+
+    }
+
+    loadingPassword.value=false;
+    Get.back();
   }
 }

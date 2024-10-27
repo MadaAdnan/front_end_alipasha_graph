@@ -2,17 +2,19 @@ const AUTH_USER='''
  user {
             id
             name
-            is_verified
+             is_verified
 id_color
 info
 open_time
 close_time
 total_views
+
+unread_notifications_count
             seller_name
             email_verified_at
             email
             level
-            address
+         address
             phone
             is_seller
             image
@@ -20,16 +22,16 @@ total_views
             total_balance
             total_point
             following_count
-            plans{
-            id
-            pivot{
-             expired_date
-            }
-            }
-             city {
-                name
-                id
-            }
+           
+         
+            info
+            following_count
+            total_balance
+            total_point
+            is_seller
+            can_create_channel
+            can_create_group
+           
             social{
               twitter
               face
@@ -37,11 +39,23 @@ total_views
               linkedin
               tiktok
             }
+           
+            plans{
+            id
+            pivot{
+             expired_date
+            }
+            }
+            
+             city {
+                name
+                id
+            }
             followers {
                 seller{
-                
+               
                 id
-              
+            
                 }
             }
         }
@@ -50,15 +64,36 @@ total_views
 const AUTH_FIELDS='''
             id
             name
-           open_time
+             is_verified
+id_color
+info
+open_time
 close_time
 total_views
+
+unread_notifications_count
             seller_name
             email_verified_at
             email
             level
-            is_verified
-            id_color
+         address
+            phone
+            is_seller
+            image
+            logo
+            total_balance
+            total_point
+            following_count
+           
+         
+            info
+            following_count
+            total_balance
+            total_point
+            is_seller
+            can_create_channel
+            can_create_group
+           
             social{
               twitter
               face
@@ -66,15 +101,7 @@ total_views
               linkedin
               tiktok
             }
-            address
-            phone
-            image
-            logo
-            info
-            following_count
-            total_balance
-            total_point
-            is_seller
+           
             plans{
             id
             pivot{

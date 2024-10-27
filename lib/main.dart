@@ -12,6 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import 'firebase_options.dart';
 /// https://www.figma.com/design/px6a4uJqQMFINZtOZtSPDP/ali-pasha-home?node-id=0-1&t=VcJBc4HEx3FehtIf-1
@@ -20,7 +21,9 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   final appLinks = AppLinks(); // AppLinks is singleton
-
+  // OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+  OneSignal.initialize("af3a71bd-8c94-4d51-a39e-a9c9c84e0228");
+  OneSignal.Notifications.requestPermission(true);
 // Subscribe to all events (initial link and further)
   final sub = appLinks.uriLinkStream.listen((uri) {
    print('URI LINK IS : $uri');

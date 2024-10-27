@@ -44,11 +44,7 @@ class HomeLogic extends GetxController {
 
   getProduct() async {
     loading.value = true;
-
-    mainController.query('''
-    query Products {
-    products(first:35, page: ${page}) {
-        data {
+String dataString='''data {
             id
             name
             expert
@@ -66,13 +62,13 @@ class HomeLogic extends GetxController {
             video
             created_at
             user {
-            id
-            name
-            id_color
-                seller_name
-                image
-                logo
-                  is_verified
+              id
+              name
+              id_color
+              seller_name
+              image
+              logo
+              is_verified
             }
           
             city {
@@ -88,50 +84,58 @@ class HomeLogic extends GetxController {
         }
         paginatorInfo {
             hasMorePages
-        }
-    }
+        } ''';
+    mainController.query('''
+    query Products {
+      SpecialProduct(first:3, page: ${page}) {
+          $dataString
+      }
+      HobbiesProduct(first:12, page: ${page}) {
+          $dataString
+      }
+       LatestProduct(first:15, page: ${page}) {
+          $dataString
+      }
+   
    ${page == 1 ? r'''
     mainCategories{
-    name
-    color
-    type
-    has_color
-    id
-    image
-    children{
-      id
-      name
+        name
+        color
+        type
+        has_color
+        id
+        image
       children{
-      id
-      name
-      children{
-      id
-      name
-      
+        id
+        name
+        children{
+          id
+          name
+          children{
+            id
+            name
+         }
+        }
       }
-      }
-      }
-    
-    
     }
     specialSeller{
-    id
-    name
-    seller_name
-    image
-    custom
+      id
+      name
+      seller_name
+      image
+      custom
     }
     
     cities{
-    id
-    name
-    is_delivery
-    image
-    city_id
+      id
+      name
+      is_delivery
+      image
+      city_id
     }
-    colors{
-    name
-    id
+      colors{
+      name
+      id
     }
     
     
@@ -144,26 +148,47 @@ class HomeLogic extends GetxController {
     try {
       dio.Response? res = await mainController.fetchData();
 
-      if (res?.data['data']['products']['paginatorInfo']['hasMorePages'] !=
+      if (res?.data['data']['LatestProduct']['paginatorInfo']['hasMorePages'] !=
           null) {
         hasMorePage(
-            res?.data['data']['products']['paginatorInfo']['hasMorePages']);
+                res?.data['data']['LatestProduct']['paginatorInfo']['hasMorePages']);
       }
-      if (res?.data['data']['products']['data'] != null) {
+      if (res?.data['data']['LatestProduct']['data'] != null) {
         if (page == 1) {
           products.clear();
         }
-        for (var item in res?.data['data']['products']['data']) {
+        for (var item in res?.data['data']['SpecialProduct']['data']) {
           products.add(ProductModel.fromJson(item));
 
         }
-        mainController.storage.write('products',  res?.data['data']['products']['data']);
+        for (var item in res?.data['data']['HobbiesProduct']['data']) {
+          products.add(ProductModel.fromJson(item));
+
+        }
+
+        for (var item in res?.data['data']['LatestProduct']['data']) {
+          products.add(ProductModel.fromJson(item));
+
+        }
+var productsList=[
+  ...res?.data?['data']?['LatestProduct']?['data']??[],
+  ...res?.data?['data']?['HobbiesProduct']?['data']??[],
+  ...res?.data?['data']?['SpecialProduct']?['data']??[],
+];
+
+
+        mainController.storage.write('products', productsList );
       }
-      if (res?.data['data']['mainCategories'] != null) {
+
+      if (res?.data['data']?['mainCategories'] != null) {
+        mainController.logger.t('PAGESD');
+        mainController.logger.t(page);
+
         if (page == 1) {
           mainController.categories.clear();
         }
         for (var item in res?.data['data']['mainCategories']) {
+
           mainController.categories.add(CategoryModel.fromJson(item));
         }
         mainController.storage.write('mainCategories',  res?.data['data']['mainCategories']);
@@ -208,7 +233,6 @@ class HomeLogic extends GetxController {
     for (var item in listSeller) {
       sellers.add(UserModel.fromJson(item));
     }
-    mainController.logger.d("Products ${products.length}");
-    mainController.logger.d("Products ${sellers.length}");
+
   }
 }

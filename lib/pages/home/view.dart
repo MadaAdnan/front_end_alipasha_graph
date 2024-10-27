@@ -58,6 +58,7 @@ class HomePage extends StatelessWidget {
                   child: const Icon(FontAwesomeIcons.plus, color: WhiteColor,),
                 ),
               ),
+              SizedBox(height: 0.01.sh,),
               if(mainController.carts.length > 0)
                 Stack(
                   children: [
@@ -150,7 +151,7 @@ class HomePage extends StatelessWidget {
                                           shape: BoxShape.circle,
                                           image: DecorationImage(
                                               image: getLogo() != null
-                                                  ? NetworkImage(
+                                                  ? CachedNetworkImageProvider(
                                                   '${getLogo()}')
                                                   : getUserImage())),
                                     );
@@ -238,11 +239,13 @@ class HomePage extends StatelessWidget {
                               return _buildSeller();
                             })
                           else
+
                             ...List.generate(logic.sellers.length, (index) {
                               return SellerHomePageCard(
                                 seller: logic.sellers[index],
                               );
                             }),
+                          _buildAddStore(),
                         ],
                       ),
                     ),
@@ -427,5 +430,58 @@ class HomePage extends StatelessWidget {
         ),
         baseColor: GrayLightColor,
         highlightColor: GrayWhiteColor);
+  }
+
+  _buildAddStore(){
+    return InkWell(
+      onTap: () {
+
+      },
+      child: Container(
+        width: 0.27.sw,
+        margin: EdgeInsets.symmetric(horizontal: 10.w),
+        decoration: BoxDecoration(
+            color: GrayLightColor,
+            borderRadius: BorderRadius.circular(15.r),
+            image: DecorationImage(
+                image: AssetImage('assets/images/png/no-image.png'),
+                fit: BoxFit.fill,
+                opacity: 0.7)),
+        child:Stack(
+          children: [
+            Container(
+              padding: EdgeInsets.only(top: 20.h, right: 20.w),
+              alignment: Alignment.topRight,
+              child: CircleAvatar(
+                backgroundColor: WhiteColor,
+                radius: 40.r,
+                child: Icon(FontAwesomeIcons.plus),
+              ),
+            ),
+           InkWell(
+             onTap: (){
+               if(isAuth()){
+                 String message="ID:${mainController.authUser.value?.id} - اسم المتجر : ${mainController.authUser.value?.seller_name} - نوع الطلب إضافة متجر مميز";
+                 openUrl(url: "https://wa.me/${mainController.settings.value.social?.phone}?text=$message");
+               }
+
+             },
+             child:  Container(
+                 alignment: Alignment.center,
+                 child:Column(
+                   mainAxisAlignment: MainAxisAlignment.center,
+                   crossAxisAlignment: CrossAxisAlignment.center,
+                   children: [
+                     Text(' أضـف مـتجـــرك',style: H3GrayTextStyle,textAlign: TextAlign.center,),
+                     Text(' هـنــــــا',style: H3GrayTextStyle,textAlign: TextAlign.center,),
+                   ],
+                 )
+
+             ),
+           )
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -23,58 +23,58 @@ class CommunitiesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
-      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            if (mainController.authUser.value?.is_verified != true)
-              InkWell(
-                onTap: () {
+        child:Container(
+          decoration:BoxDecoration(
+            color: Colors.black.withOpacity(0.5),
+            shape: BoxShape.circle
+          ),
+          child: PopupMenuButton(
+            offset: Offset(0, -0.13.sh),
+            iconColor: WhiteColor,
+            color: WhiteColor,
+            onSelected: (value){
+              switch(value){
+                case '0':
+                  break;
+                case 'channel':
                   Get.toNamed(CREATE_COMMUNITY_PAGE, arguments: 'channel');
-                },
-                child: Container(
-                  padding: EdgeInsets.all(0.02.sw),
-                  decoration: BoxDecoration(
-                    color: RedColor.withOpacity(0.5),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Tooltip(
-                    child: Icon(
+                  break;
+                case 'group':
+                  Get.toNamed(CREATE_COMMUNITY_PAGE, arguments: 'group');
+                  break;
+              }
+            },
+            itemBuilder: (context) => [
+              if (mainController.authUser.value?.can_create_group != true && mainController.authUser.value?.can_create_channel != true)
+                PopupMenuItem(value: '0',child: Text('لا تملك صلاحية لإنشاء قناة أو مجموعة',style: H4GrayTextStyle,),),
+              if (mainController.authUser.value?.can_create_channel == true)
+                PopupMenuItem(value: 'channel',child: Row(
+                  children: [
+                    Icon(
                       FontAwesomeIcons.bullhorn,
-                      color: WhiteColor,
+                      color: GrayDarkColor,
                       size: 0.05.sw,
                     ),
-                    message: 'إنشاء قناة',
-                    textStyle: H3WhiteTextStyle,
-                    verticalOffset: -0.07.sh,
-                  ),
-                ),
-              ),
-            SizedBox(
-              height: 0.02.sh,
-            ),
-            if (mainController.authUser.value?.is_verified != true)
-              InkWell(
-                onTap: () {
-                  Get.toNamed(CREATE_COMMUNITY_PAGE, arguments: 'group');
-                },
-                child: Container(
-                  padding: EdgeInsets.all(0.02.sw),
-                  decoration: BoxDecoration(
-                    color: RedColor.withOpacity(0.5),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
+                    SizedBox(width: 0.02.sw,),
+                    Text('إنشاء قناة ',style: H4GrayTextStyle,)
+                  ],
+                ),),
+              if (mainController.authUser.value?.can_create_group == true)
+                PopupMenuItem(value: 'group',child:Row(children: [
+                  Icon(
                     FontAwesomeIcons.users,
-                    color: WhiteColor,
+                    color: GrayDarkColor,
                     size: 0.05.sw,
                   ),
-                ),
-              ),
-          ],
+                  SizedBox(width: 0.02.sw,),
+                  Text('إنشاء مجموعة',style: H4GrayTextStyle,)
+                ],) ,),
+            ],),
         ),
       ),
       backgroundColor: WhiteColor,
@@ -183,7 +183,7 @@ class CommunitiesPage extends StatelessWidget {
 
                                 // title
                                 Container(
-                                  width: 0.62.sw,
+                                  width: 0.6.sw,
                                   child: Column(
                                     mainAxisSize: MainAxisSize.max,
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -192,6 +192,7 @@ class CommunitiesPage extends StatelessWidget {
                                     children: [
                                       RichText(
                                           maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
                                           text: TextSpan(children: [
                                             if (logic.communities[index].type ==
                                                 'chat')
@@ -218,52 +219,48 @@ class CommunitiesPage extends StatelessWidget {
                                                     style: H5RedTextStyle),
                                               )),
                                             WidgetSpan(
-                                                child: SizedBox(
-                                              child: Flexible(
-                                                flex: 2,
-                                                child:
-                                                    Builder(builder: (context) {
-                                                  String? name = '';
+                                                child: Container(
+                                                  child:
+                                                  Builder(builder: (context) {
+                                                    String? name = '';
 
-                                                  if (logic.communities[index]
-                                                          .type !=
-                                                      'chat') {
-                                                    name = logic
-                                                        .communities[index]
-                                                        .name;
-                                                  } else {
-                                                    name = friend?.seller_name!
-                                                                .length !=
-                                                            0
-                                                        ? friend?.seller_name
-                                                        : friend?.name;
-                                                  }
-                                                  return RichText(
-                                                      text: TextSpan(children: [
-                                                    if (friend?.trust == true &&
-                                                        logic.communities[index]
-                                                                .type ==
-                                                            'chat')
-                                                      WidgetSpan(
-                                                        alignment: PlaceholderAlignment.middle,
-                                                          child: Icon(
-                                                        FontAwesomeIcons
-                                                            .rust,
-                                                        size: 0.04.sw,
-                                                        color: OrangeColor,
-                                                      )),
-                                                    TextSpan(
-                                                      text: ' $name',
-                                                      style: H3BlackTextStyle
-                                                          .copyWith(
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                      ),
-                                                    ),
-                                                  ]));
-                                                }),
-                                              ),
-                                            )),
+                                                    if (logic.communities[index]
+                                                        .type !=
+                                                        'chat') {
+                                                      name = logic
+                                                          .communities[index]
+                                                          .name;
+                                                    } else {
+                                                      name = friend?.seller_name!
+                                                          .length !=0
+                                                          ? friend?.seller_name
+                                                          : friend?.name;
+                                                    }
+                                                    return RichText(
+                                                        text: TextSpan(children: [
+                                                          if (friend?.trust == true &&
+                                                              logic.communities[index]
+                                                                  .type ==
+                                                                  'chat')
+                                                            WidgetSpan(
+                                                                alignment: PlaceholderAlignment.middle,
+                                                                child: Icon(
+                                                                  FontAwesomeIcons
+                                                                      .rust,
+                                                                  size: 0.04.sw,
+                                                                  color: OrangeColor,
+                                                                )),
+                                                          TextSpan(
+                                                            text: ' $name',
+                                                            style: H3BlackTextStyle
+                                                                .copyWith(
+                                                              overflow: TextOverflow
+                                                                  .ellipsis,
+                                                            ),
+                                                          ),
+                                                        ]));
+                                                  }),
+                                                )),
                                           ])),
                                       20.verticalSpace,
                                       RichText(

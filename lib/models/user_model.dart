@@ -36,6 +36,9 @@ class UserModel {
   int? followingCount;
   int? total_views;
   List<DataImageModel>? gallery;
+ bool? can_create_group;
+ bool? can_create_channel;
+ int? unread_notifications_count;
 SocialModel? social;
   UserModel({
     this.name,
@@ -71,6 +74,9 @@ SocialModel? social;
     this.total_views,
     this.trust,
     this.gallery,
+    this.can_create_channel,
+    this.can_create_group,
+    this.unread_notifications_count,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> data) {
@@ -103,11 +109,14 @@ SocialModel? social;
       id: int.tryParse("${data['id']}"),
       followingCount: int.tryParse("${data['following_count']}") ?? 0,
       total_views: int.tryParse("${data['total_views']}") ?? 0,
+      unread_notifications_count: int.tryParse("${data['unread_notifications_count']}") ?? 0,
       info: "${data['info'] ?? ''}",
       affiliate: "${data['affiliate'] ?? ''}",
       is_special: bool.tryParse("${data['is_special']}")?? false,
       trust: bool.tryParse("${data['trust']}")?? false,
       is_verified: bool.tryParse("${data['is_verified']}")?? false,
+      can_create_group: bool.tryParse("${data['can_create_group']}")?? false,
+      can_create_channel: bool.tryParse("${data['can_create_channel']}")?? false,
       is_restaurant: bool.tryParse("${data['is_restaurant']}")?? false,
       is_delivery: bool.tryParse("${data['is_delivery']}")?? false,
       is_active: bool.tryParse("${data['is_active']}")?? false,

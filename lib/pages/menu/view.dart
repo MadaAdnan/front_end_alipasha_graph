@@ -102,15 +102,23 @@ class MenuPage extends StatelessWidget {
                   );
                 }),
                 badges.Badge(
-                  child: Icon(
-                    FontAwesomeIcons.bell,
-                    size: 0.08.sw,
+                  position: badges.BadgePosition.custom(top: 0,start: 0),
+                  child: InkWell(
+                    onTap: (){
+                      Get.offAndToNamed(NOTIFICATION_PAGE);
+                    },
+                    child: Icon(
+                      FontAwesomeIcons.bell,
+                      size: 0.08.sw,
+                    ),
                   ),
-                  onTap: () {},
-                  badgeContent: Text(
-                    '10',
-                    style: H4WhiteTextStyle,
-                  ),
+
+                  badgeContent: Obx(() {
+                    return Text(
+                      '${mainController.authUser.value?.unread_notifications_count}',
+                      style: H4WhiteTextStyle,
+                    );
+                  }),
                 )
               ],
             ),

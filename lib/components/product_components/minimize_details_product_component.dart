@@ -155,7 +155,7 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                         )),
                         Container(
                           width: 1.sw,
-                          height: 0.02.sh,
+                          height: 0.04.sh,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -172,12 +172,18 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                                 child: Transform.translate(
                                   offset: Offset(0, -0.01.sh),
                                   child: GestureDetector(
+
                                     onTap: () {
                                       mainController.addToCart(product: post);
                                     },
-                                    child: Icon(
-                                      FontAwesomeIcons.cartShopping,
-                                      size: 0.05.sw,
+                                    child: Container(
+                                      height: 0.05.sh,
+                                      padding: EdgeInsets.symmetric(horizontal: 0.02.sw,vertical: 0.002.sh),
+
+                                      child: Icon(
+                                        FontAwesomeIcons.cartShopping,
+                                        size: 0.05.sw,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -302,6 +308,7 @@ class MinimizeDetailsJobComponent extends StatelessWidget {
         InkWell(
           onTap: onClick,
           child: Container(
+
             width: 1.sw,
             decoration: BoxDecoration(
               color: GrayWhiteColor,
@@ -343,6 +350,37 @@ class MinimizeDetailsJobComponent extends StatelessWidget {
                                 )),
                           ),
                         ),
+                      if(post.type=='job' && post.active != 'block' && post.active != 'pending')
+                        Container(
+                        alignment: Alignment.center,
+                        width: 0.2.sw,
+                        height: 0.03.sh,
+                        decoration: BoxDecoration(
+                            color: OrangeColor,
+                            borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(20.r),
+                                bottomLeft: Radius.circular(20.r))),
+                        child: Text(
+                          'شاغر وظيفي',
+                          style: H5WhiteTextStyle,
+                        ),
+                      ),
+                      if(post.type=='search_job' && post.active != 'block' && post.active != 'pending')
+                        Container(
+                          alignment: Alignment.center,
+                          width: 0.2.sw,
+                          height: 0.03.sh,
+                          decoration: BoxDecoration(
+                              color: Colors.blueAccent,
+                              borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(20.r),
+                                  bottomLeft: Radius.circular(20.r))),
+                          child: Text(
+                            'يبحث عن عمل',
+                            style: H5WhiteTextStyle,
+                          ),
+                        ),
+
                       if (post.active == 'pending')
                         Container(
                           alignment: Alignment.center,
@@ -391,6 +429,7 @@ class MinimizeDetailsJobComponent extends StatelessWidget {
                     ],
                   ),
                 ),
+                SizedBox(width: 0.02.sw,),
                 Expanded(
                     child: Container(
                   height: 0.3.sw,
@@ -427,6 +466,7 @@ class MinimizeDetailsJobComponent extends StatelessWidget {
                       ])),
                       Container(
                         child: SellerNameComponent(
+                          onTap: onClick,
                             text: 'منشور بواسطة:',
                             textStyle: H4RegularDark,
                             color: TitleColor,
@@ -471,6 +511,22 @@ class MinimizeDetailsJobComponent extends StatelessWidget {
                                 ),
                                 Text(
                                   "${post.views_count}",
+                                  style: H5BlackTextStyle,
+                                )
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Icon(
+                                  FontAwesomeIcons.calendar,
+                                  color: DarkColor,
+                                  size: 0.04.sw,
+                                ),
+                                SizedBox(
+                                  width: 0.007.sw,
+                                ),
+                                Text(
+                                  "${post.start_date ?? ''}",
                                   style: H5BlackTextStyle,
                                 )
                               ],

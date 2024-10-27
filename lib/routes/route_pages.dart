@@ -17,6 +17,8 @@ import 'package:ali_pasha_graph/pages/channel/binding.dart';
 import 'package:ali_pasha_graph/pages/channel/view.dart';
 import 'package:ali_pasha_graph/pages/chat/binding.dart';
 import 'package:ali_pasha_graph/pages/chat/view.dart';
+import 'package:ali_pasha_graph/pages/comment/binding.dart';
+import 'package:ali_pasha_graph/pages/comment/view.dart';
 import 'package:ali_pasha_graph/pages/communities/binding.dart';
 import 'package:ali_pasha_graph/pages/communities/view.dart';
 import 'package:ali_pasha_graph/pages/contact/binding.dart';
@@ -63,6 +65,8 @@ import 'package:ali_pasha_graph/pages/maintenance/view.dart';
 
 import 'package:ali_pasha_graph/pages/menu/binding.dart';
 import 'package:ali_pasha_graph/pages/menu/view.dart';
+import 'package:ali_pasha_graph/pages/notification/binding.dart';
+import 'package:ali_pasha_graph/pages/notification/view.dart';
 import 'package:ali_pasha_graph/pages/orders/binding.dart';
 import 'package:ali_pasha_graph/pages/orders/view.dart';
 import 'package:ali_pasha_graph/pages/partner/binding.dart';
@@ -143,6 +147,12 @@ class AppPages {
       binding: GalleryBinding(),
       middlewares: [],
     ),
+    GetPage(
+      name: COMMENTS_PAGE,
+      page: () => CommentPage(),
+      binding: CommentBinding(),
+      middlewares: [],
+    ),
 
 
 
@@ -152,6 +162,13 @@ class AppPages {
         name: CREATE_PRODUCT_PAGE,
         page: () => CreateProductPage(),
         binding: CreateProductBinding()),
+
+    GetPage(
+        middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+        name: NOTIFICATION_PAGE,
+        page: () => NotificationPage(),
+        binding: NotificationBinding()),
+
 
     GetPage(
         middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],

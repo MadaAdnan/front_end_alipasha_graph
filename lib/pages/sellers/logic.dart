@@ -1,3 +1,4 @@
+import 'package:ali_pasha_graph/models/category_model.dart';
 import 'package:ali_pasha_graph/models/city_model.dart';
 import 'package:get/get.dart';
 
@@ -11,8 +12,8 @@ class SellersLogic extends GetxController {
   RxBool hasMorePage = RxBool(false);
   RxInt page = RxInt(1);
   RxList<PartnerModel> sellers = RxList<PartnerModel>([]);
-  RxList<CityModel> cities = RxList<CityModel>([]);
-  Rxn<CityModel> selectedCity = Rxn<CityModel>(null);
+  RxList<CategoryModel> categories = RxList<CategoryModel>([]);
+  Rxn<CategoryModel> selectedCity = Rxn<CategoryModel>(null);
 
   nextPage() {
     if (hasMorePage.value) {
@@ -22,7 +23,9 @@ class SellersLogic extends GetxController {
 
   @override
   void onInit() {
+
     super.onInit();
+   // categories(mainController.categories.where((el)=>el.type=='product').toList());
     ever(page, (value) {
       getSellers();
     });
@@ -50,7 +53,7 @@ class SellersLogic extends GetxController {
     loading.value = true;
     mainController.query.value = '''
     query Sellers {
-    sellers(first: 25, page: ${page.value} ${selectedCity.value!=null ? ',city_id:"${selectedCity.value?.id}"':''}) {
+    sellers(first: 25, page: ${page.value} ${selectedCity.value!=null ? ',category_id:"${selectedCity.value?.id}"':''}) {
         paginatorInfo {
             hasMorePages
         }
@@ -62,16 +65,15 @@ class SellersLogic extends GetxController {
             }
             address
             phone
+            info
             image
         }
     }
     
-    ${page.value==1? '''  citiesHasVendor(type: "seller") {
+    ${page.value==1? ''' mainCategories(type: "product") {
         id
         name
         image
-        city_id
-        is_delivery
     } ''':''}
 }
 
@@ -91,10 +93,10 @@ class SellersLogic extends GetxController {
           sellers.add(PartnerModel.fromJson(item));
         }
       }
-      if (response?.data['data']['citiesHasVendor'] != null && cities.length==0) {
+      if (response?.data['data']['mainCategories'] != null && categories.length==0) {
 
-        for (var item in response?.data['data']['citiesHasVendor'] ) {
-          cities.add(CityModel.fromJson(item));
+        for (var item in response?.data['data']['mainCategories'] ) {
+          categories.add(CategoryModel.fromJson(item));
         }
       }
     } catch (e) {

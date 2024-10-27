@@ -1,3 +1,4 @@
+import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/components/product_components/job_card.dart';
 import 'package:ali_pasha_graph/components/product_components/minimize_details_product_component.dart';
 import 'package:ali_pasha_graph/components/product_components/minimize_details_product_component_loading.dart';
@@ -18,7 +19,7 @@ class ServicePage extends StatelessWidget {
   ServicePage({Key? key}) : super(key: key);
 
   final logic = Get.find<ServiceLogic>();
-
+MainController mainController=Get.find<MainController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,7 +70,32 @@ class ServicePage extends StatelessWidget {
                             ),
                           ), gradient: LinearGradient(colors: [GrayLightColor,GrayWhiteColor,GrayLightColor,])),
                       ),
+
                     if(logic.loading.value==false)
+                      InkWell(
+                        borderRadius: BorderRadius.circular(100.r),
+                        onTap: (){
+                          logic.selectedCity.value=null;
+                        },
+                        child:  Column(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.symmetric(horizontal: 0.02.sw),
+                              width: 0.15.sw,
+                              height: 0.15.sw,
+                              decoration: BoxDecoration(
+                                  border: Border.all(color:logic.selectedCity.value==null ?RedColor: GrayLightColor,width: 2),
+                                  shape: BoxShape.circle,
+                                  color: Colors.red,
+                                  image: DecorationImage(image: AssetImage("assets/images/png/_logo.png"))
+                              ),
+                            ),
+                            Text('الكل',style: H4RegularDark,)
+                          ],
+                        ),
+                      ),
+                    if(logic.loading.value==false)
+
                     ...List.generate(logic.cities.length, (index) =>
                        InkWell(
                          borderRadius: BorderRadius.circular(100.r),

@@ -92,14 +92,12 @@ class ChatPage extends StatelessWidget {
                             el.id != mainController.authUser.value?.id);
                             print('after Where');
                             print('${user?.name}');
-                            return Container(
-                              child: Flexible(
-                                  child: Text(
-                                    '${user?.seller_name?.length!=0? user?.seller_name: user?.name}',
-                                    style: H3WhiteTextStyle,
-                                    overflow: TextOverflow.ellipsis,
-                                  )),
-                            );
+                            return Flexible(
+                                child: Text(
+                                  '${user?.seller_name?.length!=0? user?.seller_name: user?.name}',
+                                  style: H3WhiteTextStyle,
+                                  overflow: TextOverflow.ellipsis,
+                                ));
                           }),
                         ],
                       ),

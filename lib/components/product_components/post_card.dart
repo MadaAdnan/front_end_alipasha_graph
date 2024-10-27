@@ -80,7 +80,7 @@ class PostCard extends StatelessWidget {
                              if (post.user?.seller_name != null)
                                Container(
                                  width: 0.6.sw,
-                                 child:SellerNameComponent(isVerified: post.user?.is_verified==true,text: "${post.user?.seller_name}",
+                                 child:SellerNameComponent(isVerified: post.user?.is_verified==true,
                                    textStyle: H1BlackTextStyle,seller: post.user,),
                                ),
                              Container(
@@ -190,7 +190,7 @@ class PostCard extends StatelessWidget {
                  ],
                ),),
                 15.verticalSpace,
-               Flexible(flex: 2,child:  Container(
+               Flexible(flex: 2,child: InkWell(onTap: (){ Get.toNamed(PRODUCT_PAGE, arguments: post.id);},child: Container(
                  width: 1.sw,
 
                  child: Text(
@@ -199,7 +199,7 @@ class PostCard extends StatelessWidget {
                    maxLines: 2,
                    style: H3GrayTextStyle,
                  ),
-               ),)
+               ), ), )
               ],
             ),
           ),
@@ -387,8 +387,8 @@ class PostCard extends StatelessWidget {
                 ),
                 MaterialButton(
                   onPressed: () {
-                    Get.toNamed(PRODUCT_PAGE,
-                        arguments: post.id, parameters: {"index": "1"});
+                    Get.toNamed(COMMENTS_PAGE,
+                         parameters: {"id":"${post.id}" });
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,

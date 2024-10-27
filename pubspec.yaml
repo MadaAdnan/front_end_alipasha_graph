@@ -66,6 +66,7 @@ dependencies:
   auto_size_text: ^3.0.0
   flutter_branch_sdk: ^8.2.0
   flutter_carousel_widget: ^3.1.0
+  onesignal_flutter: ^5.2.6
 #  flutter_sound: ^9.6.0
 #  audio_session: ^0.1.20
 

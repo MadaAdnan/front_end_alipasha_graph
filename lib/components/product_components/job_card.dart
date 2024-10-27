@@ -76,14 +76,14 @@ class JobCard extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                            Container(
+                            InkWell(onTap: (){ Get.toNamed(PRODUCT_PAGE, arguments: post?.id);},child:Container(
                               width: 0.6.sw,
                               child: Text(
                                 '${post?.city?.name ?? ''} - ${post?.category?.name ?? ''} - ${post?.sub1?.name ?? ''}',
                                 style: H4GrayOpacityTextStyle,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                            )
+                            ))
                           ],
                         )
                       ],

@@ -10,11 +10,11 @@ class PusherService {
   static PusherClient init({String? token}) {
 
     var options = PusherOptions(
-        host: '192.168.11.200:6001',
+        host: '85.215.154.88:8081',
         protocol:Protocol.ws,
         autoConnect: false,
         cluster: 'mt1',
-        authOptions: PusherAuthOptions("http://192.168.11.200:8000/api/broadcasting/auth",
+        authOptions: PusherAuthOptions("http://v3.ali-pasha.com/api/broadcasting/auth",
             headers: {
               if (token!=null && token!='')
                 'Authorization': 'Bearer $token', // تمرير الـ token هنا

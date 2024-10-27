@@ -37,7 +37,9 @@ const String SECTIONS_PAGE = '/sections_page';
 const String SECTION_PAGE = '/section_page';
 
 const String PRODUCT_PAGE = '/product_page';
+const String COMMENTS_PAGE = '/comment_page';
 const String PRODUCTS_PAGE = '/products_page';
+const String NOTIFICATION_PAGE = '/notification_page';
 
 const String JOBS_PAGE = '/jobs_page';
 const String VIDEO_PLAYER_POST_PAGE = '/video_player_post_page';

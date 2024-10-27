@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
+import '../../components/progress_loading.dart';
 import '../../exceptions/custom_exception.dart';
 import '../../helpers/colors.dart';
 import '../../helpers/queries.dart';
@@ -47,7 +48,7 @@ class FollowersPage extends StatelessWidget {
         child: Obx(() {
           if (logic.loading.value) {
             return Center(
-              child: CircularProgressIndicator(),
+              child: ProgressLoading(),
             );
           }
           return Column(
@@ -65,29 +66,31 @@ class FollowersPage extends StatelessWidget {
               ),
               15.verticalSpace,
               Expanded(
-                child: ListView(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 0.01.sw,
-                  ),
-                  children: [
-                    if (logic.sellers.length > 0)
-                      ...List.generate(
-                          logic.sellers.length,
-                          (index) =>
-                              _buildSellerCard(seller: logic.sellers[index]))
-                    else
-                      Container(
-                        width: 1.sw,
-                        height: 0.06.sh,
-                        alignment: Alignment.center,
-                        decoration:
-                            BoxDecoration(border: Border.all(color: RedColor)),
-                        child: Text(
-                          'لم تقم بمتابعة أي متجر',
-                          style: H4RedTextStyle,
+                child: Container(
+                  child:ListView(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 0.01.sw,
+                    ),
+                    children: [
+                      if (logic.sellers.length > 0)
+                        ...List.generate(
+                            logic.sellers.length,
+                                (index) =>
+                                _buildSellerCard(seller: logic.sellers[index]))
+                      else
+                        Container(
+                          width: 1.sw,
+                          height: 0.06.sh,
+                          alignment: Alignment.center,
+                          decoration:
+                          BoxDecoration(border: Border.all(color: RedColor)),
+                          child: Text(
+                            'لم تقم بمتابعة أي متجر',
+                            style: H4RedTextStyle,
+                          ),
                         ),
-                      ),
-                  ],
+                    ],
+                  )
                 ),
               ),
             ],
@@ -118,75 +121,78 @@ class FollowersPage extends StatelessWidget {
                     fit: BoxFit.fitHeight),
                 borderRadius: BorderRadius.circular(15.r)),
           ),
-          Expanded(
-
+          Container(
+            width: 0.75.sw,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Expanded(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 0.01.sw),
+                      alignment: Alignment.topRight,
+                      child:Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Get.toNamed(PRODUCTS_PAGE, arguments: seller);
+                            },
+                            child: Text(
+                              "${seller.seller_name?.length != 0 ? seller.seller_name : seller.name}",
+                              style: H3BlackTextStyle,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Container(
+                            width: 0.6.sw,
+                            child: Text(
+                              "${seller.address}",
+                              style: H5RegularDark,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ), )
+               ,
                 Container(
-                  padding: EdgeInsets.symmetric(
-                       horizontal: 0.01.sw),
+                  padding: EdgeInsets.symmetric(horizontal: 0.001.sw),
                   alignment: Alignment.topRight,
-                  child: Expanded(child: Column(mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      InkWell(
-                        onTap: (){
-                          Get.toNamed(PRODUCTS_PAGE,arguments: seller);
-                        },
-                        child: Text(
-                          "${seller.seller_name?.length != 0 ? seller.seller_name : seller.name}",
-                          style: H3BlackTextStyle,
-                          overflow: TextOverflow.ellipsis,
+                  child: PopupMenuButton<String>(
+                    color: WhiteColor,
+                    onSelected: (value) {
+                      if (value == '1') {
+                        unFollowers(seller.id!);
+                      }
+                    },
+                    itemBuilder: (context) => [
+                      PopupMenuItem<String>(
+                        value: '1',
+                        child: Row(
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.heartCrack,
+                              color: RedColor,
+                              size: 0.05.sw,
+                            ),
+                            SizedBox(
+                              width: 0.03.sw,
+                            ),
+                            Text(
+                              "إلغاء المتابعة",
+                              style: H3RegularDark,
+                            ),
+                            SizedBox(
+                              width: 0.005.sw,
+                            ),
+                          ],
                         ),
                       ),
-                      Text(
-                        "${seller.address}",
-                        style: H5RegularDark,
-                        overflow: TextOverflow.ellipsis,
-                      ),
                     ],
-                  )),
+                  ),
                 ),
-               Transform.translate(offset: Offset(0, -0.02.sh),child:  Container(
-                 padding: EdgeInsets.symmetric(
-                     horizontal: 0.001.sw),
-                 alignment: Alignment.topRight,
-                 child: PopupMenuButton<String>(
-                   color: WhiteColor,
-                   onSelected: (value){
-                     if(value=='1'){
-                       unFollowers(seller.id!);
-                     }
-                   },
-                   itemBuilder: (context) => [
-                     PopupMenuItem<String>(
-                       value: '1',
-                       child: Row(
-                         children: [
-                           Icon(
-                             FontAwesomeIcons.heartCrack,
-                             color: RedColor,
-                             size: 0.05.sw,
-                           ),
-                           SizedBox(
-                             width: 0.03.sw,
-                           ),
-                           Text(
-                             "إلغاء المتابعة",
-                             style: H3RegularDark,
-                           ),
-                           SizedBox(
-                             width: 0.005.sw,
-                           ),
-                         ],
-                       ),
-                     ),
-                   ],
-                 ),
-               ),),
-
               ],
             ),
           )

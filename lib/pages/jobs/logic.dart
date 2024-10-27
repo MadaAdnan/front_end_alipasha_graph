@@ -11,13 +11,21 @@ class JobsLogic extends GetxController {
   RxInt page = RxInt(1);
   MainController mainController = Get.find<MainController>();
   RxList<ProductModel> jobs = RxList<ProductModel>([]);
-
+RxString typeJob=RxString('');
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     ever(page, (value) {
       getJobs();
+    });
+    ever(typeJob, (value) {
+      jobs.clear();
+      if(page==1){
+        getJobs();
+      }else{
+        page.value=1;
+      }
     });
   }
 
@@ -37,7 +45,7 @@ class JobsLogic extends GetxController {
   Future<void> getJobs() async {
     mainController.query.value = '''
     query Products {
-    products(type: "job", first: 15, page: ${page.value}) {
+    products(type: "job",sub_type:"${typeJob.value}", first: 25, page: ${page.value}) {
         paginatorInfo {
             hasMorePages
         }

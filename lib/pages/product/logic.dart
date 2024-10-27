@@ -2,6 +2,7 @@ import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
 import 'package:ali_pasha_graph/models/comment_model.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
+import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
@@ -19,16 +20,9 @@ ScrollController scrollController=ScrollController();
   Rxn<ProductModel> product = Rxn<ProductModel>(null);
   RxList<ProductModel> products = RxList<ProductModel>([]);
   RxList<CommentModel> comments = RxList<CommentModel>([]);
-  RxBool hasMorePage = RxBool(false);
-  RxInt page = RxInt(1);
 
 TextEditingController comment =TextEditingController();
 
-  nextPage() {
-    if (hasMorePage.value) {
-      page.value++;
-    }
-  }
 
   @override
   void onInit() {
@@ -36,14 +30,10 @@ TextEditingController comment =TextEditingController();
     super.onInit();
     productId.value = Get.arguments;
     ever(productId, (value) {
-      page.value = 1;
       comments.clear();
       comment.clear();
       getProduct();
-      getComments();
-    });
-    ever(page, (value) {
-      getComments();
+
     });
   }
 
@@ -51,15 +41,20 @@ TextEditingController comment =TextEditingController();
   void onReady() {
     // TODO: implement onReady
     super.onReady();
-    if(pageIndex.value>0){
-      pageController.animateToPage(pageIndex.value, duration: Duration(milliseconds: 200), curve: Curves.bounceInOut);
+    if(productId.value==null){
+      productId.value=int.tryParse("${Get.parameters['id']}");
     }
-
     getProduct();
-    getComments();
+    mainController.logger.w("PREVIOUS:");
+    mainController.logger.w(Get.previousRoute);
   }
 
   Future<void> getProduct() async {
+
+    if(Get.previousRoute=='/notification_page'){
+      Get.toNamed(COMMENTS_PAGE,parameters: {"id":"${ productId.value}"});
+      return;
+    }
     loading.value = true;
     products.clear();
 
@@ -155,7 +150,7 @@ TextEditingController comment =TextEditingController();
            
             
         }
-        ${page.value == 1 ? '$productsData' : ''}
+       $productsData
     }
 }
 
@@ -183,81 +178,7 @@ TextEditingController comment =TextEditingController();
     loading.value = false;
   }
 
-  Future<void> createComment() async {
-    loadingComment.value = true;
-    mainController.query.value = '''
-      mutation CreateComment {
-    createComment(product_id: ${productId.value}, comment: "${comment.value.text}") {
-        comment
-        created_at
-        user {
-        id
-            name
-            seller_name
-            image
-            is_verified
-        }
-    }
-}
-''';
-    try {
-      dio.Response? res = await mainController.fetchData();
 
-      if (res?.data?['data']?['createComment'] != null) {
-        comments
-            .add(CommentModel.fromJson(res?.data?['data']?['createComment']));
-        comment.clear();
-      }
-    } on CustomException catch (e) {}
-    loadingComment.value = false;
-  }
-
-  Future<void> getComments() async {
-    loadingGetComment.value = true;
-    mainController.query.value = '''
-     query Product {
-        product(id: "${productId.value}") {
-          product {
-            comments(first: 10, page: ${page.value}) {
-                paginatorInfo {
-                    hasMorePages
-                }
-                data {
-                    comment
-                    created_at
-                    user {
-                    id
-                    seller_name
-                        name
-                        image
-                    }
-                }
-            }
-          }
-        }
-     }
-    ''';
-
-    try {
-      dio.Response? res = await mainController.fetchData();
-     // mainController.logger.e(res?.data);
-      if (res?.data?['data']?['product']['product']['comments']
-              ['paginatorInfo'] !=
-          null) {
-        hasMorePage.value = res?.data?['data']?['product']['product']
-            ['comments']['paginatorInfo']['hasMorePages'];
-      }
-      if (res?.data?['data']?['product']['product']['comments']['data'] !=
-          null) {
-        for (var item in res?.data?['data']?['product']['product']['comments']
-            ['data']) {
-          comments.add(CommentModel.fromJson(item));
-        }
-
-      }
-    } on CustomException catch (e) {}
-    loadingGetComment.value = false;
-  }
 
   Future<void> rateProduct({required int value}) async {
     mainController.query.value = '''

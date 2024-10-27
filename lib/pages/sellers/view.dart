@@ -1,3 +1,4 @@
+import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,6 +17,7 @@ class SellersPage extends StatelessWidget {
   SellersPage({Key? key}) : super(key: key);
 
   final logic = Get.find<SellersLogic>();
+  MainController mainController = Get.find<MainController>();
 
   @override
   Widget build(BuildContext context) {
@@ -74,13 +76,47 @@ class SellersPage extends StatelessWidget {
                             )),
                       ),
                     if (logic.loading.value == false)
+                      InkWell(
+                        borderRadius: BorderRadius.circular(100.r),
+                        onTap: () {
+                          logic.selectedCity.value = null;
+                        },
+                        child: Column(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.symmetric(horizontal: 0.02.sw),
+                              width: 0.15.sw,
+                              height: 0.15.sw,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: logic.selectedCity.value?.id == null
+                                        ? RedColor
+                                        : GrayLightColor,
+                                    width: 2),
+                                shape: BoxShape.circle,
+                                color: Colors.red,
+                                image: DecorationImage(
+                                  image: AssetImage(
+                                    "assets/images/png/_logo.png",
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Text(
+                              'الكل',
+                              style: H4RegularDark,
+                            )
+                          ],
+                        ),
+                      ),
+                    if (logic.loading.value == false)
                       ...List.generate(
-                          logic.cities.length,
+                          logic.categories.length,
                           (index) => InkWell(
                                 borderRadius: BorderRadius.circular(100.r),
                                 onTap: () {
                                   logic.selectedCity.value =
-                                      logic.cities[index];
+                                      logic.categories[index];
                                 },
                                 child: Column(
                                   children: [
@@ -93,7 +129,7 @@ class SellersPage extends StatelessWidget {
                                           border: Border.all(
                                               color: logic.selectedCity.value
                                                           ?.id ==
-                                                      logic.cities[index].id
+                                                      logic.categories[index].id
                                                   ? RedColor
                                                   : GrayLightColor,
                                               width: 2),
@@ -101,10 +137,10 @@ class SellersPage extends StatelessWidget {
                                           color: Colors.red,
                                           image: DecorationImage(
                                               image: CachedNetworkImageProvider(
-                                                  "${logic.cities[index].image}"))),
+                                                  "${logic.categories[index].img}"))),
                                     ),
                                     Text(
-                                      '${logic.cities[index].name}',
+                                      '${logic.categories[index].name}',
                                       style: H4RegularDark,
                                     )
                                   ],
@@ -143,8 +179,8 @@ class SellersPage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                                width: 0.25.sw,
-                                height: 0.25.sw,
+                                width: 0.3.sw,
+                                height: 0.3.sw,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.only(
                                       topRight: Radius.circular(30.r),
@@ -157,7 +193,7 @@ class SellersPage extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              10.horizontalSpace,
+
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -184,12 +220,24 @@ class SellersPage extends StatelessWidget {
                                   ),
                                   Container(
                                     width: 0.65.sw,
-                                    height: 0.0537.sh,
-                                    child: Text(
-                                      '${logic.sellers[index].address}',
-                                      style: H3GrayTextStyle,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
+
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '${logic.sellers[index].info}',
+                                          style: H3GrayTextStyle,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        Text(
+                                          '${logic.sellers[index].address}',
+                                          style: H3GrayTextStyle,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        )
+                                      ],
                                     ),
                                   ),
                                   if (logic.sellers[index].phone != null)
@@ -200,6 +248,9 @@ class SellersPage extends StatelessWidget {
                                                 "https://wa.me/${logic.sellers[index].phone}");
                                       },
                                       child: Container(
+                                        decoration: BoxDecoration(
+
+                                        ),
                                         alignment: Alignment.bottomLeft,
                                         width: 0.65.sw,
                                         child: Row(
@@ -230,13 +281,19 @@ class SellersPage extends StatelessWidget {
                     if (logic.loading.value && logic.page.value == 1)
                       ...List.generate(4,
                           (index) => MinimizeDetailsProductComponentLoading()),
-                    if(logic.loading.value && logic.page.value>1)
+                    if (logic.loading.value && logic.page.value > 1)
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Flexible(child: Container(height: 0.06.sh,child: ProgressLoading())),
-                          Flexible(child: Text('جاري جلب المزيد',style: H4GrayTextStyle,))
+                          Flexible(
+                              child: Container(
+                                  height: 0.06.sh, child: ProgressLoading())),
+                          Flexible(
+                              child: Text(
+                            'جاري جلب المزيد',
+                            style: H4GrayTextStyle,
+                          ))
                         ],
                       ),
                   ],

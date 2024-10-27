@@ -29,6 +29,7 @@ import 'package:image_picker/image_picker.dart';
 
 // import 'package:laravel_flutter_pusher_plus/laravel_flutter_pusher_plus.dart';
 import 'package:logger/logger.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:pusher_client_socket/pusher_client_socket.dart';
 
 import '../exceptions/custom_exception.dart';
@@ -46,6 +47,7 @@ class MainController extends GetxController {
   RxnString query = RxnString(null);
   Rxn<Map<String, dynamic>> variables = Rxn(null);
   RxBool loading = RxBool(false);
+  RxBool createCommunityLodaing = RxBool(false);
   RxBool cartLoading = RxBool(false);
   RxList<Map<String, dynamic>> errors = RxList<Map<String, dynamic>>([]);
   RxList<CategoryModel> categories = RxList<CategoryModel>([]);
@@ -78,6 +80,7 @@ class MainController extends GetxController {
       logger.d(value);
       if (value != null && value.length > 30) {
         getMe();
+
       }
       try {
         pusher = PusherService.init(token: "$token");
@@ -196,6 +199,14 @@ class MainController extends GetxController {
   }
 
   createCommunity({required int sellerId, String? message}) async {
+    if(createCommunityLodaing.value){
+      return;
+    }
+    if(sellerId == authUser.value?.id){
+      showToast(text: 'لا يمكنك بدء محادثة مع نفسك',type: 'error');
+      return;
+    }
+    createCommunityLodaing.value=true;
     if (authUser.value == null) return;
     query.value = '''
    mutation CreateChat {
@@ -233,6 +244,7 @@ class MainController extends GetxController {
     } catch (e) {
       logger.e("Error Create Community $e");
     }
+    createCommunityLodaing.value=false;
   }
 
   getAdvices() async {
@@ -292,8 +304,8 @@ class MainController extends GetxController {
     ''';
     try {
       dio.Response? res = await fetchData();
-      logger.d("Settings");
-      logger.d(res?.data?['data']['settings']);
+      logger.e("DATAIS:");
+      logger.e(res?.data?['data']);
       if (res?.data?['data']['me'] != null) {
         logger.d(res?.data?['data']['me']);
       }
@@ -596,7 +608,7 @@ class MainController extends GetxController {
     r'(:\d+)?(\/[^\s]*)?$' // اختياري: المنفذ والمسار
     );*/
 
-    final RegExp urlRegExp = RegExp(
+ /*   final RegExp urlRegExp = RegExp(
         //  r'[\n ]'
         r'^(https?:\/\/)?' // يبدأ بـ "http://" أو "https://"
         r'([a-zA-Z0-9\-]+\.)+[a-zA-Z]{2,}|' // نطاقات مثل .com, .org, .net وغيرها
@@ -606,14 +618,14 @@ class MainController extends GetxController {
         r'(:\d+)?' // المنفذ اختياري
         r'(\/[^\s]*)?$' // المسار يمكن أن يحتوي على أي حرف
         //   r'[\n ]'
-        );
+        );*/
 
-    /*  final RegExp urlRegExp = RegExp(
+      final RegExp urlRegExp = RegExp(
         r'[ \n| ]' // يبدأ بـ \n أو مسافة
         r'(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-?=%.]+' // الرابط
         r'[ \n| ]' // ينتهي بـ \n أو مسافة
     );
-*/
+
 
     return urlRegExp.hasMatch(text) && !text.contains('@');
   }
@@ -670,8 +682,13 @@ class MainController extends GetxController {
     me {$AUTH_FIELDS} }''';
     try {
       dio.Response? res = await fetchData();
+      logger.e('ME IS :');
+      logger.e(res?.data);
       if (res?.data?['data']?['me'] != null) {
         setUserJson(json: res?.data?['data']?['me']);
+        OneSignal.login("${authUser.value?.id}");
+        OneSignal.User.addEmail("${authUser.value?.email}");
+
       }
     } catch (e) {}
   }

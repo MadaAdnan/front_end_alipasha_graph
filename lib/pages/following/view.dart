@@ -121,15 +121,15 @@ _buildSellerCard2({required UserModel seller}){
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
+              Expanded(child:  Container(
                 padding: EdgeInsets.symmetric(
                     horizontal: 0.01.sw),
                 alignment: Alignment.topRight,
-                child: Expanded(child: Column(mainAxisAlignment: MainAxisAlignment.start,
+                child:Column(mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     InkWell(
-                     /* onTap: (){
+                      /* onTap: (){
                         Get.toNamed(PRODUCTS_PAGE,arguments: seller);
                       },*/
                       child: Text(
@@ -144,8 +144,9 @@ _buildSellerCard2({required UserModel seller}){
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],
-                )),
-              ),
+                ) ,
+              ), ),
+
               Transform.translate(offset: Offset(0, -0.02.sh),child:  Container(
                 padding: EdgeInsets.symmetric(
                     horizontal: 0.001.sw),

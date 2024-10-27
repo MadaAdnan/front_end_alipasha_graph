@@ -276,6 +276,42 @@ class FilterPage extends StatelessWidget {
                 ),
               );
             }),
+
+              Obx(() {
+                if(logic.type=='job'){
+                  return Container(
+                    width: 0.92.sw,
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
+                    margin: EdgeInsets.only(bottom: 0.03.sh),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: DarkColor),
+                        borderRadius: BorderRadius.circular(15.r)),
+                    child:Row(
+                      children: [
+                        Row(
+                          children: [
+                            Text('يبحث عن وظيفة',style: H4RegularDark,),
+                            Radio(value: 'job', groupValue: logic.typeJob.value, onChanged: (value){
+                              logic.typeJob.value=value;
+                            },),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text('شاغر وظيفي',style: H4RegularDark),
+                            Radio(value: 'search_job', groupValue:  logic.typeJob.value, onChanged: (value){
+                              logic.typeJob.value=value;
+                            },)
+                          ],
+                        )
+
+                      ],
+                    ),
+                  );
+                }
+                return Container();
+              }),
             Obx(() {
               return Container(
                 width: 0.92.sw,
@@ -372,7 +408,7 @@ class FilterPage extends StatelessWidget {
                       Obx(() {
                         return RangeSlider(
                             min: 0,
-                            max: 10000,
+                            max: 100000,
                             divisions: 40,
                             activeColor: RedColor,
                             inactiveColor: GrayLightColor,

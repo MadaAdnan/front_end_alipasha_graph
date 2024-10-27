@@ -18,7 +18,7 @@ class SellerNameComponent extends StatelessWidget {
       this.white,
       this.color,
       this.alignment = MainAxisAlignment.start,
-      this.isRegular,this.text=''});
+      this.isRegular,this.text='',this.onTap});
 
   MainController mainController = Get.find<MainController>();
   final TextStyle? textStyle;
@@ -28,6 +28,7 @@ class SellerNameComponent extends StatelessWidget {
   final bool? isRegular;
   final Color? color;
   final String? text;
+  final Function()? onTap;
   final MainAxisAlignment alignment;
 
   @override
@@ -37,7 +38,8 @@ class SellerNameComponent extends StatelessWidget {
       children: [
         Flexible(
           child: InkWell(
-            onTap: (){
+            onTap:onTap ?? (){
+              print("SELLER ${seller?.id}");
               Get.toNamed(PRODUCTS_PAGE,arguments: seller);
             },
             child: Text(

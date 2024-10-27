@@ -5,6 +5,7 @@ import 'package:ali_pasha_graph/components/product_components/minimize_details_p
 import 'package:ali_pasha_graph/components/product_components/minimize_details_product_component_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 import '../../components/home_app_bar/custom_sliver_app_bar.dart';
@@ -24,6 +25,48 @@ class JobsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        floatingActionButton: Container(
+          width: 0.1.sw,
+          height: 0.1.sw,
+          decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.6), shape: BoxShape.circle),
+          child: PopupMenuButton(
+            onSelected: (value) => logic.typeJob.value=value??'',
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                child: Text(
+                  'الكل',
+                  style: H4RegularDark,
+                ),
+                value: '',
+              ),
+              PopupMenuItem(
+                child: Text(
+                  'شاغر وظيفي',
+                  style: H4RegularDark,
+                ),
+                value: 'job',
+              ),
+              PopupMenuItem(
+                child: Text(
+                  'يبحث عن عمل',
+                  style: H4RegularDark,
+                ),
+                value: 'search_job',
+              ),
+            ],
+            icon: Transform.rotate(
+              angle: 1.57,
+              child: Icon(
+                FontAwesomeIcons.sliders,
+                size: 0.05.sw,
+                color: WhiteColor,
+              ),
+            ),
+            offset: Offset(0, -0.2.sh),
+          ),
+        ),
         backgroundColor: WhiteColor,
         body: NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification scrollInfo) {
@@ -52,6 +95,7 @@ class JobsPage extends StatelessWidget {
               Expanded(child: Container(
                 child: Obx(() {
                   return ListView(
+                    padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
                     children: [
                       ...List.generate(logic.jobs.length, (index) {
                         return MinimizeDetailsJobComponent(
@@ -63,12 +107,13 @@ class JobsPage extends StatelessWidget {
                           },
                         );
                       }),
-                      if (logic.mainController.loading.value && logic.page.value==1)
+                      if (logic.mainController.loading.value &&
+                          logic.page.value == 1)
                         ...List.generate(
                             5,
                             (index) =>
                                 MinimizeDetailsProductComponentLoading()),
-                      if (logic.loading.value && logic.page.value>1)
+                      if (logic.loading.value && logic.page.value > 1)
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,

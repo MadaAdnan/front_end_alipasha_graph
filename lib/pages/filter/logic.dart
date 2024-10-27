@@ -17,8 +17,9 @@ class FilterLogic extends GetxController {
   Rxn<CategoryModel> sub1Model = Rxn<CategoryModel>(null);
   Rxn<CityModel> cityModel = Rxn<CityModel>(null);
   RxList<ColorModel> colors = RxList<ColorModel>([]);
-  Rx<RangeValues> priceRange = Rx<RangeValues>(RangeValues(0, 1000));
+  Rx<RangeValues> priceRange = Rx<RangeValues>(RangeValues(0, 10000));
   RxString type = RxString(Get.arguments??'product');
+  RxnString typeJob = RxnString('job');
 
   Rx<SingleSelectController<CategoryModel>> categoryController =
       Rx<SingleSelectController<CategoryModel>>(
@@ -57,7 +58,7 @@ class FilterLogic extends GetxController {
       categoryId: categoryController.value.value?.id,
       sub1Id: subController.value.value?.id,
       search: searchController.text,
-      type: type.value,
+      type: type.value=='job'?typeJob.value:type.value,
       cityId: cityController.value.value?.id,
       startPrice: priceRange.value.start,
       endPrice: priceRange.value.end,
