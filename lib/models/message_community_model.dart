@@ -1,3 +1,4 @@
+import 'package:ali_pasha_graph/models/community_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
 
 class MessageModel {
@@ -6,8 +7,9 @@ class MessageModel {
   String? attach;
   String? type;
   String? createdAt;
+  CommunityModel? community;
 
-  MessageModel({this.user, this.attach, this.body, this.createdAt,this.type});
+  MessageModel({this.user, this.attach, this.body, this.createdAt,this.type,this.community});
 
   factory MessageModel.fromJson(Map<String, dynamic> data) {
     return MessageModel(
@@ -15,6 +17,8 @@ class MessageModel {
         createdAt: "${data['created_at'] ?? ''}",
         body: "${data['body'] ?? ''}",
         type: "${data['type'] ?? ''}",
-        attach: "${data['attach'] ?? ''}");
+        attach: "${data['attach'] ?? ''}",
+    community: data['community']!=null?CommunityModel.fromJson(data['community']):null,
+    );
   }
 }

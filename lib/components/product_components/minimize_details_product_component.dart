@@ -34,7 +34,7 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    mainController.logger.d(post.toJson());
+
     return Column(
       children: [
         InkWell(
@@ -138,7 +138,7 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         AutoSizeText(
-                          "${post.name!.length > 2 ? post.name : post.expert} ",
+                          "${post.name?.length !=0 ? post.name : post.expert} ",
                           style: H1BlackTextStyle.copyWith(
                               fontWeight: FontWeight.bold),
                           maxLines: 2,

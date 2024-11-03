@@ -14,11 +14,12 @@ import 'logic.dart';
 // 2226 heght all screen
 class HomeAppBarComponent extends StatelessWidget
     implements PreferredSizeWidget {
-  HomeAppBarComponent({Key? key, this.search,this.selected}) : super(key: key);
+  HomeAppBarComponent({Key? key, this.search, this.selected}) : super(key: key);
 
   MainController mainController = Get.find<MainController>();
   Function()? search;
-final String? selected;
+  final String? selected;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -47,7 +48,9 @@ final String? selected;
                   Icons.search,
                   color: RedColor,
                 ),
-                onPressed: search ?? () => Get.toNamed(FILTER_PAGE,arguments: selected??'product'),
+                onPressed: search ??
+                    () => Get.toNamed(FILTER_PAGE,
+                        arguments: selected ?? 'product'),
               ),
               Obx(() {
                 return IconButton(
@@ -108,7 +111,7 @@ final String? selected;
                     onPressed: () {
                       Get.toNamed(HOME_PAGE);
                     },
-                    icon:Icon(
+                    icon: Icon(
                       FontAwesomeIcons.home,
                       size: 0.06.sw,
                       color: Get.currentRoute == HOME_PAGE ? RedColor : null,
@@ -120,12 +123,12 @@ final String? selected;
                   decoration: BoxDecoration(
                     border: Get.currentRoute == SECTIONS_PAGE
                         ? Border(
-                      bottom: BorderSide(
-                        color: RedColor,
-                        style: BorderStyle.solid,
-                        width: 0.001.sw,
-                      ),
-                    )
+                            bottom: BorderSide(
+                              color: RedColor,
+                              style: BorderStyle.solid,
+                              width: 0.001.sw,
+                            ),
+                          )
                         : null,
                   ),
                   child: IconButton(
@@ -135,7 +138,8 @@ final String? selected;
                     icon: Icon(
                       FontAwesomeIcons.layerGroup,
                       size: 0.06.sw,
-                      color: Get.currentRoute == SECTIONS_PAGE ? RedColor : null,
+                      color:
+                          Get.currentRoute == SECTIONS_PAGE ? RedColor : null,
                     ),
                   ),
                 ),
@@ -225,16 +229,32 @@ final String? selected;
                           )
                         : null,
                   ),
-                  child: IconButton(
-                    onPressed: () {
-                      Get.toNamed(COMMUNITIES_PAGE);
-                    },
-                    icon: Icon(FontAwesomeIcons.comments,
-                        size: 0.06.sw,
-                        color: Get.currentRoute == COMMUNITIES_PAGE
-                            ? RedColor
-                            : null),
-                  ),
+                  child: Obx(() {
+                    return mainController.communityNotification.value ==0
+                        ? IconButton(
+                            onPressed: () {
+                              Get.toNamed(COMMUNITIES_PAGE);
+                            },
+                            icon: Icon(FontAwesomeIcons.comments,
+                                size: 0.06.sw,
+                                color: Get.currentRoute == COMMUNITIES_PAGE
+                                    ? RedColor
+                                    : null),
+                          )
+                        : Badge.count(
+                            count: mainController.communityNotification.value,
+                            child: IconButton(
+                              onPressed: () {
+                                Get.toNamed(COMMUNITIES_PAGE);
+                              },
+                              icon: Icon(FontAwesomeIcons.comments,
+                                  size: 0.06.sw,
+                                  color: Get.currentRoute == COMMUNITIES_PAGE
+                                      ? RedColor
+                                      : null),
+                            ),
+                          );
+                  }),
                 ),
                 Container(
                   width: 0.1.sw,

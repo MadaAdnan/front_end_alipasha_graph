@@ -10,15 +10,17 @@ class PusherService {
   static PusherClient init({String? token}) {
 
     var options = PusherOptions(
-        host: '85.215.154.88:8081',
+        host: 'pazarpasha.com:2053',
+        // host: '85.215.154.88:8086',
+        // host: 'v3.ali-pasha.com:8086',
         protocol:Protocol.ws,
         autoConnect: false,
         cluster: 'mt1',
-        authOptions: PusherAuthOptions("http://v3.ali-pasha.com/api/broadcasting/auth",
+        authOptions: PusherAuthOptions("https://pazarpasha.com/api/broadcasting/auth",
             headers: {
               if (token!=null && token!='')
                 'Authorization': 'Bearer $token', // تمرير الـ token هنا
-              'Content-Type': 'application/json',
+             /* 'Content-Type': 'application/json',*/
             }), key: 'AliPasha',enableLogging: true,);
 
     final pusherClient = PusherClient( options: options);
@@ -29,6 +31,8 @@ logger.w(data);
     });
     pusherClient.onConnectionEstablished((data) {
       logger.w("Connection established - socket-id: ${pusherClient.socketId}");
+
+        // يمكنك استخدام Logger لطباعة الرسالة
     });
     pusherClient.onConnectionError((error) {
       logger.w("Connection error - $error");

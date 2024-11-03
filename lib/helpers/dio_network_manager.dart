@@ -13,7 +13,8 @@ import 'package:image_picker/image_picker.dart';
 //Exchange // https://northsoftit.com/ER
 
 class NetworkManager {
-  static String IPWEB = "192.168.11.200";
+  // static String IPWEB = "192.168.11.200";
+  static String IPWEB = "81.169.195.17";
   static final NetworkManager _instance = NetworkManager._internal();
 
   factory NetworkManager() => _instance;
@@ -23,11 +24,11 @@ class NetworkManager {
 
   NetworkManager._internal() {
     dio = dioo.Dio(dioo.BaseOptions(
+      baseUrl: "https://pazarpasha.com/graphql/api",
       // baseUrl: "http://192.168.11.200:8000/graphql/api",
-      baseUrl: "https://v3.ali-pasha.com/graphql/api",
       // baseUrl: "https://test.ali-pasha.com/graphql/api",
       connectTimeout: const Duration(seconds: 20),
-      receiveTimeout: const Duration(seconds: 20),
+      receiveTimeout: const Duration(seconds: 40),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',

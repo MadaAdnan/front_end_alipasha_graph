@@ -22,6 +22,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../helpers/components.dart';
+import '../../helpers/helper_class.dart';
 import 'logic.dart';
 
 class EditProfilePage extends StatelessWidget {
@@ -105,9 +106,12 @@ class EditProfilePage extends StatelessWidget {
                     if (logic.user.value?.is_verified != true)
                       InkWell(
                           onTap: () {
-                            openUrl(
-                                url:
-                                    "https://wa.me/${mainController.settings.value.social?.phone}");
+                            HelperClass.requestVerified(onConfirm: (){
+                              if(isAuth()){
+                                String message="ID:${mainController.authUser.value?.id} - اسم المتجر : ${mainController.authUser.value?.seller_name} - نوع الطلب توثيق الحساب";
+                                openUrl(url: "https://wa.me/${mainController.settings.value.social?.phone}?text=$message");
+                              }
+                            });
                           },
                           child: Container(
                             width: 0.35.sw,
@@ -115,7 +119,7 @@ class EditProfilePage extends StatelessWidget {
                                 vertical: 0.01.sh, horizontal: 0.02.sw),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15.r),
-                                color: RedColor),
+                                color: Colors.blue),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,

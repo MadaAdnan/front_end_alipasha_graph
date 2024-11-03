@@ -3,6 +3,7 @@ import 'package:ali_pasha_graph/components/advice_component/view.dart';
 import 'package:ali_pasha_graph/components/product_components/minimize_details_product_component.dart';
 import 'package:ali_pasha_graph/components/product_components/minimize_details_product_component_loading.dart';
 import 'package:ali_pasha_graph/components/product_components/post_card.dart';
+import 'package:ali_pasha_graph/components/progress_loading.dart';
 import 'package:ali_pasha_graph/helpers/enums.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
@@ -31,34 +32,30 @@ class ProductsPage extends StatelessWidget {
   final logic = Get.find<ProductsLogic>();
   MainController mainController = Get.find<MainController>();
   RxBool followLoading = RxBool(false);
-
+ScrollController scrollController=ScrollController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: WhiteColor,
       body: NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification scrollInfo) {
-        if (scrollInfo.metrics.pixels >=
-                scrollInfo.metrics.maxScrollExtent * 0.80 &&
-            !mainController.loading.value &&
-            logic.hasMorePage.value) {
-          logic.nextPage();
-        }
+            mainController.logger.d(scrollInfo.metrics.pixels >=
+                scrollInfo.metrics.maxScrollExtent * 0.8 );
+            mainController.logger.w(logic.hasMorePage.value);
 
-        if (scrollInfo is ScrollUpdateNotification) {
-          if (scrollInfo.metrics.pixels > scrollInfo.metrics.minScrollExtent) {
-            mainController.is_show_home_appbar(false);
-          } else {
-            mainController.is_show_home_appbar(true);
-          }
+        if (scrollInfo.metrics.pixels >=
+                scrollInfo.metrics.maxScrollExtent * 0.8 &&
+            logic.hasMorePage.value && !logic.loadingProducts.value) {
+          logic.nextPage();
         }
         return true;
       }, child: Obx(() {
         Color? color = logic.seller.value?.is_verified == true
             ? logic.seller.value?.id_color!.toColor()
             : RedColor;
-        if (logic.loading.value) {
+        if (logic.loading.value && logic.page.value==1) {
           return ListView(
+            controller: scrollController,
             children: [
               Shimmer.fromColors(
                   baseColor: GrayLightColor,
@@ -152,6 +149,7 @@ class ProductsPage extends StatelessWidget {
                               ) ,),
                             ],
                             onSelected: (value){
+                              String? msg='إبلاغ عن المتجر : ${logic.seller.value?.seller_name} - تم الإبلاغ عن من قبل المستخدم : ${mainController.authUser.value?.name}';
                               switch(value){
                                 case '1':
                                   Share.share(
@@ -160,9 +158,11 @@ class ProductsPage extends StatelessWidget {
                                   break;
                                 case '2':
                                if(mainController.settings.value.support?.id !=null){
-                                 mainController.createCommunity(sellerId: mainController.settings.value.support!.id!);
+
+                                 mainController.createCommunity(sellerId: mainController.settings.value.support!.id!,message: msg);
                                }else{
-                                 openUrl(url: "https://wa.me/${mainController.settings.value.social?.phone}");
+
+                                 openUrl(url: "https://wa.me/${mainController.settings.value.social?.phone}?text=$msg");
                                }
                                   break;
                               }
@@ -650,7 +650,7 @@ class ProductsPage extends StatelessWidget {
                         height: 0.02.sh,
                       ),
                       Obx(() {
-                        if (logic.loadingProducts.value) {
+                        if (logic.loadingProducts.value && logic.page.value==1) {
                           return Column(
                             children: [
                               ...List.generate(
@@ -714,8 +714,14 @@ class ProductsPage extends StatelessWidget {
                                 ],
                               ),
                             ),
+                            if (logic.loadingProducts.value && logic.page.value>1)
+                              Container(
+                                height: 0.05.sw,
+                                child: ProgressLoading(width: 0.05.sw,),
+                              )
                           ],
                         );
+
                       }),
                     ],
                   )),
@@ -724,6 +730,7 @@ class ProductsPage extends StatelessWidget {
               ],
             ),
             Positioned(
+              top: 0.16.sh,
               child: Builder(
                   builder: (context) => InkWell(
                         onTap: () {
@@ -741,6 +748,7 @@ class ProductsPage extends StatelessWidget {
                                           Container(
                                             child: Image(
                                               image: imageProvider,
+                                              fit: BoxFit.cover,
                                             ),
                                           )),
                                   Positioned(
@@ -786,14 +794,14 @@ class ProductsPage extends StatelessWidget {
                           height: 0.12.sh,
                           decoration: BoxDecoration(
                               border: Border.all(color: WhiteColor),
+                              color: GrayLightColor,
                               shape: BoxShape.circle,
                               image: DecorationImage(
                                   image: CachedNetworkImageProvider(
                                       "${logic.seller.value?.image}"),
-                                  fit: BoxFit.contain)),
+                                  fit: BoxFit.fitHeight)),
                         ),
                       )),
-              top: 0.16.sh,
             ),
           ],
         );

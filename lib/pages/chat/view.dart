@@ -541,6 +541,7 @@ class ChatPage extends StatelessWidget {
   }
 
   Widget myMessage(context, {required MessageModel message}) {
+    print('IMAGE: ${message.attach}');
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -856,6 +857,7 @@ class PlayerSoundMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('Path: ${path}');
     return Obx(() {
       return Row(
         children: [

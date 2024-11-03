@@ -22,6 +22,7 @@ class ProfileLogic extends GetxController {
   RxInt pageSelected = RxInt(0);
   TextEditingController searchController = TextEditingController();
   RxBool loading = RxBool(false);
+  RxBool loadingProduct = RxBool(false);
 
 
   // Data From Api
@@ -82,7 +83,7 @@ class ProfileLogic extends GetxController {
   }
 
   getProduct() async {
-    loading.value = true;
+    loadingProduct.value = true;
     if (page.value == 1) {
       products.clear();
     }
@@ -139,7 +140,7 @@ class ProfileLogic extends GetxController {
     } on CustomException catch (e) {
       mainController.logger.e(e);
     }
-    loading.value = false;
+    loadingProduct.value = false;
   }
 
   getMyAdvice() async {

@@ -21,7 +21,7 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   final appLinks = AppLinks(); // AppLinks is singleton
-  // OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+  OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
   OneSignal.initialize("af3a71bd-8c94-4d51-a39e-a9c9c84e0228");
   OneSignal.Notifications.requestPermission(true);
 // Subscribe to all events (initial link and further)

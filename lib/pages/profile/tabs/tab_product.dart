@@ -28,17 +28,9 @@ class TabProduct extends StatelessWidget {
       onNotification: (ScrollNotification scrollInfo) {
         if (scrollInfo.metrics.pixels >=
                 scrollInfo.metrics.maxScrollExtent * 0.80 &&
-            !mainController.loading.value &&
+            !logic.loadingProduct.value &&
             logic.hasMorePage.value) {
           logic.nextPage();
-        }
-
-        if (scrollInfo is ScrollUpdateNotification) {
-          if (scrollInfo.metrics.pixels > scrollInfo.metrics.minScrollExtent) {
-            mainController.is_show_home_appbar(false);
-          } else {
-            mainController.is_show_home_appbar(true);
-          }
         }
         return true;
       },
@@ -46,7 +38,7 @@ class TabProduct extends StatelessWidget {
         children: [
         
           Obx(() {
-            if ((logic.loading.value && logic.page.value == 1)) {
+            if ((logic.loadingProduct.value && logic.page.value == 1)) {
               return Expanded(
                 child: ListView(
                   children: [
@@ -96,7 +88,7 @@ class TabProduct extends StatelessWidget {
           }),
           Obx(() {
             return Visibility(
-              visible: mainController.loading.value && logic.page.value > 1,
+              visible: logic.loadingProduct.value && logic.page.value > 1,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
