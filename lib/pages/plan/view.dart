@@ -3,9 +3,9 @@ import 'package:ali_pasha_graph/components/plan_card/view.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:get/get.dart';
-import 'package:badges/badges.dart' as badges;
+
 import '../../helpers/components.dart';
 import '../../helpers/style.dart';
 import '../../routes/routes_url.dart';

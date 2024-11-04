@@ -1,14 +1,11 @@
 import 'dart:convert';
-import 'dart:math';
 
-import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../../Global/main_controller.dart';
-import '../../helpers/components.dart';
 import 'package:dio/dio.dart' as dio;
 
 import '../../models/category_model.dart';
@@ -74,7 +71,7 @@ class EditProductLogic extends GetxController {
   }
 
   fillDataFromDraft() {
-    var data = box.read<Map<String, dynamic>>('draft');
+    //var data = box.read<Map<String, dynamic>>('draft');
   }
 
   Future<void> getDataForCreate() async {
@@ -216,9 +213,9 @@ query MainCategories {
       "variables": <String, dynamic>{
         'id': "$productId",
         "input": {
-          'name': nameController.text ?? '',
+          'name': nameController.text ,
           "images": null,
-          "info": infoProduct.text ?? '',
+          "info": infoProduct.text ,
           "is_available": isAvailable.value,
           "price": double.tryParse(priceController.text) ?? 0,
           "discount": double.tryParse(discountController.text),
@@ -226,9 +223,8 @@ query MainCategories {
           "sub1_id": subCategory.value?.id,
           "sub2_id": sub2Category.value?.id,
           "sub3_id": sub3Category.value?.id,
-          //"period": periodProduct.value,
           "colors": colorIds.toList(),
-          'video': videoController.text ?? '',
+          'video': videoController.text ,
         }
       }
     };

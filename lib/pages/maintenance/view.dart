@@ -1,4 +1,3 @@
-import 'package:ali_pasha_graph/components/advice_component/view.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:flutter/material.dart';

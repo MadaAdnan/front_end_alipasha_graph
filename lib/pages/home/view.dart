@@ -1,8 +1,6 @@
-import 'dart:math';
 
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/components/advice_component/view.dart';
-import 'package:ali_pasha_graph/components/home_app_bar/custom_sliver_app_bar.dart';
 
 import 'package:ali_pasha_graph/components/home_app_bar/view.dart';
 import 'package:ali_pasha_graph/components/product_components/job_card.dart';
@@ -12,15 +10,13 @@ import 'package:ali_pasha_graph/components/progress_loading.dart';
 import 'package:ali_pasha_graph/components/sections_components/section_home_card.dart';
 import 'package:ali_pasha_graph/components/seller_component/seller_home_page_card.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
-import 'package:ali_pasha_graph/helpers/enums.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
-import 'package:ali_pasha_graph/models/product_model.dart';
-import 'package:ali_pasha_graph/models/user_model.dart';
+
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -368,7 +364,7 @@ class HomePage extends StatelessWidget {
               ),
             ),
             Text(
-              title!,
+              title,
               overflow: TextOverflow.ellipsis,
               style: H4BlackTextStyle,
             )

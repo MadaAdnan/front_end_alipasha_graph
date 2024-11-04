@@ -64,7 +64,7 @@ saveData() async {
         image
       } }}""",
       "variables": <String, dynamic>{
-        "name": nameController.value.text ?? '',
+        "name": nameController.value.text,
         "image": null,
       },
     };
@@ -93,7 +93,7 @@ saveData() async {
         image
       } }}""",
       "variables": <String, dynamic>{
-        "name": nameController.value.text ?? '',
+        "name": nameController.value.text,
         "image": null,
       },
     };

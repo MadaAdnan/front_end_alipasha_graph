@@ -5,16 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:form_builder_file_picker/form_builder_file_picker.dart';
 import 'package:form_builder_image_picker/form_builder_image_picker.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 
 import '../../Global/main_controller.dart';
 import '../../helpers/colors.dart';
-import '../../helpers/components.dart';
 import '../../helpers/style.dart';
-import '../../models/attribute_model.dart';
 import '../../models/category_model.dart';
 import 'logic.dart';
 

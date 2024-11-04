@@ -98,6 +98,8 @@ import 'package:ali_pasha_graph/pages/shipping/binding.dart';
 import 'package:ali_pasha_graph/pages/shipping/view.dart';
 import 'package:ali_pasha_graph/pages/tenders/binding.dart';
 import 'package:ali_pasha_graph/pages/tenders/view.dart';
+import 'package:ali_pasha_graph/pages/test/binding.dart';
+import 'package:ali_pasha_graph/pages/test/view.dart';
 import 'package:ali_pasha_graph/pages/verify_email/binding.dart';
 import 'package:ali_pasha_graph/pages/verify_email/view.dart';
 import 'package:ali_pasha_graph/pages/video_player_post/binding.dart';
@@ -151,6 +153,13 @@ class AppPages {
       name: COMMENTS_PAGE,
       page: () => CommentPage(),
       binding: CommentBinding(),
+      middlewares: [],
+    ),
+
+    GetPage(
+      name: TEST_PAGE,
+      page: () => TestPage(),
+      binding: TestBinding(),
       middlewares: [],
     ),
 

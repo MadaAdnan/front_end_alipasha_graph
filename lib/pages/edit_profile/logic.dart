@@ -5,14 +5,11 @@ import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/helpers/components.dart';
 import 'package:ali_pasha_graph/helpers/queries.dart';
 import 'package:ali_pasha_graph/models/city_model.dart';
-import 'package:ali_pasha_graph/models/social_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
-import 'package:get/get_rx/get_rx.dart';
-import 'package:get_storage/get_storage.dart';
+
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -63,35 +60,35 @@ class EditProfileLogic extends GetxController {
     ever(user, (value) {
       if (value != null) {
         nameController.value =
-            TextEditingValue(text: "${user.value!.name ?? ''}");
+            TextEditingValue(text: "${user.value!.name }");
         emailController.value =
-            TextEditingValue(text: "${user.value!.email ?? ''}");
+            TextEditingValue(text: "${user.value!.email }");
         phoneController.value =
-            TextEditingValue(text: "${user.value!.phone ?? ''}");
+            TextEditingValue(text: "${user.value!.phone }");
         addressController.value =
-            TextEditingValue(text: "${user.value!.address ?? ''}");
+            TextEditingValue(text: "${user.value!.address }");
         sellerNameController.value =
-            TextEditingValue(text: "${user.value!.seller_name ?? ''}");
+            TextEditingValue(text: "${user.value!.seller_name }");
         openTimeController.value =
-            TextEditingValue(text: "${user.value!.open_time ?? ''}");
+            TextEditingValue(text: "${user.value!.open_time }");
         closeTimeController.value =
-            TextEditingValue(text: "${user.value!.close_time ?? ''}");
+            TextEditingValue(text: "${user.value!.close_time }");
         infoController.value =
-            TextEditingValue(text: "${user.value!.info ?? ''}");
+            TextEditingValue(text: "${user.value!.info }");
         passwordController.value = TextEditingValue();
         confirmPasswordController.value = TextEditingValue();
         colorIdController.value =
             TextEditingValue(text: "${user.value?.id_color ?? '#ff0000'}");
         instagramController.value =
-            TextEditingValue(text: "${user.value?.social?.instagram ?? ''}");
+            TextEditingValue(text: "${user.value?.social?.instagram }");
         twitterController.value =
-            TextEditingValue(text: "${user.value?.social?.twitter ?? ''}");
+            TextEditingValue(text: "${user.value?.social?.twitter }");
         faceController.value =
-            TextEditingValue(text: "${user.value?.social?.face ?? ''}");
+            TextEditingValue(text: "${user.value?.social?.face }");
         linkedInController.value =
-            TextEditingValue(text: "${user.value?.social?.linkedin ?? ''}");
+            TextEditingValue(text: "${user.value?.social?.linkedin }");
         tiktokController.value =
-            TextEditingValue(text: "${user.value?.social?.tiktok ?? ''}");
+            TextEditingValue(text: "${user.value?.social?.tiktok }");
       }
     });
   }
@@ -145,23 +142,23 @@ class EditProfileLogic extends GetxController {
           r"}",
       "variables": <String, dynamic>{
         "input": {
-          "name": nameController.value.text ?? '',
-          "email": emailController.value.text ?? '',
-          "password": passwordController.value.text ?? '',
-          "phone": phoneController.value.text ?? '',
+          "name": nameController.value.text ,
+          "email": emailController.value.text ,
+          "password": passwordController.value.text ,
+          "phone": phoneController.value.text ,
           "city_id": cityId.value,
-          "seller_name": sellerNameController.value.text ?? '',
-          "address": addressController.value.text ?? '',
-          "close_time": closeTimeController.value.text ?? '',
-          "open_time": openTimeController.value.text ?? '',
-          "info": infoController.value.text ?? '',
-          "colorId": colorIdController.value.text ?? '',
+          "seller_name": sellerNameController.value.text ,
+          "address": addressController.value.text ,
+          "close_time": closeTimeController.value.text ,
+          "open_time": openTimeController.value.text ,
+          "info": infoController.value.text ,
+          "colorId": colorIdController.value.text ,
           'social': {
-            'instagram': instagramController.value.text ?? '',
-            'face': faceController.value.text ?? '',
-            'linkedin': linkedInController.value.text ?? '',
-            'tiktok': tiktokController.value.text ?? '',
-            'twitter': twitterController.value.text ?? '',
+            'instagram': instagramController.value.text ,
+            'face': faceController.value.text ,
+            'linkedin': linkedInController.value.text ,
+            'tiktok': tiktokController.value.text ,
+            'twitter': twitterController.value.text ,
           },
           "image": null,
           "logo": null,

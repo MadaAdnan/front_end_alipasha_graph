@@ -1,12 +1,10 @@
 import 'dart:io';
 
 import 'package:ali_pasha_graph/helpers/colors.dart';
-import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -44,12 +42,12 @@ class ChooseMultiImages extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Icon(
+                    const Icon(
                       FontAwesomeIcons.image,
                       color: Colors.red,
                     ),
                     SizedBox(width: 10.w),
-                    Text(
+                    const Text(
                       'مزيد من الصور',
                       style: TextStyle(color: Colors.grey),
                     ),
@@ -77,7 +75,7 @@ class ChooseMultiImages extends StatelessWidget {
                               image: FileImage(File(files[index]!.path)),
                               fit: BoxFit.cover, // تحديد التكبير والتصغير
                             )
-                                : DecorationImage(
+                                : const DecorationImage(
                               image: AssetImage(
                                   'assets/images/png/no-img.png'),
                             ),
@@ -88,7 +86,7 @@ class ChooseMultiImages extends StatelessWidget {
                             onPressed: () {
                               _clear(index);
                             },
-                            icon: Icon(
+                            icon: const Icon(
                               FontAwesomeIcons.trash,
                               size: 20,
                               color: RedColor,
@@ -159,7 +157,7 @@ class ChooseMultiImages extends StatelessWidget {
       }
     } catch (e) {
       // Handle the error appropriately
-      print('Error cropping image: $e');
+
       Get.snackbar('خطأ', 'لم يتمكن ممن قص الصورة');
     }
   }

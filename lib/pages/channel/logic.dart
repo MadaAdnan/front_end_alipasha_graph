@@ -7,7 +7,6 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import '../../Global/main_controller.dart';
 import '../../helpers/redcord_manager.dart';
@@ -193,10 +192,7 @@ query GetMessages {
       return;
     }
     loadingSend.value = true;
-    int? sellerId =
-    mainController.authUser.value?.id == communityModel.value.manager?.id
-        ? communityModel.value.manager?.id
-        : communityModel.value.manager?.id;
+
     Map<String, dynamic> datajson = {
       "query":
       r"""mutation CreateMessage($communityId:Int!, $body: String!, $attach: Upload) {

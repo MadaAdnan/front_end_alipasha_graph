@@ -68,7 +68,7 @@ class CreateServiceLogic extends GetxController {
   }
 
   fillDataFromDraft() {
-    var data = box.read<Map<String, dynamic>>('draft');
+    //var data = box.read<Map<String, dynamic>>('draft');
   }
 
   Future<void> getDataForCreate() async {
@@ -182,11 +182,11 @@ query MainCategories {
             message: "تم إرسال الوظيفة للمراجعة بنجاح", isSuccess: true);
       } else if (res.data?['errors']?[0]?['extensions']['validation'] != null) {
         // جلب الكائن validation
-        Map<String, dynamic> validation =
-            res.data['errors'][0]['extensions']['validation'];
+      /*  Map<String, dynamic> validation =
+            res.data['errors'][0]['extensions']['validation'];*/
 
         // جلب أول قيمة من الكائن بغض النظر عن ال key
-        String firstErrorMessage = validation.values.first.first;
+      //  String firstErrorMessage = validation.values.first.first;
         mainController.showToast(text:'فشل العملية',type: 'error' );
 
       }

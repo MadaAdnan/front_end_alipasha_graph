@@ -1,4 +1,5 @@
 import 'package:ali_pasha_graph/models/city_model.dart';
+import 'package:ali_pasha_graph/models/community_model.dart';
 import 'package:ali_pasha_graph/models/plan_model.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
 import 'package:ali_pasha_graph/models/social_model.dart';
@@ -36,10 +37,12 @@ class UserModel {
   int? followingCount;
   int? total_views;
   List<DataImageModel>? gallery;
- bool? can_create_group;
- bool? can_create_channel;
- int? unread_notifications_count;
-SocialModel? social;
+  bool? can_create_group;
+  bool? can_create_channel;
+  int? unread_notifications_count;
+  List<CommunityModel>? communities;
+  SocialModel? social;
+
   UserModel({
     this.name,
     this.id,
@@ -69,7 +72,7 @@ SocialModel? social;
     this.followingCount,
     this.is_seller,
     this.id_color,
-    this.is_verified=false,
+    this.is_verified = false,
     this.social,
     this.total_views,
     this.trust,
@@ -77,13 +80,20 @@ SocialModel? social;
     this.can_create_channel,
     this.can_create_group,
     this.unread_notifications_count,
+    this.communities,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> data) {
     List<ProductModel> listProducts = [];
+    List<CommunityModel> listCommunities = [];
     List<PlanModel> listPlans = [];
     List<DataImageModel> listGallery = [];
     List<FollowerModel> listFollowers = [];
+    if (data['communities'] != null) {
+      for (var item in data['communities']) {
+        listCommunities.add(CommunityModel.fromJson(item));
+      }
+    }
     if (data['products'] != null) {
       for (var item in data['products']) {
         listProducts.add(ProductModel.fromJson(item));
@@ -109,18 +119,20 @@ SocialModel? social;
       id: int.tryParse("${data['id']}"),
       followingCount: int.tryParse("${data['following_count']}") ?? 0,
       total_views: int.tryParse("${data['total_views']}") ?? 0,
-      unread_notifications_count: int.tryParse("${data['unread_notifications_count']}") ?? 0,
+      unread_notifications_count:
+          int.tryParse("${data['unread_notifications_count']}") ?? 0,
       info: "${data['info'] ?? ''}",
       affiliate: "${data['affiliate'] ?? ''}",
-      is_special: bool.tryParse("${data['is_special']}")?? false,
-      trust: bool.tryParse("${data['trust']}")?? false,
-      is_verified: bool.tryParse("${data['is_verified']}")?? false,
-      can_create_group: bool.tryParse("${data['can_create_group']}")?? false,
-      can_create_channel: bool.tryParse("${data['can_create_channel']}")?? false,
-      is_restaurant: bool.tryParse("${data['is_restaurant']}")?? false,
-      is_delivery: bool.tryParse("${data['is_delivery']}")?? false,
-      is_active: bool.tryParse("${data['is_active']}")?? false,
-      is_seller: bool.tryParse("${data['is_seller'] }")?? false,
+      is_special: bool.tryParse("${data['is_special']}") ?? false,
+      trust: bool.tryParse("${data['trust']}") ?? false,
+      is_verified: bool.tryParse("${data['is_verified']}") ?? false,
+      can_create_group: bool.tryParse("${data['can_create_group']}") ?? false,
+      can_create_channel:
+          bool.tryParse("${data['can_create_channel']}") ?? false,
+      is_restaurant: bool.tryParse("${data['is_restaurant']}") ?? false,
+      is_delivery: bool.tryParse("${data['is_delivery']}") ?? false,
+      is_active: bool.tryParse("${data['is_active']}") ?? false,
+      is_seller: bool.tryParse("${data['is_seller']}") ?? false,
       close_time: "${data['close_time'] ?? ''}",
       open_time: "${data['open_time'] ?? ''}",
       id_color: "${data['id_color'] ?? ''}",
@@ -133,16 +145,17 @@ SocialModel? social;
       logo: "${data['logo'] ?? ''}",
       customImg: "${data['custom'] ?? ''}",
       level: "${data['level']}",
-      totalBalance: double.tryParse("${data['total_balance']}")??0,
-      totalPoint: double.tryParse("${data['total_point'] }")??0,
+      totalBalance: double.tryParse("${data['total_balance']}") ?? 0,
+      totalPoint: double.tryParse("${data['total_point']}") ?? 0,
       email_verified_at: "${data['email_verified_at'] ?? ''}",
       city: data['city'] != null ? CityModel.fromJson(data['city']) : null,
-      social: data['social'] != null ? SocialModel.fromJson(data['social']) : null,
+      social:
+          data['social'] != null ? SocialModel.fromJson(data['social']) : null,
       products: listProducts.toList(),
       plans: listPlans.toList(),
       followers: listFollowers.toList(),
       gallery: listGallery.toList(),
-
+      communities: listCommunities,
     );
   }
 
@@ -157,8 +170,8 @@ SocialModel? social;
       'address': address,
       'image': image,
       'logo': logo,
-      "id_color":id_color,
-      "is_verified":is_verified,
+      "id_color": id_color,
+      "is_verified": is_verified,
       'open_time': open_time,
       'close_time': close_time,
       'is_active': is_active,

@@ -8,7 +8,9 @@ info
 open_time
 close_time
 total_views
-
+communities{
+id
+}
 unread_notifications_count
             seller_name
             email_verified_at
@@ -70,7 +72,9 @@ info
 open_time
 close_time
 total_views
-
+communities{
+id
+}
 unread_notifications_count
             seller_name
             email_verified_at

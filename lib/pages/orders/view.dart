@@ -1,5 +1,4 @@
-import 'package:ali_pasha_graph/components/advice_component/view.dart';
-import 'package:ali_pasha_graph/components/plan_card/view.dart';
+
 import 'package:ali_pasha_graph/components/progress_loading.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/enums.dart';

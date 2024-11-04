@@ -1,6 +1,5 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
-import 'package:ali_pasha_graph/main.dart';
 import 'package:ali_pasha_graph/models/category_model.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;

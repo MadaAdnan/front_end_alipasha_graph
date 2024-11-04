@@ -1,6 +1,5 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
-import 'package:ali_pasha_graph/components/fields_components/input_component.dart';
-import 'package:ali_pasha_graph/components/progress_loading.dart';
+
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/components.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
@@ -9,9 +8,7 @@ import 'package:ali_pasha_graph/pages/product/logic.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 class CommentPage extends StatelessWidget {

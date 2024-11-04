@@ -8,7 +8,6 @@ import '../../Global/main_controller.dart';
 import '../../helpers/colors.dart';
 import '../../helpers/style.dart';
 import '../../models/user_model.dart';
-import '../../routes/routes_url.dart';
 import 'logic.dart';
 
 class FollowingPage extends StatelessWidget {

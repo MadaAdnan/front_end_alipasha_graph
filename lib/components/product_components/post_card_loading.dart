@@ -1,22 +1,12 @@
-import 'package:ali_pasha_graph/Global/main_controller.dart';
-import 'package:ali_pasha_graph/components/youtube_player/view.dart';
-import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
-import 'package:ali_pasha_graph/helpers/components.dart';
-import 'package:ali_pasha_graph/helpers/enums.dart';
-import 'package:ali_pasha_graph/helpers/queries.dart';
 
-import 'package:ali_pasha_graph/models/product_model.dart';
-
-import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
-import "package:dio/dio.dart" as dio;
+
+
 import 'package:shimmer/shimmer.dart';
 
 import '../../helpers/colors.dart';
-import '../../helpers/style.dart';
+
 
 class PostCardLoading extends StatelessWidget {
   PostCardLoading({super.key});
@@ -36,7 +26,7 @@ class PostCardLoading extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-         Shimmer.fromColors(child:  Container(
+         Shimmer.fromColors(baseColor: GrayLightColor, highlightColor: GrayWhiteColor, child:  Container(
            padding:
            EdgeInsets.symmetric(horizontal: 0.018.sw, vertical: 0.008.sh),
            width: double.infinity,
@@ -105,8 +95,8 @@ class PostCardLoading extends StatelessWidget {
                )
              ],
            ),
-         ), baseColor: GrayLightColor, highlightColor: GrayWhiteColor),
-          Shimmer.fromColors(child:   Container(
+         )),
+          Shimmer.fromColors(baseColor: GrayLightColor, highlightColor: GrayWhiteColor, child:   Container(
             width: 1.sw,
             height: 1.sw,
             decoration: BoxDecoration(
@@ -147,8 +137,8 @@ class PostCardLoading extends StatelessWidget {
 
               ],
             ),
-          ), baseColor: GrayLightColor, highlightColor: GrayWhiteColor),
-          Shimmer.fromColors(child:      Container(
+          )),
+          Shimmer.fromColors(baseColor: GrayLightColor, highlightColor: GrayWhiteColor, child:      Container(
             height: 0.05.sh,
             alignment: Alignment.center,
             color: WhiteColor,
@@ -176,7 +166,7 @@ class PostCardLoading extends StatelessWidget {
                 ),
               ],
             ),
-          ), baseColor: GrayLightColor, highlightColor: GrayWhiteColor),
+          )),
 
 
         ],

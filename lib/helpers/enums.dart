@@ -10,22 +10,22 @@ extension CategoryTypeEnum on String {
     switch (this) {
       case "product":
         return "منتج";
-        break;
+
       case "job":
         return "شاغر وظيفي";
-        break;
+
       case "search_job":
         return "باحث عن عمل";
-        break;
+
       case "news":
         return "خبر";
-        break;
+
       case "tender":
         return "مناقصة";
-        break;
+
       case "service":
         return "خدمة";
-        break;
+
       default:
         return this;
     }
@@ -35,22 +35,22 @@ extension CategoryTypeEnum on String {
     switch (this) {
       case "product":
         return "منتج";
-        break;
+
       case "job":
         return "شاغر وظيفي";
-        break;
+
       case "search_job":
         return "باحث عن عمل";
-        break;
+
       case "news":
         return "خبر";
-        break;
+
       case "tender":
         return "مناقصة";
-        break;
+
       case "service":
         return "خدمة";
-        break;
+
       default:
         return this;
     }
@@ -60,22 +60,22 @@ extension CategoryTypeEnum on String {
     switch (this) {
       case "product":
         return "منتج";
-        break;
+
       case "job":
         return "شاغر وظيفي";
-        break;
+
       case "search_job":
         return "باحث عن عمل";
-        break;
+
       case "news":
         return "خبر";
-        break;
+
       case "tender":
         return "مناقصة";
-        break;
+
       case "service":
         return "خدمة";
-        break;
+
       default:
         return this;
     }
@@ -173,13 +173,13 @@ extension FormatNumber on String {
     switch (this) {
       case 'free':
         return "مجاني";
-        break;
+
       case 'month':
         return "شهرياً";
-        break;
+
       case 'year':
         return "سنويا";
-        break;
+
       default:
         return this;
     }
@@ -191,14 +191,14 @@ extension ProductActiveEnum on String {
     switch (this) {
       case "active":
         return "مفعل";
-        break;
+
 
       case "pending":
         return "بالإنتظار";
-        break;
+
       case "block":
         return "محظور";
-        break;
+
       default:
         return this;
     }
@@ -208,14 +208,14 @@ extension ProductActiveEnum on String {
     switch (this) {
       case "active":
         return FontAwesomeIcons.check;
-        break;
+
 
       case "pending":
         return FontAwesomeIcons.clock;
-        break;
+
       case "block":
         return FontAwesomeIcons.ban;
-        break;
+
       default:
         return null;
     }
@@ -225,14 +225,14 @@ extension ProductActiveEnum on String {
     switch (this) {
       case "active":
         return Colors.green;
-        break;
+
 
       case "pending":
         return OrangeColor;
-        break;
+
       case "block":
         return RedColor;
-        break;
+
       default:
         return DarkColor;
     }

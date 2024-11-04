@@ -1,10 +1,10 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
-import 'package:ali_pasha_graph/components/product_components/job_card.dart';
 import 'package:ali_pasha_graph/components/seller_name_component.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/components.dart';
 import 'package:ali_pasha_graph/helpers/curve_profile.dart';
 import 'package:ali_pasha_graph/helpers/enums.dart';
+import 'package:ali_pasha_graph/helpers/helper_class.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:ali_pasha_graph/pages/profile/tabs/advice_tab.dart';
 import 'package:ali_pasha_graph/pages/profile/tabs/tab_chart.dart';
@@ -16,7 +16,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../components/expand_search.dart';
@@ -36,7 +35,7 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     Color? color = mainController.authUser.value?.is_verified == true
         ? mainController.authUser.value?.id_color!.toColor()
-        : DarkColor;
+        : RedColor;
     return Scaffold(
       backgroundColor: WhiteColor,
       body: Stack(
@@ -492,10 +491,12 @@ class ProfilePage extends StatelessWidget {
                                 true)
                               InkWell(
                                   onTap: () {
-                                    openUrl(
-                                        url:
-                                        "https://wa.me/${mainController.settings
-                                            .value.social?.phone}");
+                                   HelperClass.requestVerified(onConfirm: (){
+                                     if(isAuth()){
+                                       String message="ID:${mainController.authUser.value?.id} - اسم المتجر : ${mainController.authUser.value?.seller_name} - نوع الطلب توثيق الحساب";
+                                       openUrl(url: "https://wa.me/${mainController.settings.value.social?.phone}?text=$message");
+                                     }
+                                   });
                                   },
                                   child: Container(
                                     width: 0.35.sw,

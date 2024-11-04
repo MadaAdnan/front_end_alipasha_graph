@@ -265,6 +265,7 @@ class ShippingPage extends StatelessWidget {
                               onChanged: (value) {
                                 logic.weight.value =
                                     double.tryParse("${value ?? 0}");
+                                return null;
                               },
                             ),
                           ),
@@ -310,6 +311,7 @@ class ShippingPage extends StatelessWidget {
                                         onChanged: (value) {
                                           logic.height.value =
                                               double.tryParse("${value ?? 0}");
+                                          return null;
                                         },
                                       ),
                                     ),
@@ -342,6 +344,7 @@ class ShippingPage extends StatelessWidget {
                                         onChanged: (value) {
                                           logic.width.value =
                                               double.tryParse("${value ?? 0}");
+                                          return null;
                                         },
                                       ),
                                     ),
@@ -375,6 +378,7 @@ class ShippingPage extends StatelessWidget {
                                         onChanged: (value) {
                                           logic.length.value =
                                               double.tryParse("${value ?? 0}");
+                                          return null;
                                         },
                                       ),
                                     ),

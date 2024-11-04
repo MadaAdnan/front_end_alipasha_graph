@@ -1,8 +1,5 @@
-import 'dart:io';
 
-import 'package:ali_pasha_graph/helpers/colors.dart';
-import 'package:ali_pasha_graph/helpers/style.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -45,12 +42,12 @@ class ChooseSingleImage extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  Icon(
+                  const Icon(
                     FontAwesomeIcons.image,
                     color: Colors.red,
                   ),
                   SizedBox(width: 10.w),
-                  Text(
+                  const Text(
                     'الصورة الرئيسية',
                     style: TextStyle(color: Colors.grey),
                   ),
@@ -80,7 +77,7 @@ class ChooseSingleImage extends StatelessWidget {
         maxWidth: 300,
         maxHeight: 300,
         compressQuality: 80,
-        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+        aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
         uiSettings: [
           AndroidUiSettings(
             toolbarTitle: 'قص الصورة',
@@ -103,13 +100,9 @@ class ChooseSingleImage extends StatelessWidget {
       }
     } catch (e) {
       // Handle the error appropriately
-      print('Error cropping image: $e');
+
       Get.snackbar('Error', 'Failed to crop image');
     }
   }
 
-  void _clear() {
-    file = null;
-    onFileChanged(null);
-  }
 }

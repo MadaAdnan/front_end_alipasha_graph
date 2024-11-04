@@ -216,7 +216,7 @@ class GalleryPage extends StatelessWidget {
                   alignment: WrapAlignment.center,
                   spacing: 0.02.sw,
                   children: [
-                    ...List.generate(logic.images.length ?? 0, (index) {
+                    ...List.generate(logic.images.length, (index) {
                       return Stack(
                         children: [
                           InkWell(

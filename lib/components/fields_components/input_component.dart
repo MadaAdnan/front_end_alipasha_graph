@@ -1,10 +1,10 @@
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
+
 
 class InputComponent extends StatelessWidget {
   InputComponent({
@@ -73,24 +73,21 @@ final TextStyle? textStyle;
           prefixIcon: prefix,
           suffixIcon: suffixIcon != null
               ? InkWell(
-            child: Icon(suffixIcon, size: 0.05.sw),
             onTap: suffixClick,
+            child: Icon(suffixIcon, size: 0.05.sw),
           )
               : null,
-          label: Container(
-
-            child: RichText(
-              overflow: TextOverflow.ellipsis,
-              text: TextSpan(children: [
-                TextSpan(text: "${hint ?? ''}", style: H3GrayTextStyle.copyWith(overflow: TextOverflow.ellipsis)),
-                if (isRequired) TextSpan(text: "*", style: H4RedTextStyle),
-              ]),
-            ),
+          label: RichText(
+            overflow: TextOverflow.ellipsis,
+            text: TextSpan(children: [
+              TextSpan(text: "${hint ?? ''}", style: H3GrayTextStyle.copyWith(overflow: TextOverflow.ellipsis)),
+              if (isRequired) TextSpan(text: "*", style: H4RedTextStyle),
+            ]),
           ),
           errorStyle: H4RedTextStyle,
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(radius == null ? 15.r : radius!),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: GrayDarkColor,
             ),
           ),
@@ -99,7 +96,7 @@ final TextStyle? textStyle;
           fillColor: fill,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(radius == null ? 15.r : radius!),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: GrayDarkColor,
             ),
           ),

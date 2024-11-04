@@ -2,12 +2,9 @@ import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/models/weather_model.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
-import 'package:get/get_rx/get_rx.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:get_storage/get_storage.dart';
+
 import 'package:logger/logger.dart';
 
-// http://api.weatherapi.com/v1/marine.json?key=&q=London&days=1
 
 class WeatherLogic extends GetxController {
   RxBool loading = RxBool(false);

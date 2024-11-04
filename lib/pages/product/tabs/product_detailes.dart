@@ -1,21 +1,13 @@
-import 'dart:math';
 
 import 'package:ali_pasha_graph/Global/main_controller.dart';
-import 'package:ali_pasha_graph/components/product_components/mini_post_card.dart';
-import 'package:ali_pasha_graph/components/progress_loading.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/components.dart';
-import 'package:ali_pasha_graph/helpers/enums.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
 import 'package:ali_pasha_graph/pages/product/logic.dart';
-import 'package:ali_pasha_graph/routes/routes_url.dart';
-import 'package:animated_icon/animated_icon.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
 import 'package:get/get.dart';
 
 import '../../../components/product_components/minimize_details_product_component.dart';
@@ -85,18 +77,18 @@ class ProductDetailes extends StatelessWidget {
               return MinimizeDetailsProductComponent(post: products[index],TitleColor: DarkColor,onClick: (){
                 logic.productId.value= products[index].id;
               },);
-              break;
+
             case 'service':
               return MinimizeDetailsServiceComponent(post: products[index],TitleColor: DarkColor,onClick: (){
                 logic.productId.value= products[index].id;
               },);
-              break;
+
             case 'job':
             case 'search_job':
               return MinimizeDetailsJobComponent(post: products[index],TitleColor: DarkColor,onClick: (){
                 logic.productId.value= products[index].id;
               },);
-              break;
+
             default:
               return MinimizeDetailsTenderComponent(post: products[index],TitleColor: DarkColor,onClick: (){
                 logic.productId.value= products[index].id;

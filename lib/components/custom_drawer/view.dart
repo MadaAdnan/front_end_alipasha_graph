@@ -1,11 +1,9 @@
 import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
-import 'logic.dart';
 
 class CustomDrawerComponent extends StatelessWidget {
-  CustomDrawerComponent({Key? key}) : super(key: key);
+  const CustomDrawerComponent({super.key});
 
   /*final logic = Get.find<CustomDrawerLogic>();
   final state = Get.find<CustomDrawerLogic>().state;*/

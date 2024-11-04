@@ -2,10 +2,8 @@ import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/models/prayer_model.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
-import 'package:get_storage/get_storage.dart';
 
 class PrayerLogic extends GetxController {
-  // http://api.aladhan.com/v1/timings/17-07-2007?latitude=51.508515&longitude=-0.1254872&method=2
   RxBool loading = RxBool(false);
   Rxn<PrayerModel> idlib = Rxn<PrayerModel>(null);
   Rxn<PrayerModel> izaz = Rxn<PrayerModel>(null);

@@ -75,6 +75,7 @@ class ProductsLogic extends GetxController {
         data {
             id
             expert
+            name
             type
             is_discount
             is_delivary
@@ -127,10 +128,11 @@ class ProductsLogic extends GetxController {
   ''';
     try {
       dio.Response? res = await mainController.fetchData();
-      mainController.logger.e(res?.data?['data']?['user']);
-      if (res?.data?['data']?['products']?['paginatorInfo'] == null) {
+     // mainController.logger.e(res?.data?['data']?['products']);
+      if (res?.data?['data']?['products']?['paginatorInfo'] != null) {
         hasMorePage.value =
             res?.data?['data']?['products']?['paginatorInfo']['hasMorePages'];
+
       }
       //mainController.logger.w(products.length);
       if (res?.data?['data']?['products']?['data'] != null) {

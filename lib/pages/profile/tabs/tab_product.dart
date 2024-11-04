@@ -1,11 +1,7 @@
-import 'dart:ffi';
 
 import 'package:ali_pasha_graph/Global/main_controller.dart';
-import 'package:ali_pasha_graph/components/fields_components/input_component.dart';
-import 'package:ali_pasha_graph/components/product_components/mini_post_card.dart';
 import 'package:ali_pasha_graph/components/product_components/minimize_details_product_component.dart';
 import 'package:ali_pasha_graph/components/product_components/minimize_details_product_component_loading.dart';
-import 'package:ali_pasha_graph/components/product_components/post_card.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/pages/profile/logic.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
@@ -28,17 +24,9 @@ class TabProduct extends StatelessWidget {
       onNotification: (ScrollNotification scrollInfo) {
         if (scrollInfo.metrics.pixels >=
                 scrollInfo.metrics.maxScrollExtent * 0.80 &&
-            !mainController.loading.value &&
+            !logic.loadingProduct.value &&
             logic.hasMorePage.value) {
           logic.nextPage();
-        }
-
-        if (scrollInfo is ScrollUpdateNotification) {
-          if (scrollInfo.metrics.pixels > scrollInfo.metrics.minScrollExtent) {
-            mainController.is_show_home_appbar(false);
-          } else {
-            mainController.is_show_home_appbar(true);
-          }
         }
         return true;
       },
@@ -46,7 +34,7 @@ class TabProduct extends StatelessWidget {
         children: [
         
           Obx(() {
-            if ((logic.loading.value && logic.page.value == 1)) {
+            if ((logic.loadingProduct.value && logic.page.value == 1)) {
               return Expanded(
                 child: ListView(
                   children: [
@@ -77,12 +65,12 @@ class TabProduct extends StatelessWidget {
                       return MinimizeDetailsJobComponent(post: logic.products[index],TitleColor: DarkColor,canEdit: true,onClick: (){
                         Get.toNamed(PRODUCT_PAGE,arguments:logic.products[index].id );
                       },);
-                      break;
+
                     case "product":
                      return MinimizeDetailsProductComponent(post: logic.products[index],TitleColor: DarkColor,canEdit: true,onClick: (){
                        Get.toNamed(PRODUCT_PAGE,arguments:logic.products[index].id );
                      },);
-                      break;
+
                     default:
                       return MinimizeDetailsServiceComponent(post: logic.products[index],TitleColor: DarkColor,onClick: (){
                         Get.toNamed(PRODUCT_PAGE,arguments:logic.products[index].id );
@@ -96,7 +84,7 @@ class TabProduct extends StatelessWidget {
           }),
           Obx(() {
             return Visibility(
-              visible: mainController.loading.value && logic.page.value > 1,
+              visible: logic.loadingProduct.value && logic.page.value > 1,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,

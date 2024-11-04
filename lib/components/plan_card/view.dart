@@ -1,5 +1,4 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
-import 'package:ali_pasha_graph/components/product_components/job_card.dart';
 import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
 import 'package:ali_pasha_graph/helpers/enums.dart';
 import 'package:ali_pasha_graph/models/plan_model.dart';
@@ -14,7 +13,7 @@ import '../../helpers/colors.dart';
 import '../../helpers/style.dart';
 
 class PlanCardComponent extends StatelessWidget {
-  PlanCardComponent({Key? key, required this.plan}) : super(key: key);
+  PlanCardComponent({super.key, required this.plan});
 
   final PlanModel plan;
 
@@ -47,7 +46,7 @@ class PlanCardComponent extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
+                SizedBox(
                   height: 0.75.sh,
                   child: Container(
                     constraints: BoxConstraints.expand(height: 0.7.sh),
@@ -129,7 +128,7 @@ class PlanCardComponent extends StatelessWidget {
                                             : RedColor,
                                         size: 0.07.sw),
                                     10.horizontalSpace,
-                                    Container(
+                                    SizedBox(
                                       width: 0.655.sw,
                                       child: Text(
                                         "${plan.items![i].item}",

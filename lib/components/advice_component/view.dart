@@ -10,7 +10,6 @@ import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
 
 import '../../helpers/queries.dart';
-import '../../models/user_model.dart';
 
 class AdviceComponent extends StatelessWidget {
   AdviceComponent({Key? key, required this.advice}) : super(key: key);
@@ -27,9 +26,9 @@ class AdviceComponent extends StatelessWidget {
       if (mainController.authUser.value != null &&
           mainController.authUser.value!.followers != null &&
           advice.user != null &&
-          advice!.user!.id != null) {
+          advice.user!.id != null) {
         index = mainController.authUser.value!.followers!.indexWhere(
-          (el) => el.seller?.id == advice?.user?.id,
+          (el) => el.seller?.id == advice.user?.id,
         );
       }
     }

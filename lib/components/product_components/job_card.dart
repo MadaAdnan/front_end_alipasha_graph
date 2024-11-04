@@ -2,20 +2,20 @@ import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
 import 'package:ali_pasha_graph/helpers/enums.dart';
 import 'package:ali_pasha_graph/helpers/queries.dart';
-import 'package:ali_pasha_graph/main.dart';
+
 import 'package:ali_pasha_graph/models/product_model.dart';
-import 'package:ali_pasha_graph/models/user_model.dart';
+
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/gestures.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import "package:dio/dio.dart" as dio;
-import 'package:get/get_rx/get_rx.dart';
-import 'package:get_storage/get_storage.dart';
+
+
 import 'package:share_plus/share_plus.dart';
 import 'package:toast/toast.dart';
 import '../../helpers/colors.dart';
@@ -68,7 +68,7 @@ class JobCard extends StatelessWidget {
                         10.horizontalSpace,
                         Column(
                           children: [
-                            Container(
+                            SizedBox(
                               width: 0.6.sw,
                               child: Text(
                                 "${post?.user?.seller_name}",
@@ -76,7 +76,7 @@ class JobCard extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                            InkWell(onTap: (){ Get.toNamed(PRODUCT_PAGE, arguments: post?.id);},child:Container(
+                            InkWell(onTap: (){ Get.toNamed(PRODUCT_PAGE, arguments: post?.id);},child:SizedBox(
                               width: 0.6.sw,
                               child: Text(
                                 '${post?.city?.name ?? ''} - ${post?.category?.name ?? ''} - ${post?.sub1?.name ?? ''}',
@@ -139,9 +139,9 @@ class JobCard extends StatelessWidget {
                                   child: Row(
                                     children: [
                                       if (loading.value == true)
-                                         SizedBox(child: Center(
+                                         SizedBox(width: 0.04.sw,height:0.04.sw,child: const Center(
                                           child: CircularProgressIndicator(),
-                                        ),width: 0.04.sw,height:0.04.sw,),
+                                        ),),
                                       if (loading.value == false)
                                         Icon(
                                           FontAwesomeIcons.bell,
@@ -169,7 +169,7 @@ class JobCard extends StatelessWidget {
                   ],
                 ),
                 15.verticalSpace,
-                Container(
+                SizedBox(
                   width: 1.sw,
                   height: 0.044.sh,
                   child: Text(

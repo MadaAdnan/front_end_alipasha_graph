@@ -1,4 +1,3 @@
-import 'package:ali_pasha_graph/components/advice_component/view.dart';
 import 'package:ali_pasha_graph/components/fields_components/input_component.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
@@ -22,7 +21,7 @@ class ExpandSearch extends StatelessWidget {
 
         Obx(() {
           return AnimatedContainer(
-            duration: Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 300),
             alignment: Alignment.centerLeft,
             width: width.value,
             height: 0.06.sh,
@@ -32,12 +31,12 @@ class ExpandSearch extends StatelessWidget {
                 child: Container(
                   padding:
                   EdgeInsets.symmetric(vertical: 0.01.sw, horizontal: 0.01.sw),
-                  child: Icon(
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle, color: DarkColor.withOpacity(0.7)),
+                  child: const Icon(
                     Icons.search,
                     color: WhiteColor,
                   ),
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle, color: DarkColor.withOpacity(0.7)),
                 ),
 
                 onTap: () {
@@ -60,12 +59,12 @@ class ExpandSearch extends StatelessWidget {
               child: Container(
                 padding:
                 EdgeInsets.symmetric(vertical: 0.01.sw, horizontal: 0.01.sw),
-                child: Icon(
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle, color: DarkColor.withOpacity(0.7)),
+                child: const Icon(
                   Icons.search,
                   color: WhiteColor,
                 ),
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle, color: DarkColor.withOpacity(0.7)),
               ),
               onTap: () {
                 isExpanded.value = !isExpanded.value;
@@ -74,7 +73,7 @@ class ExpandSearch extends StatelessWidget {
             ),),
           );
         }),
-        Spacer(),
+        const Spacer(),
       ],
     );
   }

@@ -1,7 +1,6 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
-import 'package:ali_pasha_graph/helpers/components.dart';
-import 'package:ali_pasha_graph/helpers/style.dart';
+
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,7 +9,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 class HomeSliverAppBarComponent extends StatelessWidget {
-  HomeSliverAppBarComponent({Key? key}) : super(key: key);
+  HomeSliverAppBarComponent({super.key});
   MainController mainController = Get.find<MainController>();
 
 
@@ -30,7 +29,7 @@ class HomeSliverAppBarComponent extends StatelessWidget {
       flexibleSpace: FlexibleSpaceBar(
         collapseMode: CollapseMode.none,
         titlePadding: EdgeInsets.symmetric(horizontal: 0.0001.sw),
-        stretchModes: [StretchMode.fadeTitle,StretchMode.zoomBackground],
+        stretchModes: const [StretchMode.fadeTitle,StretchMode.zoomBackground],
         expandedTitleScale: 1.2,
         title: Container(
           width: 1.sw,
@@ -41,18 +40,18 @@ class HomeSliverAppBarComponent extends StatelessWidget {
               Row(
                 children: <Widget>[
                   Container(
-                    width: 0.29.sw,
+                    width: 0.29.sw,padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
                     child: Image(
-                      image: Svg('assets/images/svg/ali-pasha-horizantal-logo.svg',
+                      image: const Svg('assets/images/svg/ali-pasha-horizantal-logo.svg',
                           color: RedColor, source: SvgSource.asset),
                       width: 0.27.sw,
                       height: 0.03.sh,
                       color: RedColor,
-                    ),padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
+                    ),
                   ),
                   Expanded(child: Container()),
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.search,
                       color: RedColor,
 
@@ -62,7 +61,7 @@ class HomeSliverAppBarComponent extends StatelessWidget {
                     },
                   ),
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.live_tv,
                       color: RedColor,
                     ),
@@ -81,7 +80,7 @@ class HomeSliverAppBarComponent extends StatelessWidget {
               ),
              Container(
                height: 0.034.sh,
-               decoration: BoxDecoration(
+               decoration: const BoxDecoration(
                  border:Border(bottom: BorderSide(color: GrayLightColor))
                ),
                child:  Row(

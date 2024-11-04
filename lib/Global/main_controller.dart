@@ -2,22 +2,27 @@ import 'dart:io';
 
 import 'package:ali_pasha_graph/helpers/cart_helper.dart';
 import 'package:ali_pasha_graph/helpers/components.dart';
-import 'package:ali_pasha_graph/helpers/google_auth.dart';
+
 import 'package:ali_pasha_graph/helpers/queries.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:ali_pasha_graph/models/advice_model.dart';
 import 'package:ali_pasha_graph/models/cart_model.dart';
 import 'package:ali_pasha_graph/models/category_model.dart';
 import 'package:ali_pasha_graph/models/community_model.dart';
+import 'package:ali_pasha_graph/models/message_community_model.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
 import 'package:ali_pasha_graph/models/setting_model.dart';
 import 'package:ali_pasha_graph/models/slider_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
+import 'package:ali_pasha_graph/pages/channel/logic.dart';
+import 'package:ali_pasha_graph/pages/chat/logic.dart';
+import 'package:ali_pasha_graph/pages/communities/logic.dart';
+import 'package:ali_pasha_graph/pages/group/logic.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:cherry_toast/cherry_toast.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
-import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
+
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -27,7 +32,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
-// import 'package:laravel_flutter_pusher_plus/laravel_flutter_pusher_plus.dart';
 import 'package:logger/logger.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:pusher_client_socket/pusher_client_socket.dart';
@@ -56,31 +60,31 @@ class MainController extends GetxController {
   RxList<AdviceModel> advices = RxList<AdviceModel>([]);
   RxList<SliderModel> sliders = RxList<SliderModel>([]);
   String versionAPK = "3.0.0";
+  RxInt communityNotification = RxInt(0);
   RxBool startApp = RxBool(true); //for fill data from storage
   Rx<SettingModel> settings =
       Rx(SettingModel(weather_api: '02b438a76f5345c3857124556240809'));
   RxBool is_show_home_appbar = RxBool(true);
   Logger logger = Logger();
   late PusherClient pusher;
-
+  List channels = [];
   @override
   void onInit() {
     super.onInit();
-    checkStatusApp().then(
-        (value) => value != true ? Get.offAndToNamed(MAINTENANCE_PAGE) : null);
+    /* checkStatusApp().then(
+        (value) => value != true ? Get.offAndToNamed(MAINTENANCE_PAGE) : null);*/
 
     CartHelper.getCart().then((value) {
       carts(value);
     });
     try {
       pusher = PusherService.init(token: "$token");
+
     } catch (e) {}
 
     ever(token, (value) {
-      logger.d(value);
       if (value != null && value.length > 30) {
         getMe();
-
       }
       try {
         pusher = PusherService.init(token: "$token");
@@ -90,21 +94,94 @@ class MainController extends GetxController {
         storage.remove('user');
       }
     });
-    ever(authUser, (value) {
-      //  logger.i(value?.toJson());
-    });
-  }
 
-  @override
-  void onReady() {
+
+
     getUserFromStorage();
     getAdvices();
+    ever(authUser, (value) {
 
-    /* pusher.connect(
-      onConnectionStateChange: (p0) =>
-          logger.e("STATE NOW: " + p0.currentState),
-    );*/
+      if (value != null) {
+
+        for (var item in value.communities ?? []) {
+          // استخدم value.communities مباشرة
+          final channelName = 'private-message.${item?.id}';
+          var channel = pusher.subscribe(channelName);
+          channel.bind('message.create', (e) {
+            if (Get.currentRoute != CHAT_PAGE &&
+                Get.currentRoute != COMMUNITIES_PAGE) {
+              communityNotification.value+=1;
+            }
+            // community Page
+            else if (Get.currentRoute == COMMUNITIES_PAGE) {
+              if (e['message']?['community'] != null) {
+                CommunityModel community =
+                CommunityModel.fromJson(e['message']?['community']);
+                int index = Get.find<CommunitiesLogic>()
+                    .communities
+                    .indexWhere((el) => el.id == community.id);
+                if (index == -1) {
+                  Get.find<CommunitiesLogic>()
+                      .communities
+                      .insert(0, community);
+                } else {
+                  Get.find<CommunitiesLogic>().communities.removeAt(index);
+
+                  Get.find<CommunitiesLogic>()
+                      .communities
+                      .insert(0, community);
+                }
+              }
+            }
+            // Chat Page
+            else if (Get.currentRoute == CHAT_PAGE  || Get.currentRoute == GROUP_PAGE || Get.currentRoute == CHANNEL_PAGE) {
+
+              if (e['message'] != null) {
+                MessageModel message=MessageModel.fromJson(e['message']);
+                switch (message.community?.type){
+                  case 'chat':
+                    if(Get.currentRoute == CHAT_PAGE ){
+                      ChatLogic logic= Get.find<ChatLogic>();
+                      logic.messages.insert(0, message);
+                    }
+                    break;
+                  case 'group':
+                    if(Get.currentRoute == GROUP_PAGE){
+                      GroupLogic logic= Get.find<GroupLogic>();
+                      logic.messages.insert(0, message);
+                    }
+                    break;
+                  case 'channel':
+                    if(Get.currentRoute == CHANNEL_PAGE){
+                      ChannelLogic logic= Get.find<ChannelLogic>();
+                      logic.messages.insert(0, message);
+                    }
+                    break;
+
+                }
+
+
+              }
+            }
+          });
+          channels.add(channel); // استخدم add بدلاً من الفهرسة
+        }
+        var channel = pusher.subscribe('change-setting');
+        channel.bind('update-setting', (e) {
+          logger.w(e);
+          if (e['setting'] != null) {
+            settings
+                .value = SettingModel.fromJson(e['setting']);
+          }
+        });
+        channels.add(channel);
+      }
+    });
+
+
+
   }
+
 
   Future<dio.Response?> fetchData() async {
     loading.value = true;
@@ -131,18 +208,21 @@ class MainController extends GetxController {
       throw CustomException(errors: {"errors": e}, message: "خطأ بالسيرفر");
     }
   }
-  void showToast({String? text,String type='success'}) {
-    if(type=='success'){
-      CherryToast.success(
-        title: Text("${text??'نجاح العملية'}", style: TextStyle(color: Colors.black)),
-      ).show(Get.context as BuildContext);
-    }else{
-      CherryToast.error(
-        title: Text("${text??'فشل العملية'}", style: TextStyle(color: Colors.black)),
-      ).show(Get.context  as BuildContext);
-    }
 
+  void showToast({String? text, String type = 'success'}) {
+    if (type == 'success') {
+      CherryToast.success(
+        title: Text(text ?? 'نجاح العملية',
+            style: const TextStyle(color: Colors.black)),
+      ).show(Get.context as BuildContext);
+    } else {
+      CherryToast.error(
+        title: Text(text ?? 'فشل العملية',
+            style: const TextStyle(color: Colors.black)),
+      ).show(Get.context as BuildContext);
+    }
   }
+
   getUser() {
     if (storage.hasData('user')) {
       var json = storage.read('user');
@@ -150,11 +230,12 @@ class MainController extends GetxController {
     }
   }
 
-  setUserJson({required Map<String, dynamic> json}) async {
+  Future<void> setUserJson({required Map<String, dynamic> json}) async {
     try {
       if (storage.hasData('user')) {
         await storage.remove('user');
       }
+      authUser.value = null;
       await storage.write('user', json);
 
       authUser.value = UserModel.fromJson(json);
@@ -199,14 +280,14 @@ class MainController extends GetxController {
   }
 
   createCommunity({required int sellerId, String? message}) async {
-    if(createCommunityLodaing.value){
+    if (createCommunityLodaing.value) {
       return;
     }
-    if(sellerId == authUser.value?.id){
-      showToast(text: 'لا يمكنك بدء محادثة مع نفسك',type: 'error');
+    if (sellerId == authUser.value?.id) {
+      showToast(text: 'لا يمكنك بدء محادثة مع نفسك', type: 'error');
       return;
     }
-    createCommunityLodaing.value=true;
+    createCommunityLodaing.value = true;
     if (authUser.value == null) return;
     query.value = '''
    mutation CreateChat {
@@ -239,18 +320,19 @@ class MainController extends GetxController {
         CommunityModel community =
             CommunityModel.fromJson(res?.data?['data']['createChat']);
         Get.toNamed(CHAT_PAGE,
-            arguments: community, parameters: {"msg": "${message ?? ''}"});
+            arguments: community, parameters: {"msg": message ?? ''});
       }
     } catch (e) {
       logger.e("Error Create Community $e");
     }
-    createCommunityLodaing.value=false;
+    createCommunityLodaing.value = false;
   }
 
   getAdvices() async {
     query.value = '''
     query Advices {
-    advices {
+  
+      advices {
         name
         user {
             id
@@ -261,7 +343,6 @@ class MainController extends GetxController {
         image
         id
     }
-    
     
     settings {
         social {
@@ -304,10 +385,9 @@ class MainController extends GetxController {
     ''';
     try {
       dio.Response? res = await fetchData();
-      logger.e("DATAIS:");
-      logger.e(res?.data?['data']);
+
       if (res?.data?['data']['me'] != null) {
-        logger.d(res?.data?['data']['me']);
+        setUserJson(json: res?.data?['data']['me']);
       }
       if (res?.data?['data']['advices'] != null) {
         for (var item in res?.data?['data']['advices']) {
@@ -346,7 +426,7 @@ class MainController extends GetxController {
                                 text: 'الإصدار الحالي ',
                                 style: H3BlackTextStyle),
                             TextSpan(
-                                text: '$versionAPK', style: H3RedTextStyle),
+                                text: versionAPK, style: H3RedTextStyle),
                           ],
                         ),
                       ),
@@ -382,7 +462,7 @@ class MainController extends GetxController {
                                     'متجر GOOGLE PLAY',
                                     style: H3RegularDark,
                                   ),
-                                  Icon(FontAwesomeIcons.googlePlay),
+                                  const Icon(FontAwesomeIcons.googlePlay),
                                 ],
                               ),
                             ),
@@ -401,7 +481,7 @@ class MainController extends GetxController {
                               onTap: () {
                                 openUrl(
                                     url:
-                                        "${settings.value.urlDownload?.direct ?? 'https://ali-pasha.com/app'}");
+                                        settings.value.urlDownload?.direct ?? 'https://ali-pasha.com/app');
                               },
                               borderRadius: BorderRadius.circular(30.r),
                               child: Row(
@@ -413,7 +493,7 @@ class MainController extends GetxController {
                                     'تحميل مباشر APK',
                                     style: H3RegularDark,
                                   ),
-                                  Icon(FontAwesomeIcons.mobileScreen),
+                                  const Icon(FontAwesomeIcons.mobileScreen),
                                 ],
                               ),
                             ),
@@ -444,7 +524,7 @@ class MainController extends GetxController {
                                     'من موفع AppToDown',
                                     style: H3RegularDark,
                                   ),
-                                  Icon(FontAwesomeIcons.circleDown),
+                                  const Icon(FontAwesomeIcons.circleDown),
                                 ],
                               ),
                             ),
@@ -467,8 +547,6 @@ class MainController extends GetxController {
   Future<XFile?> commpressImage(
       {required XFile? file, int? width, int? height}) async {
     if (file != null) {
-      print("COMPRESSOR");
-      // Compress and convert to WebP
       final compressedFile = await FlutterImageCompress.compressAndGetFile(
           file.path, file.path + '.webp',
           format: CompressFormat.webp,
@@ -483,6 +561,7 @@ class MainController extends GetxController {
       }
       return null;
     }
+    return null;
   }
 
   Future<void> pickImage(
@@ -499,15 +578,15 @@ class MainController extends GetxController {
     }
   }
 
-  Future<XFile?> cropImage(XFile file,{CropAspectRatio? ratio}) async {
+  Future<XFile?> cropImage(XFile file, {CropAspectRatio? ratio}) async {
     try {
       CroppedFile? cropped = await ImageCropper().cropImage(
         compressFormat: ImageCompressFormat.png,
         sourcePath: file.path,
-        maxWidth: 300 ,
+        maxWidth: 300,
         maxHeight: 300,
         compressQuality: 80,
-        aspectRatio: ratio ?? CropAspectRatio(ratioX: 1, ratioY: 1),
+        aspectRatio: ratio ?? const CropAspectRatio(ratioX: 1, ratioY: 1),
         uiSettings: [
           AndroidUiSettings(
             toolbarTitle: 'قص الصورة',
@@ -608,7 +687,7 @@ class MainController extends GetxController {
     r'(:\d+)?(\/[^\s]*)?$' // اختياري: المنفذ والمسار
     );*/
 
- /*   final RegExp urlRegExp = RegExp(
+    /*   final RegExp urlRegExp = RegExp(
         //  r'[\n ]'
         r'^(https?:\/\/)?' // يبدأ بـ "http://" أو "https://"
         r'([a-zA-Z0-9\-]+\.)+[a-zA-Z]{2,}|' // نطاقات مثل .com, .org, .net وغيرها
@@ -620,12 +699,10 @@ class MainController extends GetxController {
         //   r'[\n ]'
         );*/
 
-      final RegExp urlRegExp = RegExp(
-        r'[ \n| ]' // يبدأ بـ \n أو مسافة
+    final RegExp urlRegExp = RegExp(r'[ \n| ]' // يبدأ بـ \n أو مسافة
         r'(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-?=%.]+' // الرابط
         r'[ \n| ]' // ينتهي بـ \n أو مسافة
-    );
-
+        );
 
     return urlRegExp.hasMatch(text) && !text.contains('@');
   }
@@ -682,13 +759,11 @@ class MainController extends GetxController {
     me {$AUTH_FIELDS} }''';
     try {
       dio.Response? res = await fetchData();
-      logger.e('ME IS :');
-      logger.e(res?.data);
+
       if (res?.data?['data']?['me'] != null) {
-        setUserJson(json: res?.data?['data']?['me']);
+        await setUserJson(json: res?.data?['data']?['me']);
         OneSignal.login("${authUser.value?.id}");
         OneSignal.User.addEmail("${authUser.value?.email}");
-
       }
     } catch (e) {}
   }

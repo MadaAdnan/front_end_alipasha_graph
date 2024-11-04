@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 
 import '../../Global/main_controller.dart';
-import '../../helpers/queries.dart';
 import '../../models/user_model.dart';
 import 'package:dio/dio.dart' as dio;
 class FollowingLogic extends GetxController {

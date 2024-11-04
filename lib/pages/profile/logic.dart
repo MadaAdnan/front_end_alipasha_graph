@@ -1,27 +1,23 @@
-import 'dart:convert';
 
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
-import 'package:ali_pasha_graph/main.dart';
 import 'package:ali_pasha_graph/models/advice_model.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
 import 'package:ali_pasha_graph/models/slider_model.dart';
-import 'package:cherry_toast/cherry_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:dio/dio.dart' as dio;
-import 'package:get/state_manager.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:image_picker/image_picker.dart';
 
-import '../../helpers/style.dart';
+import 'package:dio/dio.dart' as dio;
+
+
+
+
 
 class ProfileLogic extends GetxController {
   RxInt pageSelected = RxInt(0);
   TextEditingController searchController = TextEditingController();
   RxBool loading = RxBool(false);
+  RxBool loadingProduct = RxBool(false);
 
 
   // Data From Api
@@ -82,7 +78,7 @@ class ProfileLogic extends GetxController {
   }
 
   getProduct() async {
-    loading.value = true;
+    loadingProduct.value = true;
     if (page.value == 1) {
       products.clear();
     }
@@ -139,7 +135,7 @@ class ProfileLogic extends GetxController {
     } on CustomException catch (e) {
       mainController.logger.e(e);
     }
-    loading.value = false;
+    loadingProduct.value = false;
   }
 
   getMyAdvice() async {

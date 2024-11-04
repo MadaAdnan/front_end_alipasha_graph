@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
@@ -101,7 +100,7 @@ class FollowersPage extends StatelessWidget {
   }
 
   Widget _buildSellerCard({required UserModel seller}) {
-    RxBool loading = RxBool(false);
+   // RxBool loading = RxBool(false);
     return Container(
       width: 1.sw,
       padding: EdgeInsets.symmetric(vertical: 0.01.sw, horizontal: 0.01.sw),

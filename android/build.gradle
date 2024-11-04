@@ -1,16 +1,14 @@
-/*
 buildscript {
-    ext.kotlin_version = '2.0.20' // أو أي إصدار أحدث
+    ext.kotlin_version = '2.0.21' // تحديث إلى أحدث إصدار
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.4' // تحقق من إصدار أحدث
+        classpath 'com.android.tools.build:gradle:8.7.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
-*/
 
 
 allprojects {
@@ -18,7 +16,7 @@ allprojects {
         google()
         mavenCentral()
 //        jcenter()
-        maven { url "https://maven.google.com" }
+//        maven { url "https://maven.google.com" }
     }
 
 }

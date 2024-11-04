@@ -1,7 +1,6 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
-import 'package:ali_pasha_graph/helpers/style.dart';
-import 'package:animated_icon/animated_icon.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
@@ -9,16 +8,17 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 import '../../routes/routes_url.dart';
-import 'logic.dart';
 
-// 2226 heght all screen
+
+
 class HomeAppBarComponent extends StatelessWidget
     implements PreferredSizeWidget {
-  HomeAppBarComponent({Key? key, this.search,this.selected}) : super(key: key);
+  HomeAppBarComponent({Key? key, this.search, this.selected}) : super(key: key);
 
   MainController mainController = Get.find<MainController>();
   Function()? search;
-final String? selected;
+  final String? selected;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,7 +33,7 @@ final String? selected;
               Container(
                 width: 0.29.sw,
                 child: Image(
-                  image: Svg('assets/images/svg/ali-pasha-horizantal-logo.svg',
+                  image: const Svg('assets/images/svg/ali-pasha-horizantal-logo.svg',
                       color: RedColor, source: SvgSource.asset),
                   width: 0.27.sw,
                   height: 0.03.sh,
@@ -43,11 +43,13 @@ final String? selected;
               ),
               Expanded(child: Container()),
               IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.search,
                   color: RedColor,
                 ),
-                onPressed: search ?? () => Get.toNamed(FILTER_PAGE,arguments: selected??'product'),
+                onPressed: search ??
+                    () => Get.toNamed(FILTER_PAGE,
+                        arguments: selected ?? 'product'),
               ),
               Obx(() {
                 return IconButton(
@@ -85,7 +87,7 @@ final String? selected;
           ),
           Container(
             height: 0.043.sh,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 border: Border(bottom: BorderSide(color: GrayLightColor))),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -108,7 +110,7 @@ final String? selected;
                     onPressed: () {
                       Get.toNamed(HOME_PAGE);
                     },
-                    icon:Icon(
+                    icon: Icon(
                       FontAwesomeIcons.home,
                       size: 0.06.sw,
                       color: Get.currentRoute == HOME_PAGE ? RedColor : null,
@@ -120,12 +122,12 @@ final String? selected;
                   decoration: BoxDecoration(
                     border: Get.currentRoute == SECTIONS_PAGE
                         ? Border(
-                      bottom: BorderSide(
-                        color: RedColor,
-                        style: BorderStyle.solid,
-                        width: 0.001.sw,
-                      ),
-                    )
+                            bottom: BorderSide(
+                              color: RedColor,
+                              style: BorderStyle.solid,
+                              width: 0.001.sw,
+                            ),
+                          )
                         : null,
                   ),
                   child: IconButton(
@@ -135,7 +137,8 @@ final String? selected;
                     icon: Icon(
                       FontAwesomeIcons.layerGroup,
                       size: 0.06.sw,
-                      color: Get.currentRoute == SECTIONS_PAGE ? RedColor : null,
+                      color:
+                          Get.currentRoute == SECTIONS_PAGE ? RedColor : null,
                     ),
                   ),
                 ),
@@ -225,16 +228,32 @@ final String? selected;
                           )
                         : null,
                   ),
-                  child: IconButton(
-                    onPressed: () {
-                      Get.toNamed(COMMUNITIES_PAGE);
-                    },
-                    icon: Icon(FontAwesomeIcons.comments,
-                        size: 0.06.sw,
-                        color: Get.currentRoute == COMMUNITIES_PAGE
-                            ? RedColor
-                            : null),
-                  ),
+                  child: Obx(() {
+                    return mainController.communityNotification.value ==0
+                        ? IconButton(
+                            onPressed: () {
+                              Get.toNamed(COMMUNITIES_PAGE);
+                            },
+                            icon: Icon(FontAwesomeIcons.comments,
+                                size: 0.06.sw,
+                                color: Get.currentRoute == COMMUNITIES_PAGE
+                                    ? RedColor
+                                    : null),
+                          )
+                        : Badge.count(
+                            count: mainController.communityNotification.value,
+                            child: IconButton(
+                              onPressed: () {
+                                Get.toNamed(COMMUNITIES_PAGE);
+                              },
+                              icon: Icon(FontAwesomeIcons.comments,
+                                  size: 0.06.sw,
+                                  color: Get.currentRoute == COMMUNITIES_PAGE
+                                      ? RedColor
+                                      : null),
+                            ),
+                          );
+                  }),
                 ),
                 Container(
                   width: 0.1.sw,

@@ -70,7 +70,7 @@ class FollowersLogic extends GetxController {
           sellers.add(UserModel.fromJson(item['seller']));
         }
       }
-    } on CustomException catch (e) {}
+    } on CustomException {}
     loading.value = false;
   }
 }

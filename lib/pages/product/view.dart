@@ -3,13 +3,9 @@ import 'dart:ui';
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/components/product_components/minimize_details_product_component.dart';
 import 'package:ali_pasha_graph/components/progress_loading.dart';
-import 'package:ali_pasha_graph/components/seller_name_component.dart';
-import 'package:ali_pasha_graph/components/slider_component/view.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
-import 'package:ali_pasha_graph/models/slider_model.dart';
-import 'package:ali_pasha_graph/pages/product/tabs/comment_page.dart';
-import 'package:ali_pasha_graph/pages/product/tabs/product_detailes.dart';
+
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:animated_icon/animated_icon.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -40,10 +36,10 @@ class ProductPage extends StatelessWidget {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size(1.sw, 0.07.sh),
-        child:Obx(() {
-          return  Container(
+        child: Obx(() {
+          return Container(
             padding:
-            EdgeInsets.symmetric(horizontal: 0.01.sw, vertical: 0.005.sh),
+                EdgeInsets.symmetric(horizontal: 0.01.sw, vertical: 0.005.sh),
             width: 1.sw,
             height: 0.06.sh,
             decoration: const BoxDecoration(color: WhiteColor, boxShadow: [
@@ -90,7 +86,7 @@ class ProductPage extends StatelessWidget {
                                 color: GrayLightColor,
                               ),
                               Text(
-                                "${logic.product.value?.city??''}",
+                                "${logic.product.value?.city ?? ''}",
                                 style: H4RegularDark,
                               ),
                             ],
@@ -101,7 +97,7 @@ class ProductPage extends StatelessWidget {
                           Row(
                             children: [
                               Text(
-                                "${logic.product.value?.user?.seller_name??''}",
+                                "${logic.product.value?.user?.seller_name ?? ''}",
                                 style: H4BlackTextStyle.copyWith(
                                     fontWeight: FontWeight.w900,
                                     color: Colors.black),
@@ -114,9 +110,9 @@ class ProductPage extends StatelessWidget {
                                   decoration: BoxDecoration(
                                       image: DecorationImage(
                                           image: Svg(
-                                            "assets/images/svg/verified.svg",
-                                            size: Size(0.01.sw, 0.01.sw),
-                                          ))),
+                                    "assets/images/svg/verified.svg",
+                                    size: Size(0.01.sw, 0.01.sw),
+                                  ))),
                                 ),
                             ],
                           )
@@ -132,12 +128,13 @@ class ProductPage extends StatelessWidget {
                       Obx(() {
                         int index = mainController.authUser.value!.followers!
                             .indexWhere((el) =>
-                        el.seller?.id == logic.product.value?.user?.id);
+                                el.seller?.id == logic.product.value?.user?.id);
                         return Container(
                           padding: EdgeInsets.symmetric(
                               vertical: 0.01.sh, horizontal: 0.04.sw),
                           decoration: BoxDecoration(
-                            color: RedColor,
+                            color: index > -1 ? RedColor : null,
+                            border: Border.all(color: RedColor),
                             borderRadius: BorderRadius.circular(30.r),
                           ),
                           child: InkWell(
@@ -154,26 +151,33 @@ class ProductPage extends StatelessWidget {
                             child: RichText(
                               text: TextSpan(
                                 children: [
-                                  TextSpan(
-                                      text: index == -1 ? 'تابع ' : 'أتابعه',
-                                      style: H5WhiteTextStyle),
                                   WidgetSpan(
                                       child: loadingFollow.value
                                           ? AnimateIcon(
-                                        key: UniqueKey(),
-                                        onTap: () {},
-                                        iconType:
-                                        IconType.continueAnimation,
-                                        height: 0.03.sw,
-                                        width: 0.03.sw,
-                                        color: WhiteColor,
-                                        animateIcon: AnimateIcons.bell,
-                                      )
+                                              key: UniqueKey(),
+                                              onTap: () {},
+                                              iconType:
+                                                  IconType.continueAnimation,
+                                              height: 0.03.sw,
+                                              width: 0.03.sw,
+                                              color: index > -1
+                                                  ? WhiteColor
+                                                  : RedColor,
+                                              animateIcon: AnimateIcons.bell,
+                                            )
                                           : Icon(
-                                        FontAwesomeIcons.bell,
-                                        color: WhiteColor,
-                                        size: 0.03.sw,
-                                      ))
+                                              FontAwesomeIcons.bell,
+                                              color: index > -1
+                                                  ? WhiteColor
+                                                  : RedColor,
+                                              size: 0.03.sw,
+                                            )),
+                                  TextSpan(
+                                      text: index == -1 ? 'متابعة' : 'أتابعه',
+                                      style: H5WhiteTextStyle.copyWith(
+                                          color: index > -1
+                                              ? WhiteColor
+                                              : RedColor)),
                                 ],
                               ),
                             ),
@@ -191,25 +195,29 @@ class ProductPage extends StatelessWidget {
                                 mainController.createCommunity(
                                     sellerId: mainController
                                         .settings.value.support!.id!,
-                                    message: ''' السلام عليكم ورحمة الله وبركاته 
+                                    message:
+                                        ''' السلام عليكم ورحمة الله وبركاته 
                             إبلاغ  عن المنتج ${logic.product.value?.name} #${logic.product.value?.id}''');
                               } else {
                                 openUrl(
                                     url:
-                                    "https://wa.me/${mainController.settings.value.social?.phone}");
+                                        "https://wa.me/${mainController.settings.value.social?.phone}");
                               }
 
                               break;
                             case '1':
-                              if (logic.product.value?.user?.id != null && !mainController.createCommunityLodaing.value){
+                              if (logic.product.value?.user?.id != null &&
+                                  !mainController
+                                      .createCommunityLodaing.value) {
                                 mainController.createCommunity(
                                     sellerId: logic.product.value!.user!.id!,
-                                    message: ''' السلام عليكم ورحمة الله وبركاته 
+                                    message:
+                                        ''' السلام عليكم ورحمة الله وبركاته 
                             طلب المنتج ${logic.product.value?.name} #${logic.product.value?.id}''');
                               } else {
                                 openUrl(
                                     url:
-                                    "https://wa.me/${mainController.settings.value.social?.phone}");
+                                        "https://wa.me/${mainController.settings.value.social?.phone}");
                               }
 
                               break;
@@ -268,7 +276,7 @@ class ProductPage extends StatelessWidget {
       ),
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-      floatingActionButton:  Container(
+      floatingActionButton: Container(
         padding: EdgeInsets.symmetric(horizontal: 0.01.sw),
         width: 1.sw,
         height: 0.07.sh,
@@ -284,8 +292,8 @@ class ProductPage extends StatelessWidget {
                   color: Colors.black.withOpacity(0.6),
                   borderRadius: BorderRadius.circular(30.r),
                 ),
-                child:Obx(() {
-                  return  Row(
+                child: Obx(() {
+                  return Row(
                     children: [
                       Stack(
                         children: [
@@ -354,11 +362,11 @@ class ProductPage extends StatelessWidget {
                       ),
                       InkWell(
                         onTap: () {
-                          if (logic.product.value?.user?.id != null && !mainController.createCommunityLodaing.value) {
+                          if (logic.product.value?.user?.id != null &&
+                              !mainController.createCommunityLodaing.value) {
                             mainController.createCommunity(
                                 sellerId: logic.product.value!.user!.id!,
-                                message:
-                                ''' المنتج ${logic.product.value!.name}
+                                message: ''' المنتج ${logic.product.value!.name}
                                معرف المنتج : ${logic.product.value!.id}
                                ''');
                           }
@@ -422,18 +430,89 @@ class ProductPage extends StatelessWidget {
               Container(
                 child: FlutterCarousel(
                   items: [
-                    InkWell(onTap: (){
-                      showDialog(
-                        context: context,
-                        builder: (context) =>
-                            Dialog(
+                    InkWell(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => Dialog(
+                            insetPadding: EdgeInsets.zero,
+                            backgroundColor: Colors.transparent,
+                            child: Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                CachedNetworkImage(
+                                    imageUrl: '${logic.product.value?.image}',
+                                    imageBuilder: (context, imageProvider) =>
+                                        Container(
+                                          child: Image(
+                                            image: imageProvider,
+                                          ),
+                                        )),
+                                Positioned(
+                                  top: 10,
+                                  right: 10,
+                                  child: IconButton(
+                                    icon: Container(
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                          color: WhiteColor,
+                                          shape: BoxShape.circle,
+                                          boxShadow: [
+                                            BoxShadow(
+                                                color: DarkColor,
+                                                blurRadius: 0.02.sw)
+                                          ]),
+                                      child: const Icon(Icons.close,
+                                          color: RedColor, size: 30),
+                                    ),
+                                    onPressed: () => Get.back(),
+                                  ),
+                                ),
+                                Positioned(
+                                  bottom: 20,
+                                  left: 20,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 5),
+                                    color: Colors.black.withOpacity(0.7),
+                                    child: Text(
+                                      'Image', // وصف الصورة
+                                      style: H4BlackTextStyle,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        width: 0.79.sw,
+                        height: 0.79.sw,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30.r),
+                          image: DecorationImage(
+                              image: CachedNetworkImageProvider(
+                                  "${logic.product.value?.image}"),
+                              fit: BoxFit.contain),
+                        ),
+                      ),
+                    ),
+                    ...List.generate(
+                      logic.product.value?.images.length ?? 0,
+                      (index) => InkWell(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => Dialog(
                               insetPadding: EdgeInsets.zero,
                               backgroundColor: Colors.transparent,
                               child: Stack(
                                 fit: StackFit.expand,
                                 children: [
                                   CachedNetworkImage(
-                                      imageUrl: '${logic.product.value?.image}',
+                                      imageUrl:
+                                          '${logic.product.value?.images[index]}',
                                       imageBuilder: (context, imageProvider) =>
                                           Container(
                                             child: Image(
@@ -476,76 +555,6 @@ class ProductPage extends StatelessWidget {
                                 ],
                               ),
                             ),
-                      );
-                    },child:   Container(
-                      width: 0.79.sw,
-                      height: 0.79.sw,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30.r),
-                        image: DecorationImage(
-                            image: CachedNetworkImageProvider(
-                                "${logic.product.value?.image}"),
-                            fit: BoxFit.contain),
-                      ),
-                    ),),
-
-                    ...List.generate(
-                      logic.product.value?.images.length ?? 0,
-                      (index) => InkWell(
-                        onTap: (){
-                          showDialog(
-                            context: context,
-                            builder: (context) =>
-                                Dialog(
-                                  insetPadding: EdgeInsets.zero,
-                                  backgroundColor: Colors.transparent,
-                                  child: Stack(
-                                    fit: StackFit.expand,
-                                    children: [
-                                      CachedNetworkImage(
-                                          imageUrl: '${logic.product.value?.images[index]}',
-                                          imageBuilder: (context, imageProvider) =>
-                                              Container(
-                                                child: Image(
-                                                  image: imageProvider,
-                                                ),
-                                              )),
-                                      Positioned(
-                                        top: 10,
-                                        right: 10,
-                                        child: IconButton(
-                                          icon: Container(
-                                            alignment: Alignment.center,
-                                            decoration: BoxDecoration(
-                                                color: WhiteColor,
-                                                shape: BoxShape.circle,
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                      color: DarkColor,
-                                                      blurRadius: 0.02.sw)
-                                                ]),
-                                            child: const Icon(Icons.close,
-                                                color: RedColor, size: 30),
-                                          ),
-                                          onPressed: () => Get.back(),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        bottom: 20,
-                                        left: 20,
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 10, vertical: 5),
-                                          color: Colors.black.withOpacity(0.7),
-                                          child: Text(
-                                            'Image', // وصف الصورة
-                                            style: H4BlackTextStyle,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
                           );
                         },
                         child: Container(
@@ -593,7 +602,8 @@ class ProductPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Expanded(child: Column(
+                        Expanded(
+                            child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.max,
@@ -615,114 +625,115 @@ class ProductPage extends StatelessWidget {
                           ],
                         )),
                         if (logic.product.value?.type == 'product')
-                          Expanded(child: RichText(
-                              text: TextSpan(children: [
-                                if (logic.product.value?.is_discount == true)
-                                  WidgetSpan(
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.end,
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                "${logic.product.value?.price}",
-                                                style: H4RegularDark.copyWith(
-                                                    decoration:
-                                                    TextDecoration.lineThrough),
-                                              ),
-                                              Icon(
-                                                FontAwesomeIcons.dollarSign,
-                                                size: 0.02.sw,
-                                                color: GrayDarkColor,
-                                              ),
-                                              Text(
-                                                "${logic.product.value?.discount}",
-                                                style: H2RedTextStyle,
-                                              ),
-                                              Icon(
-                                                FontAwesomeIcons.dollarSign,
-                                                size: 0.03.sw,
-                                                color: RedColor,
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 0.02.sh,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.end,
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                "${logic.product.value?.turkey_price?.price?.toStringAsFixed(2)}",
-                                                style: H4RegularDark.copyWith(
-                                                    decoration:
-                                                    TextDecoration.lineThrough),
-                                              ),
-                                              Icon(
-                                                FontAwesomeIcons.dollarSign,
-                                                size: 0.02.sw,
-                                                color: GrayDarkColor,
-                                              ),
-                                              Text(
-                                                "${logic.product.value?.turkey_price?.discount?.toStringAsFixed(2)}",
-                                                style: H2RedTextStyle,
-                                              ),
-                                              Icon(
-                                                FontAwesomeIcons.dollarSign,
-                                                size: 0.03.sw,
-                                                color: RedColor,
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      )),
-                                if (logic.product.value?.is_discount != true)
-                                  WidgetSpan(
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.end,
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                "${logic.product.value?.price?.toStringAsFixed(2)}",
-                                                style: H2RedTextStyle,
-                                              ),
-                                              Icon(
-                                                FontAwesomeIcons.dollarSign,
-                                                size: 0.03.sw,
-                                                color: RedColor,
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.end,
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                "${logic.product.value?.turkey_price?.price?.toStringAsFixed(2)}",
-                                                style: H2RedTextStyle,
-                                              ),
-                                              Icon(
-                                                FontAwesomeIcons.turkishLiraSign,
-                                                size: 0.03.sw,
-                                                color: RedColor,
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      )),
-                              ]))),
+                          Expanded(
+                              child: RichText(
+                                  text: TextSpan(children: [
+                            if (logic.product.value?.is_discount == true)
+                              WidgetSpan(
+                                  child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "${logic.product.value?.price}",
+                                        style: H4RegularDark.copyWith(
+                                            decoration:
+                                                TextDecoration.lineThrough),
+                                      ),
+                                      Icon(
+                                        FontAwesomeIcons.dollarSign,
+                                        size: 0.02.sw,
+                                        color: GrayDarkColor,
+                                      ),
+                                      Text(
+                                        "${logic.product.value?.discount}",
+                                        style: H2RedTextStyle,
+                                      ),
+                                      Icon(
+                                        FontAwesomeIcons.dollarSign,
+                                        size: 0.03.sw,
+                                        color: RedColor,
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 0.02.sh,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "${logic.product.value?.turkey_price?.price?.toStringAsFixed(2)}",
+                                        style: H4RegularDark.copyWith(
+                                            decoration:
+                                                TextDecoration.lineThrough),
+                                      ),
+                                      Icon(
+                                        FontAwesomeIcons.dollarSign,
+                                        size: 0.02.sw,
+                                        color: GrayDarkColor,
+                                      ),
+                                      Text(
+                                        "${logic.product.value?.turkey_price?.discount?.toStringAsFixed(2)}",
+                                        style: H2RedTextStyle,
+                                      ),
+                                      Icon(
+                                        FontAwesomeIcons.dollarSign,
+                                        size: 0.03.sw,
+                                        color: RedColor,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              )),
+                            if (logic.product.value?.is_discount != true)
+                              WidgetSpan(
+                                  child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "${logic.product.value?.price?.toStringAsFixed(2)}",
+                                        style: H2RedTextStyle,
+                                      ),
+                                      Icon(
+                                        FontAwesomeIcons.dollarSign,
+                                        size: 0.03.sw,
+                                        color: RedColor,
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "${logic.product.value?.turkey_price?.price?.toStringAsFixed(2)}",
+                                        style: H2RedTextStyle,
+                                      ),
+                                      Icon(
+                                        FontAwesomeIcons.turkishLiraSign,
+                                        size: 0.03.sw,
+                                        color: RedColor,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              )),
+                          ]))),
                       ],
                     ),
                     SizedBox(
@@ -731,26 +742,40 @@ class ProductPage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        SizedBox(child: FormBuilderRatingBar(name: 'rate',maxRating: 5,minRating: 1,itemCount: 5,itemSize: 0.05.sw,glowColor: OrangeColor,unratedColor: GrayDarkColor,glow: true,glowRadius: 0.4.r,),width: 0.4.sw,),
+                        SizedBox(
+                          child: FormBuilderRatingBar(
+                            name: 'rate',
+                            maxRating: 5,
+                            minRating: 1,
+                            itemCount: 5,
+                            itemSize: 0.05.sw,
+                            glowColor: OrangeColor,
+                            unratedColor: GrayDarkColor,
+                            glow: true,
+                            glowRadius: 0.4.r,
+                          ),
+                          width: 0.4.sw,
+                        ),
                         SizedBox(
                           width: 0.34.sw,
-
-                          child:  InkWell(
-                            child:Container(
+                          child: InkWell(
+                            child: Container(
                               alignment: Alignment.center,
                               width: 0.33.sw,
                               decoration: BoxDecoration(
                                 border: Border.all(color: GrayDarkColor),
                                 borderRadius: BorderRadius.circular(30.r),
-
                               ),
                               child: Row(
                                 children: [
-                                  Text('إعادة تقييم',style: H4GrayTextStyle,),
+                                  Text(
+                                    'إعادة تقييم',
+                                    style: H4GrayTextStyle,
+                                  ),
                                   Icon(FontAwesomeIcons.refresh),
                                 ],
                               ),
-                            ) ,
+                            ),
                           ),
                         ),
                       ],
@@ -758,44 +783,40 @@ class ProductPage extends StatelessWidget {
                     // Colors
                     if (logic.product.value?.colors?.length != null &&
                         logic.product.value!.colors!.length > 0)
-                     Expanded(child:  Container(
-                       width: 1.sw,
-
-                       child: ListView(
-                         scrollDirection: Axis.horizontal,
-                         children: [
-                           ...List.generate(
-                               logic.product.value?.colors?.length ?? 0,
-                                   (index) => Row(
-                                 children: [
-                                   Text(
-                                     "${logic.product.value?.colors![index].name}",
-                                     style: H4RegularDark,
-                                   ),
-                                   Container(
-                                     width: 0.07.sw,
-                                     height: 0.07.sw,
-                                     decoration: BoxDecoration(
-                                         shape: BoxShape.circle,
-                                         color:
-                                         "${logic.product.value?.colors![index].code}"
-                                             .toColor()),
-                                   ),
-                                   SizedBox(
-                                     width: 0.03.sw,
-                                   )
-                                 ],
-                               ))
-                         ],
-                       ),
-                     )),
-
+                      Expanded(
+                          child: Container(
+                        width: 1.sw,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: [
+                            ...List.generate(
+                                logic.product.value?.colors?.length ?? 0,
+                                (index) => Row(
+                                      children: [
+                                        Text(
+                                          "${logic.product.value?.colors![index].name}",
+                                          style: H4RegularDark,
+                                        ),
+                                        Container(
+                                          width: 0.07.sw,
+                                          height: 0.07.sw,
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color:
+                                                  "${logic.product.value?.colors![index].code}"
+                                                      .toColor()),
+                                        ),
+                                        SizedBox(
+                                          width: 0.03.sw,
+                                        )
+                                      ],
+                                    ))
+                          ],
+                        ),
+                      )),
                   ],
                 ),
               ),
-
-
-
 
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
@@ -847,14 +868,11 @@ class ProductPage extends StatelessWidget {
                 ),
               ),
 
-
               Container(
-
                 width: 1.sw,
                 child: (logic.product.value != null)
                     ? Column(
                         children: [
-
                           Container(
                             width: 1.sw,
                             padding: EdgeInsets.symmetric(
@@ -941,7 +959,7 @@ class ProductPage extends StatelessWidget {
                                         logic.products[index].id;
                                   },
                                 );
-                                break;
+
                               case 'service':
                                 return MinimizeDetailsServiceComponent(
                                   post: logic.products[index],
@@ -951,7 +969,7 @@ class ProductPage extends StatelessWidget {
                                         logic.products[index].id;
                                   },
                                 );
-                                break;
+
                               case 'job':
                               case 'search_job':
                                 return MinimizeDetailsJobComponent(
@@ -962,7 +980,7 @@ class ProductPage extends StatelessWidget {
                                         logic.products[index].id;
                                   },
                                 );
-                                break;
+
                               default:
                                 return MinimizeDetailsTenderComponent(
                                   post: logic.products[index],
@@ -978,7 +996,6 @@ class ProductPage extends StatelessWidget {
                       )
                     : null,
               )
-
             ],
           );
         },

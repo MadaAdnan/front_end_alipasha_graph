@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:ali_pasha_graph/models/product_model.dart';
-import 'package:cherry_toast/resources/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
@@ -72,7 +71,7 @@ class EditServiceLogic extends GetxController {
   }
 
   fillDataFromDraft() {
-    var data = box.read<Map<String, dynamic>>('draft');
+    //var data = box.read<Map<String, dynamic>>('draft');
   }
 
   Future<void> getDataForCreate() async {

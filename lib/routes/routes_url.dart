@@ -42,6 +42,7 @@ const String PRODUCTS_PAGE = '/products_page';
 const String NOTIFICATION_PAGE = '/notification_page';
 
 const String JOBS_PAGE = '/jobs_page';
+const String TEST_PAGE = '/test_page';
 const String VIDEO_PLAYER_POST_PAGE = '/video_player_post_page';
 
 const String TENDERS_PAGE = '/tender_page';

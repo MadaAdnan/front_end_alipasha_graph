@@ -1,6 +1,5 @@
-import 'package:ali_pasha_graph/components/advice_component/view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 class CurveClipper extends CustomClipper<Path> {
   @override

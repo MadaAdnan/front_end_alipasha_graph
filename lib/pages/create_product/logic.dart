@@ -73,7 +73,7 @@ class CreateProductLogic extends GetxController {
   }
 
   fillDataFromDraft() {
-    var data = box.read<Map<String, dynamic>>('draft');
+  //  var data = box.read<Map<String, dynamic>>('draft');
   }
 
   Future<void> getDataForCreate() async {

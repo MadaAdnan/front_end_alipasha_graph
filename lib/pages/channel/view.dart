@@ -108,12 +108,12 @@ class ChannelPage extends StatelessWidget {
                             if (communityNew != null) {
                               logic.communityModel.value = communityNew;
                               int? index = Get.find<CommunitiesLogic>()
-                                  ?.communities
+                                  .communities
                                   .indexWhere((el) =>
                                       el.id != logic.communityModel.value.id!);
-                              if (index != null && index != -1) {
+                              if (index != -1) {
                                 Get.find<CommunitiesLogic>()
-                                    ?.communities[index] = communityNew;
+                                    .communities[index] = communityNew;
                               }
                             }
                             break;

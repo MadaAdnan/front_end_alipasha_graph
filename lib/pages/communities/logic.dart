@@ -3,9 +3,7 @@ import 'package:ali_pasha_graph/models/community_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
-import 'package:get/get_rx/get_rx.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:get_storage/get_storage.dart';
+
 
 class CommunitiesLogic extends GetxController {
   RxBool loading = RxBool(false);

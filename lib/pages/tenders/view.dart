@@ -6,11 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../components/home_app_bar/custom_sliver_app_bar.dart';
-import '../../components/product_components/job_card.dart';
+
 import '../../components/progress_loading.dart';
 import '../../helpers/colors.dart';
-import '../../helpers/components.dart';
 import '../../helpers/style.dart';
 import '../../routes/routes_url.dart';
 import 'logic.dart';

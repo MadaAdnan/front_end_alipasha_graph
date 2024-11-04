@@ -1,5 +1,4 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
-import 'package:ali_pasha_graph/components/advice_component/view.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/enums.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
@@ -10,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:shimmer/shimmer.dart';
+
 
 import '../../routes/routes_url.dart';
 import '../seller_name_component.dart';
@@ -34,7 +33,7 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    mainController.logger.d(post.toJson());
+
     return Column(
       children: [
         InkWell(
@@ -138,7 +137,7 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         AutoSizeText(
-                          "${post.name!.length > 2 ? post.name : post.expert} ",
+                          "${post.name?.length !=0 ? post.name : post.expert} ",
                           style: H1BlackTextStyle.copyWith(
                               fontWeight: FontWeight.bold),
                           maxLines: 2,

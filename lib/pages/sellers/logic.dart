@@ -1,5 +1,4 @@
 import 'package:ali_pasha_graph/models/category_model.dart';
-import 'package:ali_pasha_graph/models/city_model.dart';
 import 'package:get/get.dart';
 
 import '../../Global/main_controller.dart';

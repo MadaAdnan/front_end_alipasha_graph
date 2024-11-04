@@ -5,10 +5,8 @@ import 'package:ali_pasha_graph/models/filter_model.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 
 class FilterLogic extends GetxController {
   MainController mainController = Get.find<MainController>();

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/helpers/redcord_manager.dart';
@@ -15,7 +14,6 @@ import 'package:dio/dio.dart' as dio;
 
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class ChatLogic extends GetxController {
   MainController mainController = Get.find<MainController>();

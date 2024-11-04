@@ -1,9 +1,6 @@
 import 'dart:ui';
 
-import 'package:ali_pasha_graph/Global/main_controller.dart';
-import 'package:ali_pasha_graph/main.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 const Color RedColor = Color.fromRGBO(226, 6, 19, 1.0);
 
@@ -21,23 +18,22 @@ const Color OrangeColor = Color.fromRGBO(250, 173, 23, 1.0);
 const ShowMoreColor = Color(0xFFFEF78A);
 
 Color? String2Hex(String? color) {
-  MainController mainController = Get.find<MainController>();
+
 
   if (color == null) {
-    return Color(0xFFBBF8FF);
+    return const Color(0xFFBBF8FF);
   }
   String? hexString = color.replaceAll("#", ""); // إزالة علامة #
 
   if (hexString.length == 6) {
-    hexString = "FF" +
-        "${hexString}".toUpperCase(); // إضافة قيمة ألفا إذا كانت غير موجودة
+    hexString = "FF${hexString.toUpperCase()}"; // إضافة قيمة ألفا إذا كانت غير موجودة
   }
 
   int? colorNumber = int.tryParse(hexString, radix: 16);
 
   if (colorNumber == null) {
 
-    return Color(0xFF33FFFF);
+    return const Color(0xFF33FFFF);
   }
   return Color(colorNumber);
 }
@@ -52,12 +48,10 @@ if(hexString.length>6){
   hexString=hexString.substring(0,6);
 }
     if (hexString.length == 6) {
-      hexString = "FF" +"${hexString}".toUpperCase(); // إضافة قيمة ألفا إذا كانت غير موجودة
+      hexString = "FF${hexString.toUpperCase()}"; // إضافة قيمة ألفا إذا كانت غير موجودة
     }
     int? colorNumber = int.tryParse(hexString, radix: 16);
-    if (colorNumber == null) {
-      colorNumber = int.tryParse( "FFE20613", radix: 16);
-    }
+    colorNumber ??= int.tryParse( "FFE20613", radix: 16);
     return Color(colorNumber!);
   }
 }

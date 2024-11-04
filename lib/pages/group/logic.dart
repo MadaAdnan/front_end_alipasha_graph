@@ -202,10 +202,10 @@ query GetMessages {
       return;
     }
     loadingSend.value = true;
-    int? sellerId =
+    /*int? sellerId =
     mainController.authUser.value?.id == communityModel.manager?.id
         ? communityModel.manager?.id
-        : communityModel.manager?.id;
+        : communityModel.manager?.id;*/
     Map<String, dynamic> datajson = {
       "query":
       r"""mutation CreateMessage($communityId:Int!, $body: String!, $attach: Upload) {

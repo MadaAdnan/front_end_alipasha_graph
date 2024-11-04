@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 
 
 class Curve_profile_componentComponent extends StatelessWidget {
-  Curve_profile_componentComponent({Key? key}) : super(key: key);
+  const Curve_profile_componentComponent({super.key});
 
 
 

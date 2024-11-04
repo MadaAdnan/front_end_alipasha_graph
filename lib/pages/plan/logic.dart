@@ -1,12 +1,7 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
-import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
-import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/components.dart';
 import 'package:ali_pasha_graph/helpers/queries.dart';
-import 'package:ali_pasha_graph/helpers/style.dart';
-import 'package:ali_pasha_graph/models/user_model.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
 import '../../models/plan_model.dart';

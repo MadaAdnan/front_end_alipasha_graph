@@ -1,6 +1,4 @@
-import 'package:ali_pasha_graph/components/product_components/job_card.dart';
 import 'package:ali_pasha_graph/pages/create_job/logic.dart';
-import 'package:ali_pasha_graph/pages/weather/logic.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -14,11 +12,9 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 
 import 'package:intl/intl.dart';
-import 'package:location/location.dart';
 
 import '../../Global/main_controller.dart';
 import '../../helpers/colors.dart';
-import '../../helpers/helper_class.dart';
 import '../../helpers/style.dart';
 import '../../models/attribute_model.dart';
 import '../../models/category_model.dart';

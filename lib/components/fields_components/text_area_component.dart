@@ -23,7 +23,7 @@ class TextAreaComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: width,
       child:TextFormField(
         minLines: 7,
@@ -42,7 +42,7 @@ class TextAreaComponent extends StatelessWidget {
           errorStyle: H3RedTextStyle,
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(0.03.sw),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: GrayDarkColor,
             ),
           ),
@@ -51,13 +51,13 @@ class TextAreaComponent extends StatelessWidget {
           fillColor: GrayLightColor,
           enabledBorder:OutlineInputBorder(
             borderRadius: BorderRadius.circular(0.03.sw),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: GrayDarkColor,
             ),
           ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(0.03.sw),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: GrayDarkColor,
             ),
           ),

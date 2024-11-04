@@ -1,11 +1,8 @@
-import 'dart:convert';
 
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
 import 'package:ali_pasha_graph/helpers/google_auth.dart';
 import 'package:ali_pasha_graph/helpers/queries.dart';
-import 'package:ali_pasha_graph/models/user_model.dart';
-import 'package:ali_pasha_graph/pages/home/view.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -18,7 +15,7 @@ class RegisterLogic extends GetxController {
   RxBool loading = RxBool(false);
   TextEditingController nameController = TextEditingController(text: 'adnan');
 
-  // TextEditingController userNameController = TextEditingController();
+
   TextEditingController emailController = TextEditingController(text: 'mh.shamey@gmail.com');
   TextEditingController passwordController = TextEditingController(text: 'password');
   TextEditingController confirmPasswordController = TextEditingController(text: 'password');

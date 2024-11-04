@@ -1,6 +1,4 @@
-import 'dart:math';
 
-import 'package:ali_pasha_graph/components/fields_components/input_component.dart';
 import 'package:ali_pasha_graph/helpers/components.dart';
 import 'package:ali_pasha_graph/helpers/redcord_manager.dart';
 import 'package:ali_pasha_graph/models/message_community_model.dart';
@@ -13,7 +11,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../Global/main_controller.dart';
@@ -541,6 +538,7 @@ class ChatPage extends StatelessWidget {
   }
 
   Widget myMessage(context, {required MessageModel message}) {
+    print('IMAGE: ${message.attach}');
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -856,6 +854,7 @@ class PlayerSoundMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('Path: ${path}');
     return Obx(() {
       return Row(
         children: [

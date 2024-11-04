@@ -1,4 +1,3 @@
-import 'package:ali_pasha_graph/components/plan_card/view.dart';
 import 'package:ali_pasha_graph/helpers/enums.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';

@@ -11,9 +11,7 @@ import 'package:intl/intl.dart';
 
 import '../../Global/main_controller.dart';
 import '../../helpers/colors.dart';
-import '../../helpers/helper_class.dart';
 import '../../helpers/style.dart';
-import '../../models/attribute_model.dart';
 import '../../models/category_model.dart';
 import '../../routes/routes_url.dart';
 import 'logic.dart';

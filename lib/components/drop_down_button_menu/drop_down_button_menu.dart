@@ -33,7 +33,7 @@ class DropDownButtonMenu<T> extends StatelessWidget {
           isExpanded: true,
           hint: Row(
             children: [
-              SizedBox(
+              const SizedBox(
                 width: 4,
               ),
               Expanded(
@@ -74,7 +74,7 @@ class DropDownButtonMenu<T> extends StatelessWidget {
             elevation: 2,
           ),
           iconStyleData: IconStyleData(
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_drop_down,
             ),
             iconSize: 0.07.sw,

@@ -1,17 +1,12 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
-import 'package:ali_pasha_graph/helpers/components.dart';
-import 'package:ali_pasha_graph/helpers/style.dart';
-import 'package:ali_pasha_graph/main.dart';
+
 import 'package:ali_pasha_graph/models/category_model.dart';
 import 'package:ali_pasha_graph/models/city_model.dart';
-import 'package:ali_pasha_graph/models/slider_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
-import 'package:get/get_rx/get_rx.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
+
 import '../../models/product_model.dart';
-import '../../models/setting_model.dart';
 
 class HomeLogic extends GetxController {
   String getProductsQuery = '';
@@ -35,6 +30,7 @@ class HomeLogic extends GetxController {
   void onReady() {
     // TODO: implement onReady
     super.onReady();
+
   }
 
   nextPage() {
@@ -43,7 +39,9 @@ class HomeLogic extends GetxController {
   }
 
   getProduct() async {
+
     loading.value = true;
+    try {
 String dataString='''data {
             id
             name
@@ -145,8 +143,9 @@ String dataString='''data {
 }
     ''');
 
-    try {
+
       dio.Response? res = await mainController.fetchData();
+
 
       if (res?.data['data']['LatestProduct']['paginatorInfo']['hasMorePages'] !=
           null) {
@@ -181,8 +180,7 @@ var productsList=[
       }
 
       if (res?.data['data']?['mainCategories'] != null) {
-        mainController.logger.t('PAGESD');
-        mainController.logger.t(page);
+
 
         if (page == 1) {
           mainController.categories.clear();
@@ -215,7 +213,10 @@ var productsList=[
         }
         mainController.storage.write('specialSeller', res?.data['data']['specialSeller']);
       }
-    } catch (e) {}
+    } catch (e) {
+      mainController.logger.w('ERRORPRO');
+      mainController.logger.w('$e');
+    }
 
     loading.value = false;
   }

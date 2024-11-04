@@ -23,7 +23,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../helpers/colors.dart';
 import '../../helpers/style.dart';
-import '../../helpers/components.dart';
+
 
 class PostCard extends StatelessWidget {
   final ProductModel post;
@@ -53,7 +53,7 @@ class PostCard extends StatelessWidget {
             padding:
                 EdgeInsets.symmetric(horizontal: 0.018.sw, vertical: 0.008.sh),
             width: double.infinity,
-            decoration: BoxDecoration(color: WhiteColor),
+            decoration: const BoxDecoration(color: WhiteColor),
             height: 0.12.sh,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -330,7 +330,7 @@ class PostCard extends StatelessWidget {
                           40.horizontalSpace,
                           InkWell(
                             onTap: () async {
-                              await mainController.addToCart(product: post!);
+                              await mainController.addToCart(product: post);
                               messageBox(
                                   title: 'نجاح العملية',
                                   message: 'تم الإضافة إلى السلة');
@@ -342,7 +342,7 @@ class PostCard extends StatelessWidget {
                               height: 90.h,
                               width: 120.w,
                               padding: EdgeInsets.symmetric(horizontal: 5.w),
-                              child: Icon(
+                              child: const Icon(
                                 FontAwesomeIcons.cartShopping,
                                 color: WhiteColor,
                               ),
@@ -425,7 +425,7 @@ class PostCard extends StatelessWidget {
                         10.horizontalSpace,
                         Obx(() {
                           return loadingCommunity.value
-                              ? Center(
+                              ? const Center(
                                   child: CircularProgressIndicator(),
                                 )
                               : Text(

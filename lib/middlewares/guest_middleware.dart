@@ -1,4 +1,3 @@
-import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';

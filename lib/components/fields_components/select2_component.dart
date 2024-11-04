@@ -38,13 +38,13 @@ class Select2Component extends StatelessWidget {
         isSearchable: isSearch,
         selectDataController: selectDataController,
         dropdownOverlaySettings:
-            DropdownOverlaySettings(sizeAnimationCurve: Curves.bounceIn,),
+            const DropdownOverlaySettings(sizeAnimationCurve: Curves.bounceIn,),
         dropdownModalSettings:
-            DropdownModalSettings(barrierColor: GrayDarkColor,backgroundColor: WhiteColor,),
-        globalSettings: GlobalSettings(mainColor: GrayDarkColor,activeColor:DarkColor,chipColor: RedColor,hoverListItemColor: WhiteColor,inActiveColor: DarkColor,),
+            const DropdownModalSettings(barrierColor: GrayDarkColor,backgroundColor: WhiteColor,),
+        globalSettings: const GlobalSettings(mainColor: GrayDarkColor,activeColor:DarkColor,chipColor: RedColor,hoverListItemColor: WhiteColor,inActiveColor: DarkColor,),
         //pillboxTitleSettings: PillboxTitleSettings(title: 'المدينة',titleStyleDefault: HintTextStyle),
         pillboxContentMultiSettings:
-            PillboxContentMultiSettings(pillboxLayout: PillboxLayout.wrap),
+            const PillboxContentMultiSettings(pillboxLayout: PillboxLayout.wrap),
         selectEmptyInfoSettings:
             SelectEmptyInfoSettings(text: label, textStyle: H3GrayTextStyle),
         categoryItemOverlaySettings: CategoryItemOverlaySettings(
@@ -54,7 +54,7 @@ class Select2Component extends StatelessWidget {
         categoryNameModalSettings: CategoryNameModalSettings(
           textStyle: H4GrayTextStyle,alignmentGeometry: Alignment.centerRight
         ),
-        searchBarModalSettings: SearchBarModalSettings(heightReplacement: 45),
+        searchBarModalSettings: const SearchBarModalSettings(heightReplacement: 45),
         doneButtonModalSettings:
             DoneButtonModalSettings(title: 'تم', textStyle: H4WhiteTextStyle,titlePadding: EdgeInsets.symmetric(horizontal: 0.1.sw,vertical: 0.03.sw)),
         categoryItemModalSettings: CategoryItemModalSettings(
