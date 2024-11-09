@@ -1,4 +1,4 @@
-buildscript {
+/*buildscript {
     ext.kotlin_version = '2.0.21' // تحديث إلى أحدث إصدار
     repositories {
         google()
@@ -8,7 +8,7 @@ buildscript {
         classpath 'com.android.tools.build:gradle:8.7.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
-}
+}*/
 
 
 allprojects {

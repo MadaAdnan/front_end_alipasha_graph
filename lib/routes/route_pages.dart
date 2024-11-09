@@ -65,6 +65,8 @@ import 'package:ali_pasha_graph/pages/maintenance/view.dart';
 
 import 'package:ali_pasha_graph/pages/menu/binding.dart';
 import 'package:ali_pasha_graph/pages/menu/view.dart';
+import 'package:ali_pasha_graph/pages/new_details/binding.dart';
+import 'package:ali_pasha_graph/pages/new_details/view.dart';
 import 'package:ali_pasha_graph/pages/notification/binding.dart';
 import 'package:ali_pasha_graph/pages/notification/view.dart';
 import 'package:ali_pasha_graph/pages/orders/binding.dart';
@@ -134,7 +136,12 @@ class AppPages {
       binding: HomeBinding(),
       middlewares: [],
     ),
-
+    GetPage(
+      name: NEW_DETAILS,
+      page: () => NewDetailsPage(),
+      binding: NewDetailsBinding(),
+      middlewares: [],
+    ),
 
     GetPage(
       name: MAINTENANCE_PAGE,

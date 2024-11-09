@@ -71,8 +71,8 @@ class MainController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    /* checkStatusApp().then(
-        (value) => value != true ? Get.offAndToNamed(MAINTENANCE_PAGE) : null);*/
+     checkStatusApp().then(
+        (value) => value != true ? Get.offAndToNamed(MAINTENANCE_PAGE) : null);
 
     CartHelper.getCart().then((value) {
       carts(value);
@@ -772,7 +772,9 @@ class MainController extends GetxController {
   Future<bool> checkStatusApp() async {
     bool status = true;
     try {
-      dio.Response res = await dio.Dio().get("https://status.pazarpasha.com/");
+      dio.Response res = await dio.Dio().get("https://status.pazarpasha.com/graph");
+      logger.d('STATUS IS :');
+      logger.d('${res.data}');
       status = res.data == null || res.data['status'] || res.statusCode != 200;
     } catch (e) {
       status = true;
