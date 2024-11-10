@@ -14,4 +14,11 @@ class GoogleAuth{
    return null;
   }
 
+  static Future<void> logOut()async{
+bool isAuth=await GoogleSignIn().isSignedIn();
+if(isAuth){
+  GoogleSignIn().signOut();
+}
+  }
+
 }

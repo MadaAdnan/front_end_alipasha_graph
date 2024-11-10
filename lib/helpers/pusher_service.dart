@@ -10,7 +10,7 @@ class PusherService {
         host: 'pazarpasha.com',
         // host: '85.215.154.88:8086',
         // host: 'v3.ali-pasha.com:8086',
-       wsPort: 2053,
+       wsPort: 8085,
         autoConnect: false,
         cluster: 'mt1',
         authOptions: PusherAuthOptions("https://pazarpasha.com/api/broadcasting/auth",

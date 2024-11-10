@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:ali_pasha_graph/helpers/cart_helper.dart';
 import 'package:ali_pasha_graph/helpers/components.dart';
+import 'package:ali_pasha_graph/helpers/google_auth.dart';
 
 import 'package:ali_pasha_graph/helpers/queries.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
@@ -276,6 +277,7 @@ class MainController extends GetxController {
     }
     token.value = null;
     authUser.value = null;
+    await GoogleAuth.logOut();
     Get.offAndToNamed(HOME_PAGE);
   }
 
