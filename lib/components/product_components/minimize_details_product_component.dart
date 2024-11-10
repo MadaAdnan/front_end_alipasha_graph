@@ -602,8 +602,8 @@ class MinimizeDetailsServiceComponent extends StatelessWidget {
                           topRight: Radius.circular(30.r),
                           bottomRight: Radius.circular(30.r)),
                       image: DecorationImage(
-                          image: CachedNetworkImageProvider("${post.image}"),
-                          fit: BoxFit.fitHeight)),
+                          image: CachedNetworkImageProvider("${post.image}",),
+                          fit: BoxFit.cover)),
                   child: Stack(
                     alignment: Alignment.topCenter,
                     children: [

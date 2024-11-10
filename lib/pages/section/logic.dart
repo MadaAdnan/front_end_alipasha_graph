@@ -18,6 +18,7 @@ class SectionLogic extends GetxController {
   RxList<ProductModel> products = RxList<ProductModel>([]);
   RxList<AdviceModel> advices = RxList<AdviceModel>([]);
   Rxn<CategoryModel> category = Rxn<CategoryModel>(null);
+  RxList orderBy = RxList(['created_at', 'desc']);
 
   nextPage() {
     if (hasMorePage.value) {
@@ -29,6 +30,11 @@ class SectionLogic extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    ever(orderBy, (value) {
+      products.clear();
+      page.value = 1;
+      getPosts();
+    });
     ever(categoryId, (value) {
       products.clear();
       page.value = 1;
@@ -49,14 +55,14 @@ class SectionLogic extends GetxController {
   }
 
   Future<void> getPosts() async {
-
     loading.value = true;
-    if(category.value ==null){
-      loadingProduct.value=true;
+    if (category.value == null) {
+      loadingProduct.value = true;
     }
+
     mainController.query.value = '''
     query Products {
-    products(category_id: ${mainCategory.value ?? null},sub1_id:${categoryId.value ?? null}, page: ${page.value}, first: 25) {
+    products(  order_by: { column: "${orderBy[0]??'created_at'}", orderBy: "${orderBy[1]??'desc'}" },category_id: ${mainCategory.value ?? null},sub1_id:${categoryId.value ?? null}, page: ${page.value}, first: 25) {
         paginatorInfo {
             hasMorePages
         }
@@ -139,7 +145,7 @@ class SectionLogic extends GetxController {
         }
       }
 
-      if (res?.data?['data']?['category'] != null ) {
+      if (res?.data?['data']?['category'] != null) {
         category.value =
             CategoryModel.fromJson(res?.data?['data']?['category']);
         category.value?.children?.insert(
@@ -162,11 +168,10 @@ class SectionLogic extends GetxController {
     }
 
     loading.value = false;
-    loadingProduct.value= false;
+    loadingProduct.value = false;
   }
 
   changeCategory(CategoryModel categorymodel) {
     category.value = categorymodel;
-
   }
 }

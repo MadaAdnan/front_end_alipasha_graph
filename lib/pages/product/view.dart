@@ -303,7 +303,7 @@ class ProductPage extends StatelessWidget {
                             },
                             child: Container(
                               padding: EdgeInsets.all(0.02.sw),
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
                               ),
                               child: const Icon(
@@ -313,12 +313,12 @@ class ProductPage extends StatelessWidget {
                             ),
                           ),
                           Positioned(
+                            top: 0,
+                            right: 0,
                             child: Badge.count(
                               count: mainController.carts.length,
                               backgroundColor: RedColor,
                             ),
-                            top: 0,
-                            right: 0,
                           )
                         ],
                       ),
@@ -743,40 +743,120 @@ class ProductPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SizedBox(
+                          width: 0.4.sw,
                           child: FormBuilderRatingBar(
+                            onChanged: (value) => logic.rate.value = value ?? 0,
                             name: 'rate',
                             maxRating: 5,
-                            minRating: 1,
+                            minRating: logic.rate.value,
                             itemCount: 5,
                             itemSize: 0.05.sw,
+                            initialRating: double.tryParse(
+                                    "${logic.product.value?.vote_avg}") ??
+                                0,
                             glowColor: OrangeColor,
+                            enabled: true,
+                            ratingWidget: RatingWidget(
+                                full: const Icon(
+                                  FontAwesomeIcons.solidStar,
+                                  color: OrangeColor,
+                                ),
+                                half: const Icon(
+                                  FontAwesomeIcons.starHalfStroke,
+                                  color: OrangeColor,
+                                ),
+                                empty: const Icon(
+                                  FontAwesomeIcons.star,
+                                  color: GrayDarkColor,
+                                )),
                             unratedColor: GrayDarkColor,
                             glow: true,
                             glowRadius: 0.4.r,
                           ),
-                          width: 0.4.sw,
                         ),
                         SizedBox(
                           width: 0.34.sw,
-                          child: InkWell(
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: 0.33.sw,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: GrayDarkColor),
-                                borderRadius: BorderRadius.circular(30.r),
-                              ),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    'إعادة تقييم',
-                                    style: H4GrayTextStyle,
+                          child: Obx(() {
+                            if(logic.loadingRate.value){
+                            return  InkWell(
+
+                                child: Container(
+                                  padding: EdgeInsets.all(0.01.sw),
+                                  alignment: Alignment.center,
+                                  width: 0.33.sw,
+                                  decoration: BoxDecoration(
+                                    color: RedColor,
+                                    borderRadius: BorderRadius.circular(30.r),
                                   ),
-                                  Icon(FontAwesomeIcons.refresh),
-                                ],
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+
+                                        Text(
+                                          'جاري التقييم',
+                                          style: H4WhiteTextStyle,
+                                        )
+                                     ,
+                                      SizedBox(
+                                        width: 0.02.sw,
+                                      ),
+                                        Icon(
+                                          FontAwesomeIcons.voteYea,
+                                          color: WhiteColor,
+                                          size: 0.04.sw,
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }
+                            return InkWell(
+                              onTap: () {
+                                logic.rateProduct();
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(0.01.sw),
+                                alignment: Alignment.center,
+                                width: 0.33.sw,
+                                decoration: BoxDecoration(
+                                  color: RedColor,
+                                  borderRadius: BorderRadius.circular(30.r),
+                                ),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    if (logic.product.value?.is_vote == true)
+                                      Text(
+                                        'إعادة تقييم',
+                                        style: H4WhiteTextStyle,
+                                      )
+                                    else
+                                      Text(
+                                        ' تقييم',
+                                        style: H4WhiteTextStyle,
+                                      ),
+                                    SizedBox(
+                                      width: 0.02.sw,
+                                    ),
+                                    if (logic.product.value?.is_vote == true)
+                                      Icon(
+                                        FontAwesomeIcons.refresh,
+                                        color: WhiteColor,
+                                        size: 0.04.sw,
+                                      )
+                                    else
+                                      Icon(
+                                        FontAwesomeIcons.voteYea,
+                                        color: WhiteColor,
+                                        size: 0.04.sw,
+                                      ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ),
+                            );
+                          }),
                         ),
                       ],
                     ),

@@ -56,7 +56,7 @@ MainController mainController=Get.find<MainController>();
                   children: [
                     if(logic.loading.value)
                       ...List.generate(5, (index) =>
-                          Shimmer(child:  Container(
+                          Shimmer(gradient: LinearGradient(colors: [GrayLightColor,GrayWhiteColor,GrayLightColor,]), child:  Container(
                             margin: EdgeInsets.symmetric(horizontal: 0.02.sw),
                             width: 0.15.sw,
                             height: 0.15.sw,
@@ -66,7 +66,7 @@ MainController mainController=Get.find<MainController>();
                                 color:GrayWhiteColor,
 
                             ),
-                          ), gradient: LinearGradient(colors: [GrayLightColor,GrayWhiteColor,GrayLightColor,])),
+                          )),
                       ),
 
                     if(logic.loading.value==false)
@@ -110,7 +110,7 @@ MainController mainController=Get.find<MainController>();
                                    border: Border.all(color:logic.selectedCity.value?.id==logic.cities[index].id?RedColor: GrayLightColor,width: 2),
                                    shape: BoxShape.circle,
                                    color: Colors.red,
-                                   image: DecorationImage(image: CachedNetworkImageProvider("${logic.cities[index].image}"))
+                                   image: DecorationImage(image: CachedNetworkImageProvider("${logic.cities[index].image}"),fit: BoxFit.cover)
                                ),
                              ),
                              Text('${logic.cities[index].name}',style: H4RegularDark,)
@@ -138,8 +138,8 @@ MainController mainController=Get.find<MainController>();
                           post: logic.products[index],
                           TitleColor: DarkColor,
                           onClick: () {
-                            Get.toNamed(PRODUCT_PAGE,
-                                arguments: logic.products[index].id);
+                            Get.toNamed(SERVICE_DETAILS,
+                                arguments: logic.products[index].id,parameters: {"id":"${logic.products[index].id}"});
                           },
                         );
                       }),

@@ -4,30 +4,33 @@ import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
 
 class ServiceDetailsLogic extends GetxController {
-  Rx<ProductModel> serviceModel = Rx<ProductModel>(Get.arguments);
-  Rxn<ProductModel> service = Rxn<ProductModel>(null);
+  Rxn<ProductModel> serviceModel = Rxn<ProductModel>(null);
   RxBool loading = RxBool(false);
+  RxnInt serviceId =
+      RxnInt(null);
   MainController mainController = Get.find<MainController>();
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    ever(serviceModel, (value) {
+    ever(serviceId, (value) {
       getService();
     });
   }
 
   @override
   void onReady() {
+    serviceId.value=int.tryParse("${Get.parameters['id']}");
     // TODO: implement onReady
     super.onReady();
+    getService();
   }
 
   getService() async {
     mainController.query.value = '''
     query Product {
-    product(id: "${serviceModel.value.id}") {
+    product(id: "${serviceId.value}") {
         product {
             id
             user {
@@ -67,8 +70,9 @@ class ServiceDetailsLogic extends GetxController {
      ''';
     try {
       dio.Response? res = await mainController.fetchData();
+      mainController.logger.w(res?.data);
       if (res?.data?['data']?['product']['product'] != null) {
-        service.value =
+        serviceModel.value =
             ProductModel.fromJson(res?.data?['data']?['product']['product']);
       }
     } catch (e) {

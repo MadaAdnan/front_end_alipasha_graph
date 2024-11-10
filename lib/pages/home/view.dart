@@ -4,6 +4,7 @@ import 'package:ali_pasha_graph/components/advice_component/view.dart';
 
 import 'package:ali_pasha_graph/components/home_app_bar/view.dart';
 import 'package:ali_pasha_graph/components/product_components/job_card.dart';
+import 'package:ali_pasha_graph/components/product_components/news_card.dart';
 import 'package:ali_pasha_graph/components/product_components/post_card.dart';
 import 'package:ali_pasha_graph/components/product_components/post_card_loading.dart';
 import 'package:ali_pasha_graph/components/progress_loading.dart';
@@ -267,6 +268,17 @@ class HomePage extends StatelessWidget {
                               return Column(
                                 children: [
                                   JobCard(post: logic.products[index]),
+                                  if (index % 5 == 0 &&
+                                      i < mainController.advices.length)
+                                    AdviceComponent(
+                                      advice: mainController.advices[i],
+                                    )
+                                ],
+                              );
+                            case 'news':
+                              return Column(
+                                children: [
+                                  NewsCard(post: logic.products[index]),
                                   if (index % 5 == 0 &&
                                       i < mainController.advices.length)
                                     AdviceComponent(

@@ -85,6 +85,8 @@ import 'package:ali_pasha_graph/pages/profile/binding.dart';
 import 'package:ali_pasha_graph/pages/profile/view.dart';
 import 'package:ali_pasha_graph/pages/register/binding.dart';
 import 'package:ali_pasha_graph/pages/register/view.dart';
+import 'package:ali_pasha_graph/pages/restaurant/binding.dart';
+import 'package:ali_pasha_graph/pages/restaurant/view.dart';
 import 'package:ali_pasha_graph/pages/search/binding.dart';
 import 'package:ali_pasha_graph/pages/search/view.dart';
 import 'package:ali_pasha_graph/pages/sections/binding.dart';
@@ -140,6 +142,14 @@ class AppPages {
       name: NEW_DETAILS,
       page: () => NewDetailsPage(),
       binding: NewDetailsBinding(),
+      middlewares: [],
+    ),
+
+
+    GetPage(
+      name: RESTAURANT_PAGE,
+      page: () => RestaurantPage(),
+      binding: RestaurantBinding(),
       middlewares: [],
     ),
 

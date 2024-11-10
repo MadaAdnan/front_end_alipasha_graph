@@ -10,6 +10,7 @@ import 'package:dio/dio.dart' as dio;
 class ProductLogic extends GetxController {
   RxInt pageIndex = RxInt(int.tryParse("${Get.parameters['index']}")??0);
   PageController pageController = PageController(initialPage: int.tryParse("${Get.parameters['index']}")??0);
+  RxDouble rate=RxDouble(0);
   RxBool loading = RxBool(false);
   RxBool loadingComment = RxBool(false);
   RxBool loadingRate = RxBool(false);
@@ -164,6 +165,7 @@ TextEditingController comment =TextEditingController();
       if (res?.data?['data']?['product']['product'] != null) {
         product.value =
             ProductModel.fromJson(res?.data?['data']?['product']['product']);
+        rate.value=product.value?.vote_avg??0;
       }
 
       if (res?.data?['data']?['product']['products'] != null) {
@@ -180,10 +182,11 @@ TextEditingController comment =TextEditingController();
 
 
 
-  Future<void> rateProduct({required int value}) async {
+  Future<void> rateProduct() async {
+
     mainController.query.value = '''
     mutation AddVote {
-    addVote(productId: ${productId}, vote: $value) {
+    addVote(productId: ${productId}, vote: ${rate.value.toInt()}) {
           id
           is_rate
           vote_avg
@@ -239,9 +242,11 @@ TextEditingController comment =TextEditingController();
     try {
       loadingRate.value = true;
       dio.Response? res = await mainController.fetchData();
-     // mainController.logger.i(res?.data);
+     //mainController.logger.i(res?.data);
       if (res?.data['data']?['addVote'] != null) {
         product.value = ProductModel.fromJson(res?.data['data']?['addVote']);
+        rate.value=product.value?.vote_avg??0;
+        mainController.showToast(text: "تم التقييم بنجاح",);
       }
     } catch (e) {
       mainController.logger.e("Error Add Vote $e");

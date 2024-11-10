@@ -13,16 +13,16 @@ import '../../helpers/components.dart';
 import '../../helpers/style.dart';
 import '../../routes/routes_url.dart';
 
-class NewsCard {
+class NewsCard extends StatelessWidget {
   final ProductModel post;
 
-  NewsCard({ required this.post});
+  NewsCard({key, required this.post});
+
   MainController mainController = Get.find<MainController>();
 
   @override
   Widget build(BuildContext context) {
     return Container(
-
       padding: EdgeInsets.symmetric(horizontal: 0.002.sw),
       width: double.infinity,
       height: 1.sw + 0.187.sh,
@@ -36,143 +36,84 @@ class NewsCard {
         children: [
           Container(
             padding:
-            EdgeInsets.symmetric(horizontal: 0.018.sw, vertical: 0.008.sh),
+                EdgeInsets.symmetric(horizontal: 0.018.sw, vertical: 0.008.sh),
             width: double.infinity,
             decoration: const BoxDecoration(color: WhiteColor),
             height: 0.12.sh,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Flexible(flex: 3,child:  Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Get.toNamed(NEW_DETAILS, arguments: post);
-                      },
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            backgroundColor: GrayLightColor,
-                            backgroundImage:
-                            NetworkImage("${post.image}"),
-                            minRadius: 0.018.sh,
-                            maxRadius: 0.023.sh,
-                          ),
-                          10.horizontalSpace,
-                          Column(
-                            children: [
-                             /* if (post.user?.seller_name != null)
+                Flexible(
+                  flex: 3,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Get.toNamed(NEW_DETAILS, arguments: post);
+                        },
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: GrayLightColor,
+                              backgroundImage: NetworkImage("${post.image}"),
+                              minRadius: 0.018.sh,
+                              maxRadius: 0.023.sh,
+                            ),
+                            SizedBox(
+                              width: 0.02.sw,
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  alignment: Alignment.centerRight,
+                                  child: Text(
+                                    "${post.name}",
+                                    style: H2BlackTextStyle,
+                                  ),
+                                ),
                                 Container(
                                   width: 0.6.sw,
-                                  child:SellerNameComponent(isVerified: post.user?.is_verified==true,
-                                    textStyle: H1BlackTextStyle,seller: post.user,),
-                                ),*/
-                              Container(
-                                width: 0.6.sw,
-                                child: Text(
-                                  '${post.city?.name ?? ''} - ${post.category?.name ?? ''} - ${post.sub1?.name ?? ''}',
-                                  style: H4GrayOpacityTextStyle,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              )
-                            ],
-                          )
-                        ],
+                                  child: Text(
+                                    ' ${post.category?.name ?? ''} - ${post.sub1?.name ?? ''}',
+                                    style: H4GrayOpacityTextStyle,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                15.verticalSpace,
+                Flexible(
+                  flex: 2,
+                  child: InkWell(
+                    onTap: () {
+                      Get.toNamed(NEW_DETAILS, arguments: post.id, parameters: {'id':"${post.id}"});
+                    },
+                    child: Container(
+                      width: 1.sw,
+                      child: Text(
+                        "${post.expert!.length.isGreaterThan(5) ? post.expert : post.name}",
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        style: H3GrayTextStyle,
                       ),
                     ),
-                    Obx(() {
-                      if (mainController.authUser.value != null) {
-                        // Check Is Follower
-                        if (mainController.authUser.value != null &&
-                            mainController.authUser.value!.followers != null &&
-                            post.user != null &&
-                            post.user!.id != null) {
-                          int index = mainController.authUser.value!.followers!
-                              .indexWhere(
-                                (el) => el.seller?.id == post.user?.id,
-                          );
-
-                          if (index > -1) {
-                            return Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 0.009.sw, vertical: 0.004.sh),
-                              decoration: BoxDecoration(
-                                  color: RedColor,
-                                  borderRadius: BorderRadius.circular(15.r),
-                                  border: Border.all(color: RedColor)),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    FontAwesomeIcons.solidBell,
-                                    color: WhiteColor,
-                                    size: 0.05.sw,
-                                  ),
-                                  3.horizontalSpace,
-                                  Text(
-                                    "أتابعه",
-                                    style: H5WhiteTextStyle,
-                                  )
-                                ],
-                              ),
-                            );
-                          } else if (post.user?.id !=
-                              mainController.authUser.value?.id) {
-                            return Obx(() {
-                              return InkWell(
-                                onTap: () {
-                                /*  if (loading.value == false) {
-                                    follow();
-                                  }*/
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 0.009.sw, vertical: 0.004.sh),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15.r),
-                                      border: Border.all(color: RedColor)),
-                                  child: Row(
-                                    children: [
-
-                                      3.horizontalSpace,
-                                      Text(
-                                        "متابعة",
-                                        style: H5RedTextStyle,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              );
-                            });
-                          } else {
-                            return Container();
-                          }
-                        } else {
-                          return Container();
-                        }
-                      } else {
-                        return Container();
-                      }
-                    })
-                  ],
-                ),),
-                15.verticalSpace,
-                Flexible(flex: 2,child: InkWell(onTap: (){ Get.toNamed(PRODUCT_PAGE, arguments: post.id);},child: Container(
-                  width: 1.sw,
-
-                  child: Text(
-                    "${post.expert!.length.isGreaterThan(5) ? post.expert : post.name}",
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                    style: H3GrayTextStyle,
                   ),
-                ), ), )
+                )
               ],
             ),
           ),
           InkWell(
             onTap: () {
-              Get.toNamed(PRODUCT_PAGE, arguments: post.id);
+              Get.toNamed(NEW_DETAILS, arguments: post.id,parameters: {'id':"${post.id}"});
             },
             child: Container(
               width: 1.sw,
@@ -186,23 +127,35 @@ class NewsCard {
                       fit: BoxFit.cover)),
               child: Stack(
                 children: [
-                  if(post.video!=null && post.video!.length>3)
-                    Positioned(child:Container(
+                  if (post.video != null && post.video!.length > 3)
+                    Positioned(
+                        child: Container(
                       alignment: Alignment.center,
                       width: 1.sw,
                       height: 1.sw,
                       color: Colors.black.withOpacity(0.3),
-                      child:Container(
+                      child: Container(
                         alignment: Alignment.center,
                         width: 0.18.sw,
                         height: 0.18.sw,
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            gradient: RadialGradient(colors: [WhiteColor.withOpacity(0.5),WhiteColor.withOpacity(0.2),WhiteColor.withOpacity(0.2),GrayLightColor.withOpacity(0.6)])
-                        ),
-                        child: IconButton(onPressed: (){
-                          Get.toNamed(VIDEO_PLAYER_POST_PAGE,arguments: "${post.video}");
-                        }, icon: Icon(FontAwesomeIcons.play,size: 0.08.sw,color: WhiteColor,)),
+                            gradient: RadialGradient(colors: [
+                              WhiteColor.withOpacity(0.5),
+                              WhiteColor.withOpacity(0.2),
+                              WhiteColor.withOpacity(0.2),
+                              GrayLightColor.withOpacity(0.6)
+                            ])),
+                        child: IconButton(
+                            onPressed: () {
+                              Get.toNamed(VIDEO_PLAYER_POST_PAGE,
+                                  arguments: "${post.video}");
+                            },
+                            icon: Icon(
+                              FontAwesomeIcons.play,
+                              size: 0.08.sw,
+                              color: WhiteColor,
+                            )),
                       ),
                     )),
                   if (post.level == 'special')
@@ -274,7 +227,7 @@ class NewsCard {
             alignment: Alignment.center,
             color: WhiteColor,
             padding:
-            EdgeInsets.symmetric(horizontal: 0.001.sw, vertical: 0.005.sh),
+                EdgeInsets.symmetric(horizontal: 0.001.sw, vertical: 0.005.sh),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -300,7 +253,7 @@ class NewsCard {
                 MaterialButton(
                   onPressed: () {
                     Get.toNamed(COMMENTS_PAGE,
-                        parameters: {"id":"${post.id}" });
+                        parameters: {"id": "${post.id}"});
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -318,7 +271,6 @@ class NewsCard {
                     ],
                   ),
                 ),
-
                 MaterialButton(
                   onPressed: () {
                     Share.share("https://ali-pasha.com/products/${post.id}");

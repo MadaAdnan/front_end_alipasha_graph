@@ -16,7 +16,7 @@ class ProductsLogic extends GetxController {
   RxBool loading = RxBool(false);
   RxBool loadingProducts = RxBool(false);
   RxInt page = RxInt(1);
-  RxnInt sellerId = RxnInt(Get.arguments?.id??Get.parameters['id'] ?? null);
+  RxnInt sellerId = RxnInt(Get.arguments?.id??int.tryParse("${Get.parameters['id']}") ?? null);
   Rxn<UserModel> seller = Rxn<UserModel>(null);
   RxList<ProductModel> products = RxList<ProductModel>([]);
   RxList<CategoryModel> categories = RxList<CategoryModel>([]);

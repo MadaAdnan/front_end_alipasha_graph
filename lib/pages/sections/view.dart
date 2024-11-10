@@ -22,9 +22,9 @@ class SectionsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: WhiteColor,
+
       body: Column(
         children: [
-
           HomeAppBarComponent(),
           Obx(() {
             if (logic.loading.value) {
@@ -51,8 +51,14 @@ class SectionsPage extends StatelessWidget {
                       (index) => InkWell(
                         onTap: () async{
                          await logic.visit(logic.categories[index].id!,logic.categories[index].productsCount!);
-                          Get.toNamed(SECTION_PAGE,
-                              arguments: logic.categories[index].id);
+                         if(logic.categories[index].type =='restaurant'){
+                           Get.toNamed(RESTAURANT_PAGE,
+                               arguments: logic.categories[index].id);
+                         }else{
+                           Get.toNamed(SECTION_PAGE,
+                               arguments: logic.categories[index].id);
+                         }
+
                         },
                         child: Stack(
                           children: [

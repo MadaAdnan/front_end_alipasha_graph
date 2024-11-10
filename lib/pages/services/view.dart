@@ -55,29 +55,29 @@ class ServicesPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Shimmer.fromColors(
+                              baseColor: GrayDarkColor,
+                              highlightColor: GrayLightColor,
                               child: Container(
                                 width: 0.31.sw,
                                 height: 0.31.sw,
                                 color: RedColor,
-                              ),
-                              baseColor: GrayDarkColor,
-                              highlightColor: GrayLightColor),
+                              )),
                           Shimmer.fromColors(
+                              baseColor: GrayDarkColor,
+                              highlightColor: GrayLightColor,
                               child: Container(
                                 width: 0.31.sw,
                                 height: 0.31.sw,
                                 color: RedColor,
-                              ),
-                              baseColor: GrayDarkColor,
-                              highlightColor: GrayLightColor),
+                              )),
                           Shimmer.fromColors(
+                              baseColor: GrayDarkColor,
+                              highlightColor: GrayLightColor,
                               child: Container(
                                 width: 0.31.sw,
                                 height: 0.31.sw,
                                 color: RedColor,
-                              ),
-                              baseColor: GrayDarkColor,
-                              highlightColor: GrayLightColor),
+                              )),
                         ],
                       );
                     }
@@ -211,8 +211,8 @@ class ServicesPage extends StatelessWidget {
                                               '${logic.idlibWeather.first.icon}',
                                             ),
 
-                                            fit: BoxFit.fitHeight,
-                                            scale: 2),
+                                            fit: BoxFit.fitWidth,
+                                            ),
                                       ),
                                     ),
                                     Column(

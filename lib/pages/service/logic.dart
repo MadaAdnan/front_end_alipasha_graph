@@ -73,6 +73,7 @@ class ServiceLogic extends GetxController {
             sub1 {
                 name
             }
+            id
             name
             type
             address
@@ -93,7 +94,7 @@ class ServiceLogic extends GetxController {
      ''';
     try {
       dio.Response? res = await mainController.fetchData();
-     // mainController.logger.d(res?.data?['data']?['citiesByCategory']);
+      mainController.logger.d(res?.data);
       if (res?.data?['data']?['products']?['paginatorInfo'] != null) {
         hasMorePage.value =
             res?.data?['data']?['products']?['paginatorInfo']?['hasMorePages'];
