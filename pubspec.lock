@@ -1329,10 +1329,10 @@ packages:
     dependency: "direct main"
     description:
       name: pusher_client_socket
-      sha256: "1afe37a34429f0df32205870ac4e21db316fdf8e14cf7783e6ef538440417f4d"
+      sha256: d3b4a33611874c4c4b3dc5cb62df20b5c4597f42f28eb32e99fe2d88639b6fc0
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.2+6"
+    version: "0.0.2+7"
   quiver:
     dependency: transitive
     description:

@@ -231,7 +231,7 @@ class HomePage extends StatelessWidget {
                         semanticChildCount: 4,
                         scrollDirection: Axis.horizontal,
                         children: [
-                          if (logic.sellers.length == 0)
+                          if (logic.sellers.length== 0)
                             ...List.generate(6, (i) {
                               return _buildSeller();
                             })

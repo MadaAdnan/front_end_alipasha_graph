@@ -196,7 +196,7 @@ query GetMessages {
     ''';
     try {
       dio.Response? res = await mainController.fetchData();
-      mainController.logger.e(res?.data);
+      //mainController.logger.e(res?.data);
       if (res?.data?['data']['CreateMessage'] != null) {
         messageController.clear();
         messages.insert(
