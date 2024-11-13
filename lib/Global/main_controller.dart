@@ -23,6 +23,7 @@ import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:cherry_toast/cherry_toast.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
+import 'package:flutter_deep_links/flutter_deep_links.dart';
 
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -39,6 +40,7 @@ import 'package:pusher_client_socket/pusher_client_socket.dart';
 
 import '../exceptions/custom_exception.dart';
 import '../helpers/colors.dart';
+import '../helpers/deep_link.dart';
 import '../helpers/dio_network_manager.dart';
 import '../helpers/pusher_service.dart';
 import '../models/city_model.dart';
@@ -68,10 +70,12 @@ class MainController extends GetxController {
   RxBool is_show_home_appbar = RxBool(true);
   Logger logger = Logger();
   late PusherClient pusher;
+  late dynamic deep;
   List channels = [];
   @override
   void onInit() {
     super.onInit();
+    DeepLinksService.init();
      checkStatusApp().then(
         (value) => value != true ? Get.offAndToNamed(MAINTENANCE_PAGE) : null);
 
@@ -104,7 +108,7 @@ class MainController extends GetxController {
 
       if (value != null) {
 
-        for (var item in value.communities ?? []) {
+       for (var item in value.communities ?? []) {
           // استخدم value.communities مباشرة
           final channelName = 'private-message.${item?.id}';
           var channel = pusher.subscribe(channelName);
@@ -141,19 +145,19 @@ class MainController extends GetxController {
                 MessageModel message=MessageModel.fromJson(e['message']);
                 switch (message.community?.type){
                   case 'chat':
-                    if(Get.currentRoute == CHAT_PAGE ){
+                    if(Get.currentRoute == CHAT_PAGE && message.user?.id!=authUser.value?.id ){
                       ChatLogic logic= Get.find<ChatLogic>();
                       logic.messages.insert(0, message);
                     }
                     break;
                   case 'group':
-                    if(Get.currentRoute == GROUP_PAGE){
+                    if(Get.currentRoute == GROUP_PAGE && message.user?.id!=authUser.value?.id){
                       GroupLogic logic= Get.find<GroupLogic>();
                       logic.messages.insert(0, message);
                     }
                     break;
                   case 'channel':
-                    if(Get.currentRoute == CHANNEL_PAGE){
+                    if(Get.currentRoute == CHANNEL_PAGE && message.user?.id!=authUser.value?.id){
                       ChannelLogic logic= Get.find<ChannelLogic>();
                       logic.messages.insert(0, message);
                     }
@@ -165,23 +169,28 @@ class MainController extends GetxController {
               }
             }
           });
-          channels.add(channel); // استخدم add بدلاً من الفهرسة
+         channels.add(channel); // استخدم add بدلاً من الفهرسة
         }
-        var channel = pusher.subscribe('change-setting');
-        channel.bind('update-setting', (e) {
-          logger.w(e);
-          if (e['setting'] != null) {
-            settings
-                .value = SettingModel.fromJson(e['setting']);
-          }
-        });
-        channels.add(channel);
+
       }
+
     });
 
+    // subscribe settings
+    var channel = pusher.channel('change-setting');
+    channel.bind('update-setting', (e) {
+      logger.w(e);
+      if (e['setting'] != null) {
+        settings
+            .value = SettingModel.fromJson(e['setting']);
+      }
+    });
+    channels.add(channel);
 
 
   }
+
+
 
 
   Future<dio.Response?> fetchData() async {
@@ -549,6 +558,8 @@ class MainController extends GetxController {
   Future<XFile?> commpressImage(
       {required XFile? file, int? width, int? height}) async {
     if (file != null) {
+
+
       final compressedFile = await FlutterImageCompress.compressAndGetFile(
           file.path, file.path + '.webp',
           format: CompressFormat.webp,
@@ -556,7 +567,7 @@ class MainController extends GetxController {
           minHeight: height ?? 300,
           minWidth: width ?? 300,
           rotate: 0,
-          numberOfRetries: 10);
+          numberOfRetries: 10,);
 
       if (compressedFile != null) {
         return XFile(compressedFile.path);

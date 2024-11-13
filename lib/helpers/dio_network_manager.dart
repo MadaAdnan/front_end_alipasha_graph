@@ -26,8 +26,8 @@ class NetworkManager {
       // baseUrl: "http://192.168.11.200:8000/graphql/api",
       baseUrl: "http://pazarpasha.com/graphql/api",
       // baseUrl: "https://test.ali-pasha.com/graphql/api",
-      connectTimeout: const Duration(seconds: 20),
-      receiveTimeout: const Duration(seconds: 20),
+      connectTimeout: const Duration(seconds: 60),
+      receiveTimeout: const Duration(seconds: 60),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',

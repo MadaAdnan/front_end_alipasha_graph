@@ -49,14 +49,21 @@
 
 <!--            DeepLink-->
 
-<!--            <meta-data android:name="flutter_deeplinking_enabled" android:value="true" />-->
-           <intent-filter android:autoVerify="true">
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https" android:host="v3.ali-pasha.com" />
-<!--                <data android:scheme="http" />-->
+                <!-- Accepts URIs that begin with https://YOUR_HOST -->
+
+                <data android:scheme="http" />
+                <data
+                    android:host="ali-pasha.com"
+                    android:scheme="https" />
             </intent-filter>
+
+<!--            DeepLink-->
+
 
 
             <!-- Specifies an Android theme to apply to this Activity as soon as

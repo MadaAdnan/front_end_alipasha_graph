@@ -494,6 +494,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  flutter_deep_links:
+    dependency: "direct main"
+    description:
+      name: flutter_deep_links
+      sha256: ef6b18f143e8d86e3dd2dd867c6a746be81993451a4e2d4db337ddd07b4ef8a4
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   flutter_form_builder:
     dependency: "direct main"
     description:

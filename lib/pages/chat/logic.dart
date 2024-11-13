@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/helpers/redcord_manager.dart';
@@ -14,7 +15,7 @@ import 'package:dio/dio.dart' as dio;
 
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-
+import 'dart:ui' as ui;
 class ChatLogic extends GetxController {
   MainController mainController = Get.find<MainController>();
   RxBool loadingSend = RxBool(false);
@@ -266,8 +267,24 @@ query GetMessages {
   Future<void> pickImage({required ImageSource imagSource}) async {
     file.value = null;
     XFile? selected = await ImagePicker().pickImage(source: imagSource);
+
     if (selected != null) {
-      file.value = selected;
+      File imageFile = File(selected.path);
+
+      // نقرأ بيانات الصورة للحصول على أبعادها
+      final data = await imageFile.readAsBytes();
+      final codec = await ui.instantiateImageCodec(data);
+      final frame = await codec.getNextFrame();
+      final image = frame.image;
+      int? width=image.width;
+      int? height=image.height;
+      if(width>300){
+        width=300;
+        height=(width*(image.height/image.width)).toInt();
+      }
+
+      file.value = await mainController.commpressImage(file: selected,width: width,height: height);
+
       await uploadFileMessage();
     }
   }

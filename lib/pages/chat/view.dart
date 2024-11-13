@@ -511,6 +511,7 @@ class ChatPage extends StatelessWidget {
                       angle: -0.78,
                       child: IconButton(
                           onPressed: () {
+                            logic.loadingSend.value=true;
                             logic.pickImage(imagSource: ImageSource.gallery);
                           },
                           icon: const Icon(

@@ -4,17 +4,19 @@ import 'package:pusher_client_socket/pusher_client_socket.dart';
 class PusherService {
   static PusherClient init({String? token}) {
     var options = PusherOptions(
-      host: 'pazarpasha.com',
+      host: '85.215.154.88',
       encrypted: false,
-
-      // host: '85.215.154.88:8086',
+      //
+      // host: '192.168.11.200',
       // host: 'v3.ali-pasha.com:8086',
-      wsPort: 8080,
+      wsPort: 6001,
+
 
       autoConnect: false,
       cluster: 'mt1',
       authOptions: PusherAuthOptions(
           "http://pazarpasha.com/api/broadcasting/auth",
+          // "http://192.168.11.200:8000/api/broadcasting/auth",
           headers: {
             if (token != null && token != '')
               'Authorization': 'Bearer $token', // تمرير الـ token هنا
@@ -31,7 +33,6 @@ class PusherService {
     });
     pusherClient.onConnectionEstablished((data) {
       logger.w("Connection established - socket-id: ${pusherClient.socketId}");
-
       // يمكنك استخدام Logger لطباعة الرسالة
     });
     pusherClient.onConnectionError((error) {

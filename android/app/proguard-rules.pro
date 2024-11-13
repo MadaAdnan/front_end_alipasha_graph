@@ -5,6 +5,8 @@
 # directive in build.gradle.
 
 # Add any project specific keep options here:
+#PUSHER
+-keep class com.pusher.client.** { *; }
 
 # For example:
 # -keep class com.example.myproject.** { *; }
