@@ -66,7 +66,7 @@ class ChatLogic extends GetxController {
 
   Future<void> playRecordedAudio() async {
     mPlayerIsInited.value = true;
-    await recorder.playRecordedAudio(path: recordedFilePath?.value);
+    await recorder.playRecordedAudioNetWork(filePath: recordedFilePath?.value);
   }
 
   Future<void> stopPlayer() async {
@@ -105,17 +105,23 @@ class ChatLogic extends GetxController {
     // TODO: implement onInit
     super.onInit();
     communityModel.value = Get.arguments;
-    mainController.logger.w('COMMUNITY IS');
-    mainController.logger.w(Get.arguments.users[1].name);
+
+    getDataFromStorage();
     ever(page, (value) {
       getMessages();
     });
-    // mainController.pusher
-    //     .subscribe(
-    //         'private-message.${communityModel.id}.${mainController.authUser.value?.id}')
-    //     .bind('message.create', (event) {
-    //   messages.insert(0, MessageCommunityModel.fromJson(event['message']));
-    // });
+
+    ever(messages, (value){
+      if(value.last.user?.id==mainController.authUser.value?.id){
+        messageController.clear();
+        file.value=null;
+      }
+
+      if(mainController.storage.hasData('communities-${communityModel.value?.id}')){
+        mainController.storage.remove('communities-${communityModel.value?.id}');
+      }
+       mainController.storage.write('communities-${communityModel.value?.id}', messages.map((el)=>el.toJson()).toList());
+    });
   }
 
   @override
@@ -134,6 +140,7 @@ query GetMessages {
             hasMorePages
         }
         data {
+        id
             body
             type
             created_at
@@ -162,6 +169,10 @@ query GetMessages {
         for (var item in res?.data?['data']?['getMessages']?['data']) {
           messages.add(MessageModel.fromJson(item));
         }
+        if(mainController.storage.hasData('communities-${communityModel.value?.id}')){
+          mainController.storage.remove('communities-${communityModel.value?.id}');
+        }
+        await mainController.storage.write('communities-${communityModel.value?.id}', res?.data?['data']?['getMessages']?['data']);
       }
       if(res?.data?['errors']?[0]?['message']!=null){
         mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
@@ -172,11 +183,19 @@ query GetMessages {
     loading.value = false;
   }
 
+  getDataFromStorage() {
+    var listProduct = mainController.storage.read('communities-${communityModel.value?.id}')??[];
+
+    for (var item in listProduct) {
+      messages.add(MessageModel.fromJson(item));
+    }
+  }
+
   sendTextMessage() async {
     if (messageController.text.length == 0) {
       return;
     }
-    loadingSend.value = true;
+    mainController.loading.value = true;
 
     mainController.query.value = '''
   mutation CreateMessage {
@@ -200,8 +219,8 @@ query GetMessages {
       //mainController.logger.e(res?.data);
       if (res?.data?['data']['CreateMessage'] != null) {
         messageController.clear();
-        messages.insert(
-            0, MessageModel.fromJson(res?.data?['data']['CreateMessage']));
+    /*    messages.insert(
+            0, MessageModel.fromJson(res?.data?['data']['CreateMessage']));*/
       }
       if(res?.data?['errors']?[0]?['message']!=null){
         mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
@@ -209,14 +228,14 @@ query GetMessages {
     } catch (e) {
       mainController.logger.e("Error Send ${e}");
     }
-    loadingSend.value = false;
+    mainController.loading.value = false;
   }
 
   uploadFileMessage() async {
     if (file.value == null) {
       return;
     }
-    loadingSend.value = true;
+    mainController.loading.value = true;
     int? sellerId =
         mainController.authUser.value?.id == communityModel.value?.manager?.id
             ? communityModel.value?.manager?.id
@@ -261,7 +280,7 @@ query GetMessages {
     } catch (e) {
       mainController.logger.e('Error Upload $e');
     }
-    loadingSend.value = false;
+    mainController.loading.value = false;
   }
 
   Future<void> pickImage({required ImageSource imagSource}) async {

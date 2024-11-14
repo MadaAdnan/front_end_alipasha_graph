@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:another_audio_recorder/another_audio_recorder.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -20,7 +22,8 @@ class RecorderManager {
   AnotherAudioRecorder? _recorder;
   String? _filePath;
   bool _isRecording = false;
-  AudioPlayer? _audioPlayer;
+  bool _isPaly = false;
+  AudioPlayer _audioPlayer=AudioPlayer();
   StreamSubscription<Duration>? positionSubscription;
 
   Future<void> init({required String path}) async {
@@ -83,42 +86,56 @@ class RecorderManager {
     }
   }
 
-  Future<void> playRecordedAudio(
-      {String? path,
-      Function(int position, Duration? duration)? onChangeSeek,
-      Function(bool end)? onEnd}) async {
-    _audioPlayer = AudioPlayer();
-    if (path != null) {
-      await _audioPlayer!.play(
-        DeviceFileSource(path),
-      );
-      Duration? duration = await _audioPlayer!.getDuration();
 
+
+  Future<void> playRecordedAudioNetWork({
+    String? path,
+    String? filePath,
+    String? assets,
+    Function(int position, Duration? duration)? onChangeSeek,
+    Function(bool end)? onEnd,
+
+  }) async {
+    MainController mainController = Get.find<MainController>();
+    if (mainController.isPlayAudio.value == true) {
+      _audioPlayer.stop();
+      mainController.isPlayAudio.value = false;
+    }
+
+    if (path != null) {
+      mainController.isPlayAudio.value = true;
+      await _audioPlayer.play(UrlSource(path));
+    }
+    //
+    else if (filePath != null) {
+      mainController.isPlayAudio.value == true;
+      await _audioPlayer.play(DeviceFileSource(filePath));
+    }
+    else if(assets !=null){
+      mainController.isPlayAudio.value = true;
+      await _audioPlayer.play(AssetSource(assets));
+    }
+    if (path != null || filePath != null) {
+      Duration? duration = await _audioPlayer.getDuration();
       if (onChangeSeek != null) {
-        positionSubscription = _audioPlayer!.onPositionChanged.listen(
-          (Duration position) async {
-            if (onEnd != null) {
-              if (duration != null &&
-                  duration.inSeconds == position.inSeconds) {
-                onEnd(false);
+        positionSubscription = _audioPlayer.onPositionChanged.listen(
+              (Duration position) {
+            // عند الوصول إلى نهاية الصوت، استدعي onEnd
+            if (onEnd != null && duration != null) {
+              if (duration.inSeconds == position.inSeconds) {
+                onEnd(false); // الصوت انتهى
               } else {
-                onEnd(true);
+                mainController.isPlayAudio.value = false;
+                onEnd(true); // الصوت لا يزال قيد التشغيل
               }
             }
+            // تحديث موضع الصوت
             onChangeSeek(position.inMilliseconds, duration);
           },
         );
       }
-
-      print("Playing audio from path: $path");
-    } else if (_filePath != null) {
-      await _audioPlayer!.play(DeviceFileSource(_filePath!));
-      print("Playing audio from path: $_filePath");
-    } else {
-      print("No audio file path provided");
     }
   }
-
   Future<void> StopPlayRecordedAudio() async {
     await _audioPlayer!.stop();
     print("Audio playback stopped");

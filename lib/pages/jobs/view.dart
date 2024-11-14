@@ -104,7 +104,7 @@ class JobsPage extends StatelessWidget {
                           },
                         );
                       }),
-                      if (logic.mainController.loading.value &&
+                      if (logic.loading.value &&
                           logic.page.value == 1)
                         ...List.generate(
                             5,

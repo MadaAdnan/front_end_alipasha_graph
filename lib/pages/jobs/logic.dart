@@ -15,6 +15,7 @@ RxString typeJob=RxString('');
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    getDataFromStorage();
     ever(page, (value) {
       getJobs();
     });
@@ -91,9 +92,16 @@ RxString typeJob=RxString('');
             false;
       }
       if (res?.data?['data']?['products']?['data'] != null) {
+        if(page.value==1){
+          jobs.clear();
+        }
         for (var item in res?.data?['data']?['products']?['data']) {
           jobs.add(ProductModel.fromJson(item));
         }
+        if(mainController.storage.hasData('jobs')){
+          mainController.storage.remove('jobs');
+        }
+        await mainController.storage.write('jobs', res?.data?['data']?['products']?['data'] );
       }
       if(res?.data?['errors']?[0]?['message']!=null){
         mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
@@ -102,5 +110,13 @@ RxString typeJob=RxString('');
       mainController.logger.e("Error Jobs Pge ${e.message}");
     }
     loading.value=false;
+  }
+
+  getDataFromStorage() {
+    var listProduct = mainController.storage.read('jobs')??[];
+
+    for (var item in listProduct) {
+      jobs.add(ProductModel.fromJson(item));
+    }
   }
 }

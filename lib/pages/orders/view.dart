@@ -1,4 +1,3 @@
-
 import 'package:ali_pasha_graph/components/progress_loading.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/enums.dart';
@@ -50,10 +49,14 @@ class OrdersPage extends StatelessWidget {
           return true;
         },
         child: Obx(() {
-          if(logic.loading.value && logic.page.value==1){
+          if (logic.loading.value && logic.page.value == 1) {
             return Container(
               alignment: Alignment.center,
-              child: Container(alignment: Alignment.center,width: 0.3.sw,child: ProgressLoading(),),
+              child: Container(
+                alignment: Alignment.center,
+                width: 0.3.sw,
+                child: ProgressLoading(),
+              ),
             );
           }
           return ListView(
@@ -112,6 +115,24 @@ class OrdersPage extends StatelessWidget {
                                             child: Icon(
                                               FontAwesomeIcons.dollarSign,
                                               size: 0.04.sw,
+                                            )),
+                                      ])),
+                                  RichText(
+                                      textAlign: TextAlign.center,
+                                      text: TextSpan(children: [
+                                        WidgetSpan(
+                                            alignment:
+                                                PlaceholderAlignment.middle,
+                                            child: Text(
+                                              ' ${logic.orders[index].id}',
+                                              style: H2RegularDark,
+                                            )),
+                                        WidgetSpan(
+                                            alignment:
+                                                PlaceholderAlignment.middle,
+                                            child: Text(
+                                              'معرف الطلب',
+                                              style: H4GrayTextStyle,
                                             )),
                                       ])),
                                   RichText(
@@ -298,7 +319,17 @@ class OrdersPage extends StatelessWidget {
                     ],
                   ),
                 );
-              })
+              }),
+              if (logic.orders.length == 0 && logic.loading.value == false)
+                Container(
+                  width: 1.sw,
+                  height: 1.sh,
+                  alignment: Alignment.center,
+                  child: Text(
+                    'لا يوجد طلبات لعرضها',
+                    style: H4GrayTextStyle,
+                  ),
+                )
             ],
           );
         }),

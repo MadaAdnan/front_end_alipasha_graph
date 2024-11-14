@@ -36,9 +36,10 @@ class RestaurantPage extends StatelessWidget {
           return true;
         },
         child: Obx(() {
-          if (logic.loading.value) {
+          if (logic.loading.value && logic.users.length==0) {
             return Container(
               alignment: Alignment.center,
+
               width: 1.sw,
               height: 1.sh,
               child: ProgressLoading(
@@ -57,6 +58,7 @@ class RestaurantPage extends StatelessWidget {
                       Get.toNamed(PRODUCTS_PAGE,parameters: {"id":"${logic.users[index].id}"},);
                     },
                         child: Container(
+                          margin: EdgeInsets.symmetric(vertical: 0.004.sh),
                           decoration: BoxDecoration(
                             color: WhiteColor,
                             borderRadius: BorderRadius.circular(30.r),

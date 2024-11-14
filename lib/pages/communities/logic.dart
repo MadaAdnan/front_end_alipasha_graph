@@ -23,6 +23,7 @@ class CommunitiesLogic extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    getDataFromStorage();
     ever(page, (value) {
       if (value == 1) {
         communities.clear();
@@ -53,7 +54,7 @@ class CommunitiesLogic extends GetxController {
     mainController.query.value = '''
     query Communities {
     getMyCommunity(
-        search: "${search.value}",first: 10, page: ${page.value}) {
+        search: "${search.value}",first: 25, page: ${page.value}) {
          data {
             id
             name
@@ -96,11 +97,18 @@ class CommunitiesLogic extends GetxController {
       }
 
       if (res?.data?['data']?['getMyCommunity']?['data'] != null) {
+        if(page.value==1){
+          communities.clear();
+        }
         for (var item in res?.data?['data']?['getMyCommunity']?['data']) {
           communities.indexWhere((el) => el.id == item['id']) == -1
               ? communities.add(CommunityModel.fromJson(item))
               : null;
         }
+        if(mainController.storage.hasData('communities')){
+          mainController.storage.remove('communities');
+        }
+        await mainController.storage.write('communities', res?.data?['data']?['getMyCommunity']?['data'] );
       }
       if(res?.data?['errors']?[0]?['message']!=null){
         mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
@@ -110,5 +118,13 @@ class CommunitiesLogic extends GetxController {
       mainController.logger.e(e);
     }
     loading.value = false;
+  }
+
+  getDataFromStorage() {
+    var listProduct = mainController.storage.read('communities')??[];
+
+    for (var item in listProduct) {
+      communities.add(CommunityModel.fromJson(item));
+    }
   }
 }

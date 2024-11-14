@@ -5,6 +5,7 @@ import 'package:ali_pasha_graph/helpers/components.dart';
 import 'package:ali_pasha_graph/helpers/google_auth.dart';
 
 import 'package:ali_pasha_graph/helpers/queries.dart';
+import 'package:ali_pasha_graph/helpers/redcord_manager.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:ali_pasha_graph/models/advice_model.dart';
 import 'package:ali_pasha_graph/models/cart_model.dart';
@@ -53,6 +54,7 @@ class MainController extends GetxController {
   GetStorage storage = GetStorage('ali-pasha');
   RxnString query = RxnString(null);
   Rxn<Map<String, dynamic>> variables = Rxn(null);
+  RxBool isPlayAudio = RxBool(false);
   RxBool loading = RxBool(false);
   RxBool createCommunityLodaing = RxBool(false);
   RxBool cartLoading = RxBool(false);
@@ -107,7 +109,7 @@ class MainController extends GetxController {
     ever(authUser, (value) {
 
       if (value != null) {
-
+logger.e('PUSHER');
        for (var item in value.communities ?? []) {
           // استخدم value.communities مباشرة
           final channelName = 'private-message.${item?.id}';
@@ -145,21 +147,28 @@ class MainController extends GetxController {
                 MessageModel message=MessageModel.fromJson(e['message']);
                 switch (message.community?.type){
                   case 'chat':
-                    if(Get.currentRoute == CHAT_PAGE && message.user?.id!=authUser.value?.id ){
+                    if(Get.currentRoute == CHAT_PAGE  ){
                       ChatLogic logic= Get.find<ChatLogic>();
                       logic.messages.insert(0, message);
+                      logger.w("ADD MESSAGE");
+                      RecorderManager().playRecordedAudioNetWork(assets: 'sound/notify.mp3');
+                      loading.value=false;
                     }
                     break;
                   case 'group':
                     if(Get.currentRoute == GROUP_PAGE && message.user?.id!=authUser.value?.id){
                       GroupLogic logic= Get.find<GroupLogic>();
                       logic.messages.insert(0, message);
+                    //  RecorderManager().playRecordedAudioNetWork(assets: 'sound/notify.mp3');
+                      loading.value=false;
                     }
                     break;
                   case 'channel':
                     if(Get.currentRoute == CHANNEL_PAGE && message.user?.id!=authUser.value?.id){
                       ChannelLogic logic= Get.find<ChannelLogic>();
                       logic.messages.insert(0, message);
+                      RecorderManager().playRecordedAudioNetWork(assets: 'sound/notify.mp3');
+                      loading.value=false;
                     }
                     break;
 
@@ -171,6 +180,7 @@ class MainController extends GetxController {
           });
          channels.add(channel); // استخدم add بدلاً من الفهرسة
         }
+logger.e('SUCCESS - PUSHER');
 
       }
 
@@ -291,6 +301,8 @@ class MainController extends GetxController {
   }
 
   createCommunity({required int sellerId, String? message}) async {
+    print("TOKEN");
+    print(token.value);
     if (createCommunityLodaing.value) {
       return;
     }
@@ -303,6 +315,7 @@ class MainController extends GetxController {
     query.value = '''
    mutation CreateChat {
     createChat(memberId: $sellerId) {
+      community{
         id
         name
         type
@@ -321,17 +334,25 @@ class MainController extends GetxController {
         manager {
             id
         }
+      }
+      user{
+      $AUTH_FIELDS}
     }
+    
 }
      ''';
     try {
       dio.Response? res = await fetchData();
       logger.w(res?.data);
-      if (res?.data?['data']['createChat'] != null) {
+      if (res?.data?['data']['createChat']['community'] != null) {
         CommunityModel community =
-            CommunityModel.fromJson(res?.data?['data']['createChat']);
+            CommunityModel.fromJson(res?.data?['data']['createChat']['community']);
         Get.toNamed(CHAT_PAGE,
             arguments: community, parameters: {"msg": message ?? ''});
+      }
+      if (res?.data?['data']['createChat']['user'] != null) {
+        authUser.value=null;
+        authUser.value=UserModel.fromJson(res?.data?['data']['createChat']['user']);
       }
     } catch (e) {
       logger.e("Error Create Community $e");
@@ -631,6 +652,7 @@ class MainController extends GetxController {
       List<CartModel> cartsItem = await CartHelper.addToCart(product: product);
       carts(cartsItem);
       messageBox(message: 'تم إضافة المنتج إلى السلة', title: 'نجاح العملية');
+
     } catch (e) {}
     cartLoading.value = false;
   }
@@ -815,4 +837,5 @@ class MainController extends GetxController {
     }
     loading.value = false;
   }
+
 }

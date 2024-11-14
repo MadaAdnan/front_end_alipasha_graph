@@ -27,7 +27,7 @@ class SectionsPage extends StatelessWidget {
         children: [
           HomeAppBarComponent(),
           Obx(() {
-            if (logic.loading.value) {
+            if (logic.loading.value && logic.categories.length==0) {
               return Expanded(child: Container(
                 width: 0.5.sw,
                 height: 0.5.sw,

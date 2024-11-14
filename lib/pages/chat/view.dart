@@ -214,7 +214,7 @@ class ChatPage extends StatelessWidget {
                               contentPadding:
                               EdgeInsets.symmetric(horizontal: 0.02.sw),
                               suffixIcon: Obx(() {
-                                if (logic.loadingSend.value) {
+                                if (mainController.loading.value ) {
                                   return Container(
                                     width: 0.04.sw,
                                     height: 0.04.sw,
@@ -460,6 +460,12 @@ class ChatPage extends StatelessWidget {
                                                               )
                                                             ],
                                                           );
+                                                        }),
+                                                        Obx(() {
+                                                          if(logic.mRecorderIsInited.value){
+                                                            return Container(child: Text('جاري التسجيل',style: H4RedTextStyle,),);
+                                                          }
+                                                          return Container();
                                                         })
                                                       ],
                                                     ),
@@ -511,7 +517,7 @@ class ChatPage extends StatelessWidget {
                       angle: -0.78,
                       child: IconButton(
                           onPressed: () {
-                            logic.loadingSend.value=true;
+                            mainController.loading.value = true;
                             logic.pickImage(imagSource: ImageSource.gallery);
                           },
                           icon: const Icon(
@@ -603,6 +609,7 @@ class ChatPage extends StatelessWidget {
               if (message.type == 'aac')
                 PlayerSoundMessage(
                   path: message.attach,
+                  network: true,
                 ),
               if (message.type != 'aac' && message.type != 'text')
                 InkWell(
@@ -757,6 +764,7 @@ class ChatPage extends StatelessWidget {
                 if (message.type == 'aac')
                   PlayerSoundMessage(
                     path: message.attach,
+                    network: true,
                   ),
                 if (message.type != 'aac' && message.type != 'text')
                   InkWell(
@@ -845,17 +853,18 @@ class ChatPage extends StatelessWidget {
 }
 
 class PlayerSoundMessage extends StatelessWidget {
-  PlayerSoundMessage({super.key, this.path});
+  PlayerSoundMessage({super.key, this.path,this.network});
 
   RxBool play = RxBool(false);
   final String? path;
+  final bool?network;
   RecorderManager recorderManager = RecorderManager();
   RxInt seek = RxInt(0);
   RxInt maxSeek = RxInt(0);
 
   @override
   Widget build(BuildContext context) {
-    print('Path: ${path}');
+
     return Obx(() {
       return Row(
         children: [
@@ -881,8 +890,14 @@ class PlayerSoundMessage extends StatelessWidget {
                 icon: const Icon(FontAwesomeIcons.stop))
                 : IconButton(
                 onPressed: () async {
-                  print('$path');
-                  await playAudio();
+                  print('Path: ${path}');
+                  if(network==true){
+                    await playAudioNetwork();
+                  }else{
+                    await playAudio();
+                  }
+
+
                 },
                 icon: const Icon(FontAwesomeIcons.play)),
           ),
@@ -892,10 +907,11 @@ class PlayerSoundMessage extends StatelessWidget {
   }
 
   Future<void> playAudio() async {
-    print('PAth L : ${path?.length}');
-    if (!play.value && path?.length != 0) {
-      await recorderManager.playRecordedAudio(
-          path: path,
+
+
+      await recorderManager.playRecordedAudioNetWork(
+          filePath: path,
+
           onChangeSeek: (value, duration) {
             seek.value = value;
             maxSeek.value = duration?.inMilliseconds ?? 0;
@@ -904,7 +920,23 @@ class PlayerSoundMessage extends StatelessWidget {
       });
 
       play.value = true;
-    }
+
+  }
+
+  Future<void> playAudioNetwork() async {
+
+print('NETWORK ID');
+    await recorderManager.playRecordedAudioNetWork(
+        path: path,
+        onChangeSeek: (value, duration) {
+          seek.value = value;
+          maxSeek.value = duration?.inMilliseconds ?? 0;
+        }, onEnd: (value) {
+      play.value = value;
+    });
+
+    play.value = true;
+
   }
 
   Future<void> stopPlayer() async {

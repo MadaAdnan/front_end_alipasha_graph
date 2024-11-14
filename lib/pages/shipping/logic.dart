@@ -66,25 +66,15 @@ class ShippingLogic extends GetxController {
     ], isMultiSelect: false);
   }
 
-  /*calcPrice() {
-    print("Calc");
-    double size =
-        (length.value ?? 0) * (width.value ?? 0) * (height.value ?? 0);
-    PricingModel maxSize = pricing.firstWhere((el) => el.size! >= size);
-    PricingModel maxWeight =
-        pricing.firstWhere((el) => el.weight! >= weight.value!);
-    totalPrice.value = (maxSize.internal_price! > maxWeight.internal_price!)
-        ? maxSize.internal_price!
-        : maxWeight.internal_price!;
-  }*/
+
 
   void calcPrice() {
-    // حساب الحجم بناءً على الطول والعرض والارتفاع المدخل
+
     double size = (length.value ?? 0) *
         (width.value ?? 0) *
         (height.value ?? 0) /
         1000000;
-    // التأكد من وجود عناصر في قائمة التسعير
+
     if (pricing.isEmpty) {
       print("No pricing data available");
       return;
@@ -92,8 +82,10 @@ class ShippingLogic extends GetxController {
 
     // جلب العنصر الذي يحتوي على أكبر حجم أكبر أو يساوي الحجم المدخل
     PricingModel? maxSize;
+
     try {
-      maxSize = pricing.firstWhere((el) => el.size! >= size);
+
+      //maxSize = pricing.firstWhere((el) => el.size! >= size);
       maxSize = pricing.firstWhere(
         (el) => el.size! >= size,
         orElse: () => pricing

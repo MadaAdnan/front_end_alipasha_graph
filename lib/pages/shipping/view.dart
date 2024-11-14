@@ -412,10 +412,12 @@ class ShippingPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           InkWell(
+                            splashColor: Colors.deepOrangeAccent,
                             onTap: () {
+                              print("CALC");
                               logic.calcPrice();
                             },
-                            child: Container(
+                            child: Padding(padding: EdgeInsets.all(0.01.sw),child: Container(
                               alignment: Alignment.center,
                               width: 0.5.sw,
                               height: 0.04.sh,
@@ -427,7 +429,7 @@ class ShippingPage extends StatelessWidget {
                                 'أحسب كلفة الشحن',
                                 style: H3WhiteTextStyle,
                               ),
-                            ),
+                            ),),
                           ),
                           Obx(() {
                             return Container(

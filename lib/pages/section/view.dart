@@ -186,7 +186,7 @@ class SectionPage extends StatelessWidget {
                 return ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
-                    if (logic.loadingProduct.value)
+                    if (logic.loadingProduct.value && logic.products.length==0)
                       ...List.generate(4, (index) {
                         return Shimmer.fromColors(
                             baseColor: GrayLightColor,

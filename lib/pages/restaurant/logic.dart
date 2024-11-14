@@ -15,6 +15,7 @@ class RestaurantLogic extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    getDataFromStorage();
     ever(page, (value) {
       getRestaurant();
     });
@@ -68,11 +69,26 @@ class RestaurantLogic extends GetxController {
             ?['paginatorInfo']['hasMorePages'];
       }
       if (res?.data?['data']?['usersByCategory']?['data'] != null) {
+        if(page.value==1){
+          users.clear();
+        }
         for (var item in res?.data?['data']?['usersByCategory']?['data']) {
           users.add(UserModel.fromJson(item));
         }
+        if(mainController.storage.hasData('sellers-${categoryId.value}')){
+          mainController.storage.remove('sellers-${categoryId.value}');
+        }
+        await mainController.storage.write('sellers-${categoryId.value}', res?.data?['data']?['usersByCategory']?['data']);
       }
     } catch (e) {}
     loading.value = false;
+  }
+
+  getDataFromStorage() {
+    var listProduct = mainController.storage.read('sellers-${categoryId.value}')??[];
+
+    for (var item in listProduct) {
+      users.add(UserModel.fromJson(item));
+    }
   }
 }

@@ -65,7 +65,7 @@ RxnString message=RxnString(Get.parameters['msg'] );
 
   Future<void> playRecordedAudio() async {
     mPlayerIsInited.value = true;
-    await recorder.playRecordedAudio(path: recordedFilePath?.value);
+    await recorder.playRecordedAudioNetWork(filePath: recordedFilePath?.value);
   }
 
   Future<void> stopPlayer() async {

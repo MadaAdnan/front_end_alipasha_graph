@@ -52,9 +52,12 @@ String dataString='''data {
             is_available
             price
             views_count
+            comments_count
             discount
             end_date
             type
+            is_like
+            likes_count
             level
             image
             video
@@ -176,7 +179,10 @@ var productsList=[
 ];
 
 
-        mainController.storage.write('products', productsList );
+       if(mainController.storage.hasData('products')){
+         mainController.storage.remove('products');
+       }
+       await mainController.storage.write('products', productsList );
       }
 
       if (res?.data['data']?['mainCategories'] != null) {

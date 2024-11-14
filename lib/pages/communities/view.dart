@@ -348,7 +348,7 @@ class CommunitiesPage extends StatelessWidget {
                       ),
                     );
                   }),
-                  if (logic.loading.value)
+                  if (logic.loading.value && logic.communities.length==0)
                     ...List.generate(
                       4,
                       (index) => Shimmer.fromColors(

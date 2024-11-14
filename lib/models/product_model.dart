@@ -5,6 +5,8 @@ import 'package:ali_pasha_graph/models/user_model.dart';
 
 class ProductModel {
   int? id;
+  int? likes_count;
+  int? comments_count;
 
   UserModel? user;
   CityModel? city;
@@ -25,6 +27,7 @@ class ProductModel {
   List<dynamic>? tags;
   bool? is_discount;
   bool? is_vote;
+  bool? is_like;
 
   bool? is_delivary;
   bool? is_available;
@@ -109,6 +112,9 @@ class ProductModel {
     this.is_vote,
     this.vote_avg,
     this.updated_at,
+    this.is_like,
+    this.likes_count,
+    this.comments_count,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> data) {
@@ -147,12 +153,15 @@ class ProductModel {
     return ProductModel(
       comments: listComments,
       id: int.tryParse("${data['id']}"),
+      likes_count: int.tryParse("${data['likes_count']}")??0,
+      comments_count: int.tryParse("${data['comments_count']}")??0,
       images: List.from(data['images'] ?? []),
       name: "${data['name'] ?? ''}",
       active: "${data['active'] ?? ''}",
       is_special: bool.tryParse("${data['is_special']}") ?? false,
       is_available: bool.tryParse("${data['is_available']}") ?? false,
       is_vote: bool.tryParse("${data['is_rate']}") ?? false,
+      is_like: bool.tryParse("${data['is_like']}") ?? false,
       views_count: "${data['views_count'] ?? 0}",
       expert: "${data['expert'] ?? ''}",
       level: "${data['level'] ?? ''}",

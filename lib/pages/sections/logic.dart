@@ -14,6 +14,7 @@ class SectionsLogic extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    getDataFromStorage();
   }
 
   @override
@@ -46,6 +47,10 @@ class SectionsLogic extends GetxController {
         for (var item in res?.data?['data']?['mainCategories']) {
           categories.add(CategoryModel.fromJson(item));
         }
+        if(mainController.storage.hasData('sections')){
+          mainController.storage.remove('sections');
+        }
+        await mainController.storage.write('sections', res?.data?['data']?['mainCategories']);
       }
     } on CustomException catch (e) {}
     loading.value = false;
@@ -67,5 +72,13 @@ class SectionsLogic extends GetxController {
 
   visit(int id,int count)async{
       await mainController.storage.write('sectionID.${id}',count);
+  }
+
+  getDataFromStorage() {
+    var listProduct = mainController.storage.read('sections')??[];
+
+    for (var item in listProduct) {
+      categories.add(CategoryModel.fromJson(item));
+    }
   }
 }

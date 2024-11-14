@@ -6,11 +6,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
-
+import 'package:dio/dio.dart' as dio;
 import '../../Global/main_controller.dart';
 import '../../helpers/colors.dart';
 import '../../helpers/components.dart';
 import '../../helpers/style.dart';
+import '../../pages/home/logic.dart';
 import '../../routes/routes_url.dart';
 
 class NewsCard extends StatelessWidget {
@@ -19,9 +20,10 @@ class NewsCard extends StatelessWidget {
   NewsCard({key, required this.post});
 
   MainController mainController = Get.find<MainController>();
-
+RxBool is_like=RxBool(false);
   @override
   Widget build(BuildContext context) {
+    is_like.value=post.is_like!;
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 0.002.sw),
       width: double.infinity,
@@ -227,13 +229,40 @@ class NewsCard extends StatelessWidget {
             alignment: Alignment.center,
             color: WhiteColor,
             padding:
-                EdgeInsets.symmetric(horizontal: 0.001.sw, vertical: 0.005.sh),
+                EdgeInsets.symmetric(horizontal: 0.015.sw, vertical: 0.005.sh),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                MaterialButton(
-                  onPressed: () {},
+                Obx(() {
+                  return InkWell(
+                    onTap: () {
+                      if(isAuth()){
+                        like();
+                      }
+
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          is_like.value == true
+                              ? FontAwesomeIcons.solidThumbsUp
+                              : FontAwesomeIcons.thumbsUp,
+                          size: 0.05.sw,
+                          color: is_like.value == true ? RedColor : null,
+                        ),
+                        SizedBox(
+                          width: 0.004.sw,
+                        ),
+                        Text('${post.likes_count}'.toFormatNumberK(),style: H4BlackTextStyle,)
+                      ],
+                    ),
+                  );
+                }),
+                InkWell(
+                  onTap: () {},
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -242,7 +271,9 @@ class NewsCard extends StatelessWidget {
                         FontAwesomeIcons.eye,
                         size: 0.05.sw,
                       ),
-                      10.horizontalSpace,
+                      SizedBox(
+                        width: 0.004.sw,
+                      ),
                       Text(
                         '${post.views_count ?? 0}'.toFormatNumber(),
                         style: H4BlackTextStyle,
@@ -250,8 +281,8 @@ class NewsCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                MaterialButton(
-                  onPressed: () {
+                InkWell(
+                  onTap: () {
                     Get.toNamed(COMMENTS_PAGE,
                         parameters: {"id": "${post.id}"});
                   },
@@ -263,16 +294,20 @@ class NewsCard extends StatelessWidget {
                         FontAwesomeIcons.message,
                         size: 0.05.sw,
                       ),
-                      10.horizontalSpace,
+                      SizedBox(
+                        width: 0.004.sw,
+                      ),
                       Text(
-                        'تعليق',
+                        post.comments_count==0?'تعليق':"${post.comments_count}",
                         style: H4BlackTextStyle,
                       )
                     ],
                   ),
                 ),
-                MaterialButton(
-                  onPressed: () {
+
+
+                InkWell(
+                  onTap: () {
                     Share.share("https://ali-pasha.com/products/${post.id}");
                   },
                   child: Row(
@@ -283,7 +318,9 @@ class NewsCard extends StatelessWidget {
                         FontAwesomeIcons.shareNodes,
                         size: 0.05.sw,
                       ),
-                      10.horizontalSpace,
+                      SizedBox(
+                        width: 0.004.sw,
+                      ),
                       Text(
                         'مشاركة',
                         style: H4BlackTextStyle,
@@ -297,5 +334,74 @@ class NewsCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  like() async {
+    is_like.value = !is_like.value;
+    mainController.query.value = '''
+    mutation AddLike{
+addLike(product_id:"${post.id}"){
+    id
+            name
+            expert
+            type
+            is_discount
+            is_delivary
+            is_available
+            price
+            views_count
+            discount
+            end_date
+            type
+            is_like
+            likes_count
+            level
+            image
+            video
+            created_at
+            user {
+              id
+              name
+              id_color
+              seller_name
+              image
+              logo
+              is_verified
+            }
+          
+            city {
+                name
+            }
+            start_date
+              sub1 {
+                name
+            }
+            category {
+                name
+            }
+}
+}
+    
+    ''';
+    try {
+      dio.Response? res = await mainController.fetchData();
+      mainController.logger.w(res?.data);
+      if (res?.data?['data']?['addLike'] != null) {
+        ProductModel product = ProductModel.fromJson(
+            res?.data?['data']?['addLike']);
+        int index = Get
+            .find<HomeLogic>()
+            .products
+            .indexWhere((el) => el.id == product.id);
+        is_like.value = product.is_like!;
+        if (index > -1) {
+          Get
+              .find<HomeLogic>()
+              .products[index] = product;
+        }
+      }
+    } catch (e) {
+
+    }
   }
 }

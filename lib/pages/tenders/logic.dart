@@ -16,8 +16,9 @@ class TendersLogic extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    getDataFromStorage();
     ever(page, (value) {
-      getJobs();
+      getTenders();
     });
   }
 
@@ -25,7 +26,7 @@ class TendersLogic extends GetxController {
   void onReady() {
     // TODO: implement onReady
     super.onReady();
-    getJobs();
+    getTenders();
   }
 
   void nextPage() {
@@ -34,7 +35,7 @@ class TendersLogic extends GetxController {
     }
   }
 
-  Future<void> getJobs() async {
+  Future<void> getTenders() async {
     mainController.query.value = '''
     query Products {
     products(type: "tender", first: 15, page: ${page.value}) {
@@ -77,20 +78,35 @@ class TendersLogic extends GetxController {
     try {
 loading.value=true;
       dio.Response? res = await mainController.fetchData();
-     // mainController.logger.e(res?.data);
+
       if (res?.data?['data']?['products']?['paginatorInfo'] != null) {
         hasMorePage.value = bool.tryParse(
             "${res?.data?['data']?['products']?['paginatorInfo']?['hasMorePages']}") ??
             false;
       }
       if (res?.data?['data']?['products']?['data'] != null) {
+        if(page.value==1){
+          tenders.clear();
+        }
         for (var item in res?.data?['data']?['products']?['data']) {
           tenders.add(ProductModel.fromJson(item));
         }
+        if(mainController.storage.hasData('tenders')){
+          mainController.storage.remove('tenders');
+        }
+        await mainController.storage.write('tenders', res?.data?['data']?['products']?['data'] );
       }
     }  catch (e) {
       mainController.logger.e("Error Tenders Pge ${e}");
     }
     loading.value=false;
+  }
+
+  getDataFromStorage() {
+    var listProduct = mainController.storage.read('tenders')??[];
+
+    for (var item in listProduct) {
+      tenders.add(ProductModel.fromJson(item));
+    }
   }
 }

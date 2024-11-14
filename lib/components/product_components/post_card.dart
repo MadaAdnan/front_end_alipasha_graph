@@ -1,5 +1,3 @@
-
-
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/components/seller_name_component.dart';
 
@@ -9,7 +7,7 @@ import 'package:ali_pasha_graph/helpers/enums.dart';
 import 'package:ali_pasha_graph/helpers/queries.dart';
 
 import 'package:ali_pasha_graph/models/product_model.dart';
-
+import 'package:ali_pasha_graph/pages/home/logic.dart';
 
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:animated_icon/animated_icon.dart';
@@ -24,9 +22,9 @@ import 'package:share_plus/share_plus.dart';
 import '../../helpers/colors.dart';
 import '../../helpers/style.dart';
 
-
 class PostCard extends StatelessWidget {
   final ProductModel post;
+  RxBool is_like = RxBool(false);
 
   PostCard({super.key, required this.post});
 
@@ -36,6 +34,7 @@ class PostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    is_like.value = post.is_like!;
     return Container(
       key: key,
       padding: EdgeInsets.symmetric(horizontal: 0.002.sw),
@@ -51,155 +50,178 @@ class PostCard extends StatelessWidget {
         children: [
           Container(
             padding:
-                EdgeInsets.symmetric(horizontal: 0.018.sw, vertical: 0.008.sh),
+            EdgeInsets.symmetric(horizontal: 0.018.sw, vertical: 0.008.sh),
             width: double.infinity,
             decoration: const BoxDecoration(color: WhiteColor),
             height: 0.12.sh,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-               Flexible(flex: 3,child:  Row(
-                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                 children: [
-                   InkWell(
-                     onTap: () {
-                       Get.toNamed(PRODUCTS_PAGE, arguments: post.user);
-                     },
-                     child: Row(
-                       children: [
-                         CircleAvatar(
-                           backgroundColor: GrayLightColor,
-                           backgroundImage:
-                           NetworkImage("${post.user?.image}"),
-                           minRadius: 0.018.sh,
-                           maxRadius: 0.023.sh,
-                         ),
-                         10.horizontalSpace,
-                         Column(
-                           children: [
-                             if (post.user?.seller_name != null)
-                               Container(
-                                 width: 0.6.sw,
-                                 child:SellerNameComponent(isVerified: post.user?.is_verified==true,
-                                   textStyle: H1BlackTextStyle,seller: post.user,),
-                               ),
-                             Container(
-                               width: 0.6.sw,
-                               child: Text(
-                                 '${post.city?.name ?? ''} - ${post.category?.name ?? ''} - ${post.sub1?.name ?? ''}',
-                                 style: H4GrayOpacityTextStyle,
-                                 overflow: TextOverflow.ellipsis,
-                               ),
-                             )
-                           ],
-                         )
-                       ],
-                     ),
-                   ),
-                   Obx(() {
-                     if (mainController.authUser.value != null) {
-                       // Check Is Follower
-                       if (mainController.authUser.value != null &&
-                           mainController.authUser.value!.followers != null &&
-                           post.user != null &&
-                           post.user!.id != null) {
-                         int index = mainController.authUser.value!.followers!
-                             .indexWhere(
-                               (el) => el.seller?.id == post.user?.id,
-                         );
+                Flexible(
+                  flex: 3,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Get.toNamed(PRODUCTS_PAGE, arguments: post.user);
+                        },
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: GrayLightColor,
+                              backgroundImage:
+                              NetworkImage("${post.user?.image}"),
+                              minRadius: 0.018.sh,
+                              maxRadius: 0.023.sh,
+                            ),
+                            10.horizontalSpace,
+                            Column(
+                              children: [
+                                if (post.user?.seller_name != null)
+                                  Container(
+                                    width: 0.6.sw,
+                                    child: SellerNameComponent(
+                                      isVerified:
+                                      post.user?.is_verified == true,
+                                      textStyle: H1BlackTextStyle,
+                                      seller: post.user,
+                                    ),
+                                  ),
+                                Container(
+                                  width: 0.6.sw,
+                                  child: Text(
+                                    '${post.city?.name ?? ''} - ${post.category
+                                        ?.name ?? ''} - ${post.sub1?.name ??
+                                        ''}',
+                                    style: H4GrayOpacityTextStyle,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                      Obx(() {
+                        if (mainController.authUser.value != null) {
+                          // Check Is Follower
+                          if (mainController.authUser.value != null &&
+                              mainController.authUser.value!.followers !=
+                                  null &&
+                              post.user != null &&
+                              post.user!.id != null) {
+                            int index = mainController
+                                .authUser.value!.followers!
+                                .indexWhere(
+                                  (el) => el.seller?.id == post.user?.id,
+                            );
 
-                         if (index > -1) {
-                           return Container(
-                             padding: EdgeInsets.symmetric(
-                                 horizontal: 0.009.sw, vertical: 0.004.sh),
-                             decoration: BoxDecoration(
-                                 color: RedColor,
-                                 borderRadius: BorderRadius.circular(15.r),
-                                 border: Border.all(color: RedColor)),
-                             child: Row(
-                               children: [
-                                 Icon(
-                                   FontAwesomeIcons.solidBell,
-                                   color: WhiteColor,
-                                   size: 0.05.sw,
-                                 ),
-                                 3.horizontalSpace,
-                                 Text(
-                                   "أتابعه",
-                                   style: H5WhiteTextStyle,
-                                 )
-                               ],
-                             ),
-                           );
-                         } else if (post.user?.id !=
-                             mainController.authUser.value?.id) {
-                           return Obx(() {
-                             return InkWell(
-                               onTap: () {
-                                 if (loading.value == false) {
-                                   follow();
-                                 }
-                               },
-                               child: Container(
-                                 padding: EdgeInsets.symmetric(
-                                     horizontal: 0.009.sw, vertical: 0.004.sh),
-                                 decoration: BoxDecoration(
-                                     borderRadius: BorderRadius.circular(15.r),
-                                     border: Border.all(color: RedColor)),
-                                 child: Row(
-                                   children: [
-                                     if (loading.value == true)
-                                       Center(
-                                         child: AnimateIcon(
-                                           key: UniqueKey(),
-                                           onTap: () {},
-                                           iconType:
-                                           IconType.continueAnimation,
-                                           height: 0.055.sw,
-                                           width: 0.055.sw,
-                                           color: RedColor,
-                                           animateIcon: AnimateIcons.bell,
-                                         ),
-                                       ),
-                                     if (loading.value == false)
-                                       Icon(
-                                         FontAwesomeIcons.bell,
-                                         color: RedColor,
-                                         size: 0.05.sw,
-                                       ),
-                                     3.horizontalSpace,
-                                     Text(
-                                       "متابعة",
-                                       style: H5RedTextStyle,
-                                     )
-                                   ],
-                                 ),
-                               ),
-                             );
-                           });
-                         } else {
-                           return Container();
-                         }
-                       } else {
-                         return Container();
-                       }
-                     } else {
-                       return Container();
-                     }
-                   })
-                 ],
-               ),),
+                            if (index > -1) {
+                              return Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 0.009.sw, vertical: 0.004.sh),
+                                decoration: BoxDecoration(
+                                    color: RedColor,
+                                    borderRadius: BorderRadius.circular(15.r),
+                                    border: Border.all(color: RedColor)),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      FontAwesomeIcons.solidBell,
+                                      color: WhiteColor,
+                                      size: 0.05.sw,
+                                    ),
+                                    3.horizontalSpace,
+                                    Text(
+                                      "أتابعه",
+                                      style: H5WhiteTextStyle,
+                                    )
+                                  ],
+                                ),
+                              );
+                            } else if (post.user?.id !=
+                                mainController.authUser.value?.id) {
+                              return Obx(() {
+                                return InkWell(
+                                  onTap: () {
+                                    if (loading.value == false) {
+                                      follow();
+                                    }
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 0.009.sw,
+                                        vertical: 0.004.sh),
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                        BorderRadius.circular(15.r),
+                                        border: Border.all(color: RedColor)),
+                                    child: Row(
+                                      children: [
+                                        if (loading.value == true)
+                                          Container(
+                                            height:0.05.sw,
+                                            child: AnimateIcon(
+                                              key: UniqueKey(),
+                                              onTap: () {},
+                                              iconType:
+                                              IconType.continueAnimation,
+                                              height: 0.05.sw,
+                                              width: 0.05.sw,
+                                              color: RedColor,
+                                              animateIcon: AnimateIcons.bell,
+                                            ),
+                                          ),
+                                        if (loading.value == false)
+                                          Icon(
+                                            FontAwesomeIcons.bell,
+                                            color: RedColor,
+                                            size: 0.05.sw,
+                                          ),
+                                        3.horizontalSpace,
+                                        Text(
+                                          "متابعة",
+                                          style: H5RedTextStyle,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              });
+                            } else {
+                              return Container();
+                            }
+                          } else {
+                            return Container();
+                          }
+                        } else {
+                          return Container();
+                        }
+                      })
+                    ],
+                  ),
+                ),
                 15.verticalSpace,
-               Flexible(flex: 2,child: InkWell(onTap: (){ Get.toNamed(PRODUCT_PAGE, arguments: post.id);},child: Container(
-                 width: 1.sw,
-
-                 child: Text(
-                   "${post.expert!.length.isGreaterThan(5) ? post.expert : post.name}",
-                   overflow: TextOverflow.ellipsis,
-                   maxLines: 2,
-                   style: H3GrayTextStyle,
-                 ),
-               ), ), )
+                Flexible(
+                  flex: 2,
+                  child: InkWell(
+                    onTap: () {
+                      Get.toNamed(PRODUCT_PAGE, arguments: post.id);
+                    },
+                    child: Container(
+                      width: 1.sw,
+                      child: Text(
+                        "${post.expert!.length.isGreaterThan(5)
+                            ? post.expert
+                            : post.name}",
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        style: H3GrayTextStyle,
+                      ),
+                    ),
+                  ),
+                )
               ],
             ),
           ),
@@ -219,25 +241,37 @@ class PostCard extends StatelessWidget {
                       fit: BoxFit.cover)),
               child: Stack(
                 children: [
-                  if(post.video!=null && post.video!.length>3)
-                  Positioned(child:Container(
-                    alignment: Alignment.center,
-                    width: 1.sw,
-                    height: 1.sw,
-                    color: Colors.black.withOpacity(0.3),
-                    child:Container(
-                      alignment: Alignment.center,
-                      width: 0.18.sw,
-                      height: 0.18.sw,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          gradient: RadialGradient(colors: [WhiteColor.withOpacity(0.5),WhiteColor.withOpacity(0.2),WhiteColor.withOpacity(0.2),GrayLightColor.withOpacity(0.6)])
-                      ),
-                      child: IconButton(onPressed: (){
-                       Get.toNamed(VIDEO_PLAYER_POST_PAGE,arguments: "${post.video}");
-                      }, icon: Icon(FontAwesomeIcons.play,size: 0.08.sw,color: WhiteColor,)),
-                    ),
-                  )),
+                  if (post.video != null && post.video!.length > 3)
+                    Positioned(
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: 1.sw,
+                          height: 1.sw,
+                          color: Colors.black.withOpacity(0.3),
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: 0.18.sw,
+                            height: 0.18.sw,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                gradient: RadialGradient(colors: [
+                                  WhiteColor.withOpacity(0.5),
+                                  WhiteColor.withOpacity(0.2),
+                                  WhiteColor.withOpacity(0.2),
+                                  GrayLightColor.withOpacity(0.6)
+                                ])),
+                            child: IconButton(
+                                onPressed: () {
+                                  Get.toNamed(VIDEO_PLAYER_POST_PAGE,
+                                      arguments: "${post.video}");
+                                },
+                                icon: Icon(
+                                  FontAwesomeIcons.play,
+                                  size: 0.08.sw,
+                                  color: WhiteColor,
+                                )),
+                          ),
+                        )),
                   if (post.level == 'special')
                     Positioned(
                       top: 20.h,
@@ -317,7 +351,9 @@ class PostCard extends StatelessWidget {
                               text: TextSpan(children: [
                                 TextSpan(
                                     text:
-                                        ' ${post.is_discount == true ? post.discount : post.price ?? 0} ',
+                                    ' ${post.is_discount == true
+                                        ? post.discount
+                                        : post.price ?? 0} ',
                                     style: H2WhiteTextStyle.copyWith(
                                         fontWeight: FontWeight.bold)),
                                 TextSpan(
@@ -352,23 +388,51 @@ class PostCard extends StatelessWidget {
                       ),
                     ),
                   ),
-
                 ],
               ),
             ),
           ),
           Container(
             height: 0.05.sh,
+            width: 1.sw,
             alignment: Alignment.center,
             color: WhiteColor,
             padding:
-                EdgeInsets.symmetric(horizontal: 0.001.sw, vertical: 0.005.sh),
+            EdgeInsets.symmetric(horizontal: 0.015.sw, vertical: 0.005.sh),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                MaterialButton(
-                  onPressed: () {},
+                //Like
+
+                Obx(() {
+                  return InkWell(
+                    onTap: () {
+                      if(isAuth()){
+                        like();
+                      }
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          is_like.value == true
+                              ? FontAwesomeIcons.solidThumbsUp
+                              : FontAwesomeIcons.thumbsUp,
+                          size: 0.05.sw,
+                          color: is_like.value == true ? RedColor : null,
+                        ),
+                        SizedBox(
+                          width: 0.004.sw,
+                        ),
+                        Text('${post.likes_count}'.toFormatNumberK(),style: H4BlackTextStyle,)
+                      ],
+                    ),
+                  );
+                }),
+                InkWell(
+                  onTap: () {},
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -377,7 +441,9 @@ class PostCard extends StatelessWidget {
                         FontAwesomeIcons.eye,
                         size: 0.05.sw,
                       ),
-                      10.horizontalSpace,
+                      SizedBox(
+                        width: 0.004.sw,
+                      ),
                       Text(
                         '${post.views_count ?? 0}'.toFormatNumber(),
                         style: H4BlackTextStyle,
@@ -385,10 +451,10 @@ class PostCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                MaterialButton(
-                  onPressed: () {
+                InkWell(
+                  onTap: () {
                     Get.toNamed(COMMENTS_PAGE,
-                         parameters: {"id":"${post.id}" });
+                        parameters: {"id": "${post.id}"});
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -398,17 +464,19 @@ class PostCard extends StatelessWidget {
                         FontAwesomeIcons.message,
                         size: 0.05.sw,
                       ),
-                      10.horizontalSpace,
+                      SizedBox(
+                        width: 0.004.sw,
+                      ),
                       Text(
-                        'تعليق',
+                        post.comments_count==0?'تعليق':"${post.comments_count}".toFormatNumberK(),
                         style: H4BlackTextStyle,
                       )
                     ],
                   ),
                 ),
                 if (isAuth())
-                  MaterialButton(
-                    onPressed: () async {
+                  InkWell(
+                    onTap: () async {
                       loadingCommunity.value = true;
                       await mainController.createCommunity(
                           sellerId: post.user!.id!);
@@ -422,22 +490,25 @@ class PostCard extends StatelessWidget {
                           FontAwesomeIcons.comments,
                           size: 0.05.sw,
                         ),
-                        10.horizontalSpace,
+                        SizedBox(
+                          width: 0.004.sw,
+                        ),
                         Obx(() {
                           return loadingCommunity.value
                               ? const Center(
-                                  child: CircularProgressIndicator(),
-                                )
+                            child: CircularProgressIndicator(),
+                          )
                               : Text(
-                                  'محادثة',
-                                  style: H4BlackTextStyle,
-                                );
+                            'محادثة',
+                            style: H4BlackTextStyle,
+                          );
                         })
                       ],
                     ),
                   ),
-                MaterialButton(
-                  onPressed: () {
+
+                InkWell(
+                  onTap: () {
                     Share.share("https://ali-pasha.com/products/${post.id}");
                   },
                   child: Row(
@@ -448,7 +519,9 @@ class PostCard extends StatelessWidget {
                         FontAwesomeIcons.shareNodes,
                         size: 0.05.sw,
                       ),
-                      10.horizontalSpace,
+                      SizedBox(
+                        width: 0.004.sw,
+                      ),
                       Text(
                         'مشاركة',
                         style: H4BlackTextStyle,
@@ -481,13 +554,83 @@ class PostCard extends StatelessWidget {
           mainController.setUserJson(
               json: res?.data?['data']?['followAccount']);
         }
-        if(res?.data?['errors']?[0]?['message']!=null){
-          mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
+        if (res?.data?['errors']?[0]?['message'] != null) {
+          mainController.showToast(
+              text: '${res?.data['errors'][0]['message']}', type: 'error');
         }
       } on CustomException catch (e) {
         mainController.logger.e(e);
       }
       loading.value = false;
+    }
+  }
+
+  like() async {
+    is_like.value = !is_like.value;
+    mainController.query.value = '''
+    mutation AddLike{
+addLike(product_id:"${post.id}"){
+    id
+            name
+            expert
+            type
+            is_discount
+            is_delivary
+            is_available
+            price
+            views_count
+            discount
+            end_date
+            type
+            is_like
+            likes_count
+            level
+            image
+            video
+            created_at
+            user {
+              id
+              name
+              id_color
+              seller_name
+              image
+              logo
+              is_verified
+            }
+          
+            city {
+                name
+            }
+            start_date
+              sub1 {
+                name
+            }
+            category {
+                name
+            }
+}
+}
+    
+    ''';
+    try {
+      dio.Response? res = await mainController.fetchData();
+      mainController.logger.w(res?.data);
+      if (res?.data?['data']?['addLike'] != null) {
+        ProductModel product = ProductModel.fromJson(
+            res?.data?['data']?['addLike']);
+        int index = Get
+            .find<HomeLogic>()
+            .products
+            .indexWhere((el) => el.id == product.id);
+        is_like.value = product.is_like!;
+        if (index > -1) {
+          Get
+              .find<HomeLogic>()
+              .products[index] = product;
+        }
+      }
+    } catch (e) {
+
     }
   }
 }
