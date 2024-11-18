@@ -29,7 +29,7 @@ class ProductModel {
   bool? is_vote;
   bool? is_like;
 
-  bool? is_delivary;
+  bool? is_delivery;
   bool? is_available;
   bool? is_special;
 
@@ -47,6 +47,7 @@ class ProductModel {
   double? price;
 
   double? discount;
+  double? weight;
   String? start_date;
 
   String? end_date;
@@ -87,7 +88,7 @@ class ProductModel {
     this.expert,
     this.images = const <String>[],
     this.is_available,
-    this.is_delivary,
+    this.is_delivery,
     this.latitude,
     this.level,
     this.listOfDocs,
@@ -115,6 +116,7 @@ class ProductModel {
     this.is_like,
     this.likes_count,
     this.comments_count,
+    this.weight,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> data) {
@@ -174,6 +176,7 @@ class ProductModel {
       sub1: data['sub1'] != null ? CategoryModel.fromJson(data['sub1']) : null,
       sub2: data['sub2'] != null ? CategoryModel.fromJson(data['sub2']) : null,
       sub3: data['sub3'] != null ? CategoryModel.fromJson(data['sub3']) : null,
+      weight: double.tryParse("${data['weight']}") ?? 0,
       price: double.tryParse("${data['price']}") ?? 0,
       vote_avg: double.tryParse("${data['vote_avg']}") ?? 0,
       user: data['user'] != null ? UserModel.fromJson(data['user']) : null,
@@ -190,7 +193,7 @@ class ProductModel {
       email: "${data['email'] ?? ''}",
       end_date: "${data['end_date'] ?? ''}",
       start_date: "${data['start_date'] ?? ''}",
-      is_delivary: bool.tryParse("${data['is_delivary']}") ?? false,
+      is_delivery: bool.tryParse("${data['is_delivery']}") ?? false,
       latitude: "${data['latitude'] ?? ''}",
       longitude: "${data['longitude'] ?? ''}",
       phone: "${data['phone'] ?? ''}",
@@ -207,7 +210,18 @@ class ProductModel {
   }
 
   toJson() {
-    return {'video': video, "expert": expert,"name":name,"info":info};
+    return {
+      'id':id,
+      'video': video,
+      "expert": expert,
+      "name":name,
+      "info":info,
+      "is_delivery":is_delivery,
+      'is_discount':is_discount,
+      'price':price,
+      'discount':discount,
+      'image':image,
+    };
   }
 }
 

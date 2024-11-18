@@ -366,9 +366,9 @@ class ProductPage extends StatelessWidget {
                               !mainController.createCommunityLodaing.value) {
                             mainController.createCommunity(
                                 sellerId: logic.product.value!.user!.id!,
-                                message: ''' المنتج ${logic.product.value!.name}
-                               معرف المنتج : ${logic.product.value!.id}
-                               ''');
+                                message: """ المنتج ${logic.product.value!.name}"""
+r""" \n """
+                            """    معرف المنتج: ${logic.product.value!.id} """);
                           }
                         },
                         child: Container(

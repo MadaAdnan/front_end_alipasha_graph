@@ -97,9 +97,13 @@ class CommunitiesLogic extends GetxController {
       }
 
       if (res?.data?['data']?['getMyCommunity']?['data'] != null) {
-        if(page.value==1){
-          communities.clear();
-        }
+       try{
+         if(page.value==1){
+           communities.clear();
+         }
+       }catch(e){
+
+       }
         for (var item in res?.data?['data']?['getMyCommunity']?['data']) {
           communities.indexWhere((el) => el.id == item['id']) == -1
               ? communities.add(CommunityModel.fromJson(item))

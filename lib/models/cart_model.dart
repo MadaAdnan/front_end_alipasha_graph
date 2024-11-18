@@ -1,27 +1,22 @@
+import 'package:ali_pasha_graph/models/product_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
 
 class CartModel {
-  int? productId;
-  String? productName;
-  String? productImage;
+ ProductModel? product;
+
+
   int? qty;
-  double? price;
   UserModel? seller;
 
   CartModel(
-      {this.productId,
-      this.price,
+      {this.product,
       this.seller,
-      this.qty = 0,
-      this.productName,
-      this.productImage});
+      this.qty = 0,});
 
   CartModel.fromJson(Map<String, dynamic> data) {
-    productId = data['productId'] ?? data['id'];
-    productName = data['productName'] ?? data['name'];
-    productImage = data['productImage'] ?? data['image'];
+    product = data['product']!=null ?ProductModel.fromJson(data['product']) :null;
+
     qty = data['qty'] ?? 1;
-    price = data['price'];
     seller = UserModel.fromJson(data['seller'] ?? data['user']);
   }
 
@@ -41,11 +36,8 @@ class CartModel {
 
   toJson() {
     Map<String, dynamic> data = {
-      "id": productId,
-      "name": productName,
+      "product": product?.toJson(),
       "qty": qty,
-      "price": price,
-      "image": productImage,
       "seller": {
         "id": "${seller?.id}",
         "seller_name": "${seller?.seller_name}",

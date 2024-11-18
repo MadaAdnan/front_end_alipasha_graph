@@ -63,6 +63,7 @@ TextEditingController comment =TextEditingController();
         id
             name
             expert
+            weight
               level
             price
             discount
@@ -100,7 +101,7 @@ TextEditingController comment =TextEditingController();
           id
           is_rate
           vote_avg
-          name
+          weight
            name
             info
             tags

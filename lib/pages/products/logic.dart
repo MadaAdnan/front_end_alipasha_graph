@@ -75,6 +75,7 @@ class ProductsLogic extends GetxController {
         data {
             id
             expert
+            weight
             name
             type
             is_discount

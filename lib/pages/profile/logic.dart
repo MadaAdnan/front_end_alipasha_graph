@@ -93,6 +93,7 @@ class ProfileLogic extends GetxController {
             created_at
             name
             expert
+            weight
             is_available
             level
             active
@@ -168,6 +169,7 @@ class ProfileLogic extends GetxController {
           id
           name
           expert
+          weight
           is_discount
           price
           discount

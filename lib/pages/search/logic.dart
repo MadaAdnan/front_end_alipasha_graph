@@ -75,6 +75,7 @@ class SearchLogic extends GetxController {
             }
             name
             expert
+            weight
             start_date
             end_date
             

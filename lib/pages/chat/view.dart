@@ -28,6 +28,7 @@ class ChatPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: WhiteColor,
+
       body: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollInfo) {
 // mainController.logger.w();
@@ -200,12 +201,19 @@ class ChatPage extends StatelessWidget {
                   children: [
                     Expanded(
                         child: Container(
+                          height: 0.09.sh,
                           child: FormBuilderTextField(
+                            scrollPadding: EdgeInsets.all(0.001.sw),
                             name: 'msg',
                             controller: logic.messageController,
+                            minLines: 1,
+                            maxLines: 3,
+                           maxLength: 200,
+                            keyboardType: TextInputType.multiline,
                             style: H2RegularDark.copyWith(color: Colors.black),
                             onChanged: (value) => logic.message.value = value,
                             decoration: InputDecoration(
+
                               fillColor: WhiteColor,
                               filled: true,
                               hintStyle: H5GrayTextStyle.copyWith(

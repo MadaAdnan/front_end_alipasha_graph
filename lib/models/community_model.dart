@@ -76,6 +76,7 @@ class CommunityModel {
       'name': name,
       'type':type,
       "id": id,
+      'users':users?.map((el)=>el.toJson()),
     };
   }
 }

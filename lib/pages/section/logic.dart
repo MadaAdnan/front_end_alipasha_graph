@@ -85,6 +85,7 @@ class SectionLogic extends GetxController {
                 name
             }
             expert
+            weight
             end_date
             level
             code

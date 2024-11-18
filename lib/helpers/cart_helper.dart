@@ -13,7 +13,7 @@ class CartHelper {
 
       for (var item in data) {
         CartModel cartItem = CartModel.fromJson(item);
-        if (cartItem.productId == productId) {
+        if (cartItem.product?.id == productId) {
           cartItem.addQty();
         }
         cart.add(cartItem);
@@ -30,7 +30,7 @@ class CartHelper {
       var data = await storage.read('cart');
       for (var item in data) {
         CartModel cartItem = CartModel.fromJson(item);
-        if (cartItem.productId == productId) {
+        if (cartItem.product?.id == productId) {
           cartItem.minQty();
         }
         cart.add(cartItem);
@@ -49,7 +49,7 @@ class CartHelper {
       bool IsFound = false;
       for (var item in data) {
         CartModel cartItem = CartModel.fromJson(item);
-        if (cartItem.productId == product.id) {
+        if (cartItem.product?.id == product.id) {
           cartItem.addQty();
           IsFound = true;
         }
@@ -57,10 +57,7 @@ class CartHelper {
       }
       if (IsFound == false) {
         CartModel cartItem = CartModel(
-            productName: product.name,
-            price: product.price,
-            productId: product.id,
-            productImage: "${product.image}",
+            product: product,
             qty: 1,
             seller: UserModel(
                 id: product.user?.id,
@@ -70,10 +67,7 @@ class CartHelper {
       }
     } else {
       CartModel cartItem = CartModel(
-          productName: product.name,
-          price: product.price,
-          productId: product.id,
-          productImage: "${product.image}",
+          product: product,
           qty: 1,
           seller: UserModel(
               id: product.user?.id,
@@ -93,7 +87,7 @@ class CartHelper {
       List<CartModel> cart = [];
       for (var item in data) {
         CartModel cartItem = CartModel.fromJson(item);
-        if (cartItem.productId == product.id) {
+        if (cartItem.product?.id == product.id) {
           cartItem.minQty();
         }
         cart.add(cartItem);
@@ -157,7 +151,7 @@ class CartHelper {
 
       for (var item in data) {
         CartModel cartItem = CartModel.fromJson(item);
-        if (cartItem.productId == product.id) {
+        if (cartItem.product?.id == product.id) {
           continue;
         }
         cart.add(cartItem);

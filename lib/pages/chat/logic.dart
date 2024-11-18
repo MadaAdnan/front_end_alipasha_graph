@@ -14,13 +14,20 @@ import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
 
 import 'package:image_picker/image_picker.dart';
+import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:ui' as ui;
+
+import 'package:pusher_client_socket/channels/channel.dart';
+
+import '../../routes/routes_url.dart';
+import '../channel/logic.dart';
+import '../communities/logic.dart';
+import '../group/logic.dart';
 class ChatLogic extends GetxController {
   MainController mainController = Get.find<MainController>();
   RxBool loadingSend = RxBool(false);
-  TextEditingController messageController =
-      TextEditingController(text: "${Get.parameters['msg']!=null?Get.parameters['msg']: ''}");
+  TextEditingController messageController = TextEditingController();
   Rxn<XFile> file = Rxn<XFile>(null);
   RxBool loading = RxBool(false);
   RxBool hasMorePage = RxBool(false);
@@ -56,9 +63,6 @@ class ChatLogic extends GetxController {
     await recorder.stopRecording().then((path) {
       if (path != null) {
         recordedFilePath!.value = path;
-        print("PATH IS ${path}");
-      } else {
-        print("PATH IS ${path}");
       }
     });
     mRecorderIsInited.value = false;
@@ -98,22 +102,25 @@ class ChatLogic extends GetxController {
 
   @override
   void onInit() {
+    print("COMMMMMMM");
+    print(Get.arguments.id);
+communityModel.value=Get.arguments;
     _localFile.then((value) {
       initRecord(value);
     });
-
+    getDataFromStorage();
     // TODO: implement onInit
     super.onInit();
     communityModel.value = Get.arguments;
 
-    getDataFromStorage();
+
     ever(page, (value) {
       getMessages();
     });
 
     ever(messages, (value){
       if(value.last.user?.id==mainController.authUser.value?.id){
-        messageController.clear();
+
         file.value=null;
       }
 
@@ -126,16 +133,83 @@ class ChatLogic extends GetxController {
 
   @override
   void onReady() {
-    // TODO: implement onReady
     super.onReady();
+    String channelName="private-message.${communityModel.value?.id}";
+    if(!mainController.pusher.channel(channelName).subscribed){
+      Channel channel=mainController.pusher.channel(channelName);
+      channel.unbind('message.create');
+      channel.bind('message.create', (e) {
+        if (Get.currentRoute != CHAT_PAGE &&
+            Get.currentRoute != COMMUNITIES_PAGE) {
+          mainController.communityNotification.value += 1;
+        }
+        // community Page
+        else if (Get.currentRoute == COMMUNITIES_PAGE) {
+          if (e['message']?['community'] != null) {
+            CommunityModel community =
+            CommunityModel.fromJson(e['message']?['community']);
+            int index = Get.find<CommunitiesLogic>()
+                .communities
+                .indexWhere((el) => el.id == community.id);
+            if (index == -1) {
+              Get.find<CommunitiesLogic>().communities.insert(0, community);
+            } else {
+              Get.find<CommunitiesLogic>().communities.removeAt(index);
+
+              Get.find<CommunitiesLogic>().communities.insert(0, community);
+            }
+          }
+        }
+
+        // Chat Page
+        else if (Get.currentRoute == CHAT_PAGE ||
+            Get.currentRoute == GROUP_PAGE ||
+            Get.currentRoute == CHANNEL_PAGE) {
+          if (e['message'] != null) {
+            MessageModel message = MessageModel.fromJson(e['message']);
+            switch (message.community?.type) {
+              case 'chat':
+                if (Get.currentRoute == CHAT_PAGE) {
+                  ChatLogic logic = Get.find<ChatLogic>();
+                  logic.messages.insert(0, message);
+
+                  RecorderManager()
+                      .playRecordedAudioNetWork(assets: 'sound/notify.mp3');
+                  loading.value = false;
+                }
+                break;
+              case 'group':
+                if (Get.currentRoute == GROUP_PAGE &&
+                    message.user?.id != mainController.authUser.value?.id) {
+                  GroupLogic logic = Get.find<GroupLogic>();
+                  logic.messages.insert(0, message);
+                  //  RecorderManager().playRecordedAudioNetWork(assets: 'sound/notify.mp3');
+                  loading.value = false;
+                }
+                break;
+              case 'channel':
+                if (Get.currentRoute == CHANNEL_PAGE &&
+                    message.user?.id != mainController.authUser.value?.id) {
+                  ChannelLogic logic = Get.find<ChannelLogic>();
+                  logic.messages.insert(0, message);
+                  RecorderManager()
+                      .playRecordedAudioNetWork(assets: 'sound/notify.mp3');
+                  loading.value = false;
+                }
+                break;
+            }
+          }
+        }
+      });
+    }
+    messageController.value=TextEditingValue(text: Get.parameters['msg']??'');
     getMessages();
   }
 
   getMessages() async {
     mainController.query.value = '''
-    
-query GetMessages {
-    getMessages(communityId: ${communityModel.value?.id}, first: 15, page: ${page.value}) {
+  query GetMessages {
+    getMessages(communityId: ${communityModel.value?.id}, first: 35, page: ${page.value}) {
         paginatorInfo {
             hasMorePages
         }
@@ -161,18 +235,29 @@ query GetMessages {
     try {
       dio.Response? res = await mainController.fetchData();
       mainController.logger.d(res?.data?['data']);
+
       if (res?.data?['data']?['getMessages']?['paginatorInfo'] != null) {
         hasMorePage.value = res?.data?['data']?['getMessages']?['paginatorInfo']
             ['hasMorePages'];
       }
       if (res?.data?['data']?['getMessages']?['data'] != null) {
-        for (var item in res?.data?['data']?['getMessages']?['data']) {
-          messages.add(MessageModel.fromJson(item));
-        }
-        if(mainController.storage.hasData('communities-${communityModel.value?.id}')){
-          mainController.storage.remove('communities-${communityModel.value?.id}');
-        }
-        await mainController.storage.write('communities-${communityModel.value?.id}', res?.data?['data']?['getMessages']?['data']);
+       try{
+         if(page.value==1){
+           messages.clear();
+         }
+       }catch(e){
+
+       }
+
+          for (var item in res?.data?['data']?['getMessages']?['data']) {
+            messages.add(MessageModel.fromJson(item));
+          }
+         if(mainController.storage.hasData('communities-${communityModel.value?.id}')){
+          await mainController.storage.remove('communities-${communityModel.value?.id}');
+         }
+
+         await mainController.storage.write('communities-${communityModel.value?.id}', res?.data?['data']?['getMessages']?['data']);
+
       }
       if(res?.data?['errors']?[0]?['message']!=null){
         mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
@@ -185,7 +270,6 @@ query GetMessages {
 
   getDataFromStorage() {
     var listProduct = mainController.storage.read('communities-${communityModel.value?.id}')??[];
-
     for (var item in listProduct) {
       messages.add(MessageModel.fromJson(item));
     }
@@ -196,7 +280,7 @@ query GetMessages {
       return;
     }
     mainController.loading.value = true;
-
+    messages.insert(0, MessageModel(id: 0,body: messageController.text,createdAt: 'منذ ثانية',type: 'text',user: mainController.authUser.value));
     mainController.query.value = '''
   mutation CreateMessage {
     CreateMessage(communityId: ${communityModel.value?.id}, body: "${messageController.text}") {
@@ -215,15 +299,18 @@ query GetMessages {
 }
     ''';
     try {
+      messageController.clear();
       dio.Response? res = await mainController.fetchData();
-      //mainController.logger.e(res?.data);
-      if (res?.data?['data']['CreateMessage'] != null) {
-        messageController.clear();
-    /*    messages.insert(
-            0, MessageModel.fromJson(res?.data?['data']['CreateMessage']));*/
+      if (res?.data?['data']?['CreateMessage'] != null) {
+
+        int index=messages.indexWhere((el)=>el.id==0);
+        if(index>-1){
+          messages[index]=MessageModel.fromJson(res?.data?['data']?['CreateMessage']);
+        }
       }
       if(res?.data?['errors']?[0]?['message']!=null){
         mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
+        mainController.logger.e("Error Send ${res?.data['errors']}");
       }
     } catch (e) {
       mainController.logger.e("Error Send ${e}");
@@ -269,13 +356,17 @@ query GetMessages {
 
     Map<String, XFile?> data = {'attach': file.value};
     try {
+      messages.insert(0, MessageModel(id: 0,body: '',createdAt: 'منذ ثانية',attach: file.value?.path,type: '',user: mainController.authUser.value));
+
       dio.Response res = await mainController.dio_manager
           .executeGraphQLQueryWithFile(json.encode(datajson),
               map: map, files: data);
-      mainController.logger.e(res.data);
+      mainController.logger.w(res.data?['data']?['CreateMessage']);
       if (res.data?['data']?['CreateMessage'] != null) {
-        messages.insert(
-            0, MessageModel.fromJson(res.data?['data']['CreateMessage']));
+        int index=messages.indexWhere((el)=>el.id==0);
+        if(index>-1){
+          messages[index]=MessageModel.fromJson(res?.data?['data']?['CreateMessage']);
+        }
       }
     } catch (e) {
       mainController.logger.e('Error Upload $e');

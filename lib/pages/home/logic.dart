@@ -45,6 +45,7 @@ class HomeLogic extends GetxController {
 String dataString='''data {
             id
             name
+            weight
             expert
             type
             is_discount
@@ -149,26 +150,26 @@ String dataString='''data {
 
       dio.Response? res = await mainController.fetchData();
 
-
-      if (res?.data['data']['LatestProduct']['paginatorInfo']['hasMorePages'] !=
+// mainController.logger.e(res?.data);
+      if (res?.data?['data']?['LatestProduct']?['paginatorInfo']?['hasMorePages'] !=
           null) {
         hasMorePage(
-                res?.data['data']['LatestProduct']['paginatorInfo']['hasMorePages']);
+                res?.data?['data']?['LatestProduct']?['paginatorInfo']?['hasMorePages']);
       }
-      if (res?.data['data']['LatestProduct']['data'] != null) {
+      if (res?.data?['data']?['LatestProduct']?['data'] != null) {
         if (page == 1) {
           products.clear();
         }
-        for (var item in res?.data['data']['SpecialProduct']['data']) {
+        for (var item in res?.data?['data']?['SpecialProduct']?['data']) {
           products.add(ProductModel.fromJson(item));
 
         }
-        for (var item in res?.data['data']['HobbiesProduct']['data']) {
+        for (var item in res?.data?['data']?['HobbiesProduct']?['data']) {
           products.add(ProductModel.fromJson(item));
 
         }
 
-        for (var item in res?.data['data']['LatestProduct']['data']) {
+        for (var item in res?.data?['data']?['LatestProduct']?['data']) {
           products.add(ProductModel.fromJson(item));
 
         }
@@ -210,14 +211,14 @@ var productsList=[
         }
       }
 
-      if (res?.data['data']['specialSeller'] != null) {
+      if (res?.data?['data']?['specialSeller'] != null) {
         if (page == 1) {
           sellers.clear();
         }
-        for (var item in res?.data['data']['specialSeller']) {
+        for (var item in res?.data?['data']?['specialSeller']) {
           sellers.add(UserModel.fromJson(item));
         }
-        mainController.storage.write('specialSeller', res?.data['data']['specialSeller']);
+        mainController.storage.write('specialSeller', res?.data?['data']?['specialSeller']);
       }
     } catch (e) {
       mainController.logger.w('ERRORPRO');
