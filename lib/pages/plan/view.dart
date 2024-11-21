@@ -69,9 +69,9 @@ class PlanPage extends StatelessWidget {
                                   shape: BoxShape.circle,
                                   color: GrayDarkColor,
                                   image: DecorationImage(
-                                    image: getLogo() != null
+                                    image: mainController.authUser.value?.image != null
                                         ? NetworkImage(
-                                            '${getLogo()}',
+                                            '${mainController.authUser.value?.image}',
                                           )
                                         : getUserImage(),
                                   )),

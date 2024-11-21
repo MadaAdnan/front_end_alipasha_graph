@@ -191,6 +191,8 @@ class FilterPage extends StatelessWidget {
                   hint:
                       logic.type.value == 'seller' ? 'ابحث باسم المتجر' : 'بحث',
                   controller: logic.searchController,
+                  textInputType: TextInputType.text,
+
                 );
               }),
             ),

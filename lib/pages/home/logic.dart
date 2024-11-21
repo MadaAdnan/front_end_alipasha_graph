@@ -49,7 +49,7 @@ String dataString='''data {
             expert
             type
             is_discount
-            is_delivary
+            is_delivery
             is_available
             price
             views_count
@@ -71,9 +71,14 @@ String dataString='''data {
               image
               logo
               is_verified
+              city{
+                id
+               city_id
+              }
             }
           
             city {
+            id
                 name
             }
             start_date
@@ -199,13 +204,13 @@ var productsList=[
         mainController.storage.write('mainCategories',  res?.data['data']['mainCategories']);
       }
 
-      if (res?.data['data']['cities'] != null) {
-        for (var item in res?.data['data']['cities']) {
+      if (res?.data?['data']?['cities'] != null) {
+        for (var item in res?.data['data']?['cities']) {
           mainController.cities.add(CityModel.fromJson(item));
         }
       }
 
-      if (res?.data['data']['colors'] != null) {
+      if (res?.data?['data']?['colors'] != null) {
         for (var item in res?.data['data']['colors']) {
           mainController.colors.add(ColorModel.fromJson(item));
         }

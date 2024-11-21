@@ -27,15 +27,7 @@ String? getName() {
   return 'انت تستخدم التطبيق كزائر';
 }
 
-String? getLogo() {
-  MainController mainController = Get.find<MainController>();
-  /* if (mainController.authUser.value?.logo != null &&
-      mainController.authUser.value?.logo !=
-          mainController.authUser.value?.image) {
-    return mainController.authUser.value?.logo;
-  }*/
-  return mainController.authUser.value?.image;
-}
+
 
 bool isAuth() {
   MainController mainController = Get.find<MainController>();
@@ -139,25 +131,6 @@ void showAutoCloseDialog(
   });
 }
 
-VerifiedMsg() {}
 
-playVideo(BuildContext context,{String? url}) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog.adaptive(
-        contentPadding: EdgeInsets.zero,
-        content: AspectRatio(
-          aspectRatio: 1.sw/1.sh,
-          child: Container(
-            width: MediaQuery.of(context).size.width, // تعديل العرض بناءً على حجم الشاشة
-            child: YoutubeVideoPlayer(
-              videoId: '$url',
-              onFullScreenChange: (value) {},
-            ),
-          ),
-        ),
-      );
-    },
-  );
-}
+
+

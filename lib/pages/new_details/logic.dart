@@ -24,7 +24,7 @@ class NewDetailsLogic extends GetxController {
   }
 
   getPost() async {
-    print("PRODUCTID:${postId.value}");
+
     loading.value = true;
     mainController.query.value = '''
   query Product {

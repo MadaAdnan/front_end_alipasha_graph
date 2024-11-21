@@ -36,7 +36,7 @@ class CartItemPage extends StatelessWidget {
             alignment: Alignment.center,
             width: 1.sw,
             height: 0.05.sh,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: GrayLightColor,
             ),
             child: Obx(() {
@@ -49,212 +49,215 @@ class CartItemPage extends StatelessWidget {
           Expanded(
             child: Obx(
               () {
-                return ListView(
-                  padding: EdgeInsets.symmetric(vertical: 0.005.sh),
-                  children: [
-                    ...List.generate(
-                      logic.carts.length,
-                      (index) {
-                        mainController.logger.f(logic.carts[index].toJson());
-                        return Container(
-                          height: 0.3.sw,
-                          width: 0.7.sw,
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 0.3.sw,
-                                height: 0.3.sw,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: CachedNetworkImageProvider(
-                                            "${logic.carts[index].product?.image}"))),
-                              ),
-                             Padding(padding: EdgeInsets.symmetric(horizontal: 0.002.sw,vertical: 0.001.sh),child:  Column(
-                               mainAxisAlignment: MainAxisAlignment.start,
-                               crossAxisAlignment: CrossAxisAlignment.start,
-                               children: [
-                                 SizedBox( width: 0.5.sw,child: AutoSizeText(
-                                   "${logic.carts[index].product?.name}",
-                                   style: H3BlackTextStyle,
-                                   overflow: TextOverflow.ellipsis,
-                                   maxLines: 1,
-                                 ),),
-
-                                Expanded(child:  Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    SizedBox(width: 0.45.sw,child:  AutoSizeText(
-                                      "${logic.carts[index].product?.expert?.trim()}",
-                                      style: H4RegularDark,
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2,
-                                      softWrap: true,
-                                      wrapWords: true,
-                                    ),),
-                                    SizedBox(width: 0.037.sw,),
-                                    Row(
-
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        SizedBox(child: InkWell(
-                                          onTap:()async{
-                                            await mainController.increaseQty(
-                                                productId: logic
-                                                    .carts[index].product!.id!);
-                                            logic.getCart();
-                                          },
-                                          child: Icon(FontAwesomeIcons.circlePlus),),),
-                                        SizedBox(width: 0.01.sw,),
-                                        SizedBox(height: 0.02.sh,child: Text('${logic.carts[index].qty}',style: H3BlackTextStyle,)),
-                                        SizedBox(width: 0.01.sw,),
-                                        SizedBox(child:  InkWell(  onTap:()async{
-                                          print("ID:${logic
-                                              .carts[index].product!.id!}");
-                                          await mainController.decreaseQty(
-                                              productId: logic
-                                                  .carts[index].product!.id!);
-                                          logic.getCart();
-                                        },child: Icon(FontAwesomeIcons.circleMinus),),)
-                                      ],
-                                    )
-                                  ],
-                                )),
-
-                                SizedBox(width: 0.67.sw,child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    AutoSizeText(
-                                      "${logic.carts[index].product?.is_discount == true ? logic.carts[index].product?.discount : logic.carts[index].product?.price} \$",
-                                      style: H3BlackTextStyle,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    if(logic
-                                        .carts[index].product?.is_delivery==true)
-                                    Container(
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                          Icon(FontAwesomeIcons.truckFast,color: Colors.green,size: 0.04.sw,),
-                                          Text('الشحن متاح',style: H4RegularDark.copyWith(color: Colors.green),)
-                                        ],
-                                      ),)
-                                    else Container(
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                          Icon(FontAwesomeIcons.truckFast,color: Colors.red,size: 0.04.sw,),
-                                          Text('الشحن غير متاح',style: H4RegularDark.copyWith(color: Colors.red),)
-                                        ],
-                                      ),),
-                                  ],
-                                ),)
-                               ],
-                             ),)
-                            ],
-                          ),
-                        );
-                        return Card(
-                          child: ListTile(
-                            title: Container(
-                              child: Text(
-                                "${logic.carts[index].product?.name}",
-                                style: H4GrayTextStyle,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            subtitle: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                return Container(
+                  color: WhiteColor,
+                  child: ListView(
+                    padding: EdgeInsets.symmetric(vertical: 0.01.sh),
+                    children: [
+                      ...List.generate(
+                        logic.carts.length,
+                        (index) {
+                          return Container(
+                            height: 0.3.sw,
+                            width: 1.sw,
+                            margin: EdgeInsets.only(bottom: 0.01.sh),
+                            decoration: const BoxDecoration(
+                                color: WhiteColor,
+                                border: Border(
+                                    bottom: BorderSide(
+                                  color: GrayLightColor,
+                                ))),
+                            child: Row(
                               children: [
-                                Text(
-                                  "${logic.carts[index].product!.price} \$",
-                                  style: H5RedTextStyle,
+                                Container(
+                                  width: 0.3.sw,
+                                  height: 0.3.sw,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: CachedNetworkImageProvider(
+                                              "${logic.carts[index].product?.image}"),
+                                          fit: BoxFit.cover)),
                                 ),
-                                15.verticalSpace,
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        InkWell(
-                                          onTap: () async {
-                                            await mainController.increaseQty(
-                                                productId: logic
-                                                    .carts[index].product!.id!);
-                                            logic.getCart();
-                                          },
-                                          child: Container(
-                                            padding: EdgeInsets.all(0.006.sw),
-                                            decoration: BoxDecoration(
-                                                color: RedColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        15.r)),
-                                            child: Icon(
-                                              FontAwesomeIcons.plus,
-                                              color: WhiteColor,
-                                              size: 0.04.sw,
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 0.002.sw, vertical: 0.001.sh),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          SizedBox(
+                                            width: 0.6.sw,
+                                            child: AutoSizeText(
+                                              "${logic.carts[index].product?.name}",
+                                              style: H3BlackTextStyle,
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
                                             ),
                                           ),
-                                        ),
-                                        20.horizontalSpace,
-                                        Container(
-                                          child: Text(
-                                            "${logic.carts[index].qty}",
-                                            style: H3BlackTextStyle,
-                                          ),
-                                        ),
-                                        20.horizontalSpace,
-                                        InkWell(
-                                          onTap: () async {
-                                            await mainController.decreaseQty(
-                                                productId: logic
-                                                    .carts[index].product!.id!);
-                                            logic.getCart();
-                                          },
-                                          child: Container(
-                                            padding: EdgeInsets.all(0.006.sw),
-                                            decoration: BoxDecoration(
-                                                color: RedColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        15.r)),
-                                            child: Icon(
-                                              FontAwesomeIcons.minus,
-                                              color: WhiteColor,
-                                              size: 0.04.sw,
+                                          InkWell(
+                                            onTap: () async {
+                                              mainController.deleteFromCart(
+                                                  product: logic
+                                                      .carts[index].product!);
+                                              await mainController
+                                                  .refreshCart();
+                                              logic.getCart();
+                                            },
+                                            child: const Icon(
+                                              FontAwesomeIcons.x,
+                                              color: RedColor,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      Expanded(
+                                          child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          SizedBox(
+                                            width: 0.45.sw,
+                                            child: AutoSizeText(
+                                              "${logic.carts[index].product?.expert?.trim()}",
+                                              style: H4RegularDark,
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 2,
+                                              softWrap: true,
+                                              wrapWords: true,
                                             ),
                                           ),
+                                          SizedBox(
+                                            width: 0.037.sw,
+                                          ),
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              SizedBox(
+                                                child: InkWell(
+                                                  onTap: () async {
+                                                    await mainController
+                                                        .increaseQty(
+                                                            productId: logic
+                                                                .carts[index]
+                                                                .product!
+                                                                .id!);
+                                                    logic.getCart();
+                                                  },
+                                                  child: const Icon(
+                                                      FontAwesomeIcons
+                                                          .circlePlus),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 0.01.sw,
+                                              ),
+                                              SizedBox(
+                                                  height: 0.02.sh,
+                                                  child: Text(
+                                                    '${logic.carts[index].qty}',
+                                                    style: H3BlackTextStyle,
+                                                  )),
+                                              SizedBox(
+                                                width: 0.01.sw,
+                                              ),
+                                              SizedBox(
+                                                child: InkWell(
+                                                  onTap: () async {
+                                                    print(
+                                                        "ID:${logic.carts[index].product!.id!}");
+                                                    await mainController
+                                                        .decreaseQty(
+                                                            productId: logic
+                                                                .carts[index]
+                                                                .product!
+                                                                .id!);
+                                                    logic.getCart();
+                                                  },
+                                                  child: const Icon(
+                                                      FontAwesomeIcons
+                                                          .circleMinus),
+                                                ),
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      )),
+                                      SizedBox(
+                                        width: 0.67.sw,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            AutoSizeText(
+                                              "${logic.carts[index].product?.is_discount == true ? logic.carts[index].product?.discount : logic.carts[index].product?.price} \$",
+                                              style: H3BlackTextStyle,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            if (logic.carts[index].product
+                                                    ?.is_delivery ==
+                                                true)
+                                              Container(
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    Icon(
+                                                      FontAwesomeIcons
+                                                          .truckFast,
+                                                      color: Colors.green,
+                                                      size: 0.04.sw,
+                                                    ),
+                                                    Text(
+                                                      'الشحن متاح',
+                                                      style: H4RegularDark
+                                                          .copyWith(
+                                                              color:
+                                                                  Colors.green),
+                                                    )
+                                                  ],
+                                                ),
+                                              )
+                                            else
+                                              Container(
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    Icon(
+                                                      FontAwesomeIcons
+                                                          .truckFast,
+                                                      color: Colors.red,
+                                                      size: 0.04.sw,
+                                                    ),
+                                                    Text(
+                                                      'الشحن غير متاح',
+                                                      style: H4RegularDark
+                                                          .copyWith(
+                                                              color:
+                                                                  Colors.red),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                    Text(
-                                      "${5 * logic.carts[index].qty!} \$",
-                                      style: H3BlackTextStyle,
-                                    ),
-                                    if (logic.carts[index] == true)
-                                      Icon(FontAwesomeIcons.truckFast)
-                                    else
-                                      Container(),
-                                  ],
-                                ),
+                                      )
+                                    ],
+                                  ),
+                                )
                               ],
                             ),
-                            leading: Container(
-                              width: 0.08.sw,
-                              height: 0.08.sh,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                      image: CachedNetworkImageProvider(
-                                          "${logic.carts[index].product?.image}"))),
-                            ),
-                          ),
-                        );
-                      },
-                    )
-                  ],
+                          );
+                        },
+                      )
+                    ],
+                  ),
                 );
               },
             ),
@@ -265,8 +268,9 @@ class CartItemPage extends StatelessWidget {
                 visible: logic.carts.length > 0,
                 child: Container(
                   padding: EdgeInsets.symmetric(
-                      vertical: 0.01.sh, horizontal: 0.02.sw),
-                  height: 0.2.sh,
+                    vertical: 0.01.sh,
+                  ),
+                  height: 0.3.sh,
                   width: 1.sw,
                   alignment: Alignment.center,
                   color: GrayLightColor,
@@ -274,87 +278,45 @@ class CartItemPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text( "${logic.carts.length > 0 ? logic.carts.where((el)=>el.product?.is_delivery==true).fold(0.0, (previousValue, element) {
-                                double elementPrice =
-                                element.product?.is_discount==true?element.product?.discount ?? 0.0 : element.product?.price ??0;
-                                int elementQty = element.qty ?? 0;
-                                return previousValue +
-                                    (elementPrice * elementQty);
-                              }) : 0} \$",
-                                  style: H2BlackTextStyle),
-                              Text('الإجمالي',style: H3GrayOpacityTextStyle,),
-
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text( "${logic.carts.length > 0 ? logic.carts.where((el)=>el.product?.is_delivery!=true).fold(0.0, (previousValue, element) {
-                                double elementPrice =1;
-                                print("WWWWE");
-
-                                print(element.product?.weight);
-                                num weight=element.product?.weight ??0 * element.qty!;
-
-                                return previousValue +
-                                    (elementPrice * weight);
-                              }) : 0} \$",
-                                  style: H2BlackTextStyle),
-                              Text('اجور الشحن',style: H3GrayOpacityTextStyle,),
-
-                            ],
-                          ),
-                         /* Expanded(
-                              child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 0.02.sw, vertical: 0.02.sh),
-                            alignment: Alignment.centerRight,
-                            child: RichText(
-                                text: TextSpan(children: [
-                              TextSpan(
-                                  text: "المجموع : ", style: H3BlackTextStyle),
-                              TextSpan(
-                                  text:
-                                      "${logic.carts.length > 0 ? logic.carts.where((el)=>el.product?.is_delivery==true).fold(0.0, (previousValue, element) {
-                                          double elementPrice =
-                                              element.product?.is_discount==true?element.product?.discount ?? 0.0 : element.product?.price ??0;
-                                          int elementQty = element.qty ?? 0;
-                                          return previousValue +
-                                              (elementPrice * elementQty);
-                                        }) : 0} \$",
-                                  style: H3RedTextStyle),
-                            ])),
-                          )),*/
-                          if (isAuth())
-                            MaterialButton(
-                              color: RedColor,
-                              onPressed: () async {
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 0.01.sh, horizontal: 0.02.sw),
+                        decoration: BoxDecoration(
+                            color: GrayWhiteColor,
+                            border: Border(
+                                bottom: BorderSide(
+                                    color: WhiteColor, width: 0.005.sw))),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'يفضل مراسلة التاجر قبل  الطلب',
+                              style: H1RegularDark,
+                            ),
+                            InkWell(
+                              onTap: () async {
                                 StringBuffer message = StringBuffer();
-                                String msg = "";
+                                message
+                                    .write("السلام عليكم ورحمة الله وبركاته ");
+                                message.write(r"\n");
+                                message.write("  أريد الإستفسار عن بضاعة");
+                                message.write(r"\n");
                                 if (logic.carts != null &&
                                     logic.carts.isNotEmpty) {
                                   for (var item in logic.carts) {
                                     message.write(
                                         "معرف المنتج : ${item.product?.id}");
-                                    message.write("\n");
-                                    message
-                                        .write("المنتج : ${item.product?.name}");
-                                    message.write("\n");
+                                    message.write(r"\n");
+                                    message.write(
+                                        "المنتج : ${item.product?.name}");
+                                    message.write(r"\n");
                                     message.write("العدد : ${item.qty}");
-                                    message.write("\n");
-                                    message.write("سعر الوحدة : ${item.product?.is_discount==true?item.product?.discount:item.product?.price}");
-                                    message.write("\n");
+                                    message.write(r"\n");
+                                    message.write(
+                                        "سعر الوحدة : ${item.product?.is_discount == true ? item.product?.discount : item.product?.price}");
+                                    message.write(r"\n");
                                     message.write("-------------------------");
-                                    message.write("\n");
-                                    msg += " ${item.product?.name} " +
-                                        "العدد : ${item.qty} ,";
+                                    message.write(r"\n");
                                   }
 
                                   // حساب المجموع باستخدام fold
@@ -376,40 +338,163 @@ class CartItemPage extends StatelessWidget {
                                   message.write("المجموع : 0");
                                 }
 
-                                message.writeln("\n==========================");
+                                message
+                                    .writeln(r"\n==========================");
                                 logic.createOrder();
-                                // logic.calcWithAi(msg);
-                                /*  await mainController.createCommunity(
-                                sellerId: int.parse(
-                                    "${logic.cart.value?.seller?.id}"),
-                                message: message.toString());*/
+
+                                await mainController.createCommunity(
+                                    sellerId: int.parse(
+                                        "${logic.cart.value?.seller?.id}"),
+                                    message: message.toString());
                               },
-                              child: Text(
-                                'إطلب من خلال الدردشة',
-                                style: H4WhiteTextStyle,
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: 0.3.sw,
+                                height: 0.08.sw,
+                                decoration: BoxDecoration(
+                                    color: RedColor,
+                                    borderRadius: BorderRadius.circular(30.r)),
+                                child: Text(
+                                  'مراسلة التاجر',
+                                  style: H3WhiteTextStyle,
+                                ),
                               ),
                             ),
-                          if (!isAuth())
-                            MaterialButton(
-                              color: RedColor,
-                              onPressed: () async {
-                                Get.toNamed(LOGIN_PAGE);
-                              },
-                              child: Text(
-                                'تسجيل الدخول',
-                                style: H4WhiteTextStyle,
-                              ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 0.007.sh,
+                      ),
+                      Container(
+                        width: 1.sw,
+                        padding: EdgeInsets.symmetric(
+                            vertical: 0.01.sh, horizontal: 0.02.sw),
+                        decoration: BoxDecoration(
+                            color: GrayWhiteColor,
+                            border: Border(
+                                bottom: BorderSide(
+                                    color: WhiteColor, width: 0.005.sw))),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Obx(() {
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    child: Text(
+                                      'عنوان الشحن : ${logic.address.value}',
+                                      style: H4RegularDark,
+                                    ),
+                                  ),
+                                  Container(
+                                    child: Text(
+                                      'رقم الهاتف : ${logic.phone.value}',
+                                      style: H4RegularDark,
+                                    ),
+                                  )
+                                ],
+                              );
+                            }),
+                            InkWell(
+                              onTap: changeAddress,
+                              child: const Icon(FontAwesomeIcons.solidEdit),
                             ),
-                          /*  MaterialButton(
-                          color: OrangeColor,
-                          onPressed: () {},
-                          child: Text(
-                            'إطلب عن طريق WhatsApp',
-                            style: H4WhiteTextStyle,
-                          ),
-                        )*/
-                        ],
-                      )
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                          child: Container(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 0.01.sh, horizontal: 0.02.sw),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'الإجمالي',
+                                  style: H3RegularDark,
+                                ),
+                                Text(
+                                    "${logic.total.value.toStringAsFixed(2)} \$",
+                                    style: H2BlackTextStyle.copyWith(
+                                        fontWeight: FontWeight.w900,
+                                        color: Colors.black)),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 0.005.sh,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'اجور شحن علي باشا',
+                                  style: H3RegularDark,
+                                ),
+                                Text(
+                                    "${logic.totalShipping.value.toStringAsFixed(2)} \$",
+                                    style: H2BlackTextStyle.copyWith(
+                                        fontWeight: FontWeight.w900,
+                                        color: Colors.black)),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 0.005.sh,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'المجموع العام',
+                                  style: H3RegularDark,
+                                ),
+                                Text(
+                                    "${(logic.totalShipping.value + logic.total.value).toStringAsFixed(2)} \$",
+                                    style: H2BlackTextStyle.copyWith(
+                                        fontWeight: FontWeight.w900,
+                                        color: Colors.black)),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 0.009.sh,
+                            ),
+                            Expanded(
+                                child: (isAuth())
+                                    ? InkWell(
+                                        onTap: () async {
+                                          logic.createOrder();
+                                        },
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          width: 0.6.sw,
+                                          height: 0.08.sw,
+                                          decoration: BoxDecoration(
+                                              color: RedColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(150.r)),
+                                          child: Text(
+                                            'إرسال الطلب',
+                                            style: H3WhiteTextStyle,
+                                          ),
+                                        ),
+                                      )
+                                    : MaterialButton(
+                                        color: RedColor,
+                                        onPressed: () async {
+                                          Get.toNamed(LOGIN_PAGE);
+                                        },
+                                        child: Text(
+                                          'تسجيل الدخول',
+                                          style: H4WhiteTextStyle,
+                                        ),
+                                      )),
+                          ],
+                        ),
+                      ))
                     ],
                   ),
                 ),
@@ -419,5 +504,93 @@ class CartItemPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  changeAddress() {
+    Get.dialog(AlertDialog(
+      backgroundColor: WhiteColor,
+      content: Container(
+        width: 1.sw,
+        height: 0.3.sh,
+        child: ListView(
+          children: [
+           Container(
+             alignment: Alignment.center,
+             child:  Text('تعديل عنوان ورقم هاتف الشحن',style: H1RegularDark,),
+           ),
+            SizedBox(height: 0.02.sh,),
+            TextField(
+              keyboardType: TextInputType.text,
+              controller: logic.addressController,
+              style: H3RegularDark,
+              decoration: InputDecoration(
+                  label: Text(
+                    'عنوان الشحن ',
+                    style: H3RegularDark,
+                  ),
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(color: GrayLightColor))),
+            ),
+            SizedBox(height: 0.02.sh,),
+            TextField(
+              keyboardType: TextInputType.phone,
+              controller: logic.phoneController,
+              style: H3RegularDark,
+              decoration: InputDecoration(
+                  label: Text(
+                    'رقم الهاتف',
+                    style: H3RegularDark,
+                  ),
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(color: GrayLightColor))),
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            InkWell(
+              onTap: () async {
+                logic.address.value = logic.addressController.text;
+                logic.phone.value = logic.phoneController.text;
+                Get.back();
+              },
+              child: Container(
+                width: 0.3.sw,
+                height: 0.1.sw,
+                decoration: BoxDecoration(
+                    color: Colors.green,
+                    borderRadius: BorderRadius.circular(150.r)),
+                alignment: Alignment.center,
+                child: Text(
+                  'متابعة',
+                  style: H3WhiteTextStyle,
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                Get.back();
+              },
+              child: Container(
+                width: 0.3.sw,
+                height: 0.1.sw,
+                decoration: BoxDecoration(
+                    color: RedColor,
+                    borderRadius: BorderRadius.circular(150.r)),
+                alignment: Alignment.center,
+                child: Text(
+                  'إغلاق',
+                  style: H3WhiteTextStyle,
+                ),
+              ),
+            )
+          ],
+        )
+      ],
+    ));
   }
 }

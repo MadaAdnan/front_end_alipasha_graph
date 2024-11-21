@@ -65,6 +65,8 @@ import 'package:ali_pasha_graph/pages/maintenance/view.dart';
 
 import 'package:ali_pasha_graph/pages/menu/binding.dart';
 import 'package:ali_pasha_graph/pages/menu/view.dart';
+import 'package:ali_pasha_graph/pages/my_invoice/binding.dart';
+import 'package:ali_pasha_graph/pages/my_invoice/view.dart';
 import 'package:ali_pasha_graph/pages/new_details/binding.dart';
 import 'package:ali_pasha_graph/pages/new_details/view.dart';
 import 'package:ali_pasha_graph/pages/notification/binding.dart';
@@ -122,6 +124,8 @@ import '../pages/create_tender/view.dart';
 
 import '../pages/following/binding.dart';
 import '../pages/following/view.dart';
+import '../pages/invoices/binding.dart';
+import '../pages/invoices/view.dart';
 import '../pages/news/binding.dart';
 import '../pages/news/view.dart';
 import '../pages/products/binding.dart';
@@ -188,6 +192,16 @@ class AppPages {
         name: CREATE_PRODUCT_PAGE,
         page: () => CreateProductPage(),
         binding: CreateProductBinding()),
+    GetPage(
+        middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+        name: MY_INVOICE_PAGE,
+        page: () => MyInvoicePage(),
+        binding: MyInvoiceBinding()),
+    GetPage(
+        middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+        name: INVOICE_PAGE,
+        page: () => InvoicesPage(),
+        binding: InvoicesBinding()),
 
     GetPage(
         middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],

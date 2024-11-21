@@ -79,7 +79,7 @@ class ProductsLogic extends GetxController {
             name
             type
             is_discount
-            is_delivary
+            is_delivery
             is_available
             price
             views_count
@@ -95,6 +95,10 @@ class ProductsLogic extends GetxController {
                 logo
                 image
                 is_verified
+                city{
+                id
+                city_id
+              }
             }
           
             city {

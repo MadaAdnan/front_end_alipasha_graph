@@ -76,9 +76,9 @@ class MenuPage extends StatelessWidget {
                                   shape: BoxShape.circle,
                                   color: GrayDarkColor,
                                   image: DecorationImage(
-                                      image: getLogo() != null
+                                      image: mainController.authUser.value?.image != null
                                           ? CachedNetworkImageProvider(
-                                              '${getLogo()}',
+                                              '${mainController.authUser.value?.image}',
                                             )
                                           : getUserImage(),
                                       fit: BoxFit.cover),
@@ -99,6 +99,13 @@ class MenuPage extends StatelessWidget {
                 }),
                 badges.Badge(
                   position: badges.BadgePosition.custom(top: 0,start: 0),
+
+                  badgeContent: Obx(() {
+                    return Text(
+                      '${mainController.authUser.value?.unread_notifications_count??0}',
+                      style: H4WhiteTextStyle,
+                    );
+                  }),
                   child: InkWell(
                     onTap: (){
                       Get.offAndToNamed(NOTIFICATION_PAGE);
@@ -108,13 +115,6 @@ class MenuPage extends StatelessWidget {
                       size: 0.08.sw,
                     ),
                   ),
-
-                  badgeContent: Obx(() {
-                    return Text(
-                      '${mainController.authUser.value?.unread_notifications_count}',
-                      style: H4WhiteTextStyle,
-                    );
-                  }),
                 )
               ],
             ),
@@ -157,86 +157,6 @@ class MenuPage extends StatelessWidget {
                       30.verticalSpace,
                       InkWell(
                         onTap: () {
-                          /*  Get.defaultDialog(
-                              titlePadding: EdgeInsets.symmetric(
-                                  horizontal: 0.03.sw, vertical: 0.03.sh),
-                              title: "شحن رصيد الإعلانات",
-                              titleStyle: H3OrangeTextStyle,
-                              backgroundColor: WhiteColor,
-                              content: Container(
-                                child: Column(
-                                  children: [
-                                    InputComponent(
-                                      controller: logic.codeController,
-                                      hint: 'الكود',
-                                      width: 0.7.sw,
-                                      fill: WhiteColor,
-                                    ),
-                                    10.verticalSpace,
-                                    InputComponent(
-                                      hint: 'كلمة المرور',
-                                      controller: logic.passController,
-                                      width: 0.7.sw,
-                                      fill: WhiteColor,
-                                    ),
-                                    10.verticalSpace,
-                                    Obx(() {
-                                      if(logic.loadingBay.value){
-                                        return Center(child: CircularProgressIndicator(),);
-                                      }
-                                      return InkWell(
-                                        onTap: () async {
-
-                                          bool res = await logic.charge();
-                                          Get.back();
-                                          if (res) {
-
-                                           logic.codeController.clear();
-                                           logic.passController.clear();
-                                          }
-                                        },
-                                        child: Container(
-                                          alignment: Alignment.center,
-                                          width: 0.7.sw,
-                                          padding: EdgeInsets.symmetric(
-                                            vertical: 0.01.sh,
-                                            horizontal: 0.02.sw,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color: RedColor,
-                                            borderRadius:
-                                            BorderRadius.circular(15.r),
-                                          ),
-                                          child: Text(
-                                            'أرسل للشحن',
-                                            style: H3WhiteTextStyle,
-                                          ),
-                                        ),
-                                      );
-                                    }),
-                                    30.verticalSpace,
-                                    InkWell(
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        width: 0.7.sw,
-                                        padding: EdgeInsets.symmetric(
-                                          vertical: 0.01.sh,
-                                          horizontal: 0.02.sw,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: GrayDarkColor,
-                                          borderRadius:
-                                          BorderRadius.circular(15.r),
-                                        ),
-                                        child: Text(
-                                          'لا املك كوبون',
-                                          style: H3WhiteTextStyle,
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ));*/
                           Get.dialog(
                             AlertDialog(
                               title: Row(
@@ -253,7 +173,7 @@ class MenuPage extends StatelessWidget {
                                         logic.codeController.clear();
                                         Get.back();
                                       },
-                                      icon: Icon(Icons.close))
+                                      icon: const Icon(Icons.close))
                                 ],
                               ),
                               backgroundColor: WhiteColor,
@@ -267,85 +187,93 @@ class MenuPage extends StatelessWidget {
                                       width: 0.7.sw,
                                       fill: WhiteColor,
                                     ),
-                                    10.verticalSpace,
+                                    SizedBox(height: 0.02.sh,),
                                     InputComponent(
                                       hint: 'كلمة المرور',
                                       controller: logic.passController,
                                       width: 0.7.sw,
                                       fill: WhiteColor,
                                     ),
-                                    10.verticalSpace,
+                                    SizedBox(height: 0.02.sh,),
                                     Obx(() => Visibility(
+                                          visible: logic.message.value != null,
                                           child: Text(
                                             '${logic.message.value}',
                                             style: H4RedTextStyle,
                                           ),
-                                          visible: logic.message.value != null,
-                                        )),
-                                    20.verticalSpace,
-                                    Obx(() {
-                                      print(logic.message.value);
-                                      if (logic.loadingBay.value) {
-                                        return Center(
-                                            child: CircularProgressIndicator());
-                                      }
-                                      return InkWell(
-                                        onTap: () async {
-                                          String? res = await logic.charge();
-                                          if (res != null) {
-                                            Future.delayed(Duration(seconds: 1),
-                                                () {
-                                              messageBox(
-                                                  title: 'فشلت العملية',
-                                                  message: '$res');
-                                            });
-                                          } else {
-                                            logic.codeController.clear();
-                                            logic.passController.clear();
-                                          }
-                                        },
-                                        child: Container(
-                                          alignment: Alignment.center,
-                                          width: 0.7.sw,
-                                          padding: EdgeInsets.symmetric(
-                                            vertical: 0.01.sh,
-                                            horizontal: 0.02.sw,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color: RedColor,
-                                            borderRadius:
-                                                BorderRadius.circular(15.r),
-                                          ),
-                                          child: Text(
-                                            'أرسل للشحن',
-                                            style: H3WhiteTextStyle,
-                                          ),
-                                        ),
-                                      );
-                                    }),
-                                    30.verticalSpace,
-                                    InkWell(
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        width: 0.7.sw,
-                                        padding: EdgeInsets.symmetric(
-                                          vertical: 0.01.sh,
-                                          horizontal: 0.02.sw,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: GrayDarkColor,
-                                          borderRadius:
-                                              BorderRadius.circular(15.r),
-                                        ),
-                                        child: Text(
-                                          'لا املك كوبون',
-                                          style: H3WhiteTextStyle,
-                                        ),
-                                      ),
-                                    )
+                                        ),),
                                   ],
                                 ),
                               ),
+                              actions: [
+                               Column(
+                                 children: [
+                                   Obx(() {
+                                     print(logic.message.value);
+                                     if (logic.loadingBay.value) {
+                                       return const Center(
+                                           child: CircularProgressIndicator());
+                                     }
+                                     return InkWell(
+                                       onTap: () async {
+                                         String? res = await logic.charge();
+                                         if (res != null) {
+                                           Future.delayed(const Duration(seconds: 1),
+                                                   () {
+                                                 messageBox(
+                                                     title: 'فشلت العملية',
+                                                     message: '$res');
+                                               });
+                                         } else {
+                                           logic.codeController.clear();
+                                           logic.passController.clear();
+                                         }
+                                       },
+                                       child: Container(
+                                         alignment: Alignment.center,
+                                         width: 0.7.sw,
+                                         padding: EdgeInsets.symmetric(
+                                           vertical: 0.01.sh,
+                                           horizontal: 0.02.sw,
+                                         ),
+                                         decoration: BoxDecoration(
+                                           color: RedColor,
+                                           borderRadius:
+                                           BorderRadius.circular(15.r),
+                                         ),
+                                         child: Text(
+                                           'أرسل للشحن',
+                                           style: H3WhiteTextStyle,
+                                         ),
+                                       ),
+                                     );
+                                   }),
+SizedBox(height: 0.02.sh,),
+                                   InkWell(
+                                     onTap:(){
+                                       Get.back();
+                                     },
+                                     child: Container(
+                                       alignment: Alignment.center,
+                                       width: 0.7.sw,
+                                       padding: EdgeInsets.symmetric(
+                                         vertical: 0.01.sh,
+                                         horizontal: 0.02.sw,
+                                       ),
+                                       decoration: BoxDecoration(
+                                         color: GrayDarkColor,
+                                         borderRadius:
+                                         BorderRadius.circular(15.r),
+                                       ),
+                                       child: Text(
+                                         'لا املك كوبون',
+                                         style: H3WhiteTextStyle,
+                                       ),
+                                     ),
+                                   )
+                                 ],
+                               )
+                              ],
                             ),
                           );
                         },
@@ -357,7 +285,7 @@ class MenuPage extends StatelessWidget {
                               borderRadius: BorderRadius.circular(0.02.sw),
                               color: WhiteColor),
                           child: Text(
-                            'شحن رصيد الإعلانات',
+                            'شحن الحساب',
                             style: H3RedTextStyle,
                           ),
                         ),
@@ -374,6 +302,7 @@ class MenuPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     _buildWidget(
+                      icon: Icon(FontAwesomeIcons.shop,size: 0.08.sw,color: Colors.lightGreenAccent,),
                         image: 'assets/images/png/home.png',
                         title: 'عرض متجري',
                         onTap: () {
@@ -385,6 +314,7 @@ class MenuPage extends StatelessWidget {
                           }
                         }),
                     _buildWidget(
+                      icon: Icon(FontAwesomeIcons.cartShopping,size: 0.08.sw,color: Colors.deepOrangeAccent,),
                       onTap: () {
 // mainController.emptyCart();
                         Get.offAndToNamed(CART_SELLER);
@@ -396,7 +326,7 @@ class MenuPage extends StatelessWidget {
                           alignment: Alignment.center,
                           padding: EdgeInsets.symmetric(
                               vertical: 0.01.sw, horizontal: 0.01.sw),
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                               color: RedColor, shape: BoxShape.circle),
                           child: Text(
                             '${mainController.carts.length}',
@@ -416,12 +346,14 @@ class MenuPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     _buildWidget(
+                      icon:Icon(FontAwesomeIcons.boxOpen,size: 0.08.sw,color: Colors.red,),
                         onTap: () {
                           Get.offAndToNamed(CREATE_PRODUCT_PAGE);
                         },
                         image: 'assets/images/png/create.png',
                         title: 'إضافة منتج'),
                     _buildWidget(
+                      icon: Icon(FontAwesomeIcons.store,size: 0.08.sw,color: Colors.redAccent,),
                         image: 'assets/images/png/dependancy.png',
                         onTap: () {
                           Get.offAndToNamed(PARTNER_PAGE);
@@ -438,29 +370,21 @@ class MenuPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     _buildWidget(
+                      icon:Icon(FontAwesomeIcons.shareNodes,size: 0.08.sw,color: Colors.lightBlue,),
                         onTap: () async {
                           openUrl(url: "https://play.google.com/store/apps/details?id=com.mada.company.ali.basha");
-                          // طلب الإذن
-                         /* final permissionGranted = await requestStoragePermission();
-                          if (permissionGranted) {
-                            // جلب المسار
-                            final path = await getAppPath();
-                            final filePath = '$path/app.apk'; // أو '$path/app.ipa'
 
-                            // مشاركة الملف
-                            await shareAppFile(filePath);
-                          } else {
-                            print('الإذن مرفوض');
-                          }*/
                         },
                         image: 'assets/images/png/share.png',
                         title: 'مشاركة التطبيق'),
+
                     _buildWidget(
+                      icon: Icon(FontAwesomeIcons.cartFlatbed,size: 0.08.sw,color: Colors.lightGreenAccent,),
                         onTap: () {
                           Get.offAndToNamed(MY_ORDER_SHIPPING_PAGE);
                         },
                         image: 'assets/images/png/shipping.png',
-                        title: 'خدمة الشحن'),
+                        title: 'شحن طرد مخصص'),
                   ],
                 ),
               ),
@@ -472,12 +396,38 @@ class MenuPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     _buildWidget(
+                      icon:Icon(FontAwesomeIcons.truckFast,size: 0.08.sw,color: Colors.green,),
+                        onTap: () {
+                          Get.offAndToNamed(INVOICE_PAGE);
+                        },
+                        image: 'assets/images/png/shipping.png',
+                        title: 'شحنات واردة'),
+                    _buildWidget(
+                      icon: Icon(FontAwesomeIcons.fileInvoice,size: 0.08.sw,color: Colors.greenAccent,),
+                        onTap: () {
+                          Get.offAndToNamed(MY_INVOICE_PAGE);
+                        },
+                        image: 'assets/images/png/shipping.png',
+                        title: 'شحنات صادرة'),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: 0.01.sw, vertical: 0.002.sh),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    _buildWidget(
+                      icon: Icon(FontAwesomeIcons.arrowUpRightDots,size: 0.08.sw,color: Colors.orangeAccent,),
                         onTap: () {
                           Get.offAndToNamed(PLAN_PAGE);
                         },
                         image: 'assets/images/png/upgrade.png',
                         title: 'ترقية الحساب'),
                     _buildWidget(
+                      icon:Icon(FontAwesomeIcons.newspaper,size: 0.08.sw,color: Colors.blueGrey,) ,
                         onTap: () {
                           Get.offAndToNamed(NEWS_PAGE);
                         },
@@ -576,7 +526,7 @@ class MenuPage extends StatelessWidget {
                         children: [
                           SizedBox(
                             width: 0.06.sw,
-                            child: Image(
+                            child: const Image(
                               image:
                                   AssetImage('assets/images/png/settings.png'),
                             ),
@@ -598,7 +548,7 @@ class MenuPage extends StatelessWidget {
                         children: [
                           SizedBox(
                             width: 0.06.sw,
-                            child: Image(
+                            child: const Image(
                               image: AssetImage('assets/images/png/about.png'),
                             ),
                           ),
@@ -620,7 +570,7 @@ class MenuPage extends StatelessWidget {
                           children: [
                             SizedBox(
                               width: 0.06.sw,
-                              child: Image(
+                              child: const Image(
                                 image:
                                     AssetImage('assets/images/png/log_out.png'),
                               ),
@@ -647,6 +597,7 @@ class MenuPage extends StatelessWidget {
   Widget _buildWidget({
     required String image,
     required String title,
+    Icon? icon,
     Widget? child,
     Function()? onTap,
   }) {
@@ -667,7 +618,7 @@ class MenuPage extends StatelessWidget {
                   SizedBox(
                       width: 0.095.sw,
                       height: 0.095.sw,
-                      child: Image(image: AssetImage(image))),
+                      child:icon?? Image(image: AssetImage(image))),
                   if (child == null)
                     Text(
                       title,

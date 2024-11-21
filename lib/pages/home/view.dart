@@ -147,9 +147,9 @@ class HomePage extends StatelessWidget {
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           image: DecorationImage(
-                                              image: getLogo() != null
+                                              image: mainController.authUser.value?.image != null
                                                   ? CachedNetworkImageProvider(
-                                                  '${getLogo()}')
+                                                  '${mainController.authUser.value?.image}')
                                                   : getUserImage())),
                                     );
                                   }),

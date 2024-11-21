@@ -1,6 +1,9 @@
+import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/models/cart_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:logger/logger.dart';
 
 import '../models/product_model.dart';
 
@@ -41,7 +44,8 @@ class CartHelper {
   }
 
   static Future<List<CartModel>> addToCart(
-      {required ProductModel product}) async {
+      {required ProductModel product}) async
+  {
     GetStorage storage = GetStorage('ali-pasha');
     List<CartModel> cart = [];
     if (storage.hasData('cart')) {
@@ -59,20 +63,14 @@ class CartHelper {
         CartModel cartItem = CartModel(
             product: product,
             qty: 1,
-            seller: UserModel(
-                id: product.user?.id,
-                seller_name: product.user?.seller_name,
-                logo: product.user?.logo));
+            seller: product.user);
         cart.add(cartItem);
       }
     } else {
       CartModel cartItem = CartModel(
           product: product,
           qty: 1,
-          seller: UserModel(
-              id: product.user?.id,
-              seller_name: product.user?.seller_name,
-              logo: product.user?.logo));
+          seller: product.user);
       cart.add(cartItem);
     }
     await saveCart(cart);
@@ -80,7 +78,8 @@ class CartHelper {
   }
 
   static Future<List<CartModel>> minFromCart(
-      {required ProductModel product}) async {
+      {required ProductModel product}) async
+  {
     GetStorage storage = GetStorage('ali-pasha');
     if (storage.hasData('cart')) {
       var data = await storage.read('cart');
@@ -144,14 +143,17 @@ class CartHelper {
 
   static Future<List<CartModel>> removeCart(
       {required ProductModel product}) async {
+
     GetStorage storage = GetStorage('ali-pasha');
     List<CartModel> cart = [];
-    if (storage.hasData('cart')) {
-      List<Map<String, dynamic>> data = await storage.read('cart');
 
+    if (storage.hasData('cart')==true) {
+      var data = await storage.read('cart');
+      Logger().f(data);
       for (var item in data) {
         CartModel cartItem = CartModel.fromJson(item);
         if (cartItem.product?.id == product.id) {
+
           continue;
         }
         cart.add(cartItem);

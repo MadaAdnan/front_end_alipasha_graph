@@ -221,6 +221,7 @@ class ProductModel {
       'price':price,
       'discount':discount,
       'image':image,
+      'weight':weight,
     };
   }
 }

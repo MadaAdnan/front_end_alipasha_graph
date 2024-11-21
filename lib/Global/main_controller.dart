@@ -12,6 +12,7 @@ import 'package:ali_pasha_graph/models/cart_model.dart';
 import 'package:ali_pasha_graph/models/category_model.dart';
 import 'package:ali_pasha_graph/models/community_model.dart';
 import 'package:ali_pasha_graph/models/message_community_model.dart';
+import 'package:ali_pasha_graph/models/pricing_model.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
 import 'package:ali_pasha_graph/models/setting_model.dart';
 import 'package:ali_pasha_graph/models/slider_model.dart';
@@ -64,6 +65,7 @@ class MainController extends GetxController {
   RxList<ColorModel> colors = RxList<ColorModel>([]);
   RxList<AdviceModel> advices = RxList<AdviceModel>([]);
   RxList<SliderModel> sliders = RxList<SliderModel>([]);
+  RxList<PricingModel> pricing = RxList([]);
   String versionAPK = "3.0.0";
   RxInt communityNotification = RxInt(0);
   RxBool startApp = RxBool(true); //for fill data from storage
@@ -104,9 +106,9 @@ class MainController extends GetxController {
 
     getUserFromStorage();
     getAdvices();
+    getPricingData();
     ever(authUser, (value) {
       if (value != null) {
-
         // subscribe any new community
         var createCommunityChannel = pusher.channel('community.${value.id}');
         createCommunityChannel.bind('community.create', (e) {
@@ -114,71 +116,79 @@ class MainController extends GetxController {
             Map<String, dynamic>? user = List.from(e['community']?['users'])
                 .firstWhere((el) => el['id'] == value.id);
             if (user != null) {
-              setUserJson(json: user).then((value){
-               var channelNew= pusher.channel('private-message.${e['community']?.id}');
-               channelNew.bind('message.create', (e) {
-                 if (Get.currentRoute != CHAT_PAGE &&
-                     Get.currentRoute != COMMUNITIES_PAGE) {
-                   communityNotification.value += 1;
-                 }
-                 // community Page
-                 else if (Get.currentRoute == COMMUNITIES_PAGE) {
-                   if (e['message']?['community'] != null) {
-                     CommunityModel community =
-                     CommunityModel.fromJson(e['message']?['community']);
-                     int index = Get.find<CommunitiesLogic>()
-                         .communities
-                         .indexWhere((el) => el.id == community.id);
-                     if (index == -1) {
-                       Get.find<CommunitiesLogic>().communities.insert(0, community);
-                     } else {
-                       Get.find<CommunitiesLogic>().communities.removeAt(index);
+              setUserJson(json: user).then((value) {
+                var channelNew =
+                    pusher.channel('private-message.${e['community']?.id}');
+                channelNew.bind('message.create', (e) {
+                  if (Get.currentRoute != CHAT_PAGE &&
+                      Get.currentRoute != COMMUNITIES_PAGE) {
+                    communityNotification.value += 1;
+                  }
+                  // community Page
+                  else if (Get.currentRoute == COMMUNITIES_PAGE) {
+                    if (e['message']?['community'] != null) {
+                      CommunityModel community =
+                          CommunityModel.fromJson(e['message']?['community']);
+                      int index = Get.find<CommunitiesLogic>()
+                          .communities
+                          .indexWhere((el) => el.id == community.id);
+                      if (index == -1) {
+                        Get.find<CommunitiesLogic>()
+                            .communities
+                            .insert(0, community);
+                      } else {
+                        Get.find<CommunitiesLogic>()
+                            .communities
+                            .removeAt(index);
 
-                       Get.find<CommunitiesLogic>().communities.insert(0, community);
-                     }
-                   }
-                 }
+                        Get.find<CommunitiesLogic>()
+                            .communities
+                            .insert(0, community);
+                      }
+                    }
+                  }
 
-                 // Chat Page
-                 else if (Get.currentRoute == CHAT_PAGE ||
-                     Get.currentRoute == GROUP_PAGE ||
-                     Get.currentRoute == CHANNEL_PAGE) {
-                   if (e['message'] != null) {
-                     MessageModel message = MessageModel.fromJson(e['message']);
-                     switch (message.community?.type) {
-                       case 'chat':
-                         if (Get.currentRoute == CHAT_PAGE) {
-                           ChatLogic logic = Get.find<ChatLogic>();
-                           logic.messages.insert(0, message);
-                           logger.w("ADD MESSAGE");
-                           RecorderManager()
-                               .playRecordedAudioNetWork(assets: 'sound/notify.mp3');
-                           loading.value = false;
-                         }
-                         break;
-                       case 'group':
-                         if (Get.currentRoute == GROUP_PAGE &&
-                             message.user?.id != authUser.value?.id) {
-                           GroupLogic logic = Get.find<GroupLogic>();
-                           logic.messages.insert(0, message);
-                           //  RecorderManager().playRecordedAudioNetWork(assets: 'sound/notify.mp3');
-                           loading.value = false;
-                         }
-                         break;
-                       case 'channel':
-                         if (Get.currentRoute == CHANNEL_PAGE &&
-                             message.user?.id != authUser.value?.id) {
-                           ChannelLogic logic = Get.find<ChannelLogic>();
-                           logic.messages.insert(0, message);
-                           RecorderManager()
-                               .playRecordedAudioNetWork(assets: 'sound/notify.mp3');
-                           loading.value = false;
-                         }
-                         break;
-                     }
-                   }
-                 }
-               });
+                  // Chat Page
+                  else if (Get.currentRoute == CHAT_PAGE ||
+                      Get.currentRoute == GROUP_PAGE ||
+                      Get.currentRoute == CHANNEL_PAGE) {
+                    if (e['message'] != null) {
+                      MessageModel message =
+                          MessageModel.fromJson(e['message']);
+                      switch (message.community?.type) {
+                        case 'chat':
+                          if (Get.currentRoute == CHAT_PAGE) {
+                            ChatLogic logic = Get.find<ChatLogic>();
+                            logic.messages.insert(0, message);
+                            logger.w("ADD MESSAGE");
+                            RecorderManager().playRecordedAudioNetWork(
+                                assets: 'sound/notify.mp3');
+                            loading.value = false;
+                          }
+                          break;
+                        case 'group':
+                          if (Get.currentRoute == GROUP_PAGE &&
+                              message.user?.id != authUser.value?.id) {
+                            GroupLogic logic = Get.find<GroupLogic>();
+                            logic.messages.insert(0, message);
+                            //  RecorderManager().playRecordedAudioNetWork(assets: 'sound/notify.mp3');
+                            loading.value = false;
+                          }
+                          break;
+                        case 'channel':
+                          if (Get.currentRoute == CHANNEL_PAGE &&
+                              message.user?.id != authUser.value?.id) {
+                            ChannelLogic logic = Get.find<ChannelLogic>();
+                            logic.messages.insert(0, message);
+                            RecorderManager().playRecordedAudioNetWork(
+                                assets: 'sound/notify.mp3');
+                            loading.value = false;
+                          }
+                          break;
+                      }
+                    }
+                  }
+                });
               });
             }
           }
@@ -298,12 +308,12 @@ class MainController extends GetxController {
     if (type == 'success') {
       CherryToast.success(
         title: Text(text ?? 'نجاح العملية',
-            style: const TextStyle(color: Colors.black)),
+            style: H3RegularDark),
       ).show(Get.context as BuildContext);
     } else {
       CherryToast.error(
         title: Text(text ?? 'فشل العملية',
-            style: const TextStyle(color: Colors.black)),
+            style: H3RegularDark),
       ).show(Get.context as BuildContext);
     }
   }
@@ -319,8 +329,8 @@ class MainController extends GetxController {
     if (authUser.value != null) {
       for (var item in authUser.value!.communities!) {
         final channelName = 'private-message.${item.id}';
-        if(!pusher.channel(channelName).subscribed){
-          Channel channel=pusher.channel(channelName);
+        if (!pusher.channel(channelName).subscribed) {
+          Channel channel = pusher.channel(channelName);
           channel.unbind('message.create');
           channel.bind('message.create', (e) {
             if (Get.currentRoute != CHAT_PAGE &&
@@ -331,7 +341,7 @@ class MainController extends GetxController {
             else if (Get.currentRoute == COMMUNITIES_PAGE) {
               if (e['message']?['community'] != null) {
                 CommunityModel community =
-                CommunityModel.fromJson(e['message']?['community']);
+                    CommunityModel.fromJson(e['message']?['community']);
                 int index = Get.find<CommunitiesLogic>()
                     .communities
                     .indexWhere((el) => el.id == community.id);
@@ -353,7 +363,8 @@ class MainController extends GetxController {
                 MessageModel message = MessageModel.fromJson(e['message']);
                 switch (message.community?.type) {
                   case 'chat':
-                    if (Get.currentRoute == CHAT_PAGE && message.user?.id !=authUser.value?.id) {
+                    if (Get.currentRoute == CHAT_PAGE &&
+                        message.user?.id != authUser.value?.id) {
                       ChatLogic logic = Get.find<ChatLogic>();
                       logic.messages.insert(0, message);
                       logger.w("ADD MESSAGE");
@@ -387,7 +398,6 @@ class MainController extends GetxController {
           });
           channels.add(channel); // استخدم add بدلاً من الفهرسة
         }
-
       }
     }
 
@@ -487,7 +497,8 @@ class MainController extends GetxController {
         CommunityModel community = CommunityModel.fromJson(
             res?.data?['data']['createChat']['community']);
         Get.toNamed(CHAT_PAGE,
-            arguments: community, parameters: {"msg":message!=null? message: ''});
+            arguments: community,
+            parameters: {"msg": message != null ? message : ''});
       }
       if (res?.data?['data']['createChat']['user'] != null) {
         setUserJson(json: res?.data?['data']['createChat']['user']);
@@ -713,6 +724,30 @@ class MainController extends GetxController {
     }
   }
 
+  getPricingData() async {
+    pricing.clear();
+    query('''
+    query Pricing {
+    pricing {
+        weight
+        size
+        internal_price
+        external_price
+    }
+     me {
+        total_balance
+    }
+}
+    ''');
+
+    dio.Response? res = await fetchData();
+    if (res?.data?['data']?['pricing'] != null) {
+      for (var item in res?.data['data']['pricing']) {
+        pricing.add(PricingModel.fromJson(item));
+      }
+    }
+  }
+
   Future<XFile?> commpressImage(
       {required XFile? file, int? width, int? height}) async {
     if (file != null) {
@@ -784,12 +819,11 @@ class MainController extends GetxController {
   }
 
   Future<void> addToCart({required ProductModel product}) async {
-
     cartLoading.value = true;
     try {
       List<CartModel> cartsItem = await CartHelper.addToCart(product: product);
       carts(cartsItem);
-      messageBox(message: 'تم إضافة المنتج إلى السلة', title: 'نجاح العملية');
+      //  messageBox(message: 'تم إضافة المنتج إلى السلة', title: 'نجاح العملية');
     } catch (e) {}
     cartLoading.value = false;
   }
@@ -817,10 +851,15 @@ class MainController extends GetxController {
   Future<void> deleteFromCart({required ProductModel product}) async {
     cartLoading.value = true;
     try {
+      logger.f(product.id);
       List<CartModel> cartsItem = await CartHelper.removeCart(product: product);
       carts(cartsItem);
     } catch (e) {}
     cartLoading.value = false;
+  }
+
+  refreshCart() async {
+    carts.value = List.from(await CartHelper.getCart());
   }
 
   Future<void> emptyCart() async {

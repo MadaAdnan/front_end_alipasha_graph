@@ -135,6 +135,10 @@ TextEditingController comment =TextEditingController();
                 name
                 image
                 is_verified
+                city{
+                id
+                 city_id
+              }
             }
             city {
                 name

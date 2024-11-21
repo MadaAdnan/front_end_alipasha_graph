@@ -1,4 +1,5 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
+import 'package:ali_pasha_graph/components/product_components/news_card.dart';
 import 'package:ali_pasha_graph/components/product_components/post_card_loading.dart';
 import 'package:ali_pasha_graph/components/single_news/view.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
@@ -38,7 +39,7 @@ class NewsPage extends StatelessWidget {
               decoration: BoxDecoration(
                   border: Border(bottom: BorderSide(color: GrayDarkColor))),
               child: Text(
-                'خر الأخبار',
+                'آخر الأخبار',
                 style: H3BlackTextStyle,
               ),
             ),
@@ -48,7 +49,7 @@ class NewsPage extends StatelessWidget {
                     return ListView(
                       children: [
                         ...List.generate(logic.news.length, (index) {
-                          return SingleNewsComponent(
+                          return NewsCard(
                             post: logic.news[index],
                           );
                         }),

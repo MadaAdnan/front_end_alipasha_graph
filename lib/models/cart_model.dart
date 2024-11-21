@@ -20,6 +20,7 @@ class CartModel {
     seller = UserModel.fromJson(data['seller'] ?? data['user']);
   }
 
+
   addQty() {
     if (qty == null) {
       qty = 1;

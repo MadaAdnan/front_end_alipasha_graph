@@ -575,7 +575,7 @@ addLike(product_id:"${post.id}"){
             expert
             type
             is_discount
-            is_delivary
+            is_delivery
             is_available
             price
             views_count

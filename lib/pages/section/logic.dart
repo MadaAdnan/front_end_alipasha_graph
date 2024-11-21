@@ -73,7 +73,11 @@ class SectionLogic extends GetxController {
             user {
             id
                 seller_name
-                logo
+                image
+                city{
+                id
+                city_id
+              }
             }
             city {
                 name

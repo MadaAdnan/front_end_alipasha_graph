@@ -12,7 +12,13 @@ class PricingModel {
       external_price: double.tryParse("${data['external_price'] ?? 0}"),
       weight: double.tryParse("${data['weight'] ?? 0}"),
       internal_price: double.tryParse("${data['internal_price'] ?? 0}"),
-      size: double.tryParse("${data['size'] ?? 0}"),
+      size: double.tryParse("${data['size'] ?? 0}") ?? 0,
     );
+  }
+
+  toJson() {
+    return {
+      'external_price': external_price, 'internal_price': internal_price,
+    };
   }
 }

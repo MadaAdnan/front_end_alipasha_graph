@@ -52,6 +52,7 @@ unread_notifications_count
              city {
                 name
                 id
+                 city_id
             }
             followers {
                 seller{
@@ -116,6 +117,7 @@ unread_notifications_count
              city {
                 name
                 id
+                city_id
             }
             followers {
                 seller{

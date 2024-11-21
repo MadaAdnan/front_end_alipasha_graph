@@ -52,7 +52,8 @@ RxBool is_like=RxBool(false);
                     children: [
                       InkWell(
                         onTap: () {
-                          Get.toNamed(NEW_DETAILS, arguments: post);
+                          print('TESTER');
+                          Get.toNamed(NEW_DETAILS, arguments: post,parameters: {"id":"${post.id}"});
                         },
                         child: Row(
                           children: [
@@ -346,7 +347,7 @@ addLike(product_id:"${post.id}"){
             expert
             type
             is_discount
-            is_delivary
+            is_delivery
             is_available
             price
             views_count

@@ -478,6 +478,9 @@ ScrollController scrollController=ScrollController();
                                               mainController.createCommunity(
                                                   sellerId:
                                                       logic.seller.value!.id!);
+                                            }else{
+                                              mainController.showToast(text: 'يرجى تسجيل الدخول أولاً',type: 'error');
+
                                             }
                                           },
                                           child: Container(
@@ -539,6 +542,9 @@ ScrollController scrollController=ScrollController();
                                                     sellerId: logic
                                                         .seller.value!.id!);
                                                 followLoading.value = false;
+                                              }else{
+                                                mainController.showToast(text: 'يرجى تسجيل الدخول أولاً',type: 'error');
+
                                               }
                                             },
                                             child: Container(

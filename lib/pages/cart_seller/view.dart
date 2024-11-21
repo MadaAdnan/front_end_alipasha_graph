@@ -52,15 +52,15 @@ class CartSellerPage extends StatelessWidget {
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
                                       image: CachedNetworkImageProvider(
-                                          "${logic.uniqueCartsList[index].seller?.logo}"))),
+                                          "${logic.uniqueCartsList[index].product?.user?.image}"))),
                             ),
                             title: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  "${logic.uniqueCartsList[index].seller?.seller_name}",
-                                  style: H3BlackTextStyle,
-                                ),
+                               SizedBox(width: 0.6.sw,child:  Text(
+                                 "${logic.uniqueCartsList[index].seller?.seller_name}",
+                                 style: H3BlackTextStyle,
+                               ),),
                                 IconButton(
                                     onPressed: () async{
                                      await mainController.removeBySeller(sellerId: logic.uniqueCartsList[index].seller?.id);
