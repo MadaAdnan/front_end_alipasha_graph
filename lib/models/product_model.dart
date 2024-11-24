@@ -222,6 +222,7 @@ class ProductModel {
       'discount':discount,
       'image':image,
       'weight':weight,
+      'user':user?.toJson(),
     };
   }
 }

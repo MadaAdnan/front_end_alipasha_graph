@@ -23,11 +23,11 @@ class MenuLogic extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    mainController.pusher.subscribe('change-setting').bind('update-setting',
+  /*  mainController.pusher.value!.subscribe('change-setting').bind('update-setting',
             (event) {
           mainController.settings.value = SettingModel.fromJson(event['setting']);
         //  mainController.logger.d(event);
-        });
+        });*/
 
   }
 

@@ -69,6 +69,7 @@ TextEditingController comment =TextEditingController();
             discount
             start_date
             end_date
+            is_delivery
             created_at
             code
             type
@@ -106,6 +107,7 @@ TextEditingController comment =TextEditingController();
             info
             tags
             is_discount
+            is_delivery
             level
             phone
             email

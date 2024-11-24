@@ -32,10 +32,11 @@ class HomePage extends StatelessWidget {
   final mainController = Get.find<MainController>();
   final logic = Get.find<HomeLogic>();
   final ScrollController _scrollController = ScrollController();
-
+bool exit=false;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    exit=false;
+    return WillPopScope(child: Scaffold(
       floatingActionButton: Obx(() {
         return Container(
           child: Column(
@@ -336,7 +337,15 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ), onWillPop: (){
+      if(exit==true){
+        return Future.value(true);
+      }else{
+        _scrollController.animateTo(0, duration: Duration(microseconds: 100), curve: Curves.linear);
+        exit=true;
+      }
+      return Future.value(false);
+    });
   }
 
   Widget _viewMoreButton(

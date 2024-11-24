@@ -25,7 +25,6 @@ import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:cherry_toast/cherry_toast.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
-import 'package:flutter_deep_links/flutter_deep_links.dart';
 
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -73,7 +72,7 @@ class MainController extends GetxController {
       Rx(SettingModel(weather_api: '02b438a76f5345c3857124556240809'));
   RxBool is_show_home_appbar = RxBool(true);
   Logger logger = Logger();
-  late PusherClient pusher;
+  Rxn<PusherClient>  pusher=Rxn<PusherClient>(null);
   late dynamic deep;
   List<Channel> channels = [];
 
@@ -87,16 +86,14 @@ class MainController extends GetxController {
     CartHelper.getCart().then((value) {
       carts(value);
     });
-    try {
-      pusher = PusherService.init(token: "$token");
-    } catch (e) {}
+
 
     ever(token, (value) {
       if (value != null && value.length > 30) {
         getMe();
       }
       try {
-        pusher = PusherService.init(token: "$token");
+
       } catch (e) {}
       if (value == null) {
         storage.remove('token');
@@ -107,174 +104,46 @@ class MainController extends GetxController {
     getUserFromStorage();
     getAdvices();
     getPricingData();
-    ever(authUser, (value) {
-      if (value != null) {
-        // subscribe any new community
-        var createCommunityChannel = pusher.channel('community.${value.id}');
-        createCommunityChannel.bind('community.create', (e) {
-          if (e['community']?['users'] != null) {
-            Map<String, dynamic>? user = List.from(e['community']?['users'])
-                .firstWhere((el) => el['id'] == value.id);
-            if (user != null) {
-              setUserJson(json: user).then((value) {
-                var channelNew =
-                    pusher.channel('private-message.${e['community']?.id}');
-                channelNew.bind('message.create', (e) {
-                  if (Get.currentRoute != CHAT_PAGE &&
-                      Get.currentRoute != COMMUNITIES_PAGE) {
-                    communityNotification.value += 1;
-                  }
-                  // community Page
-                  else if (Get.currentRoute == COMMUNITIES_PAGE) {
-                    if (e['message']?['community'] != null) {
-                      CommunityModel community =
-                          CommunityModel.fromJson(e['message']?['community']);
-                      int index = Get.find<CommunitiesLogic>()
-                          .communities
-                          .indexWhere((el) => el.id == community.id);
-                      if (index == -1) {
-                        Get.find<CommunitiesLogic>()
-                            .communities
-                            .insert(0, community);
-                      } else {
-                        Get.find<CommunitiesLogic>()
-                            .communities
-                            .removeAt(index);
-
-                        Get.find<CommunitiesLogic>()
-                            .communities
-                            .insert(0, community);
-                      }
-                    }
-                  }
-
-                  // Chat Page
-                  else if (Get.currentRoute == CHAT_PAGE ||
-                      Get.currentRoute == GROUP_PAGE ||
-                      Get.currentRoute == CHANNEL_PAGE) {
-                    if (e['message'] != null) {
-                      MessageModel message =
-                          MessageModel.fromJson(e['message']);
-                      switch (message.community?.type) {
-                        case 'chat':
-                          if (Get.currentRoute == CHAT_PAGE) {
-                            ChatLogic logic = Get.find<ChatLogic>();
-                            logic.messages.insert(0, message);
-                            logger.w("ADD MESSAGE");
-                            RecorderManager().playRecordedAudioNetWork(
-                                assets: 'sound/notify.mp3');
-                            loading.value = false;
-                          }
-                          break;
-                        case 'group':
-                          if (Get.currentRoute == GROUP_PAGE &&
-                              message.user?.id != authUser.value?.id) {
-                            GroupLogic logic = Get.find<GroupLogic>();
-                            logic.messages.insert(0, message);
-                            //  RecorderManager().playRecordedAudioNetWork(assets: 'sound/notify.mp3');
-                            loading.value = false;
-                          }
-                          break;
-                        case 'channel':
-                          if (Get.currentRoute == CHANNEL_PAGE &&
-                              message.user?.id != authUser.value?.id) {
-                            ChannelLogic logic = Get.find<ChannelLogic>();
-                            logic.messages.insert(0, message);
-                            RecorderManager().playRecordedAudioNetWork(
-                                assets: 'sound/notify.mp3');
-                            loading.value = false;
-                          }
-                          break;
-                      }
-                    }
-                  }
-                });
-              });
-            }
-          }
-        });
-        // subscribe all community
-        for (var item in value.communities ?? []) {
-          // استخدم value.communities مباشرة
-          final channelName = 'private-message.${item?.id}';
-          var channel = pusher.subscribe(channelName);
-          channel.bind('message.create', (e) {
-            if (Get.currentRoute != CHAT_PAGE &&
-                Get.currentRoute != COMMUNITIES_PAGE) {
-              communityNotification.value += 1;
-            }
-            // community Page
-            else if (Get.currentRoute == COMMUNITIES_PAGE) {
-              if (e['message']?['community'] != null) {
-                CommunityModel community =
-                    CommunityModel.fromJson(e['message']?['community']);
-                int index = Get.find<CommunitiesLogic>()
-                    .communities
-                    .indexWhere((el) => el.id == community.id);
-                if (index == -1) {
-                  Get.find<CommunitiesLogic>().communities.insert(0, community);
-                } else {
-                  Get.find<CommunitiesLogic>().communities.removeAt(index);
-
-                  Get.find<CommunitiesLogic>().communities.insert(0, community);
-                }
-              }
-            }
-
-            // Chat Page
-            else if (Get.currentRoute == CHAT_PAGE ||
-                Get.currentRoute == GROUP_PAGE ||
-                Get.currentRoute == CHANNEL_PAGE) {
-              if (e['message'] != null) {
-                MessageModel message = MessageModel.fromJson(e['message']);
-                switch (message.community?.type) {
-                  case 'chat':
-                    if (Get.currentRoute == CHAT_PAGE) {
-                      ChatLogic logic = Get.find<ChatLogic>();
-                      logic.messages.insert(0, message);
-                      logger.w("ADD MESSAGE");
-                      RecorderManager()
-                          .playRecordedAudioNetWork(assets: 'sound/notify.mp3');
-                      loading.value = false;
-                    }
-                    break;
-                  case 'group':
-                    if (Get.currentRoute == GROUP_PAGE &&
-                        message.user?.id != authUser.value?.id) {
-                      GroupLogic logic = Get.find<GroupLogic>();
-                      logic.messages.insert(0, message);
-                      //  RecorderManager().playRecordedAudioNetWork(assets: 'sound/notify.mp3');
-                      loading.value = false;
-                    }
-                    break;
-                  case 'channel':
-                    if (Get.currentRoute == CHANNEL_PAGE &&
-                        message.user?.id != authUser.value?.id) {
-                      ChannelLogic logic = Get.find<ChannelLogic>();
-                      logic.messages.insert(0, message);
-                      RecorderManager()
-                          .playRecordedAudioNetWork(assets: 'sound/notify.mp3');
-                      loading.value = false;
-                    }
-                    break;
-                }
-              }
-            }
+    pusher.value=PusherService.init(token: "${token.value}");
+    ever(pusher,(value){
+      if(value!=null){
+        globalChannelSubscribe();
+        if(authUser.value?.id!=null){
+          var createCommunityChannel = pusher.value!.channel('community.${authUser.value?.id}');
+          createCommunityChannel.bind('community.create', (e) {
+            getMe();
           });
-          channels.add(channel); // استخدم add بدلاً من الفهرسة
+          for (var item in authUser.value?.communities ?? []) {
+            communitySubscribe('private-message.${item?.id}');
+          }
+
         }
+
+      }else{
+        pusher.value=PusherService.init(token: "${token.value}");
+      }
+    });
+    ever(authUser, (value) {
+      try {
+        pusher.value = PusherService.init(token: "$token");
+      } catch (e) {}
+      if (value != null) {
+
       }
     });
 
-    // subscribe settings
-    var channel = pusher.channel('change-setting');
+
+
+  }
+
+  globalChannelSubscribe(){
+    var channel = pusher.value!.channel('change-setting');
     channel.bind('update-setting', (e) {
       logger.w(e);
       if (e['setting'] != null) {
         settings.value = SettingModel.fromJson(e['setting']);
       }
     });
-
     channels.add(channel);
   }
 
@@ -284,6 +153,7 @@ class MainController extends GetxController {
     try {
       dio.Response res = await dio_manager.executeGraphQLQuery(query.value!,
           variables: variables.value);
+
       // logger.e(res.data);
       loading.value = false;
       DateTime endDate = DateTime.now();
@@ -307,13 +177,11 @@ class MainController extends GetxController {
   void showToast({String? text, String type = 'success'}) {
     if (type == 'success') {
       CherryToast.success(
-        title: Text(text ?? 'نجاح العملية',
-            style: H3RegularDark),
+        title: Text(text ?? 'نجاح العملية', style: H3RegularDark),
       ).show(Get.context as BuildContext);
     } else {
       CherryToast.error(
-        title: Text(text ?? 'فشل العملية',
-            style: H3RegularDark),
+        title: Text(text ?? 'فشل العملية', style: H3RegularDark),
       ).show(Get.context as BuildContext);
     }
   }
@@ -326,81 +194,6 @@ class MainController extends GetxController {
   }
 
   Future<void> setUserJson({required Map<String, dynamic> json}) async {
-    if (authUser.value != null) {
-      for (var item in authUser.value!.communities!) {
-        final channelName = 'private-message.${item.id}';
-        if (!pusher.channel(channelName).subscribed) {
-          Channel channel = pusher.channel(channelName);
-          channel.unbind('message.create');
-          channel.bind('message.create', (e) {
-            if (Get.currentRoute != CHAT_PAGE &&
-                Get.currentRoute != COMMUNITIES_PAGE) {
-              communityNotification.value += 1;
-            }
-            // community Page
-            else if (Get.currentRoute == COMMUNITIES_PAGE) {
-              if (e['message']?['community'] != null) {
-                CommunityModel community =
-                    CommunityModel.fromJson(e['message']?['community']);
-                int index = Get.find<CommunitiesLogic>()
-                    .communities
-                    .indexWhere((el) => el.id == community.id);
-                if (index == -1) {
-                  Get.find<CommunitiesLogic>().communities.insert(0, community);
-                } else {
-                  Get.find<CommunitiesLogic>().communities.removeAt(index);
-
-                  Get.find<CommunitiesLogic>().communities.insert(0, community);
-                }
-              }
-            }
-
-            // Chat Page
-            else if (Get.currentRoute == CHAT_PAGE ||
-                Get.currentRoute == GROUP_PAGE ||
-                Get.currentRoute == CHANNEL_PAGE) {
-              if (e['message'] != null) {
-                MessageModel message = MessageModel.fromJson(e['message']);
-                switch (message.community?.type) {
-                  case 'chat':
-                    if (Get.currentRoute == CHAT_PAGE &&
-                        message.user?.id != authUser.value?.id) {
-                      ChatLogic logic = Get.find<ChatLogic>();
-                      logic.messages.insert(0, message);
-                      logger.w("ADD MESSAGE");
-                      RecorderManager()
-                          .playRecordedAudioNetWork(assets: 'sound/notify.mp3');
-                      loading.value = false;
-                    }
-                    break;
-                  case 'group':
-                    if (Get.currentRoute == GROUP_PAGE &&
-                        message.user?.id != authUser.value?.id) {
-                      GroupLogic logic = Get.find<GroupLogic>();
-                      logic.messages.insert(0, message);
-                      //  RecorderManager().playRecordedAudioNetWork(assets: 'sound/notify.mp3');
-                      loading.value = false;
-                    }
-                    break;
-                  case 'channel':
-                    if (Get.currentRoute == CHANNEL_PAGE &&
-                        message.user?.id != authUser.value?.id) {
-                      ChannelLogic logic = Get.find<ChannelLogic>();
-                      logic.messages.insert(0, message);
-                      RecorderManager()
-                          .playRecordedAudioNetWork(assets: 'sound/notify.mp3');
-                      loading.value = false;
-                    }
-                    break;
-                }
-              }
-            }
-          });
-          channels.add(channel); // استخدم add بدلاً من الفهرسة
-        }
-      }
-    }
-
     try {
       if (storage.hasData('user')) {
         await storage.remove('user');
@@ -463,8 +256,8 @@ class MainController extends GetxController {
     createCommunityLodaing.value = true;
     if (authUser.value == null) return;
     query.value = '''
-   mutation CreateChat {
-    createChat(memberId: $sellerId) {
+   mutation CreateChat(\$memberId:Int!) {
+    createChat(memberId:\$memberId ) {
       community{
         id
         name
@@ -491,14 +284,18 @@ class MainController extends GetxController {
     
 }
      ''';
+    variables.value = {'memberId': sellerId};
     try {
       dio.Response? res = await fetchData();
-      if (res?.data?['data']['createChat']['community'] != null) {
+
+      if (res?.data?['data']?['createChat']?['community'] != null) {
         CommunityModel community = CommunityModel.fromJson(
             res?.data?['data']['createChat']['community']);
+        pusher.value=null;
         Get.toNamed(CHAT_PAGE,
             arguments: community,
             parameters: {"msg": message != null ? message : ''});
+
       }
       if (res?.data?['data']['createChat']['user'] != null) {
         setUserJson(json: res?.data?['data']['createChat']['user']);
@@ -972,7 +769,9 @@ class MainController extends GetxController {
       dio.Response? res = await fetchData();
 
       if (res?.data?['data']?['me'] != null) {
+        pusher.value=null;
         await setUserJson(json: res?.data?['data']?['me']);
+
         OneSignal.login("${authUser.value?.id}");
         OneSignal.User.addEmail("${authUser.value?.email}");
       }
@@ -1013,5 +812,150 @@ class MainController extends GetxController {
       logger.e(e);
     }
     loading.value = false;
+  }
+
+  communitySubscribe(String channelName) {
+    if (pusher.value!.connected == true) {
+      int index = channels.indexWhere((el) => el.name == channelName);
+      if (index > -1) {
+        pusher.value!.unsubscribe(channelName);
+       Channel channel = channels[index];
+        channel.unbind('message.create');
+        channel.bind('message.create', (e) {
+          if (Get.currentRoute != CHAT_PAGE &&
+              Get.currentRoute != COMMUNITIES_PAGE) {
+            communityNotification.value += 1;
+          }
+          // community Page
+          else if (Get.currentRoute == COMMUNITIES_PAGE) {
+            if (e['message']?['community'] != null) {
+              CommunityModel community =
+              CommunityModel.fromJson(e['message']?['community']);
+              int index = Get.find<CommunitiesLogic>()
+                  .communities
+                  .indexWhere((el) => el.id == community.id);
+              if (index == -1) {
+                Get.find<CommunitiesLogic>().communities.insert(0, community);
+              } else {
+                Get.find<CommunitiesLogic>().communities.removeAt(index);
+
+                Get.find<CommunitiesLogic>().communities.insert(0, community);
+              }
+            }
+          }
+
+          // Chat Page
+          else if (Get.currentRoute == CHAT_PAGE ||
+              Get.currentRoute == GROUP_PAGE ||
+              Get.currentRoute == CHANNEL_PAGE) {
+            if (e['message'] != null) {
+              MessageModel message = MessageModel.fromJson(e['message']);
+              switch (message.community?.type) {
+                case 'chat':
+                  if (Get.currentRoute == CHAT_PAGE) {
+                    ChatLogic logic = Get.find<ChatLogic>();
+                    logic.messages.insert(0, message);
+                    logger.w("ADD MESSAGE");
+                    RecorderManager()
+                        .playRecordedAudioNetWork(assets: 'sound/notify.mp3');
+                    loading.value = false;
+                  }
+                  break;
+                case 'group':
+                  if (Get.currentRoute == GROUP_PAGE &&
+                      message.user?.id != authUser.value?.id) {
+                    GroupLogic logic = Get.find<GroupLogic>();
+                    logic.messages.insert(0, message);
+                    //  RecorderManager().playRecordedAudioNetWork(assets: 'sound/notify.mp3');
+                    loading.value = false;
+                  }
+                  break;
+                case 'channel':
+                  if (Get.currentRoute == CHANNEL_PAGE &&
+                      message.user?.id != authUser.value?.id) {
+                    ChannelLogic logic = Get.find<ChannelLogic>();
+                    logic.messages.insert(0, message);
+                    RecorderManager()
+                        .playRecordedAudioNetWork(assets: 'sound/notify.mp3');
+                    loading.value = false;
+                  }
+                  break;
+              }
+            }
+          }
+        });
+
+      }else{
+        Channel channel = pusher.value!.subscribe(channelName);
+
+        channels.add(channel);
+        channel.bind('message.create', (e) {
+          if (Get.currentRoute != CHAT_PAGE &&
+              Get.currentRoute != COMMUNITIES_PAGE) {
+            communityNotification.value += 1;
+          }
+          // community Page
+          else if (Get.currentRoute == COMMUNITIES_PAGE) {
+            if (e['message']?['community'] != null) {
+              CommunityModel community =
+              CommunityModel.fromJson(e['message']?['community']);
+              int index = Get.find<CommunitiesLogic>()
+                  .communities
+                  .indexWhere((el) => el.id == community.id);
+              if (index == -1) {
+                Get.find<CommunitiesLogic>().communities.insert(0, community);
+              } else {
+                Get.find<CommunitiesLogic>().communities.removeAt(index);
+
+                Get.find<CommunitiesLogic>().communities.insert(0, community);
+              }
+            }
+          }
+
+          // Chat Page
+          else if (Get.currentRoute == CHAT_PAGE ||
+              Get.currentRoute == GROUP_PAGE ||
+              Get.currentRoute == CHANNEL_PAGE) {
+            if (e['message'] != null) {
+              MessageModel message = MessageModel.fromJson(e['message']);
+              switch (message.community?.type) {
+                case 'chat':
+                  if (Get.currentRoute == CHAT_PAGE) {
+                    ChatLogic logic = Get.find<ChatLogic>();
+                    logic.messages.insert(0, message);
+                    logger.w("ADD MESSAGE");
+                    RecorderManager()
+                        .playRecordedAudioNetWork(assets: 'sound/notify.mp3');
+                    loading.value = false;
+                  }
+                  break;
+                case 'group':
+                  if (Get.currentRoute == GROUP_PAGE &&
+                      message.user?.id != authUser.value?.id) {
+                    GroupLogic logic = Get.find<GroupLogic>();
+                    logic.messages.insert(0, message);
+                    //  RecorderManager().playRecordedAudioNetWork(assets: 'sound/notify.mp3');
+                    loading.value = false;
+                  }
+                  break;
+                case 'channel':
+                  if (Get.currentRoute == CHANNEL_PAGE &&
+                      message.user?.id != authUser.value?.id) {
+                    ChannelLogic logic = Get.find<ChannelLogic>();
+                    logic.messages.insert(0, message);
+                    RecorderManager()
+                        .playRecordedAudioNetWork(assets: 'sound/notify.mp3');
+                    loading.value = false;
+                  }
+                  break;
+              }
+            }
+          }
+        });
+      }
+
+     // pusher.connect();
+
+    }
   }
 }

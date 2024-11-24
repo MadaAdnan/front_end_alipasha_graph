@@ -74,6 +74,7 @@ class CartHelper {
       cart.add(cartItem);
     }
     await saveCart(cart);
+
     return cart;
   }
 

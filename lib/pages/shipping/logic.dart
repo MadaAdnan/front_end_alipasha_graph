@@ -19,6 +19,7 @@ class ShippingLogic extends GetxController {
   TextEditingController heightController = TextEditingController();
   TextEditingController widthController = TextEditingController();
   TextEditingController lengthController = TextEditingController();
+  TextEditingController noteController = TextEditingController();
   SelectDataController fromController = SelectDataController(data: []);
   SelectDataController toController = SelectDataController(data: []);
 
@@ -158,21 +159,9 @@ class ShippingLogic extends GetxController {
 
   sendOrder() async {
     mainController.query('''
-    mutation CreateOrder {
+    mutation CreateOrder(\$input:InputCreateOrder!) {
     createOrder(
-        input: {
-            weight: ${weight.value}
-            height: ${height.value}
-            width: ${width.value}
-            length: ${length.value}
-            receive_name: "${nameReceiveController.text}"
-            receive_phone: "${phoneReceiveController.text}"
-            sender_name: "${nameSenderController.text}"
-            sender_phone: "${phoneSenderController.text}"
-            from_id: ${from.value}
-            to_id: ${to.value}
-            receive_address: "${addressReceiveController.text}"
-        }
+        input: \$input
     ) {
         order {
             id
@@ -185,6 +174,20 @@ class ShippingLogic extends GetxController {
 }
 
      ''');
+    mainController.variables.value={'input':{
+      "weight": weight.value,
+      "height": height.value,
+      "width": width.value,
+      "length": length.value,
+      "receive_name": "${nameReceiveController.text}",
+      "receive_phone": "${phoneReceiveController.text}",
+      "sender_name": "${nameSenderController.text}",
+      "sender_phone": "${phoneSenderController.text}",
+      "note": "${noteController.text}",
+      "from_id": from.value,
+      "to_id": to.value,
+      "receive_address": "${addressReceiveController.text}",
+    }};
     try {
       dio.Response? res = await mainController.fetchData();
       //mainController.logger.i(res?.data);
@@ -194,6 +197,7 @@ class ShippingLogic extends GetxController {
         mainController.setUserJson(json:res?.data?['data']?['createOrder']['user'] );
         totalBalance.value = double.tryParse(
             "${res?.data?['data']?['createOrder']?['user']?['total_balance'] ?? 0}")!;
+        mainController.showToast(text: 'تم إرسال الطلب للمراجعة');
       }
     } catch (e) {
       //mainController.logger.i("Error =>");

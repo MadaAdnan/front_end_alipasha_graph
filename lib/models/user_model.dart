@@ -42,7 +42,8 @@ class UserModel {
   int? unread_notifications_count;
   List<CommunityModel>? communities;
   SocialModel? social;
-
+  int? invoices_count;
+  int? invoicesSeller_count;
   UserModel({
     this.name,
     this.id,
@@ -81,6 +82,8 @@ class UserModel {
     this.can_create_group,
     this.unread_notifications_count,
     this.communities,
+    this.invoices_count,
+    this.invoicesSeller_count
   });
 
   factory UserModel.fromJson(Map<String, dynamic> data) {
@@ -115,8 +118,11 @@ class UserModel {
       }
     }
 
+
     return UserModel(
       id: int.tryParse("${data['id']}"),
+      invoices_count: int.tryParse("${data['invoices_count']}")??0,
+      invoicesSeller_count: int.tryParse("${data['invoices_seller_count']}")??0,
       followingCount: int.tryParse("${data['following_count']}") ?? 0,
       total_views: int.tryParse("${data['total_views']}") ?? 0,
       unread_notifications_count:
@@ -187,7 +193,9 @@ class UserModel {
       'total_point': totalPoint,
       'level': level,
       'followers': followers?.map((el) => el.tojson()).toList() ?? [],
-      "following_count": followingCount
+      "following_count": followingCount,
+      "invoices_count":invoices_count,
+      "invoices_seller_count":invoicesSeller_count
     };
     return data;
   }

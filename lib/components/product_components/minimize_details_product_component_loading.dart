@@ -29,7 +29,7 @@ class MinimizeDetailsProductComponentLoading extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Shimmer(child:  Container(
+                Shimmer(gradient: LinearGradient(colors: [GrayDarkColor,GrayWhiteColor]),enabled: true,loop: 5,child:  Container(
                   width: 0.3.sw,
                   height: 0.3.sw,
                   decoration: BoxDecoration(
@@ -37,7 +37,7 @@ class MinimizeDetailsProductComponentLoading extends StatelessWidget {
                         topRight: Radius.circular(30.r),
                         bottomRight: Radius.circular(30.r)),
                   ),
-                ),gradient: LinearGradient(colors: [GrayDarkColor,GrayWhiteColor]),enabled: true,loop: 5,),
+                ),),
                 Expanded(
                     child: Container(
                       height: 0.3.sw,
@@ -48,26 +48,26 @@ class MinimizeDetailsProductComponentLoading extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Shimmer.fromColors(child: Text(' '), baseColor:GrayDarkColor , highlightColor:GrayWhiteColor, ),
-                          Shimmer.fromColors(child:RichText(
+                          Shimmer.fromColors(baseColor:GrayDarkColor , highlightColor:GrayWhiteColor,child: Text(' '), ),
+                          Shimmer.fromColors(baseColor: GrayLightColor, highlightColor: GrayWhiteColor, child:RichText(
                               text: TextSpan(children: [
                                 TextSpan(
                                     text: ' ',
                                     style: H5GrayTextStyle),
-                              ])) , baseColor: GrayLightColor, highlightColor: GrayWhiteColor),
+                              ]))),
 
-                          Shimmer.fromColors(child:  Text(
+                          Shimmer.fromColors(baseColor: GrayLightColor, highlightColor: GrayWhiteColor, child:  Text(
                             " ",
                             style: H4RegularDark,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
-                          ) , baseColor: GrayLightColor, highlightColor: GrayWhiteColor),
+                          )),
 
                           SizedBox(
                             height: 0.01.sh,
                           ),
                           Expanded(
-                            child: Shimmer.fromColors(child:RichText(
+                            child: Shimmer.fromColors(baseColor: GrayLightColor, highlightColor: GrayWhiteColor, child:RichText(
                               textDirection: TextDirection.rtl,
                               text: TextSpan(
                                 children: [
@@ -78,7 +78,7 @@ class MinimizeDetailsProductComponentLoading extends StatelessWidget {
 
                                 ],
                               ),
-                            ), baseColor: GrayLightColor, highlightColor: GrayWhiteColor),
+                            )),
 
                           ),
                           Container(
@@ -94,27 +94,27 @@ class MinimizeDetailsProductComponentLoading extends StatelessWidget {
                                     SizedBox(
                                       width: 0.007.sw,
                                     ),
-                                    Shimmer.fromColors(child: Text(
+                                    Shimmer.fromColors(baseColor: GrayLightColor, highlightColor: GrayWhiteColor, child: Text(
                                       "test ",
                                       style: H5BlackTextStyle,
-                                    ), baseColor: GrayLightColor, highlightColor: GrayWhiteColor)
+                                    ))
                                   ],
                                 ),
                                 Row(
                                   children: [
-                                    Shimmer.fromColors(child: Icon(
+                                    Shimmer.fromColors(baseColor: GrayLightColor, highlightColor: GrayWhiteColor, child: Icon(
                                       FontAwesomeIcons.calendar,
                                       color: DarkColor,
                                       size: 0.04.sw,
-                                    ), baseColor: GrayLightColor, highlightColor: GrayWhiteColor),
+                                    )),
 
                                     SizedBox(
                                       width: 0.007.sw,
                                     ),
-                                    Shimmer.fromColors(child: Text(
+                                    Shimmer.fromColors(baseColor: GrayLightColor, highlightColor: GrayWhiteColor, child: Text(
                                       " ",
                                       style: H5BlackTextStyle,
-                                    ), baseColor: GrayLightColor, highlightColor: GrayWhiteColor),
+                                    )),
 
                                   ],
                                 ),

@@ -1,11 +1,13 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/components/product_components/minimize_details_product_component.dart';
 import 'package:ali_pasha_graph/components/progress_loading.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
+import '../../components/seller_name_component.dart';
 import '../../helpers/colors.dart';
 import '../../helpers/style.dart';
 import '../../models/product_model.dart';
@@ -61,7 +63,7 @@ class SearchPage extends StatelessWidget {
                 child: Obx(() {
                   return Column(
                     children: [
-
+              if(logic.filterModel!.type!='seller')
                       ...List.generate(logic.products.length, (index) {
                         switch(logic.products[index].type) {
                           case "product":
@@ -90,6 +92,88 @@ class SearchPage extends StatelessWidget {
                           return  _buildCard(post: logic.products[index]);
                         }
                       }),
+                      if(logic.filterModel!.type=='seller')
+                        ...List.generate(logic.sellers.length, (index)=>GestureDetector(
+                          onTap: (){
+                            Get.toNamed(PRODUCTS_PAGE,parameters: {"id":"${logic.sellers[index].id}"},);
+                          },
+                          child: Container(
+                            margin: EdgeInsets.symmetric(vertical: 0.004.sh),
+                            decoration: BoxDecoration(
+                              color: WhiteColor,
+                              borderRadius: BorderRadius.circular(30.r),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.black.withOpacity(0.3),
+                                    blurRadius: 0.5.r,
+                                    spreadRadius: 0.5.r)
+                              ],
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 0.3.sw,
+                                  height: 0.3.sw,
+                                  decoration: BoxDecoration(
+                                      color: GrayWhiteColor,
+                                      borderRadius: BorderRadius.circular(30.r),
+                                      image: DecorationImage(
+                                        image: CachedNetworkImageProvider(
+                                            "${logic.sellers[index].image}"),
+                                        fit: BoxFit.cover,
+                                      )),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 0.01.sh, horizontal: 0.01.sw),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        width: 0.63.sw,
+                                        child: SellerNameComponent(
+                                          textStyle: H2BlackTextStyle,
+                                          isVerified:
+                                          logic.sellers[index].is_verified ==
+                                              true,
+                                          isRegular: false,
+                                          seller: logic.sellers[index],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 0.004.sh,
+                                      ),
+                                      Container(
+                                        child: RichText(
+                                            text: TextSpan(children: [
+                                              TextSpan(
+                                                  text:
+                                                  "  ${logic.sellers[index].city?.name}",
+                                                  style: H4GrayTextStyle),
+                                            ])),
+                                      ),
+                                      SizedBox(
+                                        height: 0.01.sh,
+                                      ),
+                                      Container(
+                                          width: 0.63.sw,
+                                          child: Text(
+                                            '${logic.sellers[index].address}',
+                                            style: H3GrayTextStyle,
+                                            maxLines: 3,
+                                            softWrap: true,
+                                            overflow: TextOverflow.ellipsis,
+                                          ))
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),),
                       if (logic.loading.value&& logic.page.value==1)
                         Container( width: 0.33.sw,child: ProgressLoading()),
                       if(logic.loading.value && logic.page.value>1)

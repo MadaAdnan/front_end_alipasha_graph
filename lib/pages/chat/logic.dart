@@ -135,73 +135,7 @@ communityModel.value=Get.arguments;
   void onReady() {
     super.onReady();
     String channelName="private-message.${communityModel.value?.id}";
-    if(!mainController.pusher.channel(channelName).subscribed){
-      Channel channel=mainController.pusher.channel(channelName);
-      channel.unbind('message.create');
-      channel.bind('message.create', (e) {
-        if (Get.currentRoute != CHAT_PAGE &&
-            Get.currentRoute != COMMUNITIES_PAGE) {
-          mainController.communityNotification.value += 1;
-        }
-        // community Page
-        else if (Get.currentRoute == COMMUNITIES_PAGE) {
-          if (e['message']?['community'] != null) {
-            CommunityModel community =
-            CommunityModel.fromJson(e['message']?['community']);
-            int index = Get.find<CommunitiesLogic>()
-                .communities
-                .indexWhere((el) => el.id == community.id);
-            if (index == -1) {
-              Get.find<CommunitiesLogic>().communities.insert(0, community);
-            } else {
-              Get.find<CommunitiesLogic>().communities.removeAt(index);
-
-              Get.find<CommunitiesLogic>().communities.insert(0, community);
-            }
-          }
-        }
-
-        // Chat Page
-        else if (Get.currentRoute == CHAT_PAGE ||
-            Get.currentRoute == GROUP_PAGE ||
-            Get.currentRoute == CHANNEL_PAGE) {
-          if (e['message'] != null) {
-            MessageModel message = MessageModel.fromJson(e['message']);
-            switch (message.community?.type) {
-              case 'chat':
-                if (Get.currentRoute == CHAT_PAGE) {
-                  ChatLogic logic = Get.find<ChatLogic>();
-                  logic.messages.insert(0, message);
-
-                  RecorderManager()
-                      .playRecordedAudioNetWork(assets: 'sound/notify.mp3');
-                  loading.value = false;
-                }
-                break;
-              case 'group':
-                if (Get.currentRoute == GROUP_PAGE &&
-                    message.user?.id != mainController.authUser.value?.id) {
-                  GroupLogic logic = Get.find<GroupLogic>();
-                  logic.messages.insert(0, message);
-                  //  RecorderManager().playRecordedAudioNetWork(assets: 'sound/notify.mp3');
-                  loading.value = false;
-                }
-                break;
-              case 'channel':
-                if (Get.currentRoute == CHANNEL_PAGE &&
-                    message.user?.id != mainController.authUser.value?.id) {
-                  ChannelLogic logic = Get.find<ChannelLogic>();
-                  logic.messages.insert(0, message);
-                  RecorderManager()
-                      .playRecordedAudioNetWork(assets: 'sound/notify.mp3');
-                  loading.value = false;
-                }
-                break;
-            }
-          }
-        }
-      });
-    }
+    mainController.communitySubscribe(channelName);
     messageController.value=TextEditingValue(text: Get.parameters['msg']??'');
     getMessages();
   }
@@ -279,11 +213,13 @@ communityModel.value=Get.arguments;
     if (messageController.text.length == 0) {
       return;
     }
+
+
     mainController.loading.value = true;
     messages.insert(0, MessageModel(id: 0,body: messageController.text,createdAt: 'منذ ثانية',type: 'text',user: mainController.authUser.value));
     mainController.query.value = '''
-  mutation CreateMessage {
-    CreateMessage(communityId: ${communityModel.value?.id}, body: "${messageController.text}") {
+  mutation CreateMessage(\$communityId:Int!,\$body:String) {
+    CreateMessage(communityId:\$communityId, body:\$body) {
         body
         type
         created_at
@@ -298,11 +234,15 @@ communityModel.value=Get.arguments;
     }
 }
     ''';
+    mainController.variables.value={
+      'communityId':communityModel.value?.id,
+          "body":"${messageController.text}"
+    };
     try {
       messageController.clear();
       dio.Response? res = await mainController.fetchData();
+      mainController.variables.value=null;
       if (res?.data?['data']?['CreateMessage'] != null) {
-
         int index=messages.indexWhere((el)=>el.id==0);
         if(index>-1){
           messages[index]=MessageModel.fromJson(res?.data?['data']?['CreateMessage']);

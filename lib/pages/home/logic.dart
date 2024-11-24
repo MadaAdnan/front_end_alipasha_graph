@@ -5,6 +5,7 @@ import 'package:ali_pasha_graph/models/city_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:logger/logger.dart';
 
 import '../../models/product_model.dart';
 
@@ -80,6 +81,7 @@ String dataString='''data {
             city {
             id
                 name
+               
             }
             start_date
               sub1 {
@@ -178,6 +180,7 @@ String dataString='''data {
           products.add(ProductModel.fromJson(item));
 
         }
+        Logger().f(products.first.toJson());
 var productsList=[
   ...res?.data?['data']?['LatestProduct']?['data']??[],
   ...res?.data?['data']?['HobbiesProduct']?['data']??[],

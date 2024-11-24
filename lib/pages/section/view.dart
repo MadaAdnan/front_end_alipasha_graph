@@ -27,134 +27,141 @@ class SectionPage extends StatelessWidget {
     return Scaffold(
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-      floatingActionButton: Row(
-        children: [
-          if (mainController.carts.length > 0)
-            Stack(
-              children: [
-                InkWell(
-                  onTap: () {
-                    Get.toNamed(CART_SELLER);
+      floatingActionButton: Obx(() {
+        return Container(
+          width: 0.1.sw,
+          height: 0.1.sh,
+          child: Column(
+            children: [
+              if (mainController.carts.length > 0)
+                Stack(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Get.toNamed(CART_SELLER);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(0.02.sw),
+                        decoration: BoxDecoration(
+                          color: RedColor.withOpacity(0.5),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          FontAwesomeIcons.cartShopping,
+                          color: WhiteColor,
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      child: Badge.count(
+                        count: mainController.carts.length,
+                        backgroundColor: RedColor,
+                      ),
+                    )
+                  ],
+                ),
+              Container(
+                width: 0.1.sw,
+                height: 0.1.sw,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle, color: Colors.black.withOpacity(0.6)),
+                child: PopupMenuButton(
+                  iconColor: WhiteColor,
+                  color: WhiteColor,
+                  offset: Offset(0, -0.25.sh),
+                  icon: Icon(FontAwesomeIcons.arrowDownAZ),
+                  onSelected: (value) {
+                    switch (value) {
+                      case 'price_up':
+                        logic.orderBy(['price', 'desc']);
+                        break;
+                      case 'price_down':
+                        logic.orderBy(['price', 'asc']);
+                        break;
+                      case 'created_up':
+                        logic.orderBy(['created_at', 'desc']);
+                        break;
+                      case 'created_down':
+                        logic.orderBy(['created_at', 'asc']);
+                        break;
+                    }
                   },
-                  child: Container(
-                    padding: EdgeInsets.all(0.02.sw),
-                    decoration: BoxDecoration(
-                      color: RedColor.withOpacity(0.5),
-                      shape: BoxShape.circle,
+                  itemBuilder: (context) =>
+                  [
+                    PopupMenuItem(
+                      value: 'price_up',
+                      child: Row(
+                        children: [
+                          Icon(FontAwesomeIcons.arrowDownWideShort),
+                          SizedBox(
+                            width: 0.01.sw,
+                          ),
+                          Text(
+                            'فرز حسب الأعلى سعراً',
+                            style: H4BlackTextStyle,
+                          ),
+                        ],
+                      ),
                     ),
-                    child: const Icon(
-                      FontAwesomeIcons.cartShopping,
-                      color: WhiteColor,
+                    PopupMenuItem(
+                      value: 'price_down',
+                      child: Row(
+                        children: [
+                          Icon(FontAwesomeIcons.arrowUpWideShort),
+                          SizedBox(
+                            width: 0.01.sw,
+                          ),
+                          Text(
+                            'فرز حسب الأقل سعراً',
+                            style: H4BlackTextStyle,
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                ),
-                Positioned(
-                  top: 0,
-                  right: 0,
-                  child: Badge.count(
-                    count: mainController.carts.length,
-                    backgroundColor: RedColor,
-                  ),
-                )
-              ],
-            ),
-          Container(
-            width: 0.1.sw,
-            height: 0.1.sw,
-            decoration: BoxDecoration(
-                shape: BoxShape.circle, color: Colors.black.withOpacity(0.6)),
-            child: PopupMenuButton(
-              iconColor: WhiteColor,
-              color: WhiteColor,
-              offset: Offset(0, -0.25.sh),
-              icon: Icon(FontAwesomeIcons.arrowDownAZ),
-              onSelected: (value) {
-                switch (value) {
-                  case 'price_up':
-                    logic.orderBy(['price', 'desc']);
-                    break;
-                  case 'price_down':
-                    logic.orderBy(['price', 'asc']);
-                    break;
-                  case 'created_up':
-                    logic.orderBy(['created_at', 'desc']);
-                    break;
-                  case 'created_down':
-                    logic.orderBy(['created_at', 'asc']);
-                    break;
-                }
-              },
-              itemBuilder: (context) => [
-                PopupMenuItem(
-                  value: 'price_up',
-                  child: Row(
-                    children: [
-                      Icon(FontAwesomeIcons.arrowDownWideShort),
-                      SizedBox(
-                        width: 0.01.sw,
+                    PopupMenuItem(
+                      value: 'created_up',
+                      child: Row(
+                        children: [
+                          Icon(FontAwesomeIcons.arrowDownWideShort),
+                          SizedBox(
+                            width: 0.01.sw,
+                          ),
+                          Text(
+                            'فرز حسب الاحدث',
+                            style: H4BlackTextStyle,
+                          )
+                        ],
                       ),
-                      Text(
-                        'فرز حسب الأعلى سعراً',
-                        style: H4BlackTextStyle,
+                    ),
+                    PopupMenuItem(
+                      value: 'created_down',
+                      child: Row(
+                        children: [
+                          Icon(FontAwesomeIcons.arrowUpWideShort),
+                          SizedBox(
+                            width: 0.01.sw,
+                          ),
+                          Text(
+                            'فرز حسب الأقدم',
+                            style: H4BlackTextStyle,
+                          )
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                PopupMenuItem(
-                  value: 'price_down',
-                  child: Row(
-                    children: [
-                      Icon(FontAwesomeIcons.arrowUpWideShort),
-                      SizedBox(
-                        width: 0.01.sw,
-                      ),
-                      Text(
-                        'فرز حسب الأقل سعراً',
-                        style: H4BlackTextStyle,
-                      )
-                    ],
-                  ),
-                ),
-                PopupMenuItem(
-                  value: 'created_up',
-                  child: Row(
-                    children: [
-                      Icon(FontAwesomeIcons.arrowDownWideShort),
-                      SizedBox(
-                        width: 0.01.sw,
-                      ),
-                      Text(
-                        'فرز حسب الاحدث',
-                        style: H4BlackTextStyle,
-                      )
-                    ],
-                  ),
-                ),
-                PopupMenuItem(
-                  value: 'created_down',
-                  child: Row(
-                    children: [
-                      Icon(FontAwesomeIcons.arrowUpWideShort),
-                      SizedBox(
-                        width: 0.01.sw,
-                      ),
-                      Text(
-                        'فرز حسب الأقدم',
-                        style: H4BlackTextStyle,
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
+              )
+            ],
+          ),
+        );
+      }),
       backgroundColor: WhiteColor,
       body: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollInfo) {
           if (scrollInfo.metrics.pixels >=
-                  scrollInfo.metrics.maxScrollExtent * 0.80 &&
+              scrollInfo.metrics.maxScrollExtent * 0.80 &&
               !mainController.loading.value &&
               logic.hasMorePage.value &&
               _scrollController.position.context.notificationContext ==
@@ -186,7 +193,8 @@ class SectionPage extends StatelessWidget {
                 return ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
-                    if (logic.loadingProduct.value && logic.products.length==0)
+                    if (logic.loadingProduct.value &&
+                        logic.products.length == 0)
                       ...List.generate(4, (index) {
                         return Shimmer.fromColors(
                             baseColor: GrayLightColor,
@@ -195,10 +203,11 @@ class SectionPage extends StatelessWidget {
                       }),
                     if (!logic.loadingProduct.value)
                       ...List.generate(logic.category.value!.children!.length,
-                          (index) {
-                        return _buildSubSection(
-                            category: logic.category.value!.children![index]);
-                      })
+                              (index) {
+                            return _buildSubSection(
+                                category: logic.category.value!
+                                    .children![index]);
+                          })
                   ],
                 );
               }),
@@ -216,8 +225,9 @@ class SectionPage extends StatelessWidget {
                             MinimizeDetailsProductComponent(
                               TitleColor: DarkColor,
                               post: logic.products[index],
-                              onClick: () => Get.toNamed(PRODUCT_PAGE,
-                                  arguments: logic.products[index].id),
+                              onClick: () =>
+                                  Get.toNamed(PRODUCT_PAGE,
+                                      arguments: logic.products[index].id),
                             ),
                             if (logic.advices.length > 0 && index % 5 == 0)
                               AdviceComponent(
@@ -229,10 +239,11 @@ class SectionPage extends StatelessWidget {
                       if (logic.loading.value && logic.page.value == 1)
                         ...List.generate(
                             4,
-                            (index) => Shimmer.fromColors(
-                                baseColor: GrayLightColor,
-                                highlightColor: GrayWhiteColor,
-                                child:
+                                (index) =>
+                                Shimmer.fromColors(
+                                    baseColor: GrayLightColor,
+                                    highlightColor: GrayWhiteColor,
+                                    child:
                                     MinimizeDetailsProductComponentLoading())),
                       if (logic.loading.value && logic.page.value > 1)
                         Container(

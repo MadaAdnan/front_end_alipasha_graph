@@ -95,6 +95,7 @@ class SectionLogic extends GetxController {
             code
             type
             is_discount
+            is_delivery
             discount
             views_count
             image

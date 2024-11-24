@@ -43,6 +43,7 @@ class CartModel {
         "id": "${seller?.id}",
         "seller_name": "${seller?.seller_name}",
         "logo": "${seller?.logo}",
+        "city":seller?.city!=null? seller?.city!.toJson():null,
       }
     };
     return data;

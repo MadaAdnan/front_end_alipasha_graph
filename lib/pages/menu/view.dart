@@ -302,7 +302,7 @@ SizedBox(height: 0.02.sh,),
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     _buildWidget(
-                      icon: Icon(FontAwesomeIcons.shop,size: 0.08.sw,color: Colors.lightGreenAccent,),
+                      icon: Icon(FontAwesomeIcons.shop,size: 0.08.sw,color:Colors.blueGrey,),
                         image: 'assets/images/png/home.png',
                         title: 'عرض متجري',
                         onTap: () {
@@ -314,7 +314,7 @@ SizedBox(height: 0.02.sh,),
                           }
                         }),
                     _buildWidget(
-                      icon: Icon(FontAwesomeIcons.cartShopping,size: 0.08.sw,color: Colors.deepOrangeAccent,),
+                      icon: Icon(FontAwesomeIcons.cartShopping,size: 0.08.sw,color:Colors.blueGrey,),
                       onTap: () {
 // mainController.emptyCart();
                         Get.offAndToNamed(CART_SELLER);
@@ -346,14 +346,14 @@ SizedBox(height: 0.02.sh,),
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     _buildWidget(
-                      icon:Icon(FontAwesomeIcons.boxOpen,size: 0.08.sw,color: Colors.red,),
+                      icon:Icon(FontAwesomeIcons.boxOpen,size: 0.08.sw,color: Colors.blueGrey,),
                         onTap: () {
                           Get.offAndToNamed(CREATE_PRODUCT_PAGE);
                         },
                         image: 'assets/images/png/create.png',
                         title: 'إضافة منتج'),
                     _buildWidget(
-                      icon: Icon(FontAwesomeIcons.store,size: 0.08.sw,color: Colors.redAccent,),
+                      icon: Icon(FontAwesomeIcons.store,size: 0.08.sw,color: Colors.blueGrey,),
                         image: 'assets/images/png/dependancy.png',
                         onTap: () {
                           Get.offAndToNamed(PARTNER_PAGE);
@@ -370,7 +370,7 @@ SizedBox(height: 0.02.sh,),
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     _buildWidget(
-                      icon:Icon(FontAwesomeIcons.shareNodes,size: 0.08.sw,color: Colors.lightBlue,),
+                      icon:Icon(FontAwesomeIcons.shareNodes,size: 0.08.sw,color: Colors.blueGrey,),
                         onTap: () async {
                           openUrl(url: "https://play.google.com/store/apps/details?id=com.mada.company.ali.basha");
 
@@ -379,7 +379,7 @@ SizedBox(height: 0.02.sh,),
                         title: 'مشاركة التطبيق'),
 
                     _buildWidget(
-                      icon: Icon(FontAwesomeIcons.cartFlatbed,size: 0.08.sw,color: Colors.lightGreenAccent,),
+                      icon: Icon(FontAwesomeIcons.cartFlatbed,size: 0.08.sw,color: Colors.blueGrey,),
                         onTap: () {
                           Get.offAndToNamed(MY_ORDER_SHIPPING_PAGE);
                         },
@@ -396,19 +396,47 @@ SizedBox(height: 0.02.sh,),
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     _buildWidget(
-                      icon:Icon(FontAwesomeIcons.truckFast,size: 0.08.sw,color: Colors.green,),
+                      icon:Icon(FontAwesomeIcons.truckFast,size: 0.08.sw,color: Colors.blueGrey,),
                         onTap: () {
                           Get.offAndToNamed(INVOICE_PAGE);
                         },
                         image: 'assets/images/png/shipping.png',
-                        title: 'شحنات واردة'),
+                        title: 'مبيعاتي',
+                      child: Obx(() {
+                        return Container(
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.symmetric(
+                              vertical: 0.01.sw, horizontal: 0.01.sw),
+                          decoration: const BoxDecoration(
+                              color: RedColor, shape: BoxShape.circle),
+                          child: Text(
+                            '${mainController.authUser.value?.invoicesSeller_count ?? 0}',
+                            style: H4WhiteTextStyle,
+                          ),
+                        );
+                      })
+                    ),
                     _buildWidget(
-                      icon: Icon(FontAwesomeIcons.fileInvoice,size: 0.08.sw,color: Colors.greenAccent,),
+                      icon: Icon(FontAwesomeIcons.fileInvoice,size: 0.08.sw,color: Colors.blueGrey,),
                         onTap: () {
                           Get.offAndToNamed(MY_INVOICE_PAGE);
                         },
                         image: 'assets/images/png/shipping.png',
-                        title: 'شحنات صادرة'),
+                        title: 'مشترياتي',
+                        child: Obx(() {
+                          return Container(
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.symmetric(
+                                vertical: 0.01.sw, horizontal: 0.01.sw),
+                            decoration: const BoxDecoration(
+                                color: RedColor, shape: BoxShape.circle),
+                            child: Text(
+                              '${mainController.authUser.value?.invoices_count ?? 0}',
+                              style: H4WhiteTextStyle,
+                            ),
+                          );
+                        })
+                    ),
                   ],
                 ),
               ),
@@ -420,7 +448,7 @@ SizedBox(height: 0.02.sh,),
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     _buildWidget(
-                      icon: Icon(FontAwesomeIcons.arrowUpRightDots,size: 0.08.sw,color: Colors.orangeAccent,),
+                      icon: Icon(FontAwesomeIcons.arrowUpRightDots,size: 0.08.sw,color: Colors.blueGrey,),
                         onTap: () {
                           Get.offAndToNamed(PLAN_PAGE);
                         },

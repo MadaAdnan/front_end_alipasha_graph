@@ -328,6 +328,54 @@ class CreateProductPage extends StatelessWidget {
                       ),
                       30.verticalSpace,
                       Container(
+                        child:  Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Obx(() {
+                              return Container(
+                                width: 0.4.sw,
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      'التوفر بالمخزون',
+                                      style: H4BlackTextStyle,
+                                    ),
+                                    Switch(
+                                      onChanged: (value) {
+                                        logic.isAvailable.value = value;
+                                      },
+                                      activeColor: Colors.green,
+                                      value: logic.isAvailable.value,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }),
+                            Obx(() {
+                              return Container(
+                                width: 0.4.sw,
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      'إشتراك بخدمة شحن علي باشا',
+                                      style: H4BlackTextStyle,
+                                    ),
+                                    Switch(
+                                      onChanged: (value) {
+                                        logic.isDelivery.value = value;
+                                      },
+                                      activeColor: Colors.green,
+                                      value: logic.isDelivery.value,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            })
+                          ],
+                        ),
+                      ),
+                      30.verticalSpace,
+                      Container(
                         width: 1.sw,
                         height: 0.08.sh,
                         child: FormBuilderTextField(
@@ -387,93 +435,101 @@ class CreateProductPage extends StatelessWidget {
                       ),
 
                       // body
+
                       Container(
                         width: 1.sw,
                         height: 0.09.sh,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                        child: Column(
                           children: [
-                            Container(
-                              width: 0.33.sw,
-                              child: FormBuilderTextField(
-                                name: 'price',
-                                controller: logic.priceController,
-                                keyboardType: TextInputType.number,
-                                style: H3BlackTextStyle,
-                                validator: FormBuilderValidators.compose([
-                                  FormBuilderValidators.required(
-                                      errorText: 'يرجى إدخال السعر'),
-                                  FormBuilderValidators.numeric(
-                                      errorText: 'يرجى إدخال السعر'),
-                                ]),
-                                decoration: InputDecoration(
-                                    errorStyle: H5RedTextStyle,
-                                    contentPadding: EdgeInsets.zero,
-                                    prefixIcon: Icon(
-                                      FontAwesomeIcons.dollarSign,
-                                      size: 0.03.sw,
-                                    ),
-                                    label: RichText(
-                                      text: TextSpan(children: [
-                                        TextSpan(text: 'السعر الأصلي بالدولار', style: H4GrayTextStyle),
-                                        TextSpan(text: '*', style: H3RedTextStyle),
-                                      ]),
-                                    ),
-
-                                    labelStyle: H4GrayTextStyle,
-                                    border: OutlineInputBorder(
-                                        borderSide:
-                                        BorderSide(color: GrayLightColor))),
-                              ),
-                            ),
-                            Container(
-                              width: 0.33.sw,
-                              child: FormBuilderTextField(
-                                name: 'discount',
-                                style: H4BlackTextStyle,
-                                controller: logic.discountController,
-                                keyboardType: TextInputType.number,
-                                validator: FormBuilderValidators.numeric(
-                                    errorText: 'يرجى إدخال قيمة رقمية',
-                                    checkNullOrEmpty: false),
-                                decoration: InputDecoration(
-                                    errorStyle: H5RedTextStyle,
-                                    contentPadding: EdgeInsets.zero,
-                                    prefixIcon: Icon(
-                                      FontAwesomeIcons.arrowTrendDown,
-                                      size: 0.03.sw,
-                                    ),
-                                    labelText: 'بعد الحسم',
-                                    labelStyle: H4GrayTextStyle,
-                                    border: OutlineInputBorder(
-                                        borderSide:
-                                        BorderSide(color: GrayLightColor))),
-                              ),
-                            ),
-                            Obx(() {
-                              return Container(
-                                width: 0.25.sw,
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      'التوفر بالمخزون',
-                                      style: H4BlackTextStyle,
-                                    ),
-                                    Switch(
-                                      onChanged: (value) {
-                                        logic.isAvailable.value = value;
-                                      },
-                                      activeColor: Colors.green,
-                                      value: logic.isAvailable.value,
-                                    ),
-                                  ],
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 0.6.sw,
+                                  child: RichText(text: TextSpan(children:[
+                                    TextSpan(text: 'ملاحظة : ',style: H5RedTextStyle,),
+                                    TextSpan(text: 'السعر التنافسي يزيد من فرص جذب العملاء',style: H5RedTextStyle,)
+                                  ])),
                                 ),
-                              );
-                            })
+                                Container(
+                                  width: 0.3.sw,
+
+                                ),
+
+                              ],
+                            ),
+                            SizedBox(height: 0.01.sh,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 0.45.sw,
+                                  child: FormBuilderTextField(
+                                    name: 'price',
+                                    controller: logic.priceController,
+                                    keyboardType: TextInputType.number,
+                                    style: H3BlackTextStyle,
+                                    validator: FormBuilderValidators.compose([
+                                      FormBuilderValidators.required(
+                                          errorText: 'يرجى إدخال السعر'),
+                                      FormBuilderValidators.numeric(
+                                          errorText: 'يرجى إدخال السعر'),
+                                    ]),
+                                    decoration: InputDecoration(
+                                        errorStyle: H5RedTextStyle,
+                                        contentPadding: EdgeInsets.zero,
+                                        prefixIcon: Icon(
+                                          FontAwesomeIcons.dollarSign,
+                                          size: 0.03.sw,
+                                        ),
+
+
+                                        label: RichText(
+                                          text: TextSpan(children: [
+                                            TextSpan(text: 'السعر الأصلي بالدولار', style: H4GrayTextStyle),
+                                            TextSpan(text: '*', style: H3RedTextStyle),
+                                          ]),
+                                        ),
+
+                                        labelStyle: H4GrayTextStyle,
+                                        border: OutlineInputBorder(
+                                            borderSide:
+                                            BorderSide(color: GrayLightColor))),
+                                  ),
+                                ),
+                                Container(
+                                  width: 0.45.sw,
+                                  child: FormBuilderTextField(
+                                    name: 'discount',
+                                    style: H4BlackTextStyle,
+                                    controller: logic.discountController,
+                                    keyboardType: TextInputType.number,
+                                    validator: FormBuilderValidators.numeric(
+                                        errorText: 'يرجى إدخال قيمة رقمية',
+                                        checkNullOrEmpty: false),
+                                    decoration: InputDecoration(
+                                        errorStyle: H5RedTextStyle,
+                                        contentPadding: EdgeInsets.zero,
+                                        prefixIcon: Icon(
+                                          FontAwesomeIcons.arrowTrendDown,
+                                          size: 0.03.sw,
+                                        ),
+                                        labelText: 'بعد الحسم',
+                                        labelStyle: H4GrayTextStyle,
+                                        border: OutlineInputBorder(
+                                            borderSide:
+                                            BorderSide(color: GrayLightColor))),
+                                  ),
+                                ),
+
+                              ],
+                            )
                           ],
                         ),
                       ),
+
                       30.verticalSpace,
 
                       Container(
@@ -985,7 +1041,8 @@ class CreateProductPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(15.r),
                           ),
                         ),
-                      )
+                      ),
+                      SizedBox(height: 0.03.sh,),
                     ],
                   ),
                 ),

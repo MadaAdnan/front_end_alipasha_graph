@@ -1,6 +1,7 @@
 import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
 import 'package:ali_pasha_graph/models/filter_model.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
+import 'package:ali_pasha_graph/models/user_model.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
 import '../../Global/main_controller.dart';
@@ -12,6 +13,7 @@ class SearchLogic extends GetxController {
   RxBool loading = RxBool(false);
   RxInt page = RxInt(1);
   RxList<ProductModel> products = RxList<ProductModel>([]);
+  RxList<UserModel> sellers = RxList<UserModel>([]);
   FilterModel? filterModel;
 
   @override
@@ -38,9 +40,11 @@ class SearchLogic extends GetxController {
   }
 
   Future<void> search() async {
+    sellers([]);
     loading.value = true;
     try {
-      mainController.query.value = '''
+      if(filterModel!.type!='seller'){
+        mainController.query.value = '''
       query Products {
     products(
         ${filterModel?.type != null ? 'type: "${filterModel!.type!}"' : ""}
@@ -98,10 +102,27 @@ class SearchLogic extends GetxController {
 }
 
       ''';
-      //mainController.logger.e(mainController.query.value);
+      }else{
+        mainController.query.value = '''
+        query SearchSeller {
+    
+    searchSeller(search: "${filterModel?.search ?? ''}",${filterModel?.cityId != null ? "city_id: ${filterModel!.cityId!}" : ""}) {
+        id
+        seller_name
+        level
+        image
+        is_verified
+        address
+        city {
+            name
+        }
+    }
+}
+      ''';
+      }
 
       dio.Response? res = await mainController.fetchData();
-     // mainController.logger.e(res?.data);
+
       if (res?.data['data']['products'] != null) {
         hasMorePage.value = res?.data['data']['products']['paginatorInfo']
                 ['hasMorePages'] ??
@@ -110,6 +131,12 @@ class SearchLogic extends GetxController {
           for (var item in res?.data['data']['products']['data']) {
             products.add(ProductModel.fromJson(item));
           }
+        }
+      }
+
+      if(res?.data?['data']?['searchSeller']!=null){
+        for(var item in res?.data?['data']?['searchSeller']){
+          sellers.add(UserModel.fromJson(item));
         }
       }
       loading.value = false;

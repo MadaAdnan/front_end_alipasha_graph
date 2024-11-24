@@ -24,7 +24,7 @@ class MyInvoicePage extends StatelessWidget {
         shadowColor: WhiteColor,
         surfaceTintColor: WhiteColor,
         title: Text(
-          'طلبات صادرة',
+          'مشترياتي',
           style: H2BlackTextStyle,
         ),
         centerTitle: true,

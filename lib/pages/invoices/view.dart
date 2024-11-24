@@ -25,7 +25,7 @@ class InvoicesPage extends StatelessWidget {
         shadowColor: WhiteColor,
         surfaceTintColor: WhiteColor,
         title: Text(
-          'طلبات واردة',
+          'مبيعاتي',
           style: H2BlackTextStyle,
         ),
         centerTitle: true,

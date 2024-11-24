@@ -7,7 +7,6 @@ import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cherry_toast/cherry_toast.dart';
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -30,9 +29,10 @@ class ShippingPage extends StatelessWidget {
       body: Column(
         children: [
           Container(
-            padding: EdgeInsets.symmetric(
-                horizontal: 0.02.sw, vertical: 0.004.sh),
-            decoration: const BoxDecoration(color: WhiteColor,
+            padding:
+                EdgeInsets.symmetric(horizontal: 0.02.sw, vertical: 0.004.sh),
+            decoration: const BoxDecoration(
+                color: WhiteColor,
                 border: Border(bottom: BorderSide(color: GrayDarkColor))),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -46,13 +46,11 @@ class ShippingPage extends StatelessWidget {
                           height: 0.12.sw,
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              border: Border.all(
-                                  width: 1, color: GrayDarkColor),
+                              border:
+                                  Border.all(width: 1, color: GrayDarkColor),
                               image: DecorationImage(
                                   image: CachedNetworkImageProvider(
-                                      "${mainController.authUser.value
-                                          ?.image}"))
-                          ),
+                                      "${mainController.authUser.value?.image}"))),
                         ),
                         Obx(() {
                           return Container(
@@ -61,25 +59,34 @@ class ShippingPage extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                RichText(text: TextSpan(children: [
-                                  TextSpan(
-                                    text: " ${mainController.authUser.value
-                                        ?.seller_name} ",
-                                    style: H3BlackTextStyle,),
-                                  TextSpan(
-                                    text: " (${mainController.authUser.value
-                                        ?.city
-                                        ?.name}) ", style: H5RegularDark,),
-                                ]),
+                                RichText(
+                                  text: TextSpan(children: [
+                                    TextSpan(
+                                      text:
+                                          " ${mainController.authUser.value?.seller_name} ",
+                                      style: H3BlackTextStyle,
+                                    ),
+                                    TextSpan(
+                                      text:
+                                          " (${mainController.authUser.value?.city?.name}) ",
+                                      style: H5RegularDark,
+                                    ),
+                                  ]),
                                 ),
-                                SizedBox(height: 0.002.sh,),
+                                SizedBox(
+                                  height: 0.002.sh,
+                                ),
                                 Text(
                                   " ${mainController.authUser.value?.address} ",
-                                  style: H5GrayTextStyle,),
-                                SizedBox(height: 0.002.sh,),
+                                  style: H5GrayTextStyle,
+                                ),
+                                SizedBox(
+                                  height: 0.002.sh,
+                                ),
                                 Text(
                                   " ${mainController.authUser.value?.phone} ",
-                                  style: H5GrayTextStyle,),
+                                  style: H5GrayTextStyle,
+                                ),
                               ],
                             ),
                           );
@@ -90,9 +97,11 @@ class ShippingPage extends StatelessWidget {
                 }),
                 Obx(() {
                   return Container(
-                    child: RichText(text: TextSpan(children: [
+                    child: RichText(
+                        text: TextSpan(children: [
                       TextSpan(text: 'الرصيد الحالي : ', style: H4RegularDark),
-                      TextSpan(text: '${logic.totalBalance.value} \$',
+                      TextSpan(
+                          text: '${logic.totalBalance.value} \$',
                           style: H3RedTextStyle)
                     ])),
                   );
@@ -100,8 +109,11 @@ class ShippingPage extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 0.02.sh,),
-          Expanded(child: Container(
+          SizedBox(
+            height: 0.02.sh,
+          ),
+          Expanded(
+              child: Container(
             width: 1.sw,
             height: 0.845.sh,
             child: SingleChildScrollView(
@@ -153,7 +165,6 @@ class ShippingPage extends StatelessWidget {
                           controller: logic.nameSenderController,
                         ),
                       ),
-
                       SizedBox(
                         width: 1.sw,
                         child: InputComponent(
@@ -170,7 +181,7 @@ class ShippingPage extends StatelessWidget {
                           controller: logic.addressSenderController,
                         ),
                       ),
-                     const Divider(),
+                      const Divider(),
                       Select2Component(
                           label: 'مدينة المرسل إليه',
                           width: 0.5.sw,
@@ -191,7 +202,6 @@ class ShippingPage extends StatelessWidget {
                         );
                       }),
                       35.verticalSpace,
-
                       SizedBox(
                         width: 1.sw,
                         child: InputComponent(
@@ -208,7 +218,6 @@ class ShippingPage extends StatelessWidget {
                           controller: logic.nameReceiveController,
                         ),
                       ),
-
                       SizedBox(
                         width: 1.sw,
                         child: InputComponent(
@@ -225,7 +234,6 @@ class ShippingPage extends StatelessWidget {
                           controller: logic.addressReceiveController,
                         ),
                       ),
-
                       SizedBox(
                         width: 1.sw,
                         child: InputComponent(
@@ -246,8 +254,8 @@ class ShippingPage extends StatelessWidget {
                       const Divider(),
                       Row(
                         children: [
-                          
-                          SizedBox(width: 0.5.sw,
+                          SizedBox(
+                            width: 0.5.sw,
                             child: InputComponent(
                               suffixIcon: FontAwesomeIcons.scaleBalanced,
                               fill: WhiteColor,
@@ -276,7 +284,6 @@ class ShippingPage extends StatelessWidget {
                           )
                         ],
                       ),
-
                       Align(
                           alignment: Alignment.centerRight,
                           child: Text(
@@ -292,7 +299,6 @@ class ShippingPage extends StatelessWidget {
                               children: [
                                 Row(
                                   children: [
-
                                     Expanded(
                                       child: InputComponent(
                                         suffixIcon: FontAwesomeIcons.textHeight,
@@ -322,10 +328,8 @@ class ShippingPage extends StatelessWidget {
                                     )
                                   ],
                                 ),
-
                                 Row(
                                   children: [
-
                                     Expanded(
                                       child: InputComponent(
                                         suffixIcon: FontAwesomeIcons.textWidth,
@@ -355,14 +359,12 @@ class ShippingPage extends StatelessWidget {
                                     )
                                   ],
                                 ),
-
                                 Row(
                                   children: [
-
-
                                     Expanded(
                                       child: InputComponent(
-                                        suffixIcon: FontAwesomeIcons.rulerHorizontal,
+                                        suffixIcon:
+                                            FontAwesomeIcons.rulerHorizontal,
                                         textInputType: TextInputType.number,
                                         fill: WhiteColor,
                                         width: 0.1.sw,
@@ -389,7 +391,6 @@ class ShippingPage extends StatelessWidget {
                                     )
                                   ],
                                 ),
-
                               ],
                             ),
                           ),
@@ -407,6 +408,17 @@ class ShippingPage extends StatelessWidget {
                           )
                         ],
                       ),
+                      Container(
+                        child: InputComponent(
+                          textInputType: TextInputType.text,
+                          fill: WhiteColor,
+                          width: 1.sw,
+                          maxLine: 3,
+                          minLine: 3,
+                          hint: 'ملاحظات',
+                          controller: logic.noteController,
+                        ),
+                      ),
                       15.verticalSpace,
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -414,22 +426,32 @@ class ShippingPage extends StatelessWidget {
                           InkWell(
                             splashColor: Colors.deepOrangeAccent,
                             onTap: () {
-                              print("CALC");
-                              logic.calcPrice();
+                              if(logic.from.value==null){
+                                mainController.showToast(text: 'يرجى تحديد مدينة المرسل',type: 'error');
+                                return ;
+                              }
+                              if(logic.to.value==null){
+                                mainController.showToast(text: 'يرجى تحديد مدينة المرسل إليه',type: 'error');
+                                return ;
+                              }
+
                             },
-                            child: Padding(padding: EdgeInsets.all(0.01.sw),child: Container(
-                              alignment: Alignment.center,
-                              width: 0.5.sw,
-                              height: 0.04.sh,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15.r),
-                                color: RedColor,
+                            child: Padding(
+                              padding: EdgeInsets.all(0.01.sw),
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: 0.5.sw,
+                                height: 0.04.sh,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15.r),
+                                  color: RedColor,
+                                ),
+                                child: Text(
+                                  'أحسب كلفة الشحن',
+                                  style: H3WhiteTextStyle,
+                                ),
                               ),
-                              child: Text(
-                                'أحسب كلفة الشحن',
-                                style: H3WhiteTextStyle,
-                              ),
-                            ),),
+                            ),
                           ),
                           Obx(() {
                             return Container(
@@ -458,107 +480,119 @@ class ShippingPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Flexible(flex: 4,child: Container(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: " - ",
-                                          style: H2OrangeTextStyle.copyWith(
-                                              fontWeight: FontWeight.bold)),
-                                      TextSpan(
-                                          text:
-                                          "يرجى الإلتزام بكتابة البيانات الصحيحة للشحنة",
-                                          style: H3GrayTextStyle.copyWith(
-                                              fontWeight: FontWeight.bold)),
-                                    ],
+                          Flexible(
+                            flex: 4,
+                            child: Container(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                            text: " - ",
+                                            style: H2OrangeTextStyle.copyWith(
+                                                fontWeight: FontWeight.bold)),
+                                        TextSpan(
+                                            text:
+                                                "يرجى الإلتزام بكتابة البيانات الصحيحة للشحنة",
+                                            style: H3GrayTextStyle.copyWith(
+                                                fontWeight: FontWeight.bold)),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                20.verticalSpace,
-                                RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: " - ",
-                                          style: H2OrangeTextStyle.copyWith(
-                                              fontWeight: FontWeight.bold)),
-                                      TextSpan(
-                                          text:
-                                          "إذا كان هناك فرق بين المعلومات المدخلة والبضاعة الفعلية فلن يتم قبول التوصيل .",
-                                          style: H3GrayTextStyle.copyWith(
-                                              fontWeight: FontWeight.bold)),
-                                    ],
+                                  20.verticalSpace,
+                                  RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                            text: " - ",
+                                            style: H2OrangeTextStyle.copyWith(
+                                                fontWeight: FontWeight.bold)),
+                                        TextSpan(
+                                            text:
+                                                "إذا كان هناك فرق بين المعلومات المدخلة والبضاعة الفعلية فلن يتم قبول التوصيل .",
+                                            style: H3GrayTextStyle.copyWith(
+                                                fontWeight: FontWeight.bold)),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                20.verticalSpace,
-                                RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: " - ",
-                                          style: H2OrangeTextStyle.copyWith(
-                                              fontWeight: FontWeight.bold)),
-                                      TextSpan(
-                                          text:
-                                          "الرجاء الإتصال بالدعم الفني لأي إستفسار أو مساعدة .",
-                                          style: H3GrayTextStyle.copyWith(
-                                              fontWeight: FontWeight.bold)),
-                                    ],
+                                  20.verticalSpace,
+                                  RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                            text: " - ",
+                                            style: H2OrangeTextStyle.copyWith(
+                                                fontWeight: FontWeight.bold)),
+                                        TextSpan(
+                                            text:
+                                                "الرجاء الإتصال بالدعم الفني لأي إستفسار أو مساعدة .",
+                                            style: H3GrayTextStyle.copyWith(
+                                                fontWeight: FontWeight.bold)),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),),
-                         Flexible(flex: 1,child:  Container(
-                           alignment: Alignment.center,
-
-                           child: Column(
-                             mainAxisAlignment: MainAxisAlignment.center,
-                             crossAxisAlignment: CrossAxisAlignment.center,
-                             children: [
-                               InkWell(
-                                 onTap: () {
-
-                                   if(mainController.settings.value.delivery?.id!=null){
-                                     mainController.createCommunity(sellerId: mainController.settings.value.delivery!.id!);
-                                   }else{
-                                     openUrl(url: "https://wa.me/${mainController.settings.value.social?.phone}");
-                                   }
-
-
-                                 },
-                                 child: Container(
-                                   alignment: Alignment.center,
-                                   width: 0.15.sw,
-                                   height: 0.15.sw,
-                                   decoration: BoxDecoration(
-                                     color: GrayLightColor,
-                                     borderRadius: BorderRadius.circular(15.r),
-                                   ),
-                                   child: const Icon(FontAwesomeIcons.question),
-                                 ),
-                               ),
-                               15.verticalSpace,
-                               Container(
-                                 width: 0.2.sw,
-                                 child: Center(
-                                   child: Text(
-                                     'طلب المساعدة من الدعم الفني',
-                                     style: H5BlackTextStyle,
-                                     textAlign: TextAlign.center,
-                                   ),
-                                 ),
-                               )
-                             ],
-                           ),
-                         ),)
+                          ),
+                          Flexible(
+                            flex: 1,
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      if (mainController
+                                              .settings.value.delivery?.id !=
+                                          null) {
+                                        mainController.createCommunity(
+                                            sellerId: mainController
+                                                .settings.value.delivery!.id!);
+                                      } else {
+                                        openUrl(
+                                            url:
+                                                "https://wa.me/${mainController.settings.value.social?.phone}");
+                                      }
+                                    },
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      width: 0.15.sw,
+                                      height: 0.15.sw,
+                                      decoration: BoxDecoration(
+                                        color: GrayLightColor,
+                                        borderRadius:
+                                            BorderRadius.circular(15.r),
+                                      ),
+                                      child:
+                                          const Icon(FontAwesomeIcons.question),
+                                    ),
+                                  ),
+                                  15.verticalSpace,
+                                  Container(
+                                    width: 0.2.sw,
+                                    child: Center(
+                                      child: Text(
+                                        'طلب المساعدة من الدعم الفني',
+                                        style: H5BlackTextStyle,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          )
                         ],
                       ),
-                      SizedBox(height: 0.01.sh,),
+                      SizedBox(
+                        height: 0.01.sh,
+                      ),
                       Obx(() {
                         return InkWell(
                           splashColor: RedColor,
@@ -590,14 +624,16 @@ class ShippingPage extends StatelessWidget {
                             }
                           },
                           child: Container(
-                            padding:
-                            EdgeInsets.only(top: 0.006.sh, bottom: 0.009.sh),
+                            padding: EdgeInsets.only(
+                                top: 0.006.sh, bottom: 0.009.sh),
                             width: 0.6.sw,
                             height: 0.1.sw,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15.r),
-                              color: logic.totalBalance.value > 0 && logic.totalPrice.value!=null && logic.totalPrice.value!>0
+                              color: logic.totalBalance.value > 0 &&
+                                      logic.totalPrice.value != null &&
+                                      logic.totalPrice.value! > 0
                                   ? RedColor
                                   : GrayDarkColor,
                             ),
@@ -608,7 +644,9 @@ class ShippingPage extends StatelessWidget {
                           ),
                         );
                       }),
-                      SizedBox(height: 0.01.sh,),
+                      SizedBox(
+                        height: 0.01.sh,
+                      ),
                     ],
                   );
                 }),
@@ -619,7 +657,6 @@ class ShippingPage extends StatelessWidget {
       ),
     );
   }
-
 
   void _buildDialogConfirm() {
     Get.defaultDialog(

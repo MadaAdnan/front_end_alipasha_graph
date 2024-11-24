@@ -238,7 +238,7 @@ class FilterPage extends StatelessWidget {
               );
             }),
             Obx(() {
-              return Container(
+              return Visibility(child: Container(
                 width: 0.92.sw,
                 alignment: Alignment.center,
                 padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
@@ -264,9 +264,9 @@ class FilterPage extends StatelessWidget {
                       .toList(),
                   listItemBuilder: (context, item, isSelected, onItemSelect) =>
                       Text(
-                    '${item.name}',
-                    style: H3BlackTextStyle,
-                  ),
+                        '${item.name}',
+                        style: H3BlackTextStyle,
+                      ),
                   headerBuilder: (context, selectedItem, enabled) => Text(
                     '${selectedItem.name}',
                     style: H3BlackTextStyle,
@@ -275,7 +275,7 @@ class FilterPage extends StatelessWidget {
                     logic.categoryModel.value = value;
                   },
                 ),
-              );
+              ),visible: logic.type.value!='seller',);
             }),
 
               Obx(() {
@@ -314,7 +314,7 @@ class FilterPage extends StatelessWidget {
                 return Container();
               }),
             Obx(() {
-              return Container(
+              return Visibility(child: Container(
                 width: 0.92.sw,
                 alignment: Alignment.center,
                 padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
@@ -338,9 +338,9 @@ class FilterPage extends StatelessWidget {
                   items: logic.categoryModel.value?.children,
                   listItemBuilder: (context, item, isSelected, onItemSelect) =>
                       Text(
-                    '${item.name}',
-                    style: H3BlackTextStyle,
-                  ),
+                        '${item.name}',
+                        style: H3BlackTextStyle,
+                      ),
                   headerBuilder: (context, selectedItem, enabled) => Text(
                     '${selectedItem.name}',
                     style: H3BlackTextStyle,
@@ -349,7 +349,7 @@ class FilterPage extends StatelessWidget {
                     logic.sub1Model.value = value;
                   },
                 ),
-              );
+              ),visible: logic.type.value!='seller',);
             }),
             Obx(() {
               return Visibility(

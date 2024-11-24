@@ -603,12 +603,12 @@ class ChatPage extends StatelessWidget {
                           recognizer: TapGestureRecognizer()
                             ..onTap = () async => await openUrl(url: '$el'),
                           text: ' $el ',
-                          style: H4RedTextStyle,
+                          style: H3RedTextStyle,
                         );
                       } else {
                         return TextSpan(
                             text: ' $el ',
-                            style: H4RegularDark);
+                            style: H3RegularDark);
                       }
                     })
                   ]),

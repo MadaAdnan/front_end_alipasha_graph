@@ -25,7 +25,7 @@ import '../../helpers/style.dart';
 class PostCard extends StatelessWidget {
   final ProductModel post;
   RxBool is_like = RxBool(false);
-
+  RxBool allowLike=RxBool(true);
   PostCard({super.key, required this.post});
 
   RxBool loading = RxBool(false);
@@ -388,6 +388,30 @@ class PostCard extends StatelessWidget {
                       ),
                     ),
                   ),
+                  Visibility(visible: post.is_delivery==true,child: Positioned(bottom: 20.h,left: 10.w,child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 0.02.sw,vertical: 0.01.sh),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(14.r)
+                    ),
+                    child: Row(children: [
+                      Icon(FontAwesomeIcons.truckFast,color: WhiteColor,size: 0.035.sw,),
+                      SizedBox(width: 0.02.sw,),
+                      Text('الشحن متوفر',style: H4WhiteTextStyle,),
+                    ],),
+                  ),),),
+                  Visibility(visible: post.is_delivery!=true,child: Positioned(bottom: 20.h,left: 10.w,child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 0.02.sw,vertical: 0.01.sh),
+                    decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.5),
+                        borderRadius: BorderRadius.circular(14.r)
+                    ),
+                    child: Row(children: [
+                      Icon(FontAwesomeIcons.truckFast,color: RedColor,size: 0.035.sw,),
+                      SizedBox(width: 0.02.sw,),
+                      Text('الشحن غير متوفر',style: H4RedTextStyle,),
+                    ],),
+                  ),),)
                 ],
               ),
             ),
@@ -404,7 +428,7 @@ class PostCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 //Like
-
+                SizedBox(width: 0.03.sw,),
                 Obx(() {
                   return InkWell(
                     onTap: () {
@@ -412,69 +436,80 @@ class PostCard extends StatelessWidget {
                         like();
                       }
                     },
+                    child:Container(
+                      padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
+                      child:  Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(
+                            is_like.value == true
+                                ? FontAwesomeIcons.solidThumbsUp
+                                : FontAwesomeIcons.thumbsUp,
+                            size: 0.05.sw,
+                            color: is_like.value == true ? RedColor : null,
+                          ),
+                          SizedBox(
+                            width: 0.004.sw,
+                          ),
+                          Text('${post.likes_count}'.toFormatNumberK(),style: H4BlackTextStyle,)
+                        ],
+                      ),
+                    ),
+                  );
+                }),
+                SizedBox(width: 0.07.sw,),
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Icon(
-                          is_like.value == true
-                              ? FontAwesomeIcons.solidThumbsUp
-                              : FontAwesomeIcons.thumbsUp,
+                          FontAwesomeIcons.eye,
                           size: 0.05.sw,
-                          color: is_like.value == true ? RedColor : null,
                         ),
                         SizedBox(
                           width: 0.004.sw,
                         ),
-                        Text('${post.likes_count}'.toFormatNumberK(),style: H4BlackTextStyle,)
+                        Text(
+                          '${post.views_count ?? 0}'.toFormatNumber(),
+                          style: H4BlackTextStyle,
+                        )
                       ],
                     ),
-                  );
-                }),
-                InkWell(
-                  onTap: () {},
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(
-                        FontAwesomeIcons.eye,
-                        size: 0.05.sw,
-                      ),
-                      SizedBox(
-                        width: 0.004.sw,
-                      ),
-                      Text(
-                        '${post.views_count ?? 0}'.toFormatNumber(),
-                        style: H4BlackTextStyle,
-                      )
-                    ],
                   ),
                 ),
+                SizedBox(width: 0.07.sw,),
                 InkWell(
                   onTap: () {
                     Get.toNamed(COMMENTS_PAGE,
                         parameters: {"id": "${post.id}"});
                   },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(
-                        FontAwesomeIcons.message,
-                        size: 0.05.sw,
-                      ),
-                      SizedBox(
-                        width: 0.004.sw,
-                      ),
-                      Text(
-                        post.comments_count==0?'تعليق':"${post.comments_count}".toFormatNumberK(),
-                        style: H4BlackTextStyle,
-                      )
-                    ],
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.message,
+                          size: 0.05.sw,
+                        ),
+                        SizedBox(
+                          width: 0.004.sw,
+                        ),
+                        Text(
+                          post.comments_count==0?'تعليق':"${post.comments_count}".toFormatNumberK(),
+                          style: H4BlackTextStyle,
+                        )
+                      ],
+                    ),
                   ),
                 ),
-                if (isAuth())
+                if (false)
                   InkWell(
                     onTap: () async {
                       loadingCommunity.value = true;
@@ -506,29 +541,33 @@ class PostCard extends StatelessWidget {
                       ],
                     ),
                   ),
-
+                SizedBox(width: 0.07.sw,),
                 InkWell(
                   onTap: () {
                     Share.share("https://ali-pasha.com/products/${post.id}");
                   },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(
-                        FontAwesomeIcons.shareNodes,
-                        size: 0.05.sw,
-                      ),
-                      SizedBox(
-                        width: 0.004.sw,
-                      ),
-                      Text(
-                        'مشاركة',
-                        style: H4BlackTextStyle,
-                      )
-                    ],
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.shareNodes,
+                          size: 0.05.sw,
+                        ),
+                        SizedBox(
+                          width: 0.004.sw,
+                        ),
+                        Text(
+                          'مشاركة',
+                          style: H4BlackTextStyle,
+                        )
+                      ],
+                    ),
                   ),
-                )
+                ),
+                SizedBox(width: 0.03.sw,),
               ],
             ),
           ),
@@ -566,8 +605,11 @@ class PostCard extends StatelessWidget {
   }
 
   like() async {
-    is_like.value = !is_like.value;
-    mainController.query.value = '''
+    if(allowLike.value){
+      print('CLICK LIKE');
+      is_like.value = !is_like.value;
+      allowLike.value = false;
+      mainController.query.value = '''
     mutation AddLike{
 addLike(product_id:"${post.id}"){
     id
@@ -612,25 +654,30 @@ addLike(product_id:"${post.id}"){
 }
     
     ''';
-    try {
-      dio.Response? res = await mainController.fetchData();
-      mainController.logger.w(res?.data);
-      if (res?.data?['data']?['addLike'] != null) {
-        ProductModel product = ProductModel.fromJson(
-            res?.data?['data']?['addLike']);
-        int index = Get
-            .find<HomeLogic>()
-            .products
-            .indexWhere((el) => el.id == product.id);
-        is_like.value = product.is_like!;
-        if (index > -1) {
-          Get
-              .find<HomeLogic>()
-              .products[index] = product;
-        }
-      }
-    } catch (e) {
+      try {
+        dio.Response? res = await mainController.fetchData();
 
+        if (res?.data?['data']?['addLike'] != null) {
+          ProductModel product = ProductModel.fromJson(
+              res?.data?['data']?['addLike']);
+          int index = Get
+              .find<HomeLogic>()
+              .products
+              .indexWhere((el) => el.id == product.id);
+          is_like.value = product.is_like!;
+          if (index > -1) {
+            Get
+                .find<HomeLogic>()
+                .products[index] = product;
+          }
+        }
+
+      } catch (e) {
+
+      }
+      Future.delayed(Duration(seconds: 10),() {
+        allowLike.value=true;
+      },);
     }
   }
 }

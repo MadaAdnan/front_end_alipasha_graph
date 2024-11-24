@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
 
-
 class CommunitiesLogic extends GetxController {
   RxBool loading = RxBool(false);
   RxBool hasMorePage = RxBool(false);
@@ -13,6 +12,7 @@ class CommunitiesLogic extends GetxController {
   RxList<CommunityModel> communities = RxList<CommunityModel>([]);
   MainController mainController = Get.find();
   TextEditingController searchController = TextEditingController();
+  TextEditingController codeCommunityController = TextEditingController();
 
   nextPage() {
     if (hasMorePage.value) {
@@ -39,7 +39,6 @@ class CommunitiesLogic extends GetxController {
         getCommunities();
       }
     });
-
   }
 
   @override
@@ -90,32 +89,32 @@ class CommunitiesLogic extends GetxController {
 
     try {
       dio.Response? res = await mainController.fetchData();
-      mainController.logger.e(res?.data);
+      //mainController.logger.e(res?.data);
       if (res?.data?['data']?['getMyCommunity']?['paginatorInfo'] != null) {
-        hasMorePage.value = res?.data?['data']?['getMyCommunity']?['paginatorInfo']
-            ['hasMorePages'];
+        hasMorePage.value = res?.data?['data']?['getMyCommunity']
+            ?['paginatorInfo']['hasMorePages'];
       }
 
       if (res?.data?['data']?['getMyCommunity']?['data'] != null) {
-       try{
-         if(page.value==1){
-           communities.clear();
-         }
-       }catch(e){
-
-       }
+        try {
+          if (page.value == 1) {
+            communities.clear();
+          }
+        } catch (e) {}
         for (var item in res?.data?['data']?['getMyCommunity']?['data']) {
           communities.indexWhere((el) => el.id == item['id']) == -1
               ? communities.add(CommunityModel.fromJson(item))
               : null;
         }
-        if(mainController.storage.hasData('communities')){
+        if (mainController.storage.hasData('communities')) {
           mainController.storage.remove('communities');
         }
-        await mainController.storage.write('communities', res?.data?['data']?['getMyCommunity']?['data'] );
+        await mainController.storage.write(
+            'communities', res?.data?['data']?['getMyCommunity']?['data']);
       }
-      if(res?.data?['errors']?[0]?['message']!=null){
-        mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
+      if (res?.data?['errors']?[0]?['message'] != null) {
+        mainController.showToast(
+            text: '${res?.data['errors'][0]['message']}', type: 'error');
       }
       //searchController.clear();
     } catch (e) {
@@ -125,10 +124,43 @@ class CommunitiesLogic extends GetxController {
   }
 
   getDataFromStorage() {
-    var listProduct = mainController.storage.read('communities')??[];
+    var listProduct = mainController.storage.read('communities') ?? [];
 
     for (var item in listProduct) {
       communities.add(CommunityModel.fromJson(item));
     }
+  }
+
+  accessCommunity() async {
+    mainController.query.value = '''
+    mutation AccessToCommunity {
+    accessToCommunity( code: "${codeCommunityController.text}") {
+        id
+        name
+        type
+        url
+        users {
+            name
+            image
+            id
+        }
+        users_count
+        last_update
+        image
+    }
+}
+
+     ''';
+    try {
+      dio.Response? res = await mainController.fetchData();
+      mainController.logger.f(res?.data);
+      if(res?.data?['data']?['accessToCommunity']!=null){
+        communities.insert(0, CommunityModel.fromJson(res?.data?['data']?['accessToCommunity']));
+      }
+      if (res?.data?['errors']?[0]?['message'] != null) {
+        mainController.showToast(
+            text: '${res?.data['errors'][0]['message']}', type: 'error');
+      }
+    } catch (e) {}
   }
 }

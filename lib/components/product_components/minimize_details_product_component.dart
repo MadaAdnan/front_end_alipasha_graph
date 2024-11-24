@@ -140,18 +140,20 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                           "${post.name?.length !=0 ? post.name : post.expert} ",
                           style: H1BlackTextStyle.copyWith(
                               fontWeight: FontWeight.bold),
-                          maxLines: 2,
+                          maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                         SizedBox(
                           height: 0.001.sh,
                         ),
+                        SizedBox(height: 0.005.sh,),
                         Expanded(
                             child: Text(
                           '${post.expert}',
                           style: H4GrayTextStyle,
                           overflow: TextOverflow.ellipsis,
                         )),
+                        SizedBox(height: 0.01.sh,),
                         Container(
                           width: 1.sw,
                           height: 0.04.sh,
@@ -160,23 +162,23 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Flexible(
-                                child: SellerNameComponent(
-                                    text: 'منشور بواسطة:',
+                                child: Transform.translate(offset: Offset(0,-0.01.sh),child: SellerNameComponent(
+
                                     textStyle: H4RegularDark,
                                     color: TitleColor,
                                     seller: post.user,
-                                    isVerified: post.user?.is_verified == true),
+                                    isVerified: post.user?.is_verified == true),),
                               ),
+                              SizedBox(height: 0.01.sh,),
                               Flexible(
                                 child: Transform.translate(
                                   offset: Offset(0, -0.01.sh),
-                                  child: GestureDetector(
+                                  child:GestureDetector(
 
                                     onTap: () {
                                       mainController.addToCart(product: post);
                                     },
                                     child: Container(
-                                      height: 0.05.sh,
                                       padding: EdgeInsets.symmetric(horizontal: 0.02.sw,vertical: 0.002.sh),
 
                                       child: Icon(
@@ -212,13 +214,36 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                             ),
                           ),
                         ),
+
                         Container(
                           height: 0.06.sw,
+
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
+                              if(post.is_delivery==true)
+                                SizedBox(width: 0.14.sw,child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(FontAwesomeIcons.truckFast,color: Colors.green,size: 0.04.sw,),
+                                    SizedBox(width: 0.099.sw,child: Text('الشحن متوفر',style: H6BlackTextStyle,),),
+
+                                  ],),)
+                              ,
+                              if(post.is_delivery!=true)
+                                SizedBox(width: 0.14.sw,child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(FontAwesomeIcons.truckFast,color: RedColor,size: 0.04.sw,),
+                                    SizedBox(width: 0.098.sw,
+                                      child:Text('الشحن غير متوفر',style: H6BlackTextStyle,) ,),
+
+                                  ],),),
+                              SizedBox(width: 0.002.sw
+                                ,),
                               // Icon Eye
-                              Row(
+                              SizedBox(width: 0.14.sw,child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(
                                     FontAwesomeIcons.eye,
@@ -226,15 +251,19 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                                     size: 0.04.sw,
                                   ),
                                   SizedBox(
-                                    width: 0.007.sw,
+                                    width: 0.08.sw,
+                                    child:  Text(
+                                      "${post.views_count}".toFormatNumberK(),
+                                      style: H5BlackTextStyle,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ),
-                                  Text(
-                                    "${post.views_count}",
-                                    style: H5BlackTextStyle,
-                                  )
+
                                 ],
-                              ),
-                              Row(
+                              ) ,)
+                             ,
+                              SizedBox(width: 0.14.sw,child:Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(
                                     FontAwesomeIcons.locationDot,
@@ -242,15 +271,19 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                                     size: 0.04.sw,
                                   ),
                                   SizedBox(
-                                    width: 0.007.sw,
+                                    width: 0.09.sw,
+                                    child:  Text(
+                                      "${post.city?.name}",
+                                      style: H5BlackTextStyle,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ),
-                                  Text(
-                                    "${post.city?.name}",
-                                    style: H5BlackTextStyle,
-                                  )
+
                                 ],
-                              ),
-                              Row(
+                              ) ,)
+                              ,
+                              SizedBox(width: 0.14.sw,child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(
                                     FontAwesomeIcons.calendar,
@@ -258,14 +291,16 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                                     size: 0.04.sw,
                                   ),
                                   SizedBox(
-                                    width: 0.007.sw,
+                                    width: 0.09.sw,
+                                    child:  Text(
+                                      "${post.created_at}",
+                                      style: H5BlackTextStyle,
+                                    ),
                                   ),
-                                  Text(
-                                    "${post.created_at}",
-                                    style: H5BlackTextStyle,
-                                  )
+
                                 ],
-                              ),
+                              ) ,)
+                             ,
                             ],
                           ),
                         )

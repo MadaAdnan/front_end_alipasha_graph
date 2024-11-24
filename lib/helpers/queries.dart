@@ -24,7 +24,8 @@ unread_notifications_count
             total_balance
             total_point
             following_count
-           
+           invoices_count
+invoices_seller_count
          
             info
             following_count
@@ -68,6 +69,8 @@ const AUTH_FIELDS='''
             id
             name
              is_verified
+             invoices_count
+invoices_seller_count
 id_color
 info
 open_time

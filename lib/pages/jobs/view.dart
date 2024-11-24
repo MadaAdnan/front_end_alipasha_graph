@@ -18,10 +18,12 @@ class JobsPage extends StatelessWidget {
 
   final logic = Get.find<JobsLogic>();
   MainController mainController = Get.find<MainController>();
-
+ScrollController _scrollController=ScrollController();
+bool exit=false;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    exit=false;
+    return WillPopScope(child: Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: Container(
           width: 0.1.sw,
@@ -68,7 +70,7 @@ class JobsPage extends StatelessWidget {
         body: NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification scrollInfo) {
             if (scrollInfo.metrics.pixels >=
-                    scrollInfo.metrics.maxScrollExtent * 0.80 &&
+                scrollInfo.metrics.maxScrollExtent * 0.80 &&
                 !mainController.loading.value &&
                 logic.hasMorePage.value) {
               logic.nextPage();
@@ -92,6 +94,7 @@ class JobsPage extends StatelessWidget {
               Expanded(child: Container(
                 child: Obx(() {
                   return ListView(
+                    controller: _scrollController,
                     padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
                     children: [
                       ...List.generate(logic.jobs.length, (index) {
@@ -108,7 +111,7 @@ class JobsPage extends StatelessWidget {
                           logic.page.value == 1)
                         ...List.generate(
                             5,
-                            (index) =>
+                                (index) =>
                                 MinimizeDetailsProductComponentLoading()),
                       if (logic.loading.value && logic.page.value > 1)
                         Row(
@@ -120,26 +123,34 @@ class JobsPage extends StatelessWidget {
                                     height: 0.06.sh, child: ProgressLoading())),
                             Flexible(
                                 child: Text(
-                              'جاري جلب المزيد',
-                              style: H4GrayTextStyle,
-                            ))
+                                  'جاري جلب المزيد',
+                                  style: H4GrayTextStyle,
+                                ))
                           ],
                         ),
                       if (!logic.hasMorePage.value && !logic.loading.value)
                         Center(
                             child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Text(
-                            'لا يوجد مزيد من النتائج',
-                            style: H3GrayTextStyle,
-                          ),
-                        )),
+                              padding: const EdgeInsets.symmetric(vertical: 8.0),
+                              child: Text(
+                                'لا يوجد مزيد من النتائج',
+                                style: H3GrayTextStyle,
+                              ),
+                            )),
                     ],
                   );
                 }),
               ))
             ],
           ),
-        ));
+        )), onWillPop:() {
+      if(exit==true){
+        Get.offNamed(HOME_PAGE);
+      }else{
+        _scrollController.animateTo(0, duration: Duration(microseconds: 100), curve: Curves.linear);
+        exit=true;
+      }
+          return Future.value(false);
+        },);
   }
 }

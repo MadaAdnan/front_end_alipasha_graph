@@ -39,6 +39,7 @@ class CreateProductLogic extends GetxController {
   TextEditingController discountController = TextEditingController();
   TextEditingController videoController = TextEditingController();
   RxBool isAvailable = RxBool(true);
+  RxBool isDelivery = RxBool(true);
   Rxn<CategoryModel> category = Rxn<CategoryModel>(null);
   Rxn<CategoryModel> subCategory = Rxn<CategoryModel>(null);
   Rxn<CategoryModel> sub2Category = Rxn<CategoryModel>(null);
@@ -154,6 +155,7 @@ query MainCategories {
           "images": null,
           "info": "${infoProduct.text}",
           "is_available": isAvailable.value,
+          "is_delivery": isDelivery.value,
           "price": double.tryParse(priceController.text) ?? 0,
           "discount": double.tryParse(discountController.text),
           "category_id": category.value?.id,

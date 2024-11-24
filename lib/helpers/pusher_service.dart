@@ -1,7 +1,11 @@
+import 'package:ali_pasha_graph/Global/main_controller.dart';
+import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:pusher_client_socket/pusher_client_socket.dart';
 
 class PusherService {
+
+
   static PusherClient init({String? token}) {
     var options = PusherOptions(
       host: '85.215.154.88',
@@ -11,13 +15,12 @@ class PusherService {
       // host: 'v3.ali-pasha.com:8086',
       wsPort: 6001,
 
-
       autoConnect: false,
       cluster: 'mt1',
-      authOptions: PusherAuthOptions(
-          "http://pazarpasha.com/api/broadcasting/auth",
-          // "http://192.168.11.200:8000/api/broadcasting/auth",
-          headers: {
+      authOptions:
+          PusherAuthOptions("http://pazarpasha.com/api/broadcasting/auth",
+              // "http://192.168.11.200:8000/api/broadcasting/auth",
+              headers: {
             if (token != null && token != '')
               'Authorization': 'Bearer $token', // تمرير الـ token هنا
             /* 'Content-Type': 'application/json',*/
@@ -26,7 +29,7 @@ class PusherService {
       enableLogging: true,
     );
 
-    final pusherClient = PusherClient(options: options);
+ final   pusherClient = PusherClient(options: options);
     final logger = Logger();
     pusherClient.onConnected((data) {
       logger.w(data);
@@ -48,4 +51,6 @@ class PusherService {
 
     return pusherClient;
   }
+
+
 }

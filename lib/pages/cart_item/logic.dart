@@ -42,7 +42,7 @@ RxString phone=RxString('');
             (el) => el.seller?.seller_name == cart.value?.seller?.seller_name)
         .toList());
     total.value = carts.length > 0
-        ? carts.where((el) => el.product?.is_delivery == true).fold(0.0,
+        ? carts.fold(0.0,
             (previousValue, element) {
             double elementPrice = element.product?.is_discount == true
                 ? element.product?.discount ?? 0.0
@@ -79,12 +79,19 @@ RxString phone=RxString('');
     var sellerCity = firstCart.seller?.city?.cityId != null
         ? firstCart.seller?.city?.cityId
         : firstCart.seller?.city?.id;
-
+mainController.logger.f(pricing.toJson());
+mainController.logger.f(authCity);
+mainController.logger.f(sellerCity);
+  var index= carts.indexWhere((el)=>el.product?.is_delivery==true);
+  if(index >-1){
     if (authCity != null && sellerCity != null && authCity == sellerCity) {
       totalShipping.value = pricing.internal_price!;
     } else {
       totalShipping.value = pricing.external_price!;
     }
+  }else{
+    totalShipping.value = 0;
+  }
   }
 
   createOrder() async {
