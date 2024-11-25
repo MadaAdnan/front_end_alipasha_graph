@@ -18,7 +18,7 @@ class PricingModel {
 
   toJson() {
     return {
-      'external_price': external_price, 'internal_price': internal_price,'weight':weight
+      'external_price': external_price, 'internal_price': internal_price,'weight':weight,'size':size
     };
   }
 }

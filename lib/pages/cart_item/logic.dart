@@ -26,7 +26,8 @@ RxString phone=RxString('');
     phone.value=mainController.authUser.value?.phone??'';
     addressController.value=TextEditingValue(text: mainController.authUser.value?.address??'');
     phoneController.value=TextEditingValue(text: mainController.authUser.value?.phone??'');
-
+    mainController.pricing
+        .sort((a, b) => int.tryParse("${(a.weight ?? 0) - (b.weight ?? 0)}") ?? 0);
   }
 
   @override
@@ -64,8 +65,7 @@ RxString phone=RxString('');
   }
 
   calcShipping() {
-    mainController.pricing
-        .sort((a, b) => int.tryParse("${(a.size ?? 0) - (b.size ?? 0)}") ?? 0);
+
     PricingModel? pricing = mainController.pricing
         .firstWhereOrNull((el) => el.weight! >= shipping.value);
     CartModel firstCart = carts.first;
@@ -79,6 +79,7 @@ RxString phone=RxString('');
     var sellerCity = firstCart.seller?.city?.cityId != null
         ? firstCart.seller?.city?.cityId
         : firstCart.seller?.city?.id;
+mainController.logger.f(mainController.pricing.first.toJson());
 mainController.logger.f(pricing.toJson());
 mainController.logger.f(authCity);
 mainController.logger.f(sellerCity);

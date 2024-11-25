@@ -434,6 +434,7 @@ class ShippingPage extends StatelessWidget {
                                 mainController.showToast(text: 'يرجى تحديد مدينة المرسل إليه',type: 'error');
                                 return ;
                               }
+                              logic.calcPrice();
 
                             },
                             child: Padding(

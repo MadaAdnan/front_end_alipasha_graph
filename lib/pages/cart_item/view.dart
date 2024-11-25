@@ -57,6 +57,7 @@ class CartItemPage extends StatelessWidget {
                       ...List.generate(
                         logic.carts.length,
                         (index) {
+                          var price=(logic.carts[index].product?.is_discount == true ? logic.carts[index].product?.discount : logic.carts[index].product?.price)??0;
                           return Container(
                             height: 0.3.sw,
                             width: 1.sw,
@@ -194,11 +195,18 @@ class CartItemPage extends StatelessWidget {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
+                                            if(price > 0)
                                             AutoSizeText(
-                                              "${logic.carts[index].product?.is_discount == true ? logic.carts[index].product?.discount : logic.carts[index].product?.price} \$",
+                                              "$price \$",
                                               style: H3BlackTextStyle,
                                               overflow: TextOverflow.ellipsis,
                                             ),
+                                            if(price == 0)
+                                              Text(
+                                                "السعر غير معروف",
+                                                style: H4RedTextStyle,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
                                             if (logic.carts[index].product
                                                     ?.is_delivery ==
                                                 true)

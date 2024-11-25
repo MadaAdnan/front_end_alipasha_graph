@@ -5,6 +5,7 @@ import 'package:ali_pasha_graph/models/pricing_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:logger/logger.dart';
 import 'package:select2dot1/select2dot1.dart';
 
 class ShippingLogic extends GetxController {
@@ -71,10 +72,9 @@ class ShippingLogic extends GetxController {
 
   void calcPrice() {
 
-    double size = (length.value ?? 0) *
-        (width.value ?? 0) *
-        (height.value ?? 0) /
-        1000000;
+    double size = double.tryParse((((length.value ?? 0) * 0.01) *
+        ((width.value ?? 0)*0.01) *
+        ((height.value ?? 0)* 0.01)).toStringAsFixed(3))??0;
 
     if (pricing.isEmpty) {
       print("No pricing data available");
@@ -85,13 +85,10 @@ class ShippingLogic extends GetxController {
     PricingModel? maxSize;
 
     try {
+      pricing.sort((a, b) => a.size!.compareTo(b.size!));
 
       //maxSize = pricing.firstWhere((el) => el.size! >= size);
-      maxSize = pricing.firstWhere(
-        (el) => el.size! >= size,
-        orElse: () => pricing
-            .reduce((curr, next) => curr.size! > next.size! ? curr : next),
-      );
+      maxSize = pricing.firstWhere((el) => el.size! >= size);
     } catch (e) {
       print("No matching size found");
       return;
@@ -100,11 +97,10 @@ class ShippingLogic extends GetxController {
     // جلب العنصر الذي يحتوي على أكبر وزن أكبر أو يساوي الوزن المدخل
     PricingModel? maxWeight;
     try {
+      pricing.sort((a, b) => a.weight!.compareTo(b.weight!));
       maxWeight = pricing.firstWhere(
-        (el) => el.weight! >= weight.value!,
-        orElse: () => pricing
-            .reduce((curr, next) => curr.weight! > next.weight! ? curr : next),
-      );
+        (el) => el.weight! >= weight.value!);
+
     } catch (e) {
       print("No matching weight found");
       return;
@@ -118,8 +114,8 @@ class ShippingLogic extends GetxController {
     if (to.value != null) {
       toCiity = mainController.cities.firstWhere((el) => el.id == to.value);
     }
+    if ((fromCiity?.id == toCiity?.cityId) || (fromCiity?.cityId == toCiity?.cityId) || (fromCiity?.cityId == toCiity?.id)) {
 
-    if (fromCiity?.cityId == toCiity?.cityId) {
       totalPrice.value = (maxSize.internal_price! > maxWeight.internal_price!)
           ? maxSize.internal_price!
           : maxWeight.internal_price!;
@@ -179,14 +175,14 @@ class ShippingLogic extends GetxController {
       "height": height.value,
       "width": width.value,
       "length": length.value,
-      "receive_name": "${nameReceiveController.text}",
-      "receive_phone": "${phoneReceiveController.text}",
-      "sender_name": "${nameSenderController.text}",
-      "sender_phone": "${phoneSenderController.text}",
-      "note": "${noteController.text}",
+      "receive_name": nameReceiveController.text,
+      "receive_phone": phoneReceiveController.text,
+      "sender_name": nameSenderController.text,
+      "sender_phone": phoneSenderController.text,
+      "note": noteController.text,
       "from_id": from.value,
       "to_id": to.value,
-      "receive_address": "${addressReceiveController.text}",
+      "receive_address": addressReceiveController.text,
     }};
     try {
       dio.Response? res = await mainController.fetchData();
