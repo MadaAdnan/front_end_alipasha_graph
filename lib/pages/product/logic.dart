@@ -167,7 +167,7 @@ TextEditingController comment =TextEditingController();
 
     try {
       dio.Response? res = await mainController.fetchData();
-
+      mainController.logger.f(res?.data);
       loading.value = false;
       if (res?.data?['data']?['product']['product'] != null) {
         product.value =
@@ -197,28 +197,12 @@ TextEditingController comment =TextEditingController();
           id
           is_rate
           vote_avg
-          name
-            user {
-            id
-                seller_name
-                logo
-            }
-            city {
-                name
-            }
-            category {
-                name
-            }
-            sub1 {
-                name
-            }
-            colors {
-                code
-            }
-            name
+          weight
+           name
             info
             tags
             is_discount
+            is_delivery
             level
             phone
             email
@@ -242,6 +226,31 @@ TextEditingController comment =TextEditingController();
             images
             docs
             created_at
+            user {
+            id
+                seller_name
+                name
+                image
+                is_verified
+                city{
+                id
+                 city_id
+              }
+            }
+            city {
+                name
+            }
+            category {
+                name
+            }
+            sub1 {
+                name
+            }
+            colors {
+                code
+                name
+            }
+           
             
         }
 }
@@ -249,7 +258,7 @@ TextEditingController comment =TextEditingController();
     try {
       loadingRate.value = true;
       dio.Response? res = await mainController.fetchData();
-     //mainController.logger.i(res?.data);
+     //mainController.logger.f(res?.data);
       if (res?.data['data']?['addVote'] != null) {
         product.value = ProductModel.fromJson(res?.data['data']?['addVote']);
         rate.value=product.value?.vote_avg??0;

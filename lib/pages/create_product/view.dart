@@ -454,7 +454,7 @@ class CreateProductPage extends StatelessWidget {
                                 ),
                                 Container(
                                   width: 0.3.sw,
-
+                                  child: Text('ضع القيمة 0 إذا لم يتوفر حسم',style: H5RedTextStyle,),
                                 ),
 
                               ],

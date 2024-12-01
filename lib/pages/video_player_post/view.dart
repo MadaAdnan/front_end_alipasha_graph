@@ -24,7 +24,7 @@ class VideoPlayerPostPage extends StatelessWidget {
           height: 1.sh,
           child: Container(
             child: YoutubeVideoPlayer(
-              videoId: "${logic.idVideo}",
+              videoId: "${logic.idVideo.value}",
               onFullScreenChange: (value) {
                 isFullScreen.value = value;
               },

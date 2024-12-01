@@ -16,6 +16,7 @@ class EditProductLogic extends GetxController {
   RxnString errorEndDate = RxnString(null);
   GetStorage box = GetStorage('ali-pasha');
   RxBool loading = RxBool(false);
+  RxBool isDelivery = RxBool(false);
   int productId = Get.arguments;
   Rxn<ProductModel> product = Rxn<ProductModel>(null);
   RxList<DataImageModel> attachments = RxList([]);
@@ -118,6 +119,7 @@ query MainCategories {
             price
             discount
             is_available
+            is_delivery
             video
             listOfImages {
                 id
@@ -179,6 +181,8 @@ query MainCategories {
 
         isAvailable.value =
             bool.tryParse("${product.value?.is_available}") ?? false;
+        isDelivery.value =
+            bool.tryParse("${product.value?.is_delivery}") ?? false;
         colorIds(
             product.value?.colors!.map((el) => int.parse("${el.id}")).toList());
         category.value = categories

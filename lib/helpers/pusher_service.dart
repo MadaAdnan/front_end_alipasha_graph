@@ -15,15 +15,16 @@ class PusherService {
       // host: 'v3.ali-pasha.com:8086',
       wsPort: 6001,
 
-      autoConnect: false,
+      autoConnect: true,
+      reconnectGap:Duration(seconds: 6) ,
       cluster: 'mt1',
-      authOptions:
-          PusherAuthOptions("http://pazarpasha.com/api/broadcasting/auth",
+      authOptions: PusherAuthOptions("http://pazarpasha.com/api/broadcasting/auth",
               // "http://192.168.11.200:8000/api/broadcasting/auth",
               headers: {
-            if (token != null && token != '')
+            if (token != null && token != '' )
               'Authorization': 'Bearer $token', // تمرير الـ token هنا
-            /* 'Content-Type': 'application/json',*/
+           //  'Content-Type': 'application/json',
+             'Accept': 'application/json',
           }),
       key: 'AliPasha',
       enableLogging: true,

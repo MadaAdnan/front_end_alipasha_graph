@@ -303,10 +303,15 @@ class CartItemPage extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () async {
+
                                 if (!isAuth()) {
                                   mainController.showToast(
                                       text: 'يرجى تسجيل الدخول أولاً',
                                       type: 'error');
+                                  return;
+                                }
+                                if(mainController.loading.value  ){
+                                  mainController.showToast(text: 'جاري تحويلك إلى المحادثة');
                                   return;
                                 }
                                 StringBuffer message = StringBuffer();
@@ -499,52 +504,79 @@ class CartItemPage extends StatelessWidget {
                               height: 0.009.sh,
                             ),
                             Expanded(
-                              child: (isAuth())
-                                  ? InkWell(
-                                      onTap: () async {
-                                        if (mainController
-                                                .authUser.value?.city?.id ==
-                                            null) {
-                                          mainController.showToast(
-                                              text:
-                                                  'يرجى تحديد مدينتك من الملف الشخصي لإكمال الطلب',
-                                              type: 'error');
-                                          return;
-                                        }
-                                        logic.createOrder();
-                                      },
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        width: 0.6.sw,
-                                        height: 0.08.sw,
-                                        decoration: BoxDecoration(
-                                            color: RedColor,
-                                            borderRadius:
-                                                BorderRadius.circular(150.r)),
-                                        child: Text(
-                                          'إرسال الطلب',
-                                          style: H3WhiteTextStyle,
-                                        ),
-                                      ),
-                                    )
-                                  : InkWell(
-                                      onTap: () async {
-                                        Get.toNamed(LOGIN_PAGE);
-                                      },
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        width: 0.6.sw,
-                                        height: 0.08.sw,
-                                        decoration: BoxDecoration(
-                                            color: RedColor,
-                                            borderRadius:
-                                                BorderRadius.circular(150.r)),
-                                        child: Text(
-                                          'تسجيل الدخول',
-                                          style: H3WhiteTextStyle,
-                                        ),
+                              child: Obx(() {
+                                if(logic.loading.value){
+                                  return InkWell(
+                                    onTap: () async {
+                                     // Get.toNamed(LOGIN_PAGE);
+                                    },
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      width: 0.6.sw,
+                                      height: 0.08.sw,
+                                      decoration: BoxDecoration(
+                                          color: RedColor,
+                                          borderRadius:
+                                          BorderRadius.circular(150.r)),
+                                      child: Text(
+                                        'جاري إرسال الطلب',
+                                        style: H3WhiteTextStyle,
                                       ),
                                     ),
+                                  );
+                                }
+                                if(isAuth()){
+                                  return InkWell(
+                                    onTap: () async {
+                                      if (mainController
+                                          .authUser.value?.city?.id ==
+                                          null) {
+                                        mainController.showToast(
+                                            text:
+                                            'يرجى تحديد مدينتك من الملف الشخصي لإكمال الطلب',
+                                            type: 'error');
+                                        return;
+                                      }
+
+                                      await logic.createOrder();
+                                      Get.offNamed(MY_INVOICE_PAGE);
+                                    },
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      width: 0.6.sw,
+                                      height: 0.08.sw,
+                                      decoration: BoxDecoration(
+                                          color: RedColor,
+                                          borderRadius:
+                                          BorderRadius.circular(150.r)),
+                                      child: Text(
+                                        'إرسال الطلب',
+                                        style: H3WhiteTextStyle,
+                                      ),
+                                    ),
+                                  );
+                                }else{
+                                  return InkWell(
+                                    onTap: () async {
+                                      Get.toNamed(LOGIN_PAGE);
+                                    },
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      width: 0.6.sw,
+                                      height: 0.08.sw,
+                                      decoration: BoxDecoration(
+                                          color: RedColor,
+                                          borderRadius:
+                                          BorderRadius.circular(150.r)),
+                                      child: Text(
+                                        'تسجيل الدخول',
+                                        style: H3WhiteTextStyle,
+                                      ),
+                                    ),
+                                  );
+                                }
+
+                              }),
                             ),
                           ],
                         ),

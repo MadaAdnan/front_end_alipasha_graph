@@ -84,7 +84,7 @@ class ProfileLogic extends GetxController {
     }
     mainController.query('''
     query MyProducts {
-      myProducts(first: 15, page: ${page} ,search:"${search.value ?? ''}") {
+      myProducts(first: 35, page: ${page} ,search:"${search.value ?? ''}") {
          paginatorInfo {
             hasMorePages
          }
@@ -97,6 +97,7 @@ class ProfileLogic extends GetxController {
             is_available
             level
             active
+            is_delivery
             type
             views_count
             image
@@ -104,6 +105,10 @@ class ProfileLogic extends GetxController {
             id
             seller_name
             is_verified
+            city{
+            id
+            city_id
+            }
             }
             city{
             id

@@ -68,7 +68,7 @@ class ProductsLogic extends GetxController {
     }
     mainController.query.value = '''
    query Products {
-    products(search: "${search.value}" sub1_id:${categoryId.value},user_id: ${sellerId.value}, first: 15, page: ${page.value}) {
+    products(search: "${search.value}" sub1_id:${categoryId.value},user_id: ${sellerId.value}, first: 35, page: ${page.value}) {
         paginatorInfo {
             hasMorePages
         }
@@ -79,6 +79,7 @@ class ProductsLogic extends GetxController {
             name
             type
             is_discount
+            active
             is_delivery
             is_available
             price

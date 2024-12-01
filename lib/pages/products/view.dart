@@ -34,6 +34,48 @@ ScrollController scrollController=ScrollController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+      floatingActionButton: Obx(() {
+        return Container(
+          width: 0.1.sw,
+          height: 0.1.sh,
+          child: Column(
+            children: [
+              if (mainController.carts.length > 0)
+                Stack(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Get.toNamed(CART_SELLER);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(0.02.sw),
+                        decoration: BoxDecoration(
+                          color: RedColor.withOpacity(0.5),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          FontAwesomeIcons.cartShopping,
+                          color: WhiteColor,
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      child: Badge.count(
+                        count: mainController.carts.length,
+                        backgroundColor: RedColor,
+                      ),
+                    )
+                  ],
+                ),
+
+            ],
+          ),
+        );
+      }),
       backgroundColor: WhiteColor,
       body: NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification scrollInfo) {

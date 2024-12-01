@@ -1,5 +1,6 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/helpers/cart_helper.dart';
+import 'package:ali_pasha_graph/helpers/components.dart';
 import 'package:ali_pasha_graph/models/cart_model.dart';
 import 'package:ali_pasha_graph/models/pricing_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,7 +28,7 @@ RxString phone=RxString('');
     addressController.value=TextEditingValue(text: mainController.authUser.value?.address??'');
     phoneController.value=TextEditingValue(text: mainController.authUser.value?.phone??'');
     mainController.pricing
-        .sort((a, b) => int.tryParse("${(a.weight ?? 0) - (b.weight ?? 0)}") ?? 0);
+        .sort((a, b) => a.weight?.compareTo(b.weight??0)??0);
   }
 
   @override
@@ -81,8 +82,9 @@ RxString phone=RxString('');
         : firstCart.seller?.city?.id;
 mainController.logger.f(mainController.pricing.first.toJson());
 mainController.logger.f(pricing.toJson());
-mainController.logger.f(authCity);
-mainController.logger.f(sellerCity);
+
+
+mainController.logger.f(shipping.value);
   var index= carts.indexWhere((el)=>el.product?.is_delivery==true);
   if(index >-1){
     if (authCity != null && sellerCity != null && authCity == sellerCity) {
@@ -98,7 +100,10 @@ mainController.logger.f(sellerCity);
   createOrder() async {
 
     loading.value=true;
-
+if(mainController.authUser.value!.address!.isEmpty || mainController.authUser.value!.phone!.isEmpty){
+  mainController.showToast(text: 'يرجى إكمال الملف الشخصي وإضافة عنوان ورقم هاتف',type: 'error');
+  return;
+}
     // Map<String, dynamic> data = {};
     // data['seller_id'] = carts.first.seller?.id;
     // data['weight'] = shipping.value;

@@ -17,32 +17,34 @@ class HomeLogic extends GetxController {
   RxBool loading = RxBool(false);
   RxList<UserModel> sellers = RxList<UserModel>([]);
 
-  int page = 1;
+  RxInt page = RxInt(1);
 
   @override
   void onInit() {
     super.onInit();
-    page = 1;
+
     getDataFromStorage();
-    getProduct();
+    ever(page, (value) {
+      getProduct();
+    } ,);
   }
 
   @override
   void onReady() {
     // TODO: implement onReady
     super.onReady();
-
+    getProduct();
   }
 
   nextPage() {
-    page++;
-    getProduct();
+    page.value++;
+   // getProduct();
   }
 
   getProduct() async {
 
     loading.value = true;
-    try {
+
 String dataString='''data {
             id
             name
@@ -96,17 +98,17 @@ String dataString='''data {
         } ''';
     mainController.query('''
     query Products {
-      SpecialProduct(first:3, page: ${page}) {
+      SpecialProduct(first:3, page: ${page.value}) {
           $dataString
       }
-      HobbiesProduct(first:12, page: ${page}) {
+      HobbiesProduct(first:12, page: ${page.value}) {
           $dataString
       }
-       LatestProduct(first:15, page: ${page}) {
+       LatestProduct(first:15, page: ${page.value}) {
           $dataString
       }
    
-   ${page == 1 ? r'''
+   ${page.value == 1 ? r'''
     mainCategories{
         name
         color
@@ -154,17 +156,16 @@ String dataString='''data {
 }
     ''');
 
-
+    try {
       dio.Response? res = await mainController.fetchData();
-
-// mainController.logger.e(res?.data);
+      loading.value = false;
       if (res?.data?['data']?['LatestProduct']?['paginatorInfo']?['hasMorePages'] !=
           null) {
         hasMorePage(
                 res?.data?['data']?['LatestProduct']?['paginatorInfo']?['hasMorePages']);
       }
       if (res?.data?['data']?['LatestProduct']?['data'] != null) {
-        if (page == 1) {
+        if (page.value == 1) {
           products.clear();
         }
         for (var item in res?.data?['data']?['SpecialProduct']?['data']) {
@@ -180,12 +181,12 @@ String dataString='''data {
           products.add(ProductModel.fromJson(item));
 
         }
-        Logger().f(products.first.toJson());
-var productsList=[
-  ...res?.data?['data']?['LatestProduct']?['data']??[],
-  ...res?.data?['data']?['HobbiesProduct']?['data']??[],
-  ...res?.data?['data']?['SpecialProduct']?['data']??[],
-];
+
+        var productsList=[
+          ...res?.data?['data']?['LatestProduct']?['data']??[],
+          ...res?.data?['data']?['HobbiesProduct']?['data']??[],
+          ...res?.data?['data']?['SpecialProduct']?['data']??[],
+        ];
 
 
        if(mainController.storage.hasData('products')){
@@ -197,7 +198,7 @@ var productsList=[
       if (res?.data['data']?['mainCategories'] != null) {
 
 
-        if (page == 1) {
+        if (page.value == 1) {
           mainController.categories.clear();
         }
         for (var item in res?.data['data']['mainCategories']) {
@@ -220,7 +221,7 @@ var productsList=[
       }
 
       if (res?.data?['data']?['specialSeller'] != null) {
-        if (page == 1) {
+        if (page.value == 1) {
           sellers.clear();
         }
         for (var item in res?.data?['data']?['specialSeller']) {

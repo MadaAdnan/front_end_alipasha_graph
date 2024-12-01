@@ -238,7 +238,8 @@ query GetMessages {
       dio.Response res = await mainController.dio_manager
           .executeGraphQLQueryWithFile(json.encode(datajson),
           map: map, files: data);
-      mainController.logger.e(res.data);
+      file.value=null;
+
       if (res.data?['data']?['CreateMessage'] != null) {
         messages.insert(
             0, MessageModel.fromJson(res.data?['data']['CreateMessage']));

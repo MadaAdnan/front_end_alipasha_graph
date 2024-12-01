@@ -224,7 +224,7 @@ class InvoiceCard extends StatelessWidget {
                           ),
                           Expanded(
                               child: Text(
-                            'سيقوم فريق علي باشا بشحن البضاعة للزبون عند موافقتك على الطلب',
+                            'فريق علي باشا يشحن البضاعة بعد موافقتك وتوفر التوصيل للمنتجات',
                             style: H4GrayTextStyle,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,

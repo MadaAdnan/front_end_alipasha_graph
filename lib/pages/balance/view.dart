@@ -16,6 +16,13 @@ class BalancePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: WhiteColor,
+      appBar: AppBar(
+        backgroundColor: WhiteColor,
+        foregroundColor: WhiteColor,
+        title: Text('حركة رصيد الحساب',style: H3RedTextStyle,),
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Column(
@@ -47,21 +54,21 @@ class BalancePage extends StatelessWidget {
                               _buildCell(
                                   title:
                                       '${logic.balances[i].credit?.toStringAsFixed(2)}',
-                                  color: i % 2 == 0 ? null : GrayLightColor),
+                                  color: i % 2 == 0 ? null : GrayWhiteColor),
                               _buildCell(
                                   title:
                                       '${logic.balances[i].debit?.toStringAsFixed(2)}',
-                                  color: i % 2 == 0 ? null : GrayLightColor),
+                                  color: i % 2 == 0 ? null : GrayWhiteColor),
                               _buildCell(
                                   title:
                                       '${logic.balances[i].total?.toStringAsFixed(2)}',
-                                  color: i % 2 == 0 ? null : GrayLightColor),
+                                  color: i % 2 == 0 ? null : GrayWhiteColor),
                               _buildCell(
                                   title: '${logic.balances[i].createdAt}',
-                                  color: i % 2 == 0 ? null : GrayLightColor),
+                                  color: i % 2 == 0 ? null : GrayWhiteColor),
                               _buildCell(
                                   title: '${logic.balances[i].info}',
-                                  color: i % 2 == 0 ? null : GrayLightColor,
+                                  color: i % 2 == 0 ? null : GrayWhiteColor,
                                   width: 0.5.sw),
                             ],
                           ),
@@ -97,7 +104,7 @@ class BalancePage extends StatelessWidget {
       alignment: Alignment.center,
       decoration: BoxDecoration(
         border: Border.all(
-          color: GrayDarkColor,
+          color: GrayWhiteColor,
         ),
         color: color,
       ),

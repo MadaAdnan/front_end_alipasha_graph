@@ -16,6 +16,8 @@ extension OrderEnum on String {
         return "جاري الشحن";
       case 'canceled':
         return 'الطلب ملغي';
+      case 'confirm_complete':
+        return 'إستلام مؤكد';
         default:
           return this;
     }
@@ -24,6 +26,7 @@ extension OrderEnum on String {
   Color getStatusOrderColor() {
     switch (this) {
       case 'complete':
+      case 'confirm_complete':
         return Colors.green;
       case 'agree':
         return OrangeColor;

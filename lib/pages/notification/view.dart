@@ -7,6 +7,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 
 import '../../Global/main_controller.dart';
 import 'logic.dart';
@@ -26,8 +27,7 @@ class NotificationPage extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 0.01.sh),
               decoration: BoxDecoration(
-                border: Border(bottom: BorderSide(color: GrayDarkColor))
-              ),
+                  border: Border(bottom: BorderSide(color: GrayDarkColor))),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -36,7 +36,7 @@ class NotificationPage extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: 0.01.sh),
                     width: 0.2.sw,
                     decoration: BoxDecoration(
-                      border: Border.all(color: GrayLightColor),
+                        border: Border.all(color: GrayLightColor),
                         shape: BoxShape.circle,
                         image: DecorationImage(
                             image: CachedNetworkImageProvider(
@@ -47,14 +47,18 @@ class NotificationPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("الإشعارات",style: H3RedTextStyle,),
-                      Text("${mainController.authUser.value?.seller_name ?? mainController.authUser.value?.name}",style: H4RegularDark,),
-
+                      Text(
+                        "الإشعارات",
+                        style: H3RedTextStyle,
+                      ),
+                      Text(
+                        "${mainController.authUser.value?.seller_name ?? mainController.authUser.value?.name}",
+                        style: H4RegularDark,
+                      ),
                     ],
                   )
                 ],
               ),
-
             )),
         body: NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification scrollInfo) {
@@ -76,7 +80,7 @@ class NotificationPage extends StatelessWidget {
             return true;
           },
           child: Obx(() {
-            if (logic.loading.value && logic.page.value == 1) {
+            if (logic.loading.value && logic.notifications.length == 0) {
               return Container(
                 alignment: Alignment.center,
                 child: ProgressLoading(
@@ -89,16 +93,58 @@ class NotificationPage extends StatelessWidget {
                 ...List.generate(
                     logic.notifications.length,
                     (index) => Card(
-                      color: WhiteColor,
+                          color: WhiteColor,
                           child: ListTile(
-                            onTap: (){
-                              NotificationModel notify=logic.notifications[index];
-                              if(notify.data?.url?.length !=0){
-                                String url =notify.data!.url!;
-                                var dataUrl=url.split('/').last.split('?');
-                                if(dataUrl[0]=='comments'){
-                                  String id="${dataUrl[1]??''}".split('=').last;
-                                  Get.toNamed(PRODUCT_PAGE,parameters: {"id":"$id"});
+                            onTap: () {
+                              NotificationModel notify =
+                                  logic.notifications[index];
+                              if (notify.data?.url?.length != 0) {
+                                String url = notify.data!.url!;
+                                var dataUrl =
+                                    url.replaceFirst('//', '').split('/');
+
+//handelComment
+                                if (dataUrl.last.split('?')[0] == 'comments') {
+                                  String id =
+                                      "${dataUrl.last.split('?')[1] ?? ''}"
+                                          .split('=')
+                                          .last;
+                                  Get.toNamed(PRODUCT_PAGE,
+                                      parameters: {"id": "$id"});
+                                }
+
+                                if (dataUrl.last.split('?')[0] == 'product') {
+                                  Get.offNamed(PROFILE_PAGE);
+                                }
+                                // handelCommunity
+                                if (dataUrl[1] == 'communities' &&
+                                    dataUrl.length > 3) {
+                                  String id = "${dataUrl[2]}";
+                                  String type = dataUrl[3];
+                                  if (type == 'chat') {
+                                    Get.toNamed(CHAT_PAGE,
+                                        parameters: {"id": "$id"});
+                                  } else if (type == 'group') {
+                                    Get.toNamed(GROUP_PAGE,
+                                        parameters: {"id": "$id"});
+                                  } else if (type == 'channel') {
+                                    Get.toNamed(CHANNEL_PAGE,
+                                        parameters: {"id": "$id"});
+                                  }
+                                }
+
+                                if (dataUrl[1] == 'export') {
+                                  Get.offNamed(INVOICE_PAGE);
+                                }
+                                if (dataUrl[1] == 'import') {
+                                  Get.offNamed(MY_INVOICE_PAGE);
+                                }
+
+                                if (dataUrl[1] == 'orders') {
+                                  Get.offNamed(MY_ORDER_SHIPPING_PAGE);
+                                }
+                                if (dataUrl[1] == 'balances') {
+                                  Get.offNamed(BALANCES_PAGE);
                                 }
 
                                 print(dataUrl);
@@ -113,15 +159,16 @@ class NotificationPage extends StatelessWidget {
                               style: H4GrayTextStyle,
                             ),
                             trailing: Text(
-                                '${logic.notifications[index].created_at}',style: H5RegularDark,),
+                              '${logic.notifications[index].created_at}',
+                              style: H5RegularDark,
+                            ),
                           ),
                         )),
-
-                if (logic.loading.value && logic.page.value > 1)
+                if (logic.loading.value && logic.notifications.length > 0)
                   Container(
                     alignment: Alignment.center,
                     child: ProgressLoading(
-                      width: 0.06.sw,
+                      width: 0.1.sw,
                     ),
                   ),
               ],

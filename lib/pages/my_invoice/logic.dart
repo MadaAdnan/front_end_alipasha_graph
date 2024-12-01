@@ -2,9 +2,11 @@ import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/models/invoice_model.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:logger/logger.dart';
 
 class MyInvoiceLogic extends GetxController {
   RxBool loading = RxBool(false);
+  RxBool changeLoading = RxBool(false);
   RxBool hasMorePage = RxBool(false);
   RxInt page = RxInt(1);
 
@@ -81,5 +83,55 @@ class MyInvoiceLogic extends GetxController {
       }
     } catch (e) {}
     loading.value = false;
+  }
+
+
+  changeStatus(
+      {required int invoiceId,
+        required String status,
+        String? msg = ''}) async {
+    changeLoading.value=true;
+    mainController.query.value='''
+    mutation ChangeStatusInvoice {
+    changeStatusInvoice(invoiceId: "$invoiceId}", status: "$status" , msg:"$msg") {
+         id
+            status
+            created_at
+            total
+            shipping
+            address
+            phone
+            seller {
+                seller_name
+                phone
+                image
+            }
+            items {
+                qty
+                price
+                total
+                product {
+                    name
+                    image
+                }
+            }
+    }
+}
+
+    ''';
+    try{
+      dio.Response? res = await mainController.fetchData();
+Logger().f(res?.data);
+      if(res?.data?['data']?['changeStatusInvoice']!=null){
+        int index=invoices.indexWhere((el)=>el.id==invoiceId);
+        if(index>-1){
+          invoices[index]=InvoiceModel.fromJson(res?.data?['data']?['changeStatusInvoice']);
+        }
+        mainController.showToast(text: 'تم تعديل حالة الطلب بنجاح');
+      }
+    }catch(e){
+
+    }
+    changeLoading.value=false;
   }
 }

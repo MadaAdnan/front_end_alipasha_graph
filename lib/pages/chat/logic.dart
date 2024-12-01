@@ -24,6 +24,7 @@ import '../../routes/routes_url.dart';
 import '../channel/logic.dart';
 import '../communities/logic.dart';
 import '../group/logic.dart';
+
 class ChatLogic extends GetxController {
   MainController mainController = Get.find<MainController>();
   RxBool loadingSend = RxBool(false);
@@ -34,6 +35,7 @@ class ChatLogic extends GetxController {
   RxInt page = RxInt(1);
   RxList<MessageModel> messages = RxList<MessageModel>([]);
   Rxn<CommunityModel> communityModel = Rxn<CommunityModel>(null);
+  RxnInt communityId = RxnInt(null);
   ScrollController scrollController = ScrollController();
   RxnString message = RxnString(Get.parameters['msg']);
 
@@ -102,9 +104,7 @@ class ChatLogic extends GetxController {
 
   @override
   void onInit() {
-    print("COMMMMMMM");
-    print(Get.arguments.id);
-communityModel.value=Get.arguments;
+    communityModel.value = Get.arguments;
     _localFile.then((value) {
       initRecord(value);
     });
@@ -113,37 +113,65 @@ communityModel.value=Get.arguments;
     super.onInit();
     communityModel.value = Get.arguments;
 
-
     ever(page, (value) {
       getMessages();
     });
 
-    ever(messages, (value){
-      if(value.last.user?.id==mainController.authUser.value?.id){
-
-        file.value=null;
+    ever(messages, (value) {
+      if (value.last.user?.id == mainController.authUser.value?.id) {
+        file.value = null;
       }
 
-      if(mainController.storage.hasData('communities-${communityModel.value?.id}')){
-        mainController.storage.remove('communities-${communityModel.value?.id}');
+      if (mainController.storage
+          .hasData('communities-${communityModel.value?.id}')) {
+        mainController.storage
+            .remove('communities-${communityModel.value?.id}');
       }
-       mainController.storage.write('communities-${communityModel.value?.id}', messages.map((el)=>el.toJson()).toList());
+      mainController.storage.write('communities-${communityModel.value?.id}',
+          messages.map((el) => el.toJson()).toList());
     });
   }
 
   @override
   void onReady() {
     super.onReady();
-    String channelName="private-message.${communityModel.value?.id}";
+    communityId.value =
+        Get.arguments?.id ?? int.tryParse("${Get.parameters['id']}");
+    String channelName = "private-message.${communityModel.value?.id}";
     mainController.communitySubscribe(channelName);
-    messageController.value=TextEditingValue(text: Get.parameters['msg']??'');
+    messageController.value =
+        TextEditingValue(text: Get.parameters['msg'] ?? '');
     getMessages();
   }
 
   getMessages() async {
+    Logger().f("COMM $communityId");
     mainController.query.value = '''
   query GetMessages {
-    getMessages(communityId: ${communityModel.value?.id}, first: 35, page: ${page.value}) {
+  ${communityModel.value == null ? '''
+   community(id: "${communityId.value}") {
+       id
+            name
+            image
+            type
+            last_update
+            users_count
+            manager{
+            id 
+            name
+            seller_name
+            logo
+            }
+            users{
+                id
+                name
+                seller_name
+                image
+                trust
+            }
+    }
+   ''' : ''}
+    getMessages(communityId: ${communityId}, first: 35, page: ${page.value}) {
         paginatorInfo {
             hasMorePages
         }
@@ -168,33 +196,37 @@ communityModel.value=Get.arguments;
     loading.value = true;
     try {
       dio.Response? res = await mainController.fetchData();
-      mainController.logger.d(res?.data?['data']);
-
+      mainController.logger.f(res?.data);
+      if (res?.data['data']?['community'] != null) {
+        communityModel.value =
+            CommunityModel.fromJson(res?.data['data']?['community']);
+      }
       if (res?.data?['data']?['getMessages']?['paginatorInfo'] != null) {
         hasMorePage.value = res?.data?['data']?['getMessages']?['paginatorInfo']
             ['hasMorePages'];
       }
       if (res?.data?['data']?['getMessages']?['data'] != null) {
-       try{
-         if(page.value==1){
-           messages.clear();
-         }
-       }catch(e){
-
-       }
-
-          for (var item in res?.data?['data']?['getMessages']?['data']) {
-            messages.add(MessageModel.fromJson(item));
+        try {
+          if (page.value == 1) {
+            messages.clear();
           }
-         if(mainController.storage.hasData('communities-${communityModel.value?.id}')){
-          await mainController.storage.remove('communities-${communityModel.value?.id}');
-         }
+        } catch (e) {}
 
-         await mainController.storage.write('communities-${communityModel.value?.id}', res?.data?['data']?['getMessages']?['data']);
+        for (var item in res?.data?['data']?['getMessages']?['data']) {
+          messages.add(MessageModel.fromJson(item));
+        }
+        if (mainController.storage
+            .hasData('communities-${communityId.value}')) {
+          await mainController.storage
+              .remove('communities-${communityId.value}');
+        }
 
+        await mainController.storage.write('communities-${communityId.value}',
+            res?.data?['data']?['getMessages']?['data']);
       }
-      if(res?.data?['errors']?[0]?['message']!=null){
-        mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
+      if (res?.data?['errors']?[0]?['message'] != null) {
+        mainController.showToast(
+            text: '${res?.data['errors'][0]['message']}', type: 'error');
       }
     } catch (e) {
       mainController.logger.e(e);
@@ -203,7 +235,8 @@ communityModel.value=Get.arguments;
   }
 
   getDataFromStorage() {
-    var listProduct = mainController.storage.read('communities-${communityModel.value?.id}')??[];
+    var listProduct =
+        mainController.storage.read('communities-${communityId.value}') ?? [];
     for (var item in listProduct) {
       messages.add(MessageModel.fromJson(item));
     }
@@ -214,9 +247,15 @@ communityModel.value=Get.arguments;
       return;
     }
 
-
     mainController.loading.value = true;
-    messages.insert(0, MessageModel(id: 0,body: messageController.text,createdAt: 'منذ ثانية',type: 'text',user: mainController.authUser.value));
+    messages.insert(
+        0,
+        MessageModel(
+            id: 0,
+            body: messageController.text,
+            createdAt: 'منذ ثانية',
+            type: 'text',
+            user: mainController.authUser.value));
     mainController.query.value = '''
   mutation CreateMessage(\$communityId:Int!,\$body:String) {
     CreateMessage(communityId:\$communityId, body:\$body) {
@@ -234,22 +273,24 @@ communityModel.value=Get.arguments;
     }
 }
     ''';
-    mainController.variables.value={
-      'communityId':communityModel.value?.id,
-          "body":"${messageController.text}"
+    mainController.variables.value = {
+      'communityId': communityModel.value?.id,
+      "body": "${messageController.text}"
     };
     try {
       messageController.clear();
       dio.Response? res = await mainController.fetchData();
-      mainController.variables.value=null;
+      mainController.variables.value = null;
       if (res?.data?['data']?['CreateMessage'] != null) {
-        int index=messages.indexWhere((el)=>el.id==0);
-        if(index>-1){
-          messages[index]=MessageModel.fromJson(res?.data?['data']?['CreateMessage']);
+        int index = messages.indexWhere((el) => el.id == 0);
+        if (index > -1) {
+          messages[index] =
+              MessageModel.fromJson(res?.data?['data']?['CreateMessage']);
         }
       }
-      if(res?.data?['errors']?[0]?['message']!=null){
-        mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
+      if (res?.data?['errors']?[0]?['message'] != null) {
+        mainController.showToast(
+            text: '${res?.data['errors'][0]['message']}', type: 'error');
         mainController.logger.e("Error Send ${res?.data['errors']}");
       }
     } catch (e) {
@@ -296,16 +337,26 @@ communityModel.value=Get.arguments;
 
     Map<String, XFile?> data = {'attach': file.value};
     try {
-      messages.insert(0, MessageModel(id: 0,body: '',createdAt: 'منذ ثانية',attach: file.value?.path,type: '',user: mainController.authUser.value));
+      messages.insert(
+          0,
+          MessageModel(
+              id: 0,
+              body: '',
+              createdAt: 'منذ ثانية',
+              attach: file.value?.path,
+              type: 'text',
+              user: mainController.authUser.value));
 
       dio.Response res = await mainController.dio_manager
           .executeGraphQLQueryWithFile(json.encode(datajson),
               map: map, files: data);
+      file.value = null;
       mainController.logger.w(res.data?['data']?['CreateMessage']);
       if (res.data?['data']?['CreateMessage'] != null) {
-        int index=messages.indexWhere((el)=>el.id==0);
-        if(index>-1){
-          messages[index]=MessageModel.fromJson(res?.data?['data']?['CreateMessage']);
+        int index = messages.indexWhere((el) => el.id == 0);
+        if (index > -1) {
+          messages[index] =
+              MessageModel.fromJson(res?.data?['data']?['CreateMessage']);
         }
       }
     } catch (e) {
@@ -326,14 +377,15 @@ communityModel.value=Get.arguments;
       final codec = await ui.instantiateImageCodec(data);
       final frame = await codec.getNextFrame();
       final image = frame.image;
-      int? width=image.width;
-      int? height=image.height;
-      if(width>300){
-        width=300;
-        height=(width*(image.height/image.width)).toInt();
+      int? width = image.width;
+      int? height = image.height;
+      if (width > 300) {
+        width = 300;
+        height = (width * (image.height / image.width)).toInt();
       }
 
-      file.value = await mainController.commpressImage(file: selected,width: width,height: height);
+      file.value = await mainController.commpressImage(
+          file: selected, width: width, height: height);
 
       await uploadFileMessage();
     }

@@ -216,7 +216,7 @@ class CommentPage extends StatelessWidget {
             ),
             Flexible(
                 child: Text(
-              "${message.user?.seller_name ?? message.user?.name}",
+              "${message.user?.seller_name!.length!=0 ?message.user?.seller_name: message.user?.name}",
               style: H3OrangeTextStyle,
             )),
           ],
@@ -291,7 +291,7 @@ class CommentPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text(
-                "${message.user?.seller_name ?? message.user?.name}",
+                "${message.user?.seller_name!.length != 0 ? message.user?.seller_name: message.user?.name}",
                 style: H5OrangeTextStyle.copyWith(color: Colors.brown),
               ),
               Container(

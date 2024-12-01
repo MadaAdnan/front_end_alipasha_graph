@@ -72,7 +72,7 @@ class HomeAppBarComponent extends StatelessWidget
                 },
                 icon: Obx(() {
                   return Badge.count(
-                    count: mainController.carts.length,
+                    count: mainController.authUser.value != null ?mainController.carts.length:(mainController.carts.length)+(mainController.authUser.value?.unread_notifications_count??0),
                     backgroundColor: RedColor,
                     alignment: Alignment(-0.006.sw, -0.0015.sh),
                     isLabelVisible: mainController.carts.length > 0,

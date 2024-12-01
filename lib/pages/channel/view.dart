@@ -223,7 +223,7 @@ class ChannelPage extends StatelessWidget {
             })),
             Obx(() {
               if (logic.communityModel.value.manager?.id ==
-                  mainController.authUser.value?.id)
+                  mainController.authUser.value?.id) {
                 return Container(
                   padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
                   alignment: Alignment.center,
@@ -252,267 +252,257 @@ class ChannelPage extends StatelessWidget {
                             ),
                             contentPadding:
                                 EdgeInsets.symmetric(horizontal: 0.02.sw),
-                            suffixIcon: Obx(() {
-                              if (logic.loadingSend.value) {
-                                return Container(
-                                  width: 0.04.sw,
-                                  height: 0.04.sw,
-                                  child: Container(
-                                      padding: const EdgeInsets.all(7),
-                                      child: const Center(
-                                        child: Padding(
-                                          padding: EdgeInsets.all(7),
-                                          child: CircularProgressIndicator(),
-                                        ),
-                                      )),
-                                );
-                              }
-                              return Container(
-                                decoration: const BoxDecoration(
-                                    color: RedColor, shape: BoxShape.circle),
-                                child: Transform.flip(
-                                  flipX: true,
-                                  child: Obx(() {
-                                    if (logic.message.value == null ||
-                                        logic.message.value!.isEmpty) {
-                                      return IconButton(
-                                          onPressed: () {
-                                            logic.startRecording();
-                                            Get.defaultDialog(
-                                                title: ' ',
-                                                content: Container(
-                                                  child: Column(
-                                                    children: [
-                                                      Container(
-                                                        width: 0.12.sw,
-                                                        height: 0.12.sw,
-                                                        child: Obx(() {
-                                                          if (logic
-                                                              .mRecorderIsInited
-                                                              .value) {
-                                                            return AnimatedContainer(
-                                                              constraints:
-                                                                  BoxConstraints.expand(
-                                                                      width: 0.08
-                                                                          .sw,
-                                                                      height: 0.08
-                                                                          .sw),
-                                                              duration:
-                                                                  const Duration(
-                                                                      milliseconds:
-                                                                          200),
-                                                              height:
-                                                                  (logic.mRecordingLevel /
-                                                                          1000)
-                                                                      .sw,
-                                                              width:
-                                                                  (logic.mRecordingLevel /
-                                                                          1000)
-                                                                      .sw,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: RedColor,
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            150.r),
-                                                              ),
-                                                              child: InkWell(
-                                                                onTap: () {
-                                                                  logic
-                                                                      .stopRecorder();
-                                                                },
-                                                                child: Center(
-                                                                  child: Icon(
-                                                                    Icons.stop,
-                                                                    color: Colors
-                                                                        .white,
-                                                                    size: 0.08
-                                                                        .sw, // تغيير حجم الأيقونة بناءً على شدة الصوت
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            );
-                                                          }
-                                                          return Container(
-                                                            width: 0.15.sw,
-                                                            height: 0.15.sw,
-                                                            alignment: Alignment
-                                                                .center,
-                                                            decoration: BoxDecoration(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(100
-                                                                            .r),
-                                                                color:
-                                                                    GrayLightColor),
-                                                            child: IconButton(
-                                                                onPressed: () {
-                                                                  logic
-                                                                      .startRecording();
-                                                                },
-                                                                icon: Icon(
-                                                                  FontAwesomeIcons
-                                                                      .microphone,
-                                                                  size: 0.08.sw,
-                                                                  color:
-                                                                      WhiteColor,
-                                                                )),
-                                                          );
-                                                        }),
-                                                      ),
-                                                      SizedBox(height: 0.01.sh),
-                                                      Obx(() {
-                                                        if (logic.recordedFilePath
-                                                                    ?.value !=
-                                                                null &&
-                                                            logic.mRecorderIsInited
-                                                                    .value ==
-                                                                false) {
-                                                          return Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .end,
-                                                            children: [
-                                                              if (logic
-                                                                      .mPlayerIsInited
-                                                                      .value ==
-                                                                  false)
-                                                                IconButton(
-                                                                  onPressed:
-                                                                      () {
-                                                                    logic
-                                                                        .playRecordedAudio();
-                                                                  },
-                                                                  icon: Icon(
-                                                                      FontAwesomeIcons
-                                                                          .solidCirclePlay),
-                                                                ),
-                                                              if (logic
-                                                                      .mPlayerIsInited
-                                                                      .value ==
-                                                                  true)
-                                                                IconButton(
-                                                                  onPressed: logic
-                                                                      .stopPlayer,
-                                                                  icon: Icon(
-                                                                      FontAwesomeIcons
-                                                                          .solidCircleStop),
-                                                                ),
-                                                            ],
-                                                          );
-                                                        }
-
-                                                        return Container();
-                                                      }),
-                                                      Obx(() {
+                            suffixIcon: Container(
+                              decoration: const BoxDecoration(
+                                  color: RedColor, shape: BoxShape.circle),
+                              child: Transform.flip(
+                                flipX: true,
+                                child: Obx(() {
+                                  if (logic.message.value == null ||
+                                      logic.message.value!.isEmpty) {
+                                    return IconButton(
+                                        onPressed: () {
+                                          if(mainController.loading.value){
+                                            return;
+                                          }
+                                          logic.startRecording();
+                                          Get.defaultDialog(
+                                              title: ' ',
+                                              content: Container(
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      width: 0.12.sw,
+                                                      height: 0.12.sw,
+                                                      child: Obx(() {
                                                         if (logic
                                                             .mRecorderIsInited
                                                             .value) {
-                                                          return Container();
-                                                        }
-                                                        return Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceEvenly,
-                                                          children: [
-                                                            InkWell(
-                                                              onTap: () async {
-                                                                if (logic
-                                                                        .recordedFilePath
-                                                                        ?.value !=
-                                                                    null) {
-                                                                  logic.file
-                                                                          .value =
-                                                                      XFile(
-                                                                          "${logic.recordedFilePath!.value}");
-                                                                }
-                                                                Get.back();
-                                                                await logic
-                                                                    .uploadFileMessage();
+                                                          return AnimatedContainer(
+                                                            constraints:
+                                                            BoxConstraints.expand(
+                                                                width: 0.08
+                                                                    .sw,
+                                                                height: 0.08
+                                                                    .sw),
+                                                            duration:
+                                                            const Duration(
+                                                                milliseconds:
+                                                                200),
+                                                            height:
+                                                            (logic.mRecordingLevel /
+                                                                1000)
+                                                                .sw,
+                                                            width:
+                                                            (logic.mRecordingLevel /
+                                                                1000)
+                                                                .sw,
+                                                            decoration:
+                                                            BoxDecoration(
+                                                              color: RedColor,
+                                                              borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                  150.r),
+                                                            ),
+                                                            child: InkWell(
+                                                              onTap: () {
                                                                 logic
-                                                                    .recordedFilePath!
-                                                                    .value = '';
+                                                                    .stopRecorder();
                                                               },
-                                                              child: Container(
-                                                                padding: EdgeInsets.symmetric(
-                                                                    horizontal:
-                                                                        0.05.sw,
-                                                                    vertical:
-                                                                        0.02.sw),
-                                                                decoration:
-                                                                    BoxDecoration(
+                                                              child: Center(
+                                                                child: Icon(
+                                                                  Icons.stop,
                                                                   color: Colors
-                                                                      .green,
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              50.r),
-                                                                ),
-                                                                child: Text(
-                                                                  'إرسال',
-                                                                  style:
-                                                                      H4WhiteTextStyle,
+                                                                      .white,
+                                                                  size: 0.08
+                                                                      .sw, // تغيير حجم الأيقونة بناءً على شدة الصوت
                                                                 ),
                                                               ),
                                                             ),
-                                                            InkWell(
-                                                              onTap: () {
+                                                          );
+                                                        }
+                                                        return Container(
+                                                          width: 0.15.sw,
+                                                          height: 0.15.sw,
+                                                          alignment: Alignment
+                                                              .center,
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                              BorderRadius
+                                                                  .circular(100
+                                                                  .r),
+                                                              color:
+                                                              GrayLightColor),
+                                                          child: IconButton(
+                                                              onPressed: () {
                                                                 logic
-                                                                    .recordedFilePath!
-                                                                    .value = '';
-                                                                Get.back();
+                                                                    .startRecording();
                                                               },
-                                                              child: Container(
-                                                                padding: EdgeInsets.symmetric(
-                                                                    horizontal:
-                                                                        0.05.sw,
-                                                                    vertical:
-                                                                        0.02.sw),
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color:
-                                                                      RedColor,
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              50.r),
-                                                                ),
-                                                                child: Text(
-                                                                  'إلغاء',
-                                                                  style:
-                                                                      H4WhiteTextStyle,
-                                                                ),
+                                                              icon: Icon(
+                                                                FontAwesomeIcons
+                                                                    .microphone,
+                                                                size: 0.08.sw,
+                                                                color:
+                                                                WhiteColor,
+                                                              )),
+                                                        );
+                                                      }),
+                                                    ),
+                                                    SizedBox(height: 0.01.sh),
+                                                    Obx(() {
+                                                      if (logic.recordedFilePath
+                                                          ?.value !=
+                                                          null &&
+                                                          logic.mRecorderIsInited
+                                                              .value ==
+                                                              false) {
+                                                        return Row(
+                                                          mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .end,
+                                                          children: [
+                                                            if (logic
+                                                                .mPlayerIsInited
+                                                                .value ==
+                                                                false)
+                                                              IconButton(
+                                                                onPressed:
+                                                                    () {
+                                                                  logic
+                                                                      .playRecordedAudio();
+                                                                },
+                                                                icon: Icon(
+                                                                    FontAwesomeIcons
+                                                                        .solidCirclePlay),
                                                               ),
-                                                            )
+                                                            if (logic
+                                                                .mPlayerIsInited
+                                                                .value ==
+                                                                true)
+                                                              IconButton(
+                                                                onPressed: logic
+                                                                    .stopPlayer,
+                                                                icon: Icon(
+                                                                    FontAwesomeIcons
+                                                                        .solidCircleStop),
+                                                              ),
                                                           ],
                                                         );
-                                                      })
-                                                    ],
-                                                  ),
-                                                ));
-                                          },
-                                          icon: const Icon(
-                                            FontAwesomeIcons.microphone,
-                                            color: WhiteColor,
-                                          ));
-                                    }
-                                    return IconButton(
-                                        onPressed: () {
-                                          if (logic.messageController.text
-                                              .trim()
-                                              .isNotEmpty) {
-                                            logic.sendTextMessage();
-                                          }
+                                                      }
+
+                                                      return Container();
+                                                    }),
+                                                    Obx(() {
+                                                      if (logic
+                                                          .mRecorderIsInited
+                                                          .value) {
+                                                        return Container();
+                                                      }
+                                                      return Row(
+                                                        mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                        children: [
+                                                          InkWell(
+                                                            onTap: () async {
+                                                              if (logic
+                                                                  .recordedFilePath
+                                                                  ?.value !=
+                                                                  null) {
+                                                                logic.file
+                                                                    .value =
+                                                                    XFile(
+                                                                        "${logic.recordedFilePath!.value}");
+                                                              }
+                                                              Get.back();
+                                                              await logic
+                                                                  .uploadFileMessage();
+                                                              logic
+                                                                  .recordedFilePath!
+                                                                  .value = '';
+                                                            },
+                                                            child: Container(
+                                                              padding: EdgeInsets.symmetric(
+                                                                  horizontal:
+                                                                  0.05.sw,
+                                                                  vertical:
+                                                                  0.02.sw),
+                                                              decoration:
+                                                              BoxDecoration(
+                                                                color: Colors
+                                                                    .green,
+                                                                borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                    50.r),
+                                                              ),
+                                                              child: Text(
+                                                                'إرسال',
+                                                                style:
+                                                                H4WhiteTextStyle,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          InkWell(
+                                                            onTap: () {
+                                                              logic
+                                                                  .recordedFilePath!
+                                                                  .value = '';
+                                                              Get.back();
+                                                            },
+                                                            child: Container(
+                                                              padding: EdgeInsets.symmetric(
+                                                                  horizontal:
+                                                                  0.05.sw,
+                                                                  vertical:
+                                                                  0.02.sw),
+                                                              decoration:
+                                                              BoxDecoration(
+                                                                color:
+                                                                RedColor,
+                                                                borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                    50.r),
+                                                              ),
+                                                              child: Text(
+                                                                'إلغاء',
+                                                                style:
+                                                                H4WhiteTextStyle,
+                                                              ),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      );
+                                                    })
+                                                  ],
+                                                ),
+                                              ));
                                         },
                                         icon: const Icon(
-                                          FontAwesomeIcons.paperPlane,
+                                          FontAwesomeIcons.microphone,
                                           color: WhiteColor,
                                         ));
-                                  }),
-                                ),
-                              );
-                            }),
+                                  }
+                                  return IconButton(
+                                      onPressed: () {
+                                        if(mainController.loading.value){
+                                          return;
+                                        }
+                                        if (logic.messageController.text
+                                            .trim()
+                                            .isNotEmpty) {
+                                          logic.sendTextMessage();
+                                        }
+                                      },
+                                      icon: const Icon(
+                                        FontAwesomeIcons.paperPlane,
+                                        color: WhiteColor,
+                                      ));
+                                }),
+                              ),
+                            ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(150.r),
                               borderSide: const BorderSide(
@@ -548,6 +538,7 @@ class ChannelPage extends StatelessWidget {
                     ],
                   ),
                 );
+              }
               return Container();
             })
           ],

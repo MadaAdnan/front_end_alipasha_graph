@@ -164,7 +164,7 @@ class MenuPage extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Text("شحن رصيد الإعلانات",
+                                  Text("شحن رصيد ",
                                       style: H3OrangeTextStyle),
                                   IconButton(
                                       onPressed: () {

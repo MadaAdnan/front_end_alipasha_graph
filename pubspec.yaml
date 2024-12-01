@@ -1,6 +1,6 @@
 name: ali_pasha_graph
 description: "Ali-pasha2 With GraphQl"
-version: 1.0.0+1
+version: 3.0.0+68
 environment:
   sdk: '>=3.4.3 <4.0.0'
 dependencies:

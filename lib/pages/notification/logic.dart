@@ -19,13 +19,14 @@ class NotificationLogic extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    ever(page, (value){
+      getNotifications();
+    });
   }
 
   @override
   void onReady() {
-    // TODO: implement onReady
     super.onReady();
-
     getNotifications();
   }
 
@@ -34,7 +35,7 @@ class NotificationLogic extends GetxController {
     loading.value = true;
     mainController.query.value = '''
   query Notifications {
-    notifications(first: 10, page: 1) {
+    notifications(first: 15, page: ${page.value}) {
         data {
             data {
                 title
@@ -42,6 +43,9 @@ class NotificationLogic extends GetxController {
                 url
             }
             created_at
+        }
+        paginatorInfo {
+            hasMorePages
         }
     }
 }
@@ -53,6 +57,9 @@ class NotificationLogic extends GetxController {
         for (var item in res?.data?['data']?['notifications']?['data']) {
           notifications.add(NotificationModel.fromJson(item));
         }
+      }
+      if(res?.data?['data']?['notifications']?['paginatorInfo']!=null){
+        hasMorePage.value=res?.data?['data']?['notifications']?['paginatorInfo']['hasMorePages'];
       }
     } catch (e) {}
     loading.value = false;

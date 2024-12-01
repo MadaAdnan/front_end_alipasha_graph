@@ -44,6 +44,7 @@ class SectionsLogic extends GetxController {
       dio.Response? res = await mainController.fetchData();
       mainController.logger.e(res?.data?['data']?['mainCategories']);
       if (res?.data?['data']?['mainCategories'] != null) {
+        categories([]);
         for (var item in res?.data?['data']?['mainCategories']) {
           categories.add(CategoryModel.fromJson(item));
         }

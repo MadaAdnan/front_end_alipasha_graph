@@ -5,6 +5,7 @@ import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:app_links/app_links.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,20 +35,58 @@ void main() async {
   await GetStorage.init('ali-pasha');
   Get.put(MainController(), permanent: true);
   await initializeDateFormatting('ar');
-  runApp(const MyApp());
+  runApp( MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyApp extends StatefulWidget {
+   MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+GlobalKey<NavigatorState> navigatorKey=GlobalKey<NavigatorState>();
+
+   Future<void> setupMessages(
+       BuildContext context, NavigatorState navigator) async {
+     RemoteMessage? message =
+     await FirebaseMessaging.instance.getInitialMessage();
+
+     if (message != null) {
+       handleNavigation(message, context, navigator);
+     }
+
+     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+       handleNavigation(message, context, navigator);
+     });
+   }
+
+   void handleNavigation(
+       RemoteMessage message, BuildContext context, NavigatorState navigator) {
+     if (message.data['type'] == 'request') {
+      Get.toNamed(NOTIFICATION_PAGE);
+     }
+   }
+
+
+   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setupMessages(context, navigatorKey.currentState!);
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: ScreenUtilInit(
         designSize: Size(1080, 2225),
         builder: (_, child) => GetMaterialApp(
-          defaultTransition: Transition.fade,
-          transitionDuration: Duration(milliseconds: 200),
+          navigatorKey:navigatorKey ,
+          defaultTransition: Transition.native,
+          transitionDuration: Duration(milliseconds: 50),
           initialBinding: MainBinding(),
           title: 'علي باشا',
           locale: Locale('ar'),

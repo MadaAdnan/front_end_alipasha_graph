@@ -170,8 +170,6 @@ query MainCategories {
         }
       }
     };
-    //mainController.logger.i(datajson['variables']);
-
     Map<String, XFile?> data = {};
     String map = '{';
 

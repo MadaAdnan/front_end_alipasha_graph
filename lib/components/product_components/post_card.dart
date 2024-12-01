@@ -431,9 +431,10 @@ class PostCard extends StatelessWidget {
                 SizedBox(width: 0.03.sw,),
                 Obx(() {
                   return InkWell(
-                    onTap: () {
+                    onTap: ()async {
                       if(isAuth()){
-                        like();
+                       await like();
+                       is_like.value=false;
                       }
                     },
                     child:Container(
@@ -452,7 +453,7 @@ class PostCard extends StatelessWidget {
                           SizedBox(
                             width: 0.004.sw,
                           ),
-                          Text('${post.likes_count}'.toFormatNumberK(),style: H4BlackTextStyle,)
+                          Text('${is_like.value?post.likes_count!+1:post.likes_count}'.toFormatNumberK(),style: H4BlackTextStyle,)
                         ],
                       ),
                     ),

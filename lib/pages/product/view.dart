@@ -366,9 +366,10 @@ class ProductPage extends StatelessWidget {
                               !mainController.createCommunityLodaing.value) {
                             mainController.createCommunity(
                                 sellerId: logic.product.value!.user!.id!,
-                                message: """ المنتج ${logic.product.value!.name}"""
-r""" \n """
-                            """    معرف المنتج: ${logic.product.value!.id} """);
+                                message:
+                                    """ المنتج ${logic.product.value!.name}"""
+                                    r""" \n """
+                                    """    معرف المنتج: ${logic.product.value!.id} """);
                           }
                         },
                         child: Container(
@@ -430,7 +431,25 @@ r""" \n """
               Container(
                 child: FlutterCarousel(
                   items: [
-                    InkWell(
+                    if(logic.product.value?.video!='')
+                      InkWell(
+                        onTap: () {
+                        Get.toNamed(VIDEO_PLAYER_POST_PAGE,arguments: logic.product.value?.video);
+                        },
+                        child: Container(
+                          width: 0.79.sw,
+                          height: 0.79.sw,
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(30.r),
+                        ),
+                          child: Container(
+                            child: Icon(FontAwesomeIcons.play,color: RedColor,size: 0.2.sw
+                              ,),
+                          ),
+                      ),
+                      ),
+                         InkWell(
                       onTap: () {
                         showDialog(
                           context: context,
@@ -584,6 +603,7 @@ r""" \n """
                           slideIndicatorOptions: const SlideIndicatorOptions(
                         enableHalo: false,
                         currentIndicatorColor: RedColor,
+                        indicatorBorderColor: RedColor,
                         enableAnimation: true,
                       ))),
                 ),
@@ -739,126 +759,168 @@ r""" \n """
                     SizedBox(
                       height: 0.02.sh,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: 0.4.sw,
-                          child: FormBuilderRatingBar(
-                            onChanged: (value) => logic.rate.value = value ?? 0,
-                            name: 'rate',
-                            maxRating: 5,
-                            minRating: logic.rate.value,
-                            itemCount: 5,
-                            itemSize: 0.05.sw,
-                            initialRating: double.tryParse(
-                                    "${logic.product.value?.vote_avg}") ??
-                                0,
-                            glowColor: OrangeColor,
-                            enabled: true,
-                            ratingWidget: RatingWidget(
-                                full: const Icon(
-                                  FontAwesomeIcons.solidStar,
-                                  color: OrangeColor,
-                                ),
-                                half: const Icon(
-                                  FontAwesomeIcons.starHalfStroke,
-                                  color: OrangeColor,
-                                ),
-                                empty: const Icon(
-                                  FontAwesomeIcons.star,
-                                  color: GrayDarkColor,
-                                )),
-                            unratedColor: GrayDarkColor,
-                            glow: true,
-                            glowRadius: 0.4.r,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 0.34.sw,
-                          child: Obx(() {
-                            if(logic.loadingRate.value){
-                            return  InkWell(
-
-                                child: Container(
-                                  padding: EdgeInsets.all(0.01.sw),
-                                  alignment: Alignment.center,
-                                  width: 0.33.sw,
-                                  decoration: BoxDecoration(
-                                    color: RedColor,
-                                    borderRadius: BorderRadius.circular(30.r),
-                                  ),
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-
-                                        Text(
-                                          'جاري التقييم',
-                                          style: H4WhiteTextStyle,
-                                        )
-                                     ,
-                                      SizedBox(
-                                        width: 0.02.sw,
-                                      ),
-                                        Icon(
-                                          FontAwesomeIcons.voteYea,
-                                          color: WhiteColor,
-                                          size: 0.04.sw,
-                                        ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            }
-                            return InkWell(
-                              onTap: () {
-                                logic.rateProduct();
-                              },
-                              child: Container(
-                                padding: EdgeInsets.all(0.01.sw),
-                                alignment: Alignment.center,
-                                width: 0.33.sw,
-                                decoration: BoxDecoration(
-                                  color: RedColor,
-                                  borderRadius: BorderRadius.circular(30.r),
-                                ),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    if (logic.product.value?.is_vote == true)
-                                      Text(
-                                        'إعادة تقييم',
-                                        style: H4WhiteTextStyle,
-                                      )
-                                    else
-                                      Text(
-                                        ' تقييم',
-                                        style: H4WhiteTextStyle,
-                                      ),
-                                    SizedBox(
-                                      width: 0.02.sw,
+                    Container(
+                      decoration: BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(color: GrayLightColor))),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 0.4.sw,
+                                child: FormBuilderRatingBar(
+                                  onChanged: (value) =>
+                                      logic.rate.value = value ?? 0,
+                                  name: 'rate',
+                                  maxRating: 5,
+                                  minRating: 1,
+                                  itemCount: 5,
+                                  itemSize: 0.05.sw,
+                                  initialRating: double.tryParse(
+                                          "${logic.product.value?.vote_avg}") ??
+                                      0,
+                                  glowColor: OrangeColor,
+                                  enabled: true,
+                                  tapOnlyMode: true,
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide.none
                                     ),
-                                    if (logic.product.value?.is_vote == true)
-                                      Icon(
-                                        FontAwesomeIcons.refresh,
-                                        color: WhiteColor,
-                                        size: 0.04.sw,
-                                      )
-                                    else
-                                      Icon(
-                                        FontAwesomeIcons.voteYea,
-                                        color: WhiteColor,
-                                        size: 0.04.sw,
+                                  ),
+                                  ratingWidget: RatingWidget(
+                                      full: const Icon(
+                                        FontAwesomeIcons.solidStar,
+                                        color: OrangeColor,
                                       ),
-                                  ],
+                                      half: const Icon(
+                                        FontAwesomeIcons.starHalfStroke,
+                                        color: OrangeColor,
+                                      ),
+                                      empty: const Icon(
+                                        FontAwesomeIcons.star,
+                                        color: GrayDarkColor,
+                                      )),
+                                  unratedColor: GrayDarkColor,
+                                  glow: true,
+                                  glowRadius: 0.4.r,
                                 ),
                               ),
-                            );
-                          }),
-                        ),
-                      ],
+                              SizedBox(
+                                width: 0.24.sw,
+                                child: Obx(() {
+                                  if (logic.loadingRate.value) {
+                                    return InkWell(
+                                      child: Container(
+                                        padding: EdgeInsets.all(0.01.sw),
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          color: RedColor,
+                                          borderRadius:
+                                              BorderRadius.circular(30.r),
+                                        ),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Expanded(
+                                                child: AutoSizeText(
+                                              'جاري التقييم',
+                                              style: H4WhiteTextStyle,
+                                              overflow: TextOverflow.ellipsis,
+                                            )),
+                                            SizedBox(
+                                              width: 0.02.sw,
+                                            ),
+                                            Icon(
+                                              FontAwesomeIcons.voteYea,
+                                              color: WhiteColor,
+                                              size: 0.04.sw,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                  return InkWell(
+                                    onTap: () {
+                                      logic.rateProduct();
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(0.01.sw),
+                                      alignment: Alignment.center,
+                                      width: 0.33.sw,
+                                      decoration: BoxDecoration(
+                                        color: RedColor,
+                                        borderRadius:
+                                            BorderRadius.circular(30.r),
+                                      ),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          if (logic.product.value?.is_vote ==
+                                              true)
+                                            Text(
+                                              'إعادة تقييم',
+                                              style: H4WhiteTextStyle,
+                                            )
+                                          else
+                                            Text(
+                                              ' تقييم',
+                                              style: H4WhiteTextStyle,
+                                            ),
+                                          SizedBox(
+                                            width: 0.02.sw,
+                                          ),
+                                          if (logic.product.value?.is_vote ==
+                                              true)
+                                            Icon(
+                                              FontAwesomeIcons.refresh,
+                                              color: WhiteColor,
+                                              size: 0.04.sw,
+                                            )
+                                          else
+                                            Icon(
+                                              FontAwesomeIcons.voteYea,
+                                              color: WhiteColor,
+                                              size: 0.04.sw,
+                                            ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                }),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Icon(FontAwesomeIcons.truckFast,
+                                  size: 0.04.sw,
+                                  color:
+                                      logic.product.value?.is_delivery == true
+                                          ? Colors.green
+                                          : RedColor),
+                              Text(
+                                logic.product.value?.is_delivery == true
+                                    ? 'الشحن متوفر'
+                                    : 'الشحن غير متوفر',
+                                style: H5RegularDark.copyWith(
+                                    color:
+                                        logic.product.value?.is_delivery == true
+                                            ? Colors.green
+                                            : RedColor),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                     // Colors
                     if (logic.product.value?.colors?.length != null &&

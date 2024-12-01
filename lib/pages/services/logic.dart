@@ -33,6 +33,7 @@ class ServicesLogic extends GetxController {
         'Accept': 'application/json',
       },
     ));
+    getDataByStorage();
   }
 
 
@@ -99,8 +100,9 @@ class ServicesLogic extends GetxController {
     ''';
     try {
       dio.Response? res = await mainController.fetchData();
-mainController.logger.d(res?.data);
+//mainController.logger.d(res?.data);
       if (res?.data?['data']?['mainCategories'] != null) {
+        categories.clear();
         for (var item in res?.data?['data']?['mainCategories']) {
           if (item['children'] != null) {
             for (var i in item['children']) {
@@ -108,6 +110,7 @@ mainController.logger.d(res?.data);
             }
           }
         }
+        await mainController.storage.write('services',res?.data?['data']?['mainCategories']);
       }
 
       if (res?.data?['data']?['sliders'] != null) {
@@ -131,6 +134,19 @@ mainController.logger.d(res?.data);
 
     await getWeather();
     loading.value = false;
+  }
+  getDataByStorage()async{
+    if(mainController.storage.hasData('services')){
+      var data=mainController.storage.read('services');
+      for (var item in data) {
+        if (item['children'] != null) {
+          for (var i in item['children']) {
+            categories.add(CategoryModel.fromJson(i));
+          }
+        }
+      }
+
+    }
   }
 
   getWeather() async {

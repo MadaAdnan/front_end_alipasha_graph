@@ -11,9 +11,9 @@ import '../../helpers/google_auth.dart';
 
 class LoginLogic extends GetxController {
   TextEditingController usernameController =
-      TextEditingController(text: /*'admin@admin.com'*/ 'mh.shamey@gmail.com');
+      TextEditingController();
   TextEditingController passwordController =
-      TextEditingController(text: 'admin123');
+      TextEditingController();
   String? token;
 
   ///

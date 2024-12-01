@@ -1,6 +1,7 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/enums.dart';
+import 'package:ali_pasha_graph/helpers/product_enums.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -170,8 +171,8 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                                     isVerified: post.user?.is_verified == true),),
                               ),
                               SizedBox(height: 0.01.sh,),
-                              Flexible(
-                                child: Transform.translate(
+                              if(post.active=='active')
+                                Transform.translate(
                                   offset: Offset(0, -0.01.sh),
                                   child:GestureDetector(
 
@@ -188,7 +189,6 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                              ),
                             ],
                           ),
                         ),
@@ -421,12 +421,12 @@ class MinimizeDetailsJobComponent extends StatelessWidget {
                           width: 0.2.sw,
                           height: 0.03.sh,
                           decoration: BoxDecoration(
-                              color: OrangeColor,
+                              color:"${post.active}".getStatusProductColor(),
                               borderRadius: BorderRadius.only(
                                   bottomRight: Radius.circular(20.r),
                                   bottomLeft: Radius.circular(20.r))),
                           child: Text(
-                            'قيد المراجعة',
+                            '${post.active}'.getStatusProduct(),
                             style: H5WhiteTextStyle,
                           ),
                         ),
@@ -436,12 +436,27 @@ class MinimizeDetailsJobComponent extends StatelessWidget {
                           width: 0.2.sw,
                           height: 0.03.sh,
                           decoration: BoxDecoration(
-                              color: Colors.red,
+                               color:"${post.active}".getStatusProductColor(),
                               borderRadius: BorderRadius.only(
                                   bottomRight: Radius.circular(20.r),
                                   bottomLeft: Radius.circular(20.r))),
                           child: Text(
-                            'محظور',
+                            '${post.active}'.getStatusProduct(),
+                            style: H5WhiteTextStyle,
+                          ),
+                        ),
+                      if (post.active == 'hidden')
+                        Container(
+                          alignment: Alignment.center,
+                          width: 0.2.sw,
+                          height: 0.03.sh,
+                          decoration: BoxDecoration(
+                              color:"${post.active}".getStatusProductColor(),
+                              borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(20.r),
+                                  bottomLeft: Radius.circular(20.r))),
+                          child: Text(
+                            '${post.active}'.getStatusProduct(),
                             style: H5WhiteTextStyle,
                           ),
                         ),
