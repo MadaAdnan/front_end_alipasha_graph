@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
+import '../../components/progress_loading.dart';
 import 'logic.dart';
 
 class LoginPage extends StatelessWidget {
@@ -144,7 +145,7 @@ class LoginPage extends StatelessWidget {
                         25.verticalSpace,
                         InkWell(
                           onTap: () async {
-                            logic.registerGoogel();
+                            _getAffeliateCode();
                           },
                           child: Container(
                             width: 0.9.sw,
@@ -202,5 +203,63 @@ class LoginPage extends StatelessWidget {
         ),
       ),
     );
+  }
+  _getAffeliateCode() {
+    Get.dialog(AlertDialog(
+      backgroundColor: WhiteColor,
+      content: Obx(() {
+        if(logic.loading.value){
+          return ProgressLoading(width: 0.15.sw,);
+        }
+        return Container(
+          height: 0.2.sh,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text('كود الإحالة', style: H1RedTextStyle,),
+                SizedBox(height: 0.02.sh,),
+                Text(
+                  'يرجى إدخال كود الإحالة في حال توفره', style: H4RegularDark,),
+                SizedBox(height: 0.02.sh,),
+                InputComponent(
+                  fill: WhiteColor,
+                  width: 1.sw,
+                  controller: logic.affiliateController,
+                  suffixIcon: FontAwesomeIcons.user,
+                  textInputType: TextInputType.text,
+                  isRequired: true,
+                  hint: 'كود الإحالة',
+
+                ),
+              ],
+            ),
+          ),
+        );
+      }),
+      actions: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            InkWell(
+              onTap: () {
+                logic.registerGoogel();
+              },
+              child: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.symmetric(vertical: 0.02.sw),
+                width: 0.25.sw,
+                decoration: BoxDecoration(
+                    color: RedColor,
+                    borderRadius: BorderRadius.circular(30.r)
+                ),
+                child: Text('إستمرار', style: H3WhiteTextStyle,),
+              ),
+            )
+          ],
+        )
+      ],
+    ));
   }
 }

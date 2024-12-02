@@ -739,7 +739,7 @@ class MinimizeDetailsServiceComponent extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           AutoSizeText(
-                            "${post.name!.length > 5 ? post.name : post.expert} ",
+                            "${post.name} ${post.expert} ",
                             style: H1BlackTextStyle.copyWith(
                                 fontWeight: FontWeight.bold),
                             maxLines: 2,

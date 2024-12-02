@@ -94,6 +94,7 @@ class ServiceLogic extends GetxController {
      ''';
     try {
       dio.Response? res = await mainController.fetchData();
+      mainController.logger.d(categoryModel.id);
       mainController.logger.d(res?.data);
       if (res?.data?['data']?['products']?['paginatorInfo'] != null) {
         hasMorePage.value =
@@ -106,8 +107,8 @@ class ServiceLogic extends GetxController {
         }
       }
 
-      if (res?.data?['data']['citiesByCategory'] != null && cities.length==0) {
-        for (var item in res?.data?['data']['citiesByCategory']) {
+      if (res?.data?['data']?['citiesByCategory'] != null && cities.length==0) {
+        for (var item in res?.data?['data']?['citiesByCategory']) {
           cities.add(CityModel.fromJson(item));
         }
       }

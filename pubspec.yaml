@@ -1,6 +1,6 @@
 name: ali_pasha_graph
 description: "Ali-pasha2 With GraphQl"
-version: 3.0.0+68
+version: 3.0.2+70
 environment:
   sdk: '>=3.4.3 <4.0.0'
 dependencies:
@@ -69,6 +69,7 @@ dependencies:
   onesignal_flutter: ^5.2.6
   html_viewer_elite: ^0.0.4
   flutter_deep_links: ^0.0.3
+  crypto: ^3.0.6
 #  flutter_sound: ^9.6.0
 #  audio_session: ^0.1.20
 

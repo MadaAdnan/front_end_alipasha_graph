@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
 import 'package:ali_pasha_graph/helpers/google_auth.dart';
@@ -6,20 +8,21 @@ import 'package:ali_pasha_graph/helpers/queries.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 
 import 'package:select2dot1/select2dot1.dart';
 import 'package:dio/dio.dart' as dio;
-
+import 'package:crypto/crypto.dart' ;
 class RegisterLogic extends GetxController {
   MainController mainController = Get.find<MainController>();
   RxBool loading = RxBool(false);
-  TextEditingController nameController = TextEditingController(text: 'adnan');
+  TextEditingController nameController = TextEditingController();
 
 
-  TextEditingController emailController = TextEditingController(text: 'mh.shamey@gmail.com');
-  TextEditingController passwordController = TextEditingController(text: 'password');
-  TextEditingController confirmPasswordController = TextEditingController(text: 'password');
-  TextEditingController phoneController = TextEditingController(text: '352681125699');
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
 
   // TextEditingController addressController=TextEditingController();
   TextEditingController affiliateController = TextEditingController();
@@ -49,13 +52,18 @@ class RegisterLogic extends GetxController {
   }
 
 
-  Future<void> registerGoogel() async {
+  Future registerGoogel() async {
    Map<String,String>? user=await GoogleAuth.signin();
    if(user==null){
      return ;
    }
-    loading.value = true;
-    mainController.query.value = '''
+
+   String input="ali-pasha5${DateTime.now().day}";
+   var bytes = utf8.encode(input);
+  var hash=md5.convert(bytes);
+
+   loading.value = true;
+   mainController.query.value = '''
 mutation CreateGoogleUser {
     createGoogleUser(
         input: {
@@ -63,7 +71,8 @@ mutation CreateGoogleUser {
             email: "${user['email']}"
             password: "${user['password']}"
             device_token: "${deviceToken}"
-            
+            affiliate:"${affiliateController.text}"
+            hash:"$hash"
         }
     ) {
         token
@@ -110,6 +119,7 @@ mutation CreateUser {
             city_id: ${int.tryParse("$citySelected") ?? null}
             device_token: "${deviceToken}"
             affiliate: "${affiliateController.text}"
+            
         }
     ) {
         token

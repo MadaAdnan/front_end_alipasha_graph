@@ -17,6 +17,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import "package:dio/dio.dart" as dio;
+import 'package:logger/logger.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../helpers/colors.dart';
@@ -25,6 +26,7 @@ import '../../helpers/style.dart';
 class PostCard extends StatelessWidget {
   final ProductModel post;
   RxBool is_like = RxBool(false);
+  RxBool plusOneLike = RxBool(false);
   RxBool allowLike=RxBool(true);
   PostCard({super.key, required this.post});
 
@@ -212,9 +214,7 @@ class PostCard extends StatelessWidget {
                     child: Container(
                       width: 1.sw,
                       child: Text(
-                        "${post.expert!.length.isGreaterThan(5)
-                            ? post.expert
-                            : post.name}",
+                        "${post.name} ${post.expert}",
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
                         style: H3GrayTextStyle,
@@ -432,7 +432,7 @@ class PostCard extends StatelessWidget {
                 Obx(() {
                   return InkWell(
                     onTap: ()async {
-                      if(isAuth()){
+                      if(isAuth() ){
                        await like();
                        is_like.value=false;
                       }
@@ -444,16 +444,16 @@ class PostCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Icon(
-                            is_like.value == true
+                            is_like.value || plusOneLike.value == true
                                 ? FontAwesomeIcons.solidThumbsUp
                                 : FontAwesomeIcons.thumbsUp,
                             size: 0.05.sw,
-                            color: is_like.value == true ? RedColor : null,
+                            color: is_like.value || plusOneLike.value  ? RedColor : null,
                           ),
                           SizedBox(
                             width: 0.004.sw,
                           ),
-                          Text('${is_like.value?post.likes_count!+1:post.likes_count}'.toFormatNumberK(),style: H4BlackTextStyle,)
+                          Text('${plusOneLike.value==true?post.likes_count!+1:post.likes_count}'.toFormatNumberK(),style: H4BlackTextStyle,)
                         ],
                       ),
                     ),
@@ -607,8 +607,10 @@ class PostCard extends StatelessWidget {
 
   like() async {
     if(allowLike.value){
-      print('CLICK LIKE');
-      is_like.value = !is_like.value;
+
+if(!is_like.value){
+  plusOneLike.value=true;
+}
       allowLike.value = false;
       mainController.query.value = '''
     mutation AddLike{
@@ -659,6 +661,7 @@ addLike(product_id:"${post.id}"){
         dio.Response? res = await mainController.fetchData();
 
         if (res?.data?['data']?['addLike'] != null) {
+
           ProductModel product = ProductModel.fromJson(
               res?.data?['data']?['addLike']);
           int index = Get
@@ -676,6 +679,7 @@ addLike(product_id:"${post.id}"){
       } catch (e) {
 
       }
+      plusOneLike.value=false;
       Future.delayed(Duration(seconds: 10),() {
         allowLike.value=true;
       },);

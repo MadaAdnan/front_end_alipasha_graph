@@ -67,7 +67,7 @@ class EditTenderPage extends StatelessWidget {
                                       border: Border.all(color: GrayDarkColor),
                                       image: DecorationImage(
                                           image: CachedNetworkImageProvider(
-                                            "${mainController.authUser.value?.logo}",
+                                            "${mainController.authUser.value?.image}",
                                           ),
                                           fit: BoxFit.cover),
                                     ),

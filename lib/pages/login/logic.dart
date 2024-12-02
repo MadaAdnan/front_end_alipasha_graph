@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/helpers/push_notification_service.dart';
 import 'package:ali_pasha_graph/helpers/queries.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
+import 'package:crypto/crypto.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
@@ -10,10 +13,9 @@ import '../../exceptions/custom_exception.dart';
 import '../../helpers/google_auth.dart';
 
 class LoginLogic extends GetxController {
-  TextEditingController usernameController =
-      TextEditingController();
-  TextEditingController passwordController =
-      TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController affiliateController = TextEditingController();
   String? token;
 
   ///
@@ -70,17 +72,14 @@ mutation Login {
     if (user == null) {
       return;
     }
+    String input = "ali-pasha5${DateTime.now().day}";
+    var bytes = utf8.encode(input);
+    var hash = md5.convert(bytes);
     loading.value = true;
     mainController.query.value = '''
-mutation CreateGoogleUser {
+mutation CreateGoogleUser(\$input:CreateGoogleUserInput) {
     createGoogleUser(
-        input: {
-            name: "${user['name']}"
-            email: "${user['email']}"
-            password: "${user['password']}"
-            device_token: "${token ?? ''}"
-            
-        }
+        input: \$input
     ) {
         token
         user {
@@ -90,11 +89,21 @@ mutation CreateGoogleUser {
 }
 
 ''';
-
+    mainController.variables.value = {
+      'input': {
+        "name": "${user['name']}",
+        "email": "${user['email']}",
+        "password": "${user['password']}",
+        "device_token": "${token ?? ''}",
+        "affiliate": "${affiliateController.text??''}",
+        "hash": "${hash}"
+      }
+    };
     try {
       dio.Response? res = await mainController.fetchData();
+      loading.value = false;
 
-      mainController.logger.e(res?.data);
+     // mainController.logger.e(res?.data);
       if (res?.data?['data']?['createGoogleUser']?['token'] != null) {
         await mainController.setToken(
             token: res?.data?['data']?['createGoogleUser']?['token'],
@@ -104,13 +113,13 @@ mutation CreateGoogleUser {
             json: res?.data?['data']?['createGoogleUser']?['user']);
         Get.offAndToNamed(HOME_PAGE);
       }
-      if (res?.data?['errors']?[0]?['extensions']['validation'] != null) {}
+
       if (res?.data?['errors']?[0]?['message'] != null) {
         mainController.showToast(
             text: '${res?.data['errors'][0]['message']}', type: 'error');
       }
-    } on CustomException catch (e) {
-      print(e);
+    } catch (e) {
+      mainController.showToast(text: '$e', type: 'error');
     }
     loading.value = false;
   }

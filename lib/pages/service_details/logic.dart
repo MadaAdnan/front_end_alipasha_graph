@@ -28,6 +28,7 @@ class ServiceDetailsLogic extends GetxController {
   }
 
   getService() async {
+    loading.value=true;
     mainController.query.value = '''
     query Product {
     product(id: "${serviceId.value}") {
@@ -78,5 +79,6 @@ class ServiceDetailsLogic extends GetxController {
     } catch (e) {
       mainController.logger.e("Error Get Service Details $e");
     }
+    loading.value=false;
   }
 }

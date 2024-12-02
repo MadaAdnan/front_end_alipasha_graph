@@ -9,6 +9,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'logic.dart';
@@ -18,6 +19,7 @@ class ServicePage extends StatelessWidget {
 
   final logic = Get.find<ServiceLogic>();
 MainController mainController=Get.find<MainController>();
+ScrollController _scrollController=ScrollController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +28,8 @@ MainController mainController=Get.find<MainController>();
           if (scrollInfo.metrics.pixels >=
               scrollInfo.metrics.maxScrollExtent * 0.80 &&
               !logic.loading.value &&
-              logic.hasMorePage.value) {
+              logic.hasMorePage.value && scrollInfo.context ==_scrollController.position.context.notificationContext) {
+           Logger().f("OKOK");
             logic.nextPage();
           }
 
@@ -54,7 +57,7 @@ MainController mainController=Get.find<MainController>();
                   padding: EdgeInsets.symmetric(vertical: 0.01.sh,horizontal: 0.02.sw),
                   scrollDirection: Axis.horizontal,
                   children: [
-                    if(logic.loading.value)
+                    if(logic.loading.value && logic.page.value==1)
                       ...List.generate(5, (index) =>
                           Shimmer(gradient: LinearGradient(colors: [GrayLightColor,GrayWhiteColor,GrayLightColor,]), child:  Container(
                             margin: EdgeInsets.symmetric(horizontal: 0.02.sw),
@@ -69,7 +72,7 @@ MainController mainController=Get.find<MainController>();
                           )),
                       ),
 
-                    if(logic.loading.value==false)
+                    if(logic.cities.length!=0 )
                       InkWell(
                         borderRadius: BorderRadius.circular(100.r),
                         onTap: (){
@@ -92,7 +95,7 @@ MainController mainController=Get.find<MainController>();
                           ],
                         ),
                       ),
-                    if(logic.loading.value==false)
+                    if(logic.cities.length!=0 )
 
                     ...List.generate(logic.cities.length, (index) =>
                        InkWell(
@@ -126,13 +129,15 @@ MainController mainController=Get.find<MainController>();
               child: Obx(
                     () {
                   return ListView(
+                    key: Key('list1'),
+                    controller: _scrollController,
                     padding: EdgeInsets.symmetric(
                         vertical: 0.005.sh, horizontal: 0.02.sw),
                     children: [
                       if (logic.loading.value && logic.page.value==1)
                       ...List.generate(4, (index)=>MinimizeDetailsProductComponentLoading()),
 
-                      if (!logic.loading.value)
+
                       ...List.generate(logic.products.length, (index) {
                         return MinimizeDetailsServiceComponent(
                           post: logic.products[index],

@@ -1,4 +1,5 @@
 import 'package:ali_pasha_graph/components/advice_component/view.dart';
+import 'package:ali_pasha_graph/components/progress_loading.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/components.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
@@ -32,6 +33,14 @@ class ServiceDetailsPage extends StatelessWidget {
         }),
       ),
       body: Obx(() {
+        if(logic.loading.value){
+          return Container(
+            alignment: Alignment.center,
+            width: 1.sw,
+            height: 1.sh,
+            child: ProgressLoading(width: 0.2.sw,),
+          );
+        }
         return SingleChildScrollView(
           padding: EdgeInsets.symmetric(vertical: 0.02.sh, horizontal: 0.02.sw),
           child: Column(
