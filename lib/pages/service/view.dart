@@ -3,6 +3,7 @@ import 'package:ali_pasha_graph/components/product_components/minimize_details_p
 import 'package:ali_pasha_graph/components/product_components/minimize_details_product_component_loading.dart';
 import 'package:ali_pasha_graph/components/progress_loading.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
+import 'package:ali_pasha_graph/helpers/components.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -29,7 +30,7 @@ ScrollController _scrollController=ScrollController();
               scrollInfo.metrics.maxScrollExtent * 0.80 &&
               !logic.loading.value &&
               logic.hasMorePage.value && scrollInfo.context ==_scrollController.position.context.notificationContext) {
-           Logger().f("OKOK");
+
             logic.nextPage();
           }
 
@@ -143,8 +144,19 @@ ScrollController _scrollController=ScrollController();
                           post: logic.products[index],
                           TitleColor: DarkColor,
                           onClick: () {
-                            Get.toNamed(SERVICE_DETAILS,
-                                arguments: logic.products[index].id,parameters: {"id":"${logic.products[index].id}"});
+                            if(logic.products[index].url!=null && logic.products[index].url!.startsWith('http') && !logic.products[index].url!.endsWith('pdf') ){
+                              openUrl(url: "${logic.products[index].url}");
+
+                            }else if(logic.products[index].url!=null && logic.products[index].url!.startsWith('http') && logic.products[index].url!.endsWith('pdf')){
+                             // openUrl(url: "${logic.products[index].url}");
+                              Get.toNamed(PDF_PAGE,
+                                  arguments: logic.products[index].url);
+
+                            }else{
+                              Get.toNamed(SERVICE_DETAILS,
+                                  arguments: logic.products[index].id,parameters: {"id":"${logic.products[index].id}"});
+                            }
+
                           },
                         );
                       }),

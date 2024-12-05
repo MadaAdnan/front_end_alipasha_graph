@@ -8,6 +8,7 @@ import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 
 import '../../../components/progress_loading.dart';
 import '../../../helpers/style.dart';
@@ -34,12 +35,14 @@ class TabProduct extends StatelessWidget {
         children: [
         
           Obx(() {
-            if ((logic.loadingProduct.value && logic.page.value == 1)) {
+            Logger().d("LENTH");
+            Logger().d(logic.products.length);
+            if (logic.loadingProduct.value && logic.products.length==0) {
               return Expanded(
                 child: ListView(
                   children: [
                     ...List.generate(
-                      4,
+                      1,
                       (i) => MinimizeDetailsProductComponentLoading(),
                     )
                   ],

@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import 'package:dio/dio.dart' as dio;
+import 'package:logger/logger.dart';
 
 
 
@@ -51,7 +52,7 @@ class ProfileLogic extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
+    getDataFromStorage();
     ever(page, (value) {
       getProduct();
     });
@@ -79,9 +80,7 @@ class ProfileLogic extends GetxController {
 
   getProduct() async {
     loadingProduct.value = true;
-    if (page.value == 1) {
-      products.clear();
-    }
+
     mainController.query('''
     query MyProducts {
       myProducts(first: 35, page: ${page} ,search:"${search.value ?? ''}") {
@@ -91,6 +90,8 @@ class ProfileLogic extends GetxController {
         data {
             id
             created_at
+            start_date
+            end_date
             name
             expert
             weight
@@ -102,6 +103,7 @@ class ProfileLogic extends GetxController {
             views_count
             image
             user{
+            image
             id
             seller_name
             is_verified
@@ -131,14 +133,19 @@ class ProfileLogic extends GetxController {
       if (res?.data?['data']?['myProducts'] != null) {
         hasMorePage(
             res?.data['data']?['myProducts']['paginatorInfo']['hasMorePages']);
+        if(page.value==1){
+          products([]);
+        }
+        await    mainController.storage.write('products-${mainController.authUser.value?.id}', res?.data['data']['myProducts']['data']);
         for (var item in res?.data['data']['myProducts']['data']) {
           products.add(ProductModel.fromJson(item));
         }
+
       }
       if(res?.data['errors']?[0]?['message']!=null){
         mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
       }
-    } on CustomException catch (e) {
+    } catch (e) {
       mainController.logger.e(e);
     }
     loadingProduct.value = false;
@@ -228,5 +235,15 @@ class ProfileLogic extends GetxController {
     }
   }
 
+
+  getDataFromStorage(){
+    var listProduct = mainController.storage.read('products-${mainController.authUser.value?.id}')??[];
+Logger().f("TEST");
+Logger().f(listProduct);
+Logger().f("END");
+    for (var item in listProduct) {
+      products.add(ProductModel.fromJson(item));
+    }
+  }
 
 }

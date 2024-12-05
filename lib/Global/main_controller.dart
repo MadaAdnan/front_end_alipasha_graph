@@ -144,11 +144,11 @@ class MainController extends GetxController {
   }
 
   communitySubscribe(String channelName) {
-    logger.f("START");
 
-    logger.f("CONNECTEDPUSHER");
+
+
     Channel channel = pusher.value!.subscribe(channelName);
-    logger.f("CONNECTEDPUSHER $channelName");
+
     channels.add(channel);
     channel.bind('message.create', handelEventCommunity);
   }
@@ -330,6 +330,7 @@ class MainController extends GetxController {
   }
 
   createCommunity({required int sellerId, String? message}) async {
+
     if (createCommunityLodaing.value) {
       return;
     }
@@ -339,6 +340,7 @@ class MainController extends GetxController {
     }
     createCommunityLodaing.value = true;
     if (authUser.value == null) return;
+
     query.value = '''
    mutation CreateChat(\$memberId:Int!) {
     createChat(memberId:\$memberId ) {
@@ -371,6 +373,7 @@ class MainController extends GetxController {
     variables.value = {'memberId': sellerId};
     try {
       dio.Response? res = await fetchData();
+
       if (res?.data?['data']['createChat']['user'] != null) {
         var dataUser = res?.data?['data']['createChat']['user'];
         await setUserJson(json: res?.data?['data']['createChat']['user']);
@@ -382,7 +385,7 @@ class MainController extends GetxController {
 
         communitySubscribe(
             'private-message.${community.id}.${authUser.value?.id}');
-        Get.toNamed(CHAT_PAGE,
+        Get.offAndToNamed(CHAT_PAGE,
             arguments: community,
             parameters: {"msg": message != null ? message : ''});
       }

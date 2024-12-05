@@ -593,11 +593,39 @@ class GroupPage extends StatelessWidget {
                   text: TextSpan(children: [
                     ..."${message.body}".split(' ').map((el) {
                       if (isURL("$el")) {
+                        if(el.startsWith('https://wa.me')){
+                          return WidgetSpan(
+                              child: InkWell(
+                                onTap: () {
+                                  openUrl(url: '$el');
+                                },
+                                child: Container(
+                                  alignment:Alignment.center,
+                                  padding:EdgeInsets.symmetric(horizontal: 0.02.sw,vertical: 0.01.sh),
+                                  margin:EdgeInsets.only(top: 0.01.sh),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'تواصل عبر واتسآب',
+                                        style: H3WhiteTextStyle,
+                                      ),
+                                      SizedBox(width: 0.02.sw,),
+                                      Icon(FontAwesomeIcons.whatsapp,color: WhiteColor,)
+                                    ],
+                                  ),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(30.r),
+                                      color: Colors.green
+                                  ),
+                                ),
+                              ));
+                        }
                         return TextSpan(
                           recognizer: TapGestureRecognizer()
                             ..onTap = () async => await openUrl(url: '$el'),
                           text: ' $el ',
-                          style: H4RedTextStyle,
+                          style: H2RedTextStyle,
                         );
                       } else {
                         return TextSpan(text: ' $el ', style: H4RegularDark);
@@ -743,11 +771,39 @@ class GroupPage extends StatelessWidget {
                     text: TextSpan(children: [
                       ..."${message.body}".split(' ').map((el) {
                         if (isURL("$el")) {
+                          if(el.startsWith('https://wa.me')){
+                            return WidgetSpan(
+                                child: InkWell(
+                                  onTap: () {
+                                    openUrl(url: '$el');
+                                  },
+                                  child: Container(
+                                    alignment:Alignment.center,
+                                    padding:EdgeInsets.symmetric(horizontal: 0.02.sw,vertical: 0.01.sh),
+                                    margin:EdgeInsets.only(top: 0.01.sh),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'تواصل عبر واتسآب',
+                                          style: H3WhiteTextStyle,
+                                        ),
+                                        SizedBox(width: 0.02.sw,),
+                                        Icon(FontAwesomeIcons.whatsapp,color: WhiteColor,)
+                                      ],
+                                    ),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(30.r),
+                                        color: Colors.green
+                                    ),
+                                  ),
+                                ));
+                          }
                           return TextSpan(
                             recognizer: TapGestureRecognizer()
                               ..onTap = () async => await openUrl(url: '$el'),
                             text: ' $el ',
-                            style: H4RedTextStyle,
+                            style: H2RedTextStyle,
                           );
                         } else {
                           return TextSpan(text: ' $el ', style: H4RegularDark);

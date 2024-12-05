@@ -752,25 +752,22 @@ class MinimizeDetailsServiceComponent extends StatelessWidget {
                               text: TextSpan(children: [
                             TextSpan(
                                 text: '${post.city?.name ?? ''}',
-                                style: H4GrayTextStyle),
+                                style: H3GrayTextStyle),
                             if (post.category?.name != null)
                               TextSpan(
                                   text: ' - ${post.category?.name}',
-                                  style: H4GrayTextStyle),
+                                  style: H3GrayTextStyle),
                             if (post.sub1?.name != null)
                               TextSpan(
                                   text: ' - ${post.sub1?.name}',
-                                  style: H4GrayTextStyle),
+                                  style: H3GrayTextStyle),
                           ])),
                           if (post.user != null)
                             Container(
-                              child: SellerNameComponent(
-                                  text: 'منشور بواسطة:',
-                                  textStyle: H4RegularDark,
-                                  color: TitleColor,
-                                  seller: post.user,
-                                  isVerified: post.user?.is_verified == true),
-                            ),
+                              child: RichText(text: TextSpan(children: [
+                                TextSpan(text: 'العنوان : ',style: H4RegularDark),
+                                TextSpan(text: ' ${post.address}',style: H4RegularDark),
+                              ]),), ),
                           if (post.user == null)
                             Container(
                               padding: EdgeInsets.only(bottom: 0.004.sh),

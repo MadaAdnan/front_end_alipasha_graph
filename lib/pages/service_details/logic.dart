@@ -71,7 +71,7 @@ class ServiceDetailsLogic extends GetxController {
      ''';
     try {
       dio.Response? res = await mainController.fetchData();
-      mainController.logger.w(res?.data);
+      mainController.logger.w(res?.data?['data']?['product']);
       if (res?.data?['data']?['product']['product'] != null) {
         serviceModel.value =
             ProductModel.fromJson(res?.data?['data']?['product']['product']);

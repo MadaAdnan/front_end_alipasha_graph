@@ -11,6 +11,7 @@ const String CREATE_TENDER_PAGE = '/create_tender';
 const String CREATE_SERVICE_PAGE = '/create_service';
 const String MY_INVOICE_PAGE = '/my_invoice_page';
 const String INVOICE_PAGE = '/invoice_page';
+const String PDF_PAGE = '/pdf_page';
 
 const String Edit_PRODUCT_PAGE = '/edit_product';
 const String Edit_JOB_PAGE = '/edit_job';

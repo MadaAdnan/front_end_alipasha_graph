@@ -75,6 +75,8 @@ import 'package:ali_pasha_graph/pages/orders/binding.dart';
 import 'package:ali_pasha_graph/pages/orders/view.dart';
 import 'package:ali_pasha_graph/pages/partner/binding.dart';
 import 'package:ali_pasha_graph/pages/partner/view.dart';
+import 'package:ali_pasha_graph/pages/pdf/binding.dart';
+import 'package:ali_pasha_graph/pages/pdf/view.dart';
 import 'package:ali_pasha_graph/pages/plan/binding.dart';
 import 'package:ali_pasha_graph/pages/plan/view.dart';
 import 'package:ali_pasha_graph/pages/prayer/binding.dart';
@@ -146,6 +148,12 @@ class AppPages {
       name: NEW_DETAILS,
       page: () => NewDetailsPage(),
       binding: NewDetailsBinding(),
+      middlewares: [],
+    ),
+    GetPage(
+      name: PDF_PAGE,
+      page: () => PdfPage(),
+      binding: PdfBinding(),
       middlewares: [],
     ),
 

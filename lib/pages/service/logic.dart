@@ -77,6 +77,7 @@ class ServiceLogic extends GetxController {
             name
             type
             address
+            url
             views_count
             image
             updated_at
@@ -94,6 +95,7 @@ class ServiceLogic extends GetxController {
      ''';
     try {
       dio.Response? res = await mainController.fetchData();
+
       mainController.logger.d(categoryModel.id);
       mainController.logger.d(res?.data);
       if (res?.data?['data']?['products']?['paginatorInfo'] != null) {

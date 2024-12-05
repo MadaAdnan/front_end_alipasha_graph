@@ -276,7 +276,7 @@ class ProductPage extends StatelessWidget {
       ),
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-      floatingActionButton: Container(
+      floatingActionButton: (logic.product.value?.type=='product') ?Container(
         padding: EdgeInsets.symmetric(horizontal: 0.01.sw),
         width: 1.sw,
         height: 0.07.sh,
@@ -406,7 +406,7 @@ class ProductPage extends StatelessWidget {
             )
           ],
         ),
-      ),
+      ):Container(),
       backgroundColor: WhiteColor,
       body: Obx(
         () {
@@ -1081,15 +1081,18 @@ class ProductPage extends StatelessWidget {
                           SizedBox(
                             height: 0.01.sh,
                           ),
+                          if(logic.product.value?.type=='product')
                           Text(
                             'منتجات ذات صلة',
                             style: H3RedTextStyle.copyWith(
                                 decoration: TextDecoration.underline,
                                 decorationColor: RedColor),
                           ),
+                          if(logic.product.value?.type=='product')
                           SizedBox(
                             height: 0.01.sh,
                           ),
+                          if(logic.product.value?.type=='product')
                           ...List.generate(logic.products.length, (index) {
                             switch (logic.products[index].type) {
                               case 'product':

@@ -112,7 +112,14 @@ class ChatLogic extends GetxController {
     // TODO: implement onInit
     super.onInit();
     communityModel.value = Get.arguments;
-
+ever(communityId, (value){
+  if(page.value>1){
+    page.value=1;
+  }else{
+    getMessages();
+  }
+  messages([]);
+});
     ever(page, (value) {
       getMessages();
     });
