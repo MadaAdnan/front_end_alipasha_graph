@@ -99,6 +99,9 @@ class LoginPage extends StatelessWidget {
                           );
                         }),
                         GestureDetector(
+                          onTap: (){
+                            Get.toNamed(FORGET_PASSWORD_PAGE);
+                          },
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Text(

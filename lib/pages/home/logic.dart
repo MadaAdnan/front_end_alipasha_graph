@@ -1,8 +1,13 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
+import 'package:ali_pasha_graph/helpers/colors.dart';
+import 'package:ali_pasha_graph/helpers/style.dart';
 
 import 'package:ali_pasha_graph/models/category_model.dart';
 import 'package:ali_pasha_graph/models/city_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:logger/logger.dart';
@@ -19,14 +24,18 @@ class HomeLogic extends GetxController {
 
   RxInt page = RxInt(1);
 
+
   @override
   void onInit() {
     super.onInit();
 
     getDataFromStorage();
-    ever(page, (value) {
-      getProduct();
-    } ,);
+    ever(
+      page,
+      (value) {
+        getProduct();
+      },
+    );
   }
 
   @override
@@ -38,14 +47,17 @@ class HomeLogic extends GetxController {
 
   nextPage() {
     page.value++;
-   // getProduct();
+    // getProduct();
+  }
+
+  showDialogPrivacy() {
+
   }
 
   getProduct() async {
-
     loading.value = true;
 
-String dataString='''data {
+    String dataString = '''data {
             id
             name
             weight
@@ -159,10 +171,11 @@ String dataString='''data {
     try {
       dio.Response? res = await mainController.fetchData();
       loading.value = false;
-      if (res?.data?['data']?['LatestProduct']?['paginatorInfo']?['hasMorePages'] !=
+      if (res?.data?['data']?['LatestProduct']?['paginatorInfo']
+              ?['hasMorePages'] !=
           null) {
-        hasMorePage(
-                res?.data?['data']?['LatestProduct']?['paginatorInfo']?['hasMorePages']);
+        hasMorePage(res?.data?['data']?['LatestProduct']?['paginatorInfo']
+            ?['hasMorePages']);
       }
       if (res?.data?['data']?['LatestProduct']?['data'] != null) {
         if (page.value == 1) {
@@ -170,42 +183,36 @@ String dataString='''data {
         }
         for (var item in res?.data?['data']?['SpecialProduct']?['data']) {
           products.add(ProductModel.fromJson(item));
-
         }
         for (var item in res?.data?['data']?['HobbiesProduct']?['data']) {
           products.add(ProductModel.fromJson(item));
-
         }
 
         for (var item in res?.data?['data']?['LatestProduct']?['data']) {
           products.add(ProductModel.fromJson(item));
-
         }
 
-        var productsList=[
-          ...res?.data?['data']?['LatestProduct']?['data']??[],
-          ...res?.data?['data']?['HobbiesProduct']?['data']??[],
-          ...res?.data?['data']?['SpecialProduct']?['data']??[],
+        var productsList = [
+          ...res?.data?['data']?['LatestProduct']?['data'] ?? [],
+          ...res?.data?['data']?['HobbiesProduct']?['data'] ?? [],
+          ...res?.data?['data']?['SpecialProduct']?['data'] ?? [],
         ];
 
-
-       if(mainController.storage.hasData('products')){
-         mainController.storage.remove('products');
-       }
-       await mainController.storage.write('products', productsList );
+        if (mainController.storage.hasData('products')) {
+          mainController.storage.remove('products');
+        }
+        await mainController.storage.write('products', productsList);
       }
 
       if (res?.data['data']?['mainCategories'] != null) {
-
-
         if (page.value == 1) {
           mainController.categories.clear();
         }
         for (var item in res?.data['data']['mainCategories']) {
-
           mainController.categories.add(CategoryModel.fromJson(item));
         }
-        mainController.storage.write('mainCategories',  res?.data['data']['mainCategories']);
+        mainController.storage
+            .write('mainCategories', res?.data['data']['mainCategories']);
       }
 
       if (res?.data?['data']?['cities'] != null) {
@@ -227,7 +234,8 @@ String dataString='''data {
         for (var item in res?.data?['data']?['specialSeller']) {
           sellers.add(UserModel.fromJson(item));
         }
-        mainController.storage.write('specialSeller', res?.data?['data']?['specialSeller']);
+        mainController.storage
+            .write('specialSeller', res?.data?['data']?['specialSeller']);
       }
     } catch (e) {
       mainController.logger.w('ERRORPRO');
@@ -238,9 +246,9 @@ String dataString='''data {
   }
 
   getDataFromStorage() {
-    var listProduct = mainController.storage.read('products')??[];
-    var listCategories = mainController.storage.read('mainCategories')??[];
-    var listSeller = mainController.storage.read('specialSeller')??[];
+    var listProduct = mainController.storage.read('products') ?? [];
+    var listCategories = mainController.storage.read('mainCategories') ?? [];
+    var listSeller = mainController.storage.read('specialSeller') ?? [];
     for (var item in listProduct) {
       products.add(ProductModel.fromJson(item));
     }
@@ -250,6 +258,5 @@ String dataString='''data {
     for (var item in listSeller) {
       sellers.add(UserModel.fromJson(item));
     }
-
   }
 }

@@ -16,6 +16,7 @@ import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -33,9 +34,12 @@ class HomePage extends StatelessWidget {
   final logic = Get.find<HomeLogic>();
   final ScrollController _scrollController = ScrollController();
   bool exit = false;
-
+  GlobalKey<FormState> _form = GlobalKey<FormState>();
+  RxnString privacy=RxnString('');
   @override
   Widget build(BuildContext context) {
+
+    // logic.showDialogPrivacy();
     exit = false;
     return WillPopScope(
         child: Scaffold(

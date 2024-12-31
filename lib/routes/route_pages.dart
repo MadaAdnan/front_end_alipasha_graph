@@ -1,9 +1,11 @@
+import 'package:ali_pasha_graph/middlewares/active_privacy.dart';
 import 'package:ali_pasha_graph/middlewares/complete_profile_middleware.dart';
 import 'package:ali_pasha_graph/middlewares/guest_middleware.dart';
 import 'package:ali_pasha_graph/middlewares/is_logged_in.dart';
 import 'package:ali_pasha_graph/middlewares/verify_email_middleware.dart';
 import 'package:ali_pasha_graph/pages/about/binding.dart';
 import 'package:ali_pasha_graph/pages/about/view.dart';
+import 'package:ali_pasha_graph/pages/agree_privacy/view.dart';
 import 'package:ali_pasha_graph/pages/asks/binding.dart';
 import 'package:ali_pasha_graph/pages/asks/view.dart';
 
@@ -119,6 +121,7 @@ import 'package:ali_pasha_graph/routes/routes_url.dart';
 
 import 'package:get/get.dart';
 
+import '../pages/agree_privacy/binding.dart';
 import '../pages/ask/binding.dart';
 import '../pages/ask/view.dart';
 import '../pages/create_tender/binding.dart';
@@ -126,6 +129,8 @@ import '../pages/create_tender/view.dart';
 
 import '../pages/following/binding.dart';
 import '../pages/following/view.dart';
+import '../pages/forget_password/binding.dart';
+import '../pages/forget_password/view.dart';
 import '../pages/invoices/binding.dart';
 import '../pages/invoices/view.dart';
 import '../pages/news/binding.dart';
@@ -142,12 +147,18 @@ class AppPages {
       name: HOME_PAGE,
       page: () => HomePage(),
       binding: HomeBinding(),
-      middlewares: [],
+      middlewares: [ActivePrivacyMiddleware()],
     ),
     GetPage(
       name: NEW_DETAILS,
       page: () => NewDetailsPage(),
       binding: NewDetailsBinding(),
+      middlewares: [],
+    ),
+    GetPage(
+      name: ACTIVE_PRIVACY,
+      page: () => AgreePrivacyPage(),
+      binding: AgreePrivacyBinding(),
       middlewares: [],
     ),
     GetPage(
@@ -301,6 +312,12 @@ class AppPages {
       name: LOGIN_PAGE,
       page: () => LoginPage(),
       binding: LoginBinding(),
+    ),
+    GetPage(
+      middlewares: [GuestMiddleware()],
+      name: FORGET_PASSWORD_PAGE,
+      page: () => ForgetPasswordPage(),
+      binding: ForgetPasswordBinding(),
     ),
     GetPage(
       middlewares: [GuestMiddleware()],

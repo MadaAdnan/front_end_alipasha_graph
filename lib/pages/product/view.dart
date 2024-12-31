@@ -276,137 +276,141 @@ class ProductPage extends StatelessWidget {
       ),
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-      floatingActionButton: (logic.product.value?.type=='product') ?Container(
-        padding: EdgeInsets.symmetric(horizontal: 0.01.sw),
-        width: 1.sw,
-        height: 0.07.sh,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Transform.translate(
-              offset: Offset(0.035.sw, 0),
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                    vertical: 0.01.sh, horizontal: 0.02.sw),
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.6),
-                  borderRadius: BorderRadius.circular(30.r),
-                ),
-                child: Obx(() {
-                  return Row(
-                    children: [
-                      Stack(
+      floatingActionButton: Obx(() {
+        if (logic.product.value?.type == 'product') {
+          return Container(
+            padding: EdgeInsets.symmetric(horizontal: 0.01.sw),
+            width: 1.sw,
+            height: 0.07.sh,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Transform.translate(
+                  offset: Offset(0.033.sw, 0),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                        vertical: 0.01.sh, horizontal: 0.02.sw),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.6),
+                      borderRadius: BorderRadius.circular(30.r),
+                    ),
+                    child: Obx(() {
+                      return Row(
                         children: [
+                          Stack(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  Get.toNamed(CART_SELLER);
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(0.02.sw),
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(
+                                    FontAwesomeIcons.cartShopping,
+                                    color: WhiteColor,
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                top: 0,
+                                right: 0,
+                                child: Badge.count(
+                                  count: mainController.carts.length,
+                                  backgroundColor: RedColor,
+                                ),
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            width: 0.03.sw,
+                          ),
                           InkWell(
                             onTap: () {
-                              Get.toNamed(CART_SELLER);
+                              mainController.addToCart(
+                                  product: logic.product.value!);
                             },
                             child: Container(
-                              padding: EdgeInsets.all(0.02.sw),
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
+                              width: 0.35.sw,
+                              height: 0.06.sh,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: RedColor,
+                                borderRadius: BorderRadius.circular(30.r),
                               ),
-                              child: const Icon(
-                                FontAwesomeIcons.cartShopping,
-                                color: WhiteColor,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'إضافة إلى السلة',
+                                    style: H3WhiteTextStyle,
+                                  ),
+                                  SizedBox(
+                                    width: 0.02.sw,
+                                  ),
+                                  Icon(
+                                    FontAwesomeIcons.cartShopping,
+                                    color: WhiteColor,
+                                    size: 0.04.sw,
+                                  )
+                                ],
                               ),
                             ),
                           ),
-                          Positioned(
-                            top: 0,
-                            right: 0,
-                            child: Badge.count(
-                              count: mainController.carts.length,
-                              backgroundColor: RedColor,
+                          SizedBox(
+                            width: 0.03.sw,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              if (logic.product.value?.user?.id != null &&
+                                  !mainController
+                                      .createCommunityLodaing.value) {
+                                mainController.createCommunity(
+                                    sellerId: logic.product.value!.user!.id!,
+                                    message:
+                                        """ المنتج ${logic.product.value!.name}   \n   معرف المنتج: ${logic.product.value!.id} """);
+                              }
+                            },
+                            child: Container(
+                              width: 0.35.sw,
+                              height: 0.06.sh,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: RedColor,
+                                borderRadius: BorderRadius.circular(30.r),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'مراسلة التاجر',
+                                    style: H3WhiteTextStyle,
+                                  ),
+                                  SizedBox(
+                                    width: 0.02.sw,
+                                  ),
+                                  Icon(
+                                    FontAwesomeIcons.comments,
+                                    color: WhiteColor,
+                                    size: 0.04.sw,
+                                  )
+                                ],
+                              ),
                             ),
-                          )
+                          ),
                         ],
-                      ),
-                      SizedBox(
-                        width: 0.03.sw,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          mainController.addToCart(
-                              product: logic.product.value!);
-                        },
-                        child: Container(
-                          width: 0.35.sw,
-                          height: 0.06.sh,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: RedColor,
-                            borderRadius: BorderRadius.circular(30.r),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'إضافة إلى السلة',
-                                style: H3WhiteTextStyle,
-                              ),
-                              SizedBox(
-                                width: 0.02.sw,
-                              ),
-                              Icon(
-                                FontAwesomeIcons.cartShopping,
-                                color: WhiteColor,
-                                size: 0.04.sw,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 0.03.sw,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          if (logic.product.value?.user?.id != null &&
-                              !mainController.createCommunityLodaing.value) {
-                            mainController.createCommunity(
-                                sellerId: logic.product.value!.user!.id!,
-                                message:
-                                    """ المنتج ${logic.product.value!.name}"""
-                                    r""" \n """
-                                    """    معرف المنتج: ${logic.product.value!.id} """);
-                          }
-                        },
-                        child: Container(
-                          width: 0.35.sw,
-                          height: 0.06.sh,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: RedColor,
-                            borderRadius: BorderRadius.circular(30.r),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'مراسلة التاجر',
-                                style: H3WhiteTextStyle,
-                              ),
-                              SizedBox(
-                                width: 0.02.sw,
-                              ),
-                              Icon(
-                                FontAwesomeIcons.comments,
-                                color: WhiteColor,
-                                size: 0.04.sw,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                }),
-              ),
-            )
-          ],
-        ),
-      ):Container(),
+                      );
+                    }),
+                  ),
+                )
+              ],
+            ),
+          );
+        }
+        return Container();
+      }),
       backgroundColor: WhiteColor,
       body: Obx(
         () {
@@ -431,10 +435,11 @@ class ProductPage extends StatelessWidget {
               Container(
                 child: FlutterCarousel(
                   items: [
-                    if(logic.product.value?.video!='')
+                    if (logic.product.value?.video != '')
                       InkWell(
                         onTap: () {
-                        Get.toNamed(VIDEO_PLAYER_POST_PAGE,arguments: logic.product.value?.video);
+                          Get.toNamed(VIDEO_PLAYER_POST_PAGE,
+                              arguments: logic.product.value?.video);
                         },
                         child: Container(
                           width: 0.79.sw,
@@ -442,14 +447,17 @@ class ProductPage extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: Colors.black,
                             borderRadius: BorderRadius.circular(30.r),
-                        ),
-                          child: Container(
-                            child: Icon(FontAwesomeIcons.play,color: RedColor,size: 0.2.sw
-                              ,),
                           ),
+                          child: Container(
+                            child: Icon(
+                              FontAwesomeIcons.play,
+                              color: RedColor,
+                              size: 0.2.sw,
+                            ),
+                          ),
+                        ),
                       ),
-                      ),
-                         InkWell(
+                    InkWell(
                       onTap: () {
                         showDialog(
                           context: context,
@@ -786,8 +794,7 @@ class ProductPage extends StatelessWidget {
                                   tapOnlyMode: true,
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(
-                                      borderSide: BorderSide.none
-                                    ),
+                                        borderSide: BorderSide.none),
                                   ),
                                   ratingWidget: RatingWidget(
                                       full: const Icon(
@@ -1081,62 +1088,62 @@ class ProductPage extends StatelessWidget {
                           SizedBox(
                             height: 0.01.sh,
                           ),
-                          if(logic.product.value?.type=='product')
-                          Text(
-                            'منتجات ذات صلة',
-                            style: H3RedTextStyle.copyWith(
-                                decoration: TextDecoration.underline,
-                                decorationColor: RedColor),
-                          ),
-                          if(logic.product.value?.type=='product')
-                          SizedBox(
-                            height: 0.01.sh,
-                          ),
-                          if(logic.product.value?.type=='product')
-                          ...List.generate(logic.products.length, (index) {
-                            switch (logic.products[index].type) {
-                              case 'product':
-                                return MinimizeDetailsProductComponent(
-                                  post: logic.products[index],
-                                  TitleColor: DarkColor,
-                                  onClick: () {
-                                    logic.productId.value =
-                                        logic.products[index].id;
-                                  },
-                                );
+                          if (logic.product.value?.type == 'product')
+                            Text(
+                              'منتجات ذات صلة',
+                              style: H3RedTextStyle.copyWith(
+                                  decoration: TextDecoration.underline,
+                                  decorationColor: RedColor),
+                            ),
+                          if (logic.product.value?.type == 'product')
+                            SizedBox(
+                              height: 0.01.sh,
+                            ),
+                          if (logic.product.value?.type == 'product')
+                            ...List.generate(logic.products.length, (index) {
+                              switch (logic.products[index].type) {
+                                case 'product':
+                                  return MinimizeDetailsProductComponent(
+                                    post: logic.products[index],
+                                    TitleColor: DarkColor,
+                                    onClick: () {
+                                      logic.productId.value =
+                                          logic.products[index].id;
+                                    },
+                                  );
 
-                              case 'service':
-                                return MinimizeDetailsServiceComponent(
-                                  post: logic.products[index],
-                                  TitleColor: DarkColor,
-                                  onClick: () {
-                                    logic.productId.value =
-                                        logic.products[index].id;
-                                  },
-                                );
+                                case 'service':
+                                  return MinimizeDetailsServiceComponent(
+                                    post: logic.products[index],
+                                    TitleColor: DarkColor,
+                                    onClick: () {
+                                      logic.productId.value =
+                                          logic.products[index].id;
+                                    },
+                                  );
 
-                              case 'job':
-                              case 'search_job':
-                                return MinimizeDetailsJobComponent(
-                                  post: logic.products[index],
-                                  TitleColor: DarkColor,
-                                  onClick: () {
-                                    logic.productId.value =
-                                        logic.products[index].id;
-                                  },
-                                );
+                                case 'job':
+                                case 'search_job':
+                                  return MinimizeDetailsJobComponent(
+                                    post: logic.products[index],
+                                    TitleColor: DarkColor,
+                                    onClick: () {
+                                      logic.productId.value =
+                                          logic.products[index].id;
+                                    },
+                                  );
 
-                              default:
-                                return MinimizeDetailsTenderComponent(
-                                  post: logic.products[index],
-                                  TitleColor: DarkColor,
-                                  onClick: () {
-                                    logic.productId.value =
-                                        logic.products[index].id;
-                                  },
-                                );
-                            }
-                          })
+                                default:
+                                  return MinimizeDetailsTenderComponent(
+                                    post: logic.products[index],
+                                    TitleColor: DarkColor,
+                                    onClick: () {
+                                      logic.productId.value =
+                                          logic.products[index].id;
+                                    },
+                                  );
+                              }
+                            })
                         ],
                       )
                     : null,

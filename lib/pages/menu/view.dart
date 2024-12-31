@@ -464,6 +464,26 @@ SizedBox(height: 0.02.sh,),
                   ],
                 ),
               ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: 0.01.sw, vertical: 0.002.sh),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: _buildWidget(
+                          icon: Icon(FontAwesomeIcons.fileCode,size: 0.08.sw,color: Colors.blueGrey,),
+                          onTap: () {
+                            Get.offAndToNamed(PRIVACY_PAGE);
+                          },
+                          image: 'assets/images/png/upgrade.png',
+                          title: 'سياسة الخصوصية'),
+                    ),
+
+                  ],
+                ),
+              ),
               Obx(() {
                 return _dropDownButton(
                   selectedValue: logic.selectedValue1.value,

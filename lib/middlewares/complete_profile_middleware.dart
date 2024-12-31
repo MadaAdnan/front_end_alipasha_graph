@@ -15,7 +15,7 @@ class CompleteProfileMiddleware extends GetMiddleware {
     bool hasUser = box.hasData('user') && box.read('user') != null;
     if (hasUser) {
       UserModel user = UserModel.fromJson(box.read('user'));
-      if((user.phone=='' || user.address=='') && user.is_seller==true){
+      if((user.phone=='' || user.address=='')){
         messageBox(title: 'لم تكمل البيانات', message: 'من فضلك قم بتعبئة البيانات الخاصة بك',isError: true);
 
         return RouteSettings(name: Edit_PROFILE_PAGE);

@@ -137,6 +137,7 @@ ever(communityId, (value){
       mainController.storage.write('communities-${communityModel.value?.id}',
           messages.map((el) => el.toJson()).toList());
     });
+    messageController.value=TextEditingValue(text: Get.parameters['msg']??'');
   }
 
   @override
