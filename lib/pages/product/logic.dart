@@ -125,6 +125,10 @@ TextEditingController comment =TextEditingController();
             turkey_price {
                 price
                 discount
+            } 
+             syr_price {
+                price
+                discount
             }
             image
             video

@@ -94,6 +94,9 @@ class ProfileLogic extends GetxController {
             end_date
             name
             expert
+            price
+            is_discount
+            discount
             weight
             is_available
             level

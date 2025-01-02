@@ -466,6 +466,7 @@ class CreateProductPage extends StatelessWidget {
                               children: [
                                 Container(
                                   width: 0.45.sw,
+                                  height: 0.065.sh,
                                   child: FormBuilderTextField(
                                     name: 'price',
                                     controller: logic.priceController,
@@ -536,9 +537,13 @@ class CreateProductPage extends StatelessWidget {
                         width: 1.sw,
                         height: 0.06.sh,
                         child: FormBuilderTextField(
-                          validator: FormBuilderValidators.url(
+                          validator:FormBuilderValidators.compose([ FormBuilderValidators.url(
                               errorText: 'يرجى إدخال رابط صحيح',
                               checkNullOrEmpty: false),
+                            FormBuilderValidators.startsWith('https://youtube.com/',
+                                errorText: 'يرجى إدخال رابط من يوتيوب فقط',
+                                checkNullOrEmpty: false)
+                          ]),
                           name: 'video',
                           keyboardType: TextInputType.url,
                           style: H3BlackTextStyle,

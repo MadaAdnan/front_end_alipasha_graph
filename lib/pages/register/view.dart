@@ -188,7 +188,7 @@ class RegisterPage extends StatelessWidget {
                             if (value!.startsWith("+")) {
                               return "يرجى إزالة علامة +  من بداية رقم الهاتف";
                             }
-                            if (value!.startsWith("00")) {
+                            if (value.startsWith("00")) {
                               return "يرجى إزالة علامة 00  من بداية رقم الهاتف";
                             }
                             return null;
@@ -207,12 +207,21 @@ class RegisterPage extends StatelessWidget {
                         }),
                         15.verticalSpace,
                         Select2Component(
-                            label: 'المدينة',
+                            label: 'المحافظة',
                             width: 1.sw,
                             onChanged: (values) {
-                              logic.citySelected.value = values.firstOrNull;
+                              logic.mainCitySelected.value = values.firstOrNull;
                             },
-                            selectDataController: logic.citiesController!),
+                            selectDataController: logic.mainCitiesController!),
+                        Obx(() {
+                          return Select2Component(
+                              label: 'المدينة',
+                              width: 1.sw,
+                              onChanged: (values) {
+                                logic.citySelected.value = values.firstOrNull;
+                              },
+                              selectDataController: logic.citiesController.value!);
+                        }),
                         Obx(() {
                           return Visibility(
                               visible: logic.errorCity.value != null,
@@ -231,8 +240,8 @@ class RegisterPage extends StatelessWidget {
                           controller: logic.affiliateController,
                           suffixIcon: FontAwesomeIcons.user,
                           textInputType: TextInputType.text,
-                          isRequired: true,
-                          hint: 'كود الإحالة',
+                          isRequired: false,
+                          hint: 'كود الإحالة (إختياري)',
 
                         ),
                         25.verticalSpace,
@@ -364,7 +373,7 @@ class RegisterPage extends StatelessWidget {
     Get.dialog(AlertDialog(
       backgroundColor: WhiteColor,
       content: Obx(() {
-        if(logic.loading.value){
+        if (logic.loading.value) {
           return ProgressLoading(width: 0.15.sw,);
         }
         return Container(
@@ -377,7 +386,8 @@ class RegisterPage extends StatelessWidget {
                 Text('كود الإحالة', style: H1RedTextStyle,),
                 SizedBox(height: 0.02.sh,),
                 Text(
-                  'يرجى إدخال كود الإحالة في حال توفره', style: H4RegularDark,),
+                  'يرجى إدخال كود الإحالة في حال توفره',
+                  style: H4RedTextStyle,),
                 SizedBox(height: 0.02.sh,),
                 InputComponent(
                   fill: WhiteColor,
@@ -385,7 +395,7 @@ class RegisterPage extends StatelessWidget {
                   controller: logic.affiliateController,
                   suffixIcon: FontAwesomeIcons.user,
                   textInputType: TextInputType.text,
-                  isRequired: true,
+                  isRequired: false,
                   hint: 'كود الإحالة',
 
                 ),
@@ -411,6 +421,22 @@ class RegisterPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(30.r)
                 ),
                 child: Text('إستمرار', style: H3WhiteTextStyle,),
+              ),
+            ),
+            SizedBox(width: 0.1.sw,),
+            InkWell(
+              onTap: () {
+                logic.registerGoogel();
+              },
+              child: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.symmetric(vertical: 0.02.sw),
+                width: 0.25.sw,
+                decoration: BoxDecoration(
+                    color: GrayLightColor,
+                    borderRadius: BorderRadius.circular(30.r)
+                ),
+                child: Text('تخطي', style: H3RegularDark,),
               ),
             )
           ],

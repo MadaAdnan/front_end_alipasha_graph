@@ -13,12 +13,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 
 import '../../helpers/components.dart';
 import 'logic.dart';
@@ -689,9 +691,7 @@ class ProductPage extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                  SizedBox(
-                                    height: 0.02.sh,
-                                  ),
+
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     crossAxisAlignment:
@@ -704,7 +704,7 @@ class ProductPage extends StatelessWidget {
                                                 TextDecoration.lineThrough),
                                       ),
                                       Icon(
-                                        FontAwesomeIcons.dollarSign,
+                                        FontAwesomeIcons.liraSign,
                                         size: 0.02.sw,
                                         color: GrayDarkColor,
                                       ),
@@ -713,12 +713,39 @@ class ProductPage extends StatelessWidget {
                                         style: H2RedTextStyle,
                                       ),
                                       Icon(
-                                        FontAwesomeIcons.dollarSign,
+                                        FontAwesomeIcons.liraSign,
                                         size: 0.03.sw,
                                         color: RedColor,
                                       ),
                                     ],
                                   ),
+
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "${logic.product.value?.syrPrice?.price?.toStringAsFixed(2)}",
+                                        style: H4RegularDark.copyWith(
+                                            decoration:
+                                            TextDecoration.lineThrough),
+                                      ),
+                                      Text(
+                                        " ل.س",
+                                        style: H6GrayOpacityTextStyle,
+                                      ),
+                                      Text(
+                                        "${logic.product.value?.syrPrice?.discount?.toStringAsFixed(2)}",
+                                        style: H2RedTextStyle,
+                                      ),
+                                      Text(
+                                        " ل.س",
+                                        style: H6RedTextStyle,
+                                      ),
+                                    ],
+                                  ),
+
                                 ],
                               )),
                             if (logic.product.value?.is_discount != true)
@@ -746,7 +773,7 @@ class ProductPage extends StatelessWidget {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                    CrossAxisAlignment.center,
                                     children: [
                                       Text(
                                         "${logic.product.value?.turkey_price?.price?.toStringAsFixed(2)}",
@@ -756,6 +783,21 @@ class ProductPage extends StatelessWidget {
                                         FontAwesomeIcons.turkishLiraSign,
                                         size: 0.03.sw,
                                         color: RedColor,
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "${logic.product.value?.syrPrice?.price?.toStringAsFixed(2)}",
+                                        style: H2RedTextStyle,
+                                      ),
+                                      Text(
+                                        " ل.س",
+                                        style: H6RedTextStyle,
                                       ),
                                     ],
                                   ),
@@ -1013,6 +1055,7 @@ class ProductPage extends StatelessWidget {
                           ),
                         ),
                       ),
+
                   ],
                 ),
               ),
@@ -1143,7 +1186,9 @@ class ProductPage extends StatelessWidget {
                                     },
                                   );
                               }
-                            })
+                            }),
+                          if(logic.product.value?.type=='tender' || logic.product.value?.type=='job' || logic.product.value?.type=='search_job')
+                            _detailsJob()
                         ],
                       )
                     : null,
@@ -1151,6 +1196,54 @@ class ProductPage extends StatelessWidget {
             ],
           );
         },
+      ),
+    );
+  }
+  Widget _detailsJob(){
+    return Container(
+      width: 1.sw,
+      padding: EdgeInsets.symmetric(horizontal: 0.01.sw),
+      child: Column(
+        children: [
+          Visibility(child: Row(
+            children: [
+              Text('كود التقديم : ',style: H3OrangeTextStyle,),
+              InkWell(child: Text('${logic.product.value?.code}',style: H3RegularDark,),onTap: ()async{
+               await Clipboard.setData(ClipboardData(text: '${logic.product.value?.code}'));
+               mainController.showToast(text: 'تم نسخ الكود',type: 'success');
+              },),
+            ],
+          ),visible: logic.product.value?.code!=''),
+          Visibility(child: Row(
+            children: [
+              Text('رقم الهاتف : ',style: H3OrangeTextStyle,),
+              InkWell(child: Text('${logic.product.value?.phone}',style: H3RegularDark,),onTap: (){
+                openUrl(url: "https://wa.me/${logic.product.value?.phone?.startsWith('+')==true?logic.product.value?.phone?.replaceFirst('+',''):logic.product.value?.phone}");
+              },),
+            ],
+          ),visible: logic.product.value?.phone!=''),
+          SizedBox(height: 0.015.sh,),
+          Visibility(child: Row(
+            children: [
+              Text('البريد الإلكتروني : ',style: H3OrangeTextStyle,),
+              InkWell(child: Text('${logic.product.value?.email}',style: H3RegularDark,),onTap: (){
+                openUrl(url: "mailto:${logic.product.value?.email}");
+              },),
+            ],
+          ),visible: logic.product.value?.email!=''),
+          SizedBox(height: 0.015.sh,),
+          Visibility(child: Row(
+            children: [
+              Text('رابط التقديم : ',style: H3OrangeTextStyle,),
+              Expanded(
+                child: InkWell(child: Container(width:1.sw,child: Text('${logic.product.value?.url}',style: H3RegularDark,maxLines: 2,overflow: TextOverflow.ellipsis,)),onTap: (){
+                  openUrl(url: "${logic.product.value?.url}",);
+                },),
+              ),
+            ],
+          ),visible: logic.product.value?.url!=''),
+          SizedBox(height: 0.015.sh,),
+        ],
       ),
     );
   }

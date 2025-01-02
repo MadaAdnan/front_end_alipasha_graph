@@ -224,7 +224,7 @@ class LoginPage extends StatelessWidget {
                 Text('كود الإحالة', style: H1RedTextStyle,),
                 SizedBox(height: 0.02.sh,),
                 Text(
-                  'يرجى إدخال كود الإحالة في حال توفره', style: H4RegularDark,),
+                  'يرجى إدخال كود الإحالة في حال توفره', style: H4RedTextStyle,),
                 SizedBox(height: 0.02.sh,),
                 InputComponent(
                   fill: WhiteColor,
@@ -232,7 +232,7 @@ class LoginPage extends StatelessWidget {
                   controller: logic.affiliateController,
                   suffixIcon: FontAwesomeIcons.user,
                   textInputType: TextInputType.text,
-                  isRequired: true,
+                  isRequired: false,
                   hint: 'كود الإحالة',
 
                 ),
@@ -258,6 +258,22 @@ class LoginPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(30.r)
                 ),
                 child: Text('إستمرار', style: H3WhiteTextStyle,),
+              ),
+            ),
+            SizedBox(width: 0.1.sw,),
+            InkWell(
+              onTap: () {
+                logic.registerGoogel();
+              },
+              child: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.symmetric(vertical: 0.02.sw),
+                width: 0.25.sw,
+                decoration: BoxDecoration(
+                    color: GrayLightColor,
+                    borderRadius: BorderRadius.circular(30.r)
+                ),
+                child: Text('تخطي', style: H3RegularDark,),
               ),
             )
           ],

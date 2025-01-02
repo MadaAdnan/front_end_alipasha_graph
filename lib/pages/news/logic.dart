@@ -51,6 +51,7 @@ query Products {
                 name
                 id
             }
+            id
             name
             expert
             views_count

@@ -337,6 +337,39 @@ class PrayerPage extends StatelessWidget {
                         color: GrayWhiteColor,
                       ),
                       child: Text(
+                        'العصر',
+                        style: H2RegularDark,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      width: 0.48.sw,
+                      height: 0.04.sh,
+                      decoration: BoxDecoration(
+                        //  border: Border.all(color: DarkColor),
+                        color: GrayWhiteColor,
+                      ),
+                      child: Text(
+                        '${logic.idlib.value?.asr}',
+                        style: H2RegularDark,
+                      ),
+                    ),
+                  ],
+                ),
+                10.verticalSpace,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      width: 0.48.sw,
+                      height: 0.04.sh,
+                      decoration: BoxDecoration(
+                        //  border: Border.all(color: DarkColor),
+                        color: GrayWhiteColor,
+                      ),
+                      child: Text(
                         'المغرب',
                         style: H2RegularDark,
                         overflow: TextOverflow.ellipsis,
@@ -593,6 +626,39 @@ class PrayerPage extends StatelessWidget {
                       ),
                       child: Text(
                         '${logic.izaz.value?.duhur}',
+                        style: H2RegularDark,
+                      ),
+                    ),
+                  ],
+                ),
+                10.verticalSpace,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      width: 0.48.sw,
+                      height: 0.04.sh,
+                      decoration: BoxDecoration(
+                        //  border: Border.all(color: DarkColor),
+                        color: GrayWhiteColor,
+                      ),
+                      child: Text(
+                        'العصر',
+                        style: H2RegularDark,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      width: 0.48.sw,
+                      height: 0.04.sh,
+                      decoration: BoxDecoration(
+                        //  border: Border.all(color: DarkColor),
+                        color: GrayWhiteColor,
+                      ),
+                      child: Text(
+                        '${logic.izaz.value?.asr}',
                         style: H2RegularDark,
                       ),
                     ),

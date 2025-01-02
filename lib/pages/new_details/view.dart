@@ -22,12 +22,14 @@ class NewDetailsPage extends StatelessWidget {
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(vertical: 0.02.sh, horizontal: 0.02.sw),
         child: Obx(() {
-          if(logic.loading.value){
+          if (logic.loading.value) {
             return Container(
               width: 1.sw,
               height: 1.sh,
               alignment: Alignment.center,
-              child: ProgressLoading(width: 0.3.sw,),
+              child: ProgressLoading(
+                width: 0.3.sw,
+              ),
             );
           }
           return Column(
@@ -112,7 +114,7 @@ class NewDetailsPage extends StatelessWidget {
                     ),
                     ...List.generate(
                       logic.post.value?.images.length ?? 0,
-                          (index) => InkWell(
+                      (index) => InkWell(
                         onTap: () {
                           showDialog(
                             context: context,
@@ -124,7 +126,7 @@ class NewDetailsPage extends StatelessWidget {
                                 children: [
                                   CachedNetworkImage(
                                       imageUrl:
-                                      '${logic.post.value?.images[index]}',
+                                          '${logic.post.value?.images[index]}',
                                       imageBuilder: (context, imageProvider) =>
                                           Container(
                                             child: Image(
@@ -194,19 +196,26 @@ class NewDetailsPage extends StatelessWidget {
                       allowImplicitScrolling: true,
                       slideIndicator: CircularSlideIndicator(
                           slideIndicatorOptions: const SlideIndicatorOptions(
-                            enableHalo: false,
-                            currentIndicatorColor: RedColor,
-                            enableAnimation: true,
-                          ))),
+                        enableHalo: false,
+                        currentIndicatorColor: RedColor,
+                        enableAnimation: true,
+                      ))),
                 ),
               ),
 
               Container(
-                child: Html(data: "${logic.post.value?.info}",onAnchorTap: (url, context, attributes, element) => openUrl(url:"$url"),),
+                child: Html(
+                  data: "${logic.post.value?.info}",
+                  onAnchorTap: (url, context, attributes, element) =>
+                      openUrl(url: "$url"),
+                  style: {"*":Style.fromTextStyle(H3RegularDark)},
+                ),
               ),
-              SizedBox(height: 0.02.sh,),
+              SizedBox(
+                height: 0.02.sh,
+              ),
               InkWell(
-                onTap: (){
+                onTap: () {
                   Get.toNamed(COMMENTS_PAGE,
                       parameters: {'id': "${logic.post.value?.id}"});
                 },
@@ -218,7 +227,10 @@ class NewDetailsPage extends StatelessWidget {
                     color: RedColor,
                     borderRadius: BorderRadius.circular(30.r),
                   ),
-                    child: Text('التعليقات',style: H4WhiteTextStyle,),
+                  child: Text(
+                    'التعليقات',
+                    style: H4WhiteTextStyle,
+                  ),
                 ),
               )
             ],

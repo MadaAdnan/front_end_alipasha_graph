@@ -17,9 +17,11 @@ class EditProfileLogic extends GetxController {
   MainController mainController = Get.find<MainController>();
   Rxn<UserModel> user = Rxn<UserModel>(null);
   RxList<CityModel> cities = RxList<CityModel>([]);
+  RxList<CityModel> mainCities = RxList<CityModel>([]);
   RxBool loading = RxBool(false);
   RxBool loadingPassword = RxBool(false);
   RxnInt cityId = RxnInt(null);
+  RxnInt mainCityId = RxnInt(null);
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
@@ -115,6 +117,7 @@ class EditProfileLogic extends GetxController {
         mainController.logger.d(res?.data?['data']?['me']);
         user.value = UserModel.fromJson(res?.data?['data']?['me']);
         cityId.value = user.value?.city?.id;
+        mainCityId.value = user.value?.city?.cityId;
         mainController.setUserJson(json: res?.data?['data']?['me']);
       }
 
@@ -134,6 +137,10 @@ class EditProfileLogic extends GetxController {
   }
 
   saveData() async {
+    if(cityId.value==null){
+      mainController.showToast(text: 'يرجى تحديد المدينة ',type: 'error');
+      return;
+    }
     loading.value = true;
     Map<String, dynamic> datajson = {
       "query": r" mutation UpdateUser($input:UpdateUserInput!) { "
@@ -143,7 +150,7 @@ class EditProfileLogic extends GetxController {
       "variables": <String, dynamic>{
         "input": {
           "name": nameController.value.text ,
-          "email": emailController.value.text ,
+          "email": mainController.authUser.value?.email ,
           "password": passwordController.value.text ,
           "phone": phoneController.value.text ,
           "city_id": cityId.value,

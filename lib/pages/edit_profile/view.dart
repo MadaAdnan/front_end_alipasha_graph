@@ -8,6 +8,7 @@ import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
@@ -18,6 +19,7 @@ import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 
 import 'package:image_picker/image_picker.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
 import '../../helpers/components.dart';
 import '../../helpers/helper_class.dart';
@@ -104,10 +106,13 @@ class EditProfilePage extends StatelessWidget {
                     if (logic.user.value?.is_verified != true)
                       InkWell(
                           onTap: () {
-                            HelperClass.requestVerified(onConfirm: (){
-                              if(isAuth()){
-                                String message="ID:${mainController.authUser.value?.id} - اسم المتجر : ${mainController.authUser.value?.seller_name} - نوع الطلب توثيق الحساب";
-                                openUrl(url: "https://wa.me/${mainController.settings.value.social?.phone}?text=$message");
+                            HelperClass.requestVerified(onConfirm: () {
+                              if (isAuth()) {
+                                String message =
+                                    "ID:${mainController.authUser.value?.id} - اسم المتجر : ${mainController.authUser.value?.seller_name} - نوع الطلب توثيق الحساب";
+                                openUrl(
+                                    url:
+                                        "https://wa.me/${mainController.settings.value.social?.phone}?text=$message");
                               }
                             });
                           },
@@ -220,7 +225,7 @@ class EditProfilePage extends StatelessWidget {
                         width: 1.sw,
                         radius: 30.r,
                         hint: 'البريد الإلكتروني',
-                        enabled: true,
+                        enabled: false,
                         controller: logic.emailController,
                         fill: GrayLightColor,
                         textInputType: TextInputType.emailAddress,
@@ -237,7 +242,7 @@ class EditProfilePage extends StatelessWidget {
                         isRequired: true,
                         width: 1.sw,
                         radius: 30.r,
-                        hint: 'رقم الهاتف',
+                        hint: 'رقم الهاتف مع رمز الدولة',
                         controller: logic.phoneController,
                         fill: WhiteColor,
                         textInputType: TextInputType.phone,
@@ -251,6 +256,48 @@ class EditProfilePage extends StatelessWidget {
                           }
                           return null;
                         }),
+                    InputComponent(
+                        name: 'affiliate',
+                        isRequired: false,
+                        enabled: true,
+                        suffixIcon: FontAwesomeIcons.copy,
+                        suffixClick: ()async{
+                         await Clipboard.setData(ClipboardData(text: "${mainController.authUser.value?.affiliate}"));
+                         mainController.showToast(text: 'تم نسخ كود الإحالة',type: 'success');
+                         return "";
+                        },
+                        width: 1.sw,
+                        radius: 30.r,
+                        hint: 'كود الإحالة',
+                        controller: TextEditingController(text: mainController.authUser.value?.affiliate),
+                        fill: WhiteColor,
+                        textInputType: TextInputType.phone,
+                        validation: (text) {
+                          if (text == '' || text == null) {
+                            return "رقم الهاتف مطلوب";
+                          } else if (text.startsWith('+')) {
+                            return 'يرجى عدم إدخال اي رمز غير الأرقام';
+                          } else if (text.startsWith('00')) {
+                            return 'يرجى حذف 00  من بداية الرقم';
+                          }
+                          return null;
+                        }),
+                    /*IntlPhoneField(
+                      controller: logic.phoneController,
+                      decoration: InputDecoration(
+                        labelText: 'Phone Number',
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(),
+                        ),
+                      ),
+                      initialCountryCode: 'SY',
+                      onChanged: (phone) {
+                        logic.phoneController.value=TextEditingValue(text: phone.countryISOCode);
+                      },
+                      onCountryChanged: (value) {
+                        print(value.dialCode);
+                      },
+                    ),*/
                     InputComponent(
                         name: 'address',
                         isRequired: true,
@@ -270,6 +317,51 @@ class EditProfilePage extends StatelessWidget {
                       return Container(
                         child: FormBuilderDropdown<int>(
                             validator: FormBuilderValidators.required(
+                                errorText: "يرجى تحديد المحافظة"),
+                            name: 'main_city_id',
+                            initialValue: logic.mainCityId.value,
+                            onChanged: (value){
+                              logic.mainCityId.value = value;
+                              logic.cityId.value=null;
+                            }
+                                ,
+                            decoration: InputDecoration(
+                              label: RichText(
+                                text: TextSpan(children: [
+                                  TextSpan(
+                                      text: 'المحافظة', style: H4GrayTextStyle),
+                                  TextSpan(text: ' * ', style: H3RedTextStyle),
+                                ]),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide:
+                                    const BorderSide(color: GrayDarkColor),
+                                borderRadius: BorderRadius.circular(30.r),
+                              ),
+                              contentPadding:
+                                  EdgeInsets.symmetric(horizontal: 0.02.sw),
+                            ),
+                            items: [
+                              ...List.generate(
+                                mainController.mainCities.length,
+                                (index) => DropdownMenuItem<int>(
+                                  value: mainController.mainCities[index].id,
+                                  child: Text(
+                                    '${mainController.mainCities[index].name}',
+                                    style: H3GrayTextStyle,
+                                  ),
+                                ),
+                              )
+                            ]),
+                      );
+                    }),
+                    SizedBox(
+                      height: 0.01.sh,
+                    ),
+                    Obx(() {
+                      return Container(
+                        child: FormBuilderDropdown<int>(
+                            validator: FormBuilderValidators.required(
                                 errorText: "يرجى تحديد المدينة"),
                             name: 'city_id',
                             initialValue: logic.cityId.value,
@@ -284,19 +376,30 @@ class EditProfilePage extends StatelessWidget {
                               ),
                               border: OutlineInputBorder(
                                 borderSide:
-                                    const BorderSide(color: GrayDarkColor),
+                                const BorderSide(color: GrayDarkColor),
                                 borderRadius: BorderRadius.circular(30.r),
                               ),
                               contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 0.02.sw),
+                              EdgeInsets.symmetric(horizontal: 0.02.sw),
                             ),
                             items: [
                               ...List.generate(
-                                logic.cities.length,
-                                (index) => DropdownMenuItem<int>(
-                                  value: logic.cities[index].id,
+                                mainController.mainCities
+                                    .firstWhere((el) =>
+                                el.id == logic.mainCityId.value)
+                                    .children!
+                                    .length,
+                                    (index) => DropdownMenuItem<int>(
+                                  value: mainController.mainCities
+                                      .firstWhere((el) =>
+                                  el.id == logic.mainCityId.value)
+                                      .children![index]
+                                      .id,
                                   child: Text(
-                                    '${logic.cities[index].name}',
+                                    '${mainController.mainCities
+                                        .firstWhere((el) =>
+                                    el.id == logic.mainCityId.value)
+                                        .children![index].name}',
                                     style: H3GrayTextStyle,
                                   ),
                                 ),
@@ -590,10 +693,12 @@ class EditProfilePage extends StatelessWidget {
                           ),
                         GestureDetector(
                           onTap: () {
-                            if (mainController.authUser.value?.is_verified != true){
+                            if (mainController.authUser.value?.is_verified !=
+                                true) {
                               return;
                             }
-                            Get.toNamed(GALLERY_PAGE,arguments:mainController.authUser.value?.id );
+                            Get.toNamed(GALLERY_PAGE,
+                                arguments: mainController.authUser.value?.id);
                           },
                           child: Container(
                             width: 1.sw,
@@ -613,7 +718,8 @@ class EditProfilePage extends StatelessWidget {
                                   'معرض الصور',
                                   style: H3GrayTextStyle,
                                 ),
-                                Icon(FontAwesomeIcons.images,size:0.05.sw,color:GrayDarkColor),
+                                Icon(FontAwesomeIcons.images,
+                                    size: 0.05.sw, color: GrayDarkColor),
                               ],
                             ),
                           ),
@@ -1094,7 +1200,7 @@ class EditProfilePage extends StatelessWidget {
                                           suffixIcon: isScure.value
                                               ? FontAwesomeIcons.eyeSlash
                                               : FontAwesomeIcons.eye,
-                                          suffixClick: () {
+                                          suffixClick: () async{
                                             isScure.value = !isScure.value;
                                             return "";
                                           },
@@ -1120,10 +1226,10 @@ class EditProfilePage extends StatelessWidget {
                                           suffixIcon: isScureConfirm.value
                                               ? FontAwesomeIcons.eyeSlash
                                               : FontAwesomeIcons.eye,
-                                          suffixClick: () {
+                                          suffixClick: ()async {
                                             isScureConfirm.value =
                                                 !isScureConfirm.value;
-                                            return "";
+                                            return " ";
                                           },
                                           isSecure: isScureConfirm.value,
                                           width: 1.sw,

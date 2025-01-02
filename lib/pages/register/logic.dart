@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:ali_pasha_graph/Global/main_controller.dart';
@@ -12,12 +11,14 @@ import 'package:logger/logger.dart';
 
 import 'package:select2dot1/select2dot1.dart';
 import 'package:dio/dio.dart' as dio;
-import 'package:crypto/crypto.dart' ;
+import 'package:crypto/crypto.dart';
+
+import '../../models/city_model.dart';
+
 class RegisterLogic extends GetxController {
   MainController mainController = Get.find<MainController>();
   RxBool loading = RxBool(false);
   TextEditingController nameController = TextEditingController();
-
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -27,10 +28,12 @@ class RegisterLogic extends GetxController {
   // TextEditingController addressController=TextEditingController();
   TextEditingController affiliateController = TextEditingController();
   RxnInt citySelected = RxnInt(null);
+  RxnInt mainCitySelected = RxnInt(null);
 
   String? deviceToken;
 
-  SelectDataController? citiesController = SelectDataController(data: []);
+  Rxn<SelectDataController> citiesController =  Rxn<SelectDataController>(SelectDataController(data: []));
+  SelectDataController? mainCitiesController = SelectDataController(data: []);
   RxnString errorName = RxnString(null);
   RxnString errorEmail = RxnString(null);
   RxnString errorPassword = RxnString(null);
@@ -42,28 +45,44 @@ class RegisterLogic extends GetxController {
     // TODO: implement onInit
     super.onInit();
     List<SingleItemCategoryModel> listCities = [];
-    for (var city in mainController.cities) {
+    for (var city in mainController.mainCities) {
       listCities.add(SingleItemCategoryModel(
           nameSingleItem: "${city.name}", value: city.id));
     }
-    citiesController = SelectDataController(data: [
+    mainCitiesController = SelectDataController(data: [
       SingleCategoryModel(singleItemCategoryList: listCities),
     ], isMultiSelect: false);
+    ever(mainCitySelected, (value) {
+      List<SingleItemCategoryModel> listCity=[];
+      if (value != null) {
+        CityModel? mainCity =
+            mainController.mainCities.where((el) => el.id == value).firstOrNull;
+        if(mainCity!=null){
+          listCity= mainCity!.children!.map(
+                (el) => SingleItemCategoryModel(
+                nameSingleItem: "${el.name}", value: "${el.id}"),
+          ).toList();
+        }
+        citiesController.value = SelectDataController(data: [
+          SingleCategoryModel(
+              singleItemCategoryList: listCity),
+        ],isMultiSelect: false);
+      }
+    });
   }
 
-
   Future registerGoogel() async {
-   Map<String,String>? user=await GoogleAuth.signin();
-   if(user==null){
-     return ;
-   }
+    Map<String, String>? user = await GoogleAuth.signin();
+    if (user == null) {
+      return;
+    }
 
-   String input="ali-pasha5${DateTime.now().day}";
-   var bytes = utf8.encode(input);
-  var hash=md5.convert(bytes);
+    String input = "ali-pasha5${DateTime.now().day}";
+    var bytes = utf8.encode(input);
+    var hash = md5.convert(bytes);
 
-   loading.value = true;
-   mainController.query.value = '''
+    loading.value = true;
+    mainController.query.value = '''
 mutation CreateGoogleUser {
     createGoogleUser(
         input: {
@@ -90,23 +109,25 @@ mutation CreateGoogleUser {
       // mainController.logger.e(res?.data);
       if (res?.data?['data']?['createGoogleUser']?['token'] != null) {
         await mainController.setToken(
-            token: res?.data?['data']?['createGoogleUser']?['token'], isWrite: true);
+            token: res?.data?['data']?['createGoogleUser']?['token'],
+            isWrite: true);
 
-        await mainController.setUserJson(json: res?.data?['data']?['createGoogleUser']?['user']);
+        await mainController.setUserJson(
+            json: res?.data?['data']?['createGoogleUser']?['user']);
         Get.offAndToNamed(HOME_PAGE);
       }
-      if (res?.data?['errors']?[0]?['extensions']['validation'] != null) {
-
-      }
+      if (res?.data?['errors']?[0]?['extensions']['validation'] != null) {}
     } on CustomException catch (e) {
       print(e);
     }
     loading.value = false;
   }
 
-
-
   Future<void> register() async {
+    if(citySelected.value==null || mainCitySelected.value ==null){
+      mainController.showToast(text: 'يرجى تحديد المحافظة والمدينة',type: 'error');
+      return;
+    }
     loading.value = true;
     mainController.query.value = '''
 mutation CreateUser {
@@ -134,12 +155,13 @@ mutation CreateUser {
     try {
       dio.Response? res = await mainController.fetchData();
 
-     // mainController.logger.e(res?.data);
+      // mainController.logger.e(res?.data);
       if (res?.data?['data']?['createUser']?['token'] != null) {
         await mainController.setToken(
             token: res?.data?['data']?['createUser']?['token'], isWrite: true);
 
-        await mainController.setUserJson(json: res?.data?['data']?['createUser']?['user']);
+        await mainController.setUserJson(
+            json: res?.data?['data']?['createUser']?['user']);
         Get.offAndToNamed(VERIFY_EMAIL_PAGE);
       }
       if (res?.data?['errors']?[0]?['extensions']['validation'] != null) {

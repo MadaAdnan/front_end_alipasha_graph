@@ -2,6 +2,7 @@ import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:logger/logger.dart';
 
 class NewDetailsLogic extends GetxController {
   RxBool loading = RxBool(false);
@@ -13,13 +14,16 @@ class NewDetailsLogic extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+
   }
 
   @override
   void onReady() {
-    postId.value = int.tryParse("${Get.parameters['id']}");
+
     // TODO: implement onReady
     super.onReady();
+    postId.value = int.tryParse("${Get.parameters['id']}");
+    Logger().d(postId.value);
     getPost();
   }
 

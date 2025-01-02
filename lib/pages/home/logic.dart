@@ -156,6 +156,18 @@ class HomeLogic extends GetxController {
       image
       city_id
     }
+    
+    mainCity{
+      id
+      name
+      city_id
+      children{
+       id
+      name
+      city_id
+      }
+    }
+    
       colors{
       name
       id
@@ -218,6 +230,12 @@ class HomeLogic extends GetxController {
       if (res?.data?['data']?['cities'] != null) {
         for (var item in res?.data['data']?['cities']) {
           mainController.cities.add(CityModel.fromJson(item));
+        }
+      }
+
+      if (res?.data?['data']?['mainCity'] != null) {
+        for (var item in res?.data['data']?['mainCity']) {
+          mainController.mainCities.add(CityModel.fromJson(item));
         }
       }
 

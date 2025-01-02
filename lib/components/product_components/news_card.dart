@@ -52,7 +52,6 @@ RxBool is_like=RxBool(false);
                     children: [
                       InkWell(
                         onTap: () {
-                          print('TESTER');
                           Get.toNamed(NEW_DETAILS, arguments: post,parameters: {"id":"${post.id}"});
                         },
                         child: Row(
@@ -71,10 +70,12 @@ RxBool is_like=RxBool(false);
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
+                                  width: 0.8.sw,
                                   alignment: Alignment.centerRight,
                                   child: Text(
                                     "${post.name}",
                                     style: H2BlackTextStyle,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                                 Container(

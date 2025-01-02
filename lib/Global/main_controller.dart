@@ -61,6 +61,7 @@ class MainController extends GetxController {
   RxList<Map<String, dynamic>> errors = RxList<Map<String, dynamic>>([]);
   RxList<CategoryModel> categories = RxList<CategoryModel>([]);
   RxList<CityModel> cities = RxList<CityModel>([]);
+  RxList<CityModel> mainCities = RxList<CityModel>([]);
   RxList<ColorModel> colors = RxList<ColorModel>([]);
   RxList<AdviceModel> advices = RxList<AdviceModel>([]);
   RxList<SliderModel> sliders = RxList<SliderModel>([]);

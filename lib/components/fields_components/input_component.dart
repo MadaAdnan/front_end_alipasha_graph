@@ -50,7 +50,7 @@ final TextStyle? textStyle;
   final String? Function(String?)? onChanged;
   IconData? suffixIcon;
   final Widget? prefix;
-  final String? Function()? suffixClick;
+  final Future<String>? Function()? suffixClick;
   final String name;
 
   @override

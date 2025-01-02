@@ -17,16 +17,13 @@ class PushNotificationService {
 
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-
+    //  Get.find<MainController>().showToast(text: 'I');
       Get.toNamed(NOTIFICATION_PAGE);
     });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      Get.toNamed(NOTIFICATION_PAGE);
-   //  Get.find<MainController>().showToast(text: message.notification?.body);
-      Logger().f("FIREBASE - Foreground Message");
-      Logger().f(message.notification?.title);
-      Logger().f(message.notification?.body);
+     // Get.toNamed(NOTIFICATION_PAGE);
+    // Get.find<MainController>().showToast(text: 'am');
       // هنا يمكن عرض تنبيه مخصص أو التعامل مع البيانات
     });
 

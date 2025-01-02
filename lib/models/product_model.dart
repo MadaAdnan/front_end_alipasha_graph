@@ -62,6 +62,7 @@ class ProductModel {
   List<String> docs;
   List<DataImageModel>? listOfImages;
   TurkeyPrice? turkey_price;
+  TurkeyPrice? syrPrice;
   List<DataImageModel>? listOfDocs;
   List<AttributeProducts>? attributes;
   String? created_at;
@@ -117,6 +118,7 @@ class ProductModel {
     this.likes_count,
     this.comments_count,
     this.weight,
+    this.syrPrice
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> data) {
@@ -201,6 +203,9 @@ class ProductModel {
       sub4: data['sub4'] != null ? CategoryModel.fromJson(data['sub4']) : null,
       turkey_price: data['turkey_price'] != null
           ? TurkeyPrice.fromJson(data['turkey_price'])
+          : null,
+      syrPrice: data['syr_price'] != null
+          ? TurkeyPrice.fromJson(data['syr_price'])
           : null,
       video: "${data['video'] ?? ''}",
       listOfDocs: listOfDocsList,

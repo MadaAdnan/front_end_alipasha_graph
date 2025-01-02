@@ -34,7 +34,7 @@ invoices_seller_count
             is_seller
             can_create_channel
             can_create_group
-           
+           affiliate
             social{
               twitter
               face
@@ -92,7 +92,7 @@ unread_notifications_count
             total_balance
             total_point
             following_count
-           
+           affiliate
          
             info
             following_count
