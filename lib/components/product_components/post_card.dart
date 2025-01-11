@@ -217,7 +217,7 @@ class PostCard extends StatelessWidget {
                         "${post.name} ${post.expert}",
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
-                        style: H3GrayTextStyle,
+                        style: H3RegularDark.copyWith(color: Colors.black),
                       ),
                     ),
                   ),

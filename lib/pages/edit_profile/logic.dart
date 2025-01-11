@@ -238,8 +238,8 @@ class EditProfileLogic extends GetxController {
       CroppedFile? cropped = await ImageCropper().cropImage(
         compressFormat: ImageCompressFormat.png,
         sourcePath: file.path,
-        maxWidth: width ?? 300,
-        maxHeight: height ?? 300,
+        maxWidth: width ?? 600,
+        maxHeight: height ?? 600,
         compressQuality: 80,
         aspectRatio: CropAspectRatio(ratioX: 1, ratioY: ratioY),
         uiSettings: [

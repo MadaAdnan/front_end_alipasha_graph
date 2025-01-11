@@ -1,4 +1,6 @@
+import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
+import 'package:ali_pasha_graph/helpers/components.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -357,5 +359,58 @@ class HelperClass{
        ),
      ),
    ) );
+ }
+
+ static Future<void>  connectWithSeller({required String phone,required int sellerId,String?message})async{
+   Get.dialog(AlertDialog(
+     content: Container(
+       alignment: Alignment.center,
+       height: 0.15.sh,
+       child: Text('إختر طريقة التواصل',style: H1RegularDark,),
+     ),
+     actions: [
+       Column(
+         crossAxisAlignment: CrossAxisAlignment.center,
+         mainAxisAlignment: MainAxisAlignment.center,
+         children: [
+           InkWell(
+             onTap: (){
+               openUrl(url: "https://wa.me/$phone");
+             },
+             child: Container(
+               alignment: Alignment.center,
+               width: 1.sw,
+               padding: EdgeInsets.symmetric(horizontal: 0.02.sw,vertical: 0.01.sh),
+               decoration: BoxDecoration(
+                 color: Colors.green,
+                 borderRadius: BorderRadius.circular(30.r),
+               ),
+               child: Text('مراسلة عبر واتسآب',style: H4WhiteTextStyle,),
+             ),
+           ),
+           SizedBox(height: 0.01.sh,),
+           InkWell(
+             onTap: (){
+               MainController mainController=Get.find<MainController>();
+               mainController.createCommunity(
+                   sellerId: sellerId,
+                   message:
+                   message);
+             },
+             child: Container(
+               width: 1.sw,
+               alignment: Alignment.center,
+               padding: EdgeInsets.symmetric(horizontal: 0.02.sw,vertical: 0.01.sh),
+               decoration: BoxDecoration(
+                 color: RedColor,
+                 borderRadius: BorderRadius.circular(30.r),
+               ),
+               child: Text('مراسلة عبر تطبيق علي باشا',style: H4WhiteTextStyle,),
+             ),
+           ),
+         ],
+       )
+     ],
+   ));
  }
 }

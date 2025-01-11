@@ -173,6 +173,7 @@ class RegisterPage extends StatelessWidget {
                           );
                         }),
                         15.verticalSpace,
+
                         InputComponent(
                           fill: WhiteColor,
                           width: 1.sw,
@@ -181,6 +182,8 @@ class RegisterPage extends StatelessWidget {
                           textInputType: TextInputType.phone,
                           isRequired: true,
                           hint: 'رقم الهاتف',
+                          hint2: '963966047550',
+                          helperText: 'أدخل رقم الهاتف مع رمز الدولة بدون + أو 00',
                           validation: (value) {
                             if (value?.length == 0) {
                               return "رقم الهاتف مطلوب";

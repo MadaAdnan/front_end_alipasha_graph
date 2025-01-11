@@ -1,6 +1,7 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/components.dart';
+import 'package:ali_pasha_graph/helpers/helper_class.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 
 import 'package:ali_pasha_graph/routes/routes_url.dart';
@@ -57,7 +58,11 @@ class CartItemPage extends StatelessWidget {
                       ...List.generate(
                         logic.carts.length,
                         (index) {
-                          var price=(logic.carts[index].product?.is_discount == true ? logic.carts[index].product?.discount : logic.carts[index].product?.price)??0;
+                          var price =
+                              (logic.carts[index].product?.is_discount == true
+                                      ? logic.carts[index].product?.discount
+                                      : logic.carts[index].product?.price) ??
+                                  0;
                           return Container(
                             height: 0.3.sw,
                             width: 1.sw,
@@ -195,13 +200,13 @@ class CartItemPage extends StatelessWidget {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            if(price > 0)
-                                            AutoSizeText(
-                                              "$price \$",
-                                              style: H3BlackTextStyle,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            if(price == 0)
+                                            if (price > 0)
+                                              AutoSizeText(
+                                                "$price \$",
+                                                style: H3BlackTextStyle,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            if (price == 0)
                                               Text(
                                                 "السعر غير معروف",
                                                 style: H4RedTextStyle,
@@ -287,31 +292,32 @@ class CartItemPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 0.01.sh, horizontal: 0.02.sw),
-                        decoration: BoxDecoration(
-                            color: GrayWhiteColor,
-                            border: Border(
-                                bottom: BorderSide(
-                                    color: WhiteColor, width: 0.005.sw))),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'يفضل مراسلة التاجر قبل  الطلب',
-                              style: H1RegularDark,
-                            ),
-                            InkWell(
+                      padding: EdgeInsets.symmetric(
+                          vertical: 0.01.sh, horizontal: 0.02.sw),
+                      decoration: BoxDecoration(
+                          color: GrayWhiteColor,
+                          border: Border(
+                              bottom: BorderSide(
+                                  color: WhiteColor, width: 0.005.sw))),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'يفضل مراسلة التاجر قبل  الطلب',
+                            style: H1RegularDark,
+                          ),
+                          Obx(() {
+                            return Visibility(child:   InkWell(
                               onTap: () async {
-
                                 if (!isAuth()) {
                                   mainController.showToast(
                                       text: 'يرجى تسجيل الدخول أولاً',
                                       type: 'error');
                                   return;
                                 }
-                                if(mainController.loading.value  ){
-                                  mainController.showToast(text: 'جاري تحويلك إلى المحادثة');
+                                if (mainController.loading.value) {
+                                  mainController.showToast(
+                                      text: 'جاري تحويلك إلى المحادثة');
                                   return;
                                 }
                                 StringBuffer message = StringBuffer();
@@ -340,15 +346,15 @@ class CartItemPage extends StatelessWidget {
 
                                   // حساب المجموع باستخدام fold
                                   double total = logic.carts.fold(0.0,
-                                      (previousValue, element) {
-                                    double elementPrice =
+                                          (previousValue, element) {
+                                        double elementPrice =
                                         element.product?.is_discount == true
                                             ? element.product?.discount ?? 0
                                             : element.product?.price ?? 0;
-                                    int elementQty = element.qty ?? 0;
-                                    return previousValue +
-                                        (elementPrice * elementQty);
-                                  });
+                                        int elementQty = element.qty ?? 0;
+                                        return previousValue +
+                                            (elementPrice * elementQty);
+                                      });
 
                                   // إضافة المجموع
                                   message.write("المجموع : $total");
@@ -358,11 +364,15 @@ class CartItemPage extends StatelessWidget {
                                 }
 
                                 message.writeln("\n==========================");
-
-                                await mainController.createCommunity(
+                                HelperClass.connectWithSeller(
+                                    phone: "${logic.cart.value?.seller?.phone}",
                                     sellerId: int.parse(
                                         "${logic.cart.value?.seller?.id}"),
                                     message: message.toString());
+                                /*await mainController.createCommunity(
+                                    sellerId: int.parse(
+                                        "${logic.cart.value?.seller?.id}"),
+                                    message: message.toString());*/
                               },
                               child: Container(
                                 alignment: Alignment.center,
@@ -376,10 +386,12 @@ class CartItemPage extends StatelessWidget {
                                   style: H3WhiteTextStyle,
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
+                            ),visible: mainController.authUser.value?.id!=null,);
+                          }),
+                        ],
                       ),
+                    ),
+
                       SizedBox(
                         height: 0.007.sh,
                       ),
@@ -505,10 +517,10 @@ class CartItemPage extends StatelessWidget {
                             ),
                             Expanded(
                               child: Obx(() {
-                                if(logic.loading.value){
+                                if (logic.loading.value) {
                                   return InkWell(
                                     onTap: () async {
-                                     // Get.toNamed(LOGIN_PAGE);
+                                      // Get.toNamed(LOGIN_PAGE);
                                     },
                                     child: Container(
                                       alignment: Alignment.center,
@@ -517,7 +529,7 @@ class CartItemPage extends StatelessWidget {
                                       decoration: BoxDecoration(
                                           color: RedColor,
                                           borderRadius:
-                                          BorderRadius.circular(150.r)),
+                                              BorderRadius.circular(150.r)),
                                       child: Text(
                                         'جاري إرسال الطلب',
                                         style: H3WhiteTextStyle,
@@ -525,15 +537,15 @@ class CartItemPage extends StatelessWidget {
                                     ),
                                   );
                                 }
-                                if(isAuth()){
+                                if (isAuth()) {
                                   return InkWell(
                                     onTap: () async {
                                       if (mainController
-                                          .authUser.value?.city?.id ==
+                                              .authUser.value?.city?.id ==
                                           null) {
                                         mainController.showToast(
                                             text:
-                                            'يرجى تحديد مدينتك من الملف الشخصي لإكمال الطلب',
+                                                'يرجى تحديد مدينتك من الملف الشخصي لإكمال الطلب',
                                             type: 'error');
                                         return;
                                       }
@@ -548,14 +560,14 @@ class CartItemPage extends StatelessWidget {
                                       decoration: BoxDecoration(
                                           color: RedColor,
                                           borderRadius:
-                                          BorderRadius.circular(150.r)),
+                                              BorderRadius.circular(150.r)),
                                       child: Text(
                                         'إرسال الطلب',
                                         style: H3WhiteTextStyle,
                                       ),
                                     ),
                                   );
-                                }else{
+                                } else {
                                   return InkWell(
                                     onTap: () async {
                                       Get.toNamed(LOGIN_PAGE);
@@ -567,7 +579,7 @@ class CartItemPage extends StatelessWidget {
                                       decoration: BoxDecoration(
                                           color: RedColor,
                                           borderRadius:
-                                          BorderRadius.circular(150.r)),
+                                              BorderRadius.circular(150.r)),
                                       child: Text(
                                         'تسجيل الدخول',
                                         style: H3WhiteTextStyle,
@@ -575,7 +587,6 @@ class CartItemPage extends StatelessWidget {
                                     ),
                                   );
                                 }
-
                               }),
                             ),
                           ],

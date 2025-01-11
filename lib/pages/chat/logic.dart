@@ -387,8 +387,8 @@ ever(communityId, (value){
       final image = frame.image;
       int? width = image.width;
       int? height = image.height;
-      if (width > 300) {
-        width = 300;
+      if (width > 600) {
+        width = 600;
         height = (width * (image.height / image.width)).toInt();
       }
 

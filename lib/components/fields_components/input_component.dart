@@ -29,12 +29,16 @@ class InputComponent extends StatelessWidget {
     this.minLine,
     this.textStyle,
 this.enabled,
+    this.hint2,
+    this.helperText
 
   });
 
   final TextEditingController? controller;
   final TextInputType? textInputType;
   final String? hint;
+  final String? hint2;
+  final String? helperText;
   final double width;
   final double? height;
   final bool isRequired;
@@ -77,13 +81,17 @@ final TextStyle? textStyle;
             child: Icon(suffixIcon, size: 0.05.sw),
           )
               : null,
-          label: RichText(
+          label:hint2==null? RichText(
             overflow: TextOverflow.ellipsis,
             text: TextSpan(children: [
               TextSpan(text: "${hint ?? ''}", style: H3GrayTextStyle.copyWith(overflow: TextOverflow.ellipsis)),
               if (isRequired) TextSpan(text: "*", style: H4RedTextStyle),
             ]),
-          ),
+          ):null,
+          hintText: hint2,
+          hintStyle: H2GrayOpacityTextStyle,
+          helperText: helperText,
+          helperStyle: H5RedTextStyle,
           errorStyle: H4RedTextStyle,
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(radius == null ? 15.r : radius!),

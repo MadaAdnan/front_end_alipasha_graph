@@ -243,6 +243,8 @@ class EditProfilePage extends StatelessWidget {
                         width: 1.sw,
                         radius: 30.r,
                         hint: 'رقم الهاتف مع رمز الدولة',
+                        hint2: '963966047550',
+                        helperText: 'أدخل رقم الهاتف مع رمز الدولة بدون + أو 00',
                         controller: logic.phoneController,
                         fill: WhiteColor,
                         textInputType: TextInputType.phone,

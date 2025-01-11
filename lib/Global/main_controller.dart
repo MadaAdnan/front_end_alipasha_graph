@@ -643,8 +643,8 @@ class MainController extends GetxController {
         file.path + '.webp',
         format: CompressFormat.webp,
         quality: 80,
-        minHeight: height ?? 300,
-        minWidth: width ?? 300,
+        minHeight: height ?? 600,
+        minWidth: width ?? 600,
         rotate: 0,
         numberOfRetries: 10,
       );
@@ -676,8 +676,8 @@ class MainController extends GetxController {
       CroppedFile? cropped = await ImageCropper().cropImage(
         compressFormat: ImageCompressFormat.png,
         sourcePath: file.path,
-        maxWidth: 300,
-        maxHeight: 300,
+        maxWidth: 600,
+        maxHeight: 600,
         compressQuality: 80,
         aspectRatio: ratio ?? const CropAspectRatio(ratioX: 1, ratioY: 1),
         uiSettings: [

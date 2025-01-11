@@ -202,7 +202,7 @@ Future<XFile?> cropAvatar(XFile file, {int? width, int? height}) async {
       ],
     );
     if (cropped != null) {
-      return await mainController.commpressImage(file: XFile(cropped.path,),width: 300,height: 300);
+      return await mainController.commpressImage(file: XFile(cropped.path,),width: 600,height: 600);
     }
     return null;
   } catch (e) {

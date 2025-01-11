@@ -4,6 +4,7 @@ import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/components/product_components/minimize_details_product_component.dart';
 import 'package:ali_pasha_graph/components/progress_loading.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
+import 'package:ali_pasha_graph/helpers/helper_class.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 
 import 'package:ali_pasha_graph/routes/routes_url.dart';
@@ -364,44 +365,45 @@ class ProductPage extends StatelessWidget {
                           SizedBox(
                             width: 0.03.sw,
                           ),
-                          InkWell(
-                            onTap: () {
-                              if (logic.product.value?.user?.id != null &&
-                                  !mainController
-                                      .createCommunityLodaing.value) {
-                                mainController.createCommunity(
-                                    sellerId: logic.product.value!.user!.id!,
-                                    message:
-                                        """ المنتج ${logic.product.value!.name}   \n   معرف المنتج: ${logic.product.value!.id} """);
-                              }
-                            },
-                            child: Container(
-                              width: 0.35.sw,
-                              height: 0.06.sh,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: RedColor,
-                                borderRadius: BorderRadius.circular(30.r),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'مراسلة التاجر',
-                                    style: H3WhiteTextStyle,
-                                  ),
-                                  SizedBox(
-                                    width: 0.02.sw,
-                                  ),
-                                  Icon(
-                                    FontAwesomeIcons.comments,
-                                    color: WhiteColor,
-                                    size: 0.04.sw,
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
+                         Obx(() {
+                           return Visibility(child:  InkWell(
+                             onTap: () {
+                               if (logic.product.value?.user?.id != null &&
+                                   !mainController
+                                       .createCommunityLodaing.value) {
+                                 String message=""" المنتج ${logic.product.value!.name}   \n   معرف المنتج: ${logic.product.value!.id} """;
+                                 HelperClass.connectWithSeller(phone: logic.product.value!.user!.phone!,sellerId:logic.product.value!.user!.id!,message: message );
+
+                               }
+                             },
+                             child: Container(
+                               width: 0.35.sw,
+                               height: 0.06.sh,
+                               alignment: Alignment.center,
+                               decoration: BoxDecoration(
+                                 color: RedColor,
+                                 borderRadius: BorderRadius.circular(30.r),
+                               ),
+                               child: Row(
+                                 mainAxisAlignment: MainAxisAlignment.center,
+                                 children: [
+                                   Text(
+                                     'مراسلة التاجر',
+                                     style: H3WhiteTextStyle,
+                                   ),
+                                   SizedBox(
+                                     width: 0.02.sw,
+                                   ),
+                                   Icon(
+                                     FontAwesomeIcons.comments,
+                                     color: WhiteColor,
+                                     size: 0.04.sw,
+                                   )
+                                 ],
+                               ),
+                             ),
+                           ),visible: mainController.authUser.value?.id!=null,);
+                         })
                         ],
                       );
                     }),
