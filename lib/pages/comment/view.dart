@@ -1,3 +1,4 @@
+import 'package:ali_pasha_graph/pages/comment/components/another_message.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -162,8 +163,8 @@ class CommentPage extends StatelessWidget {
                                   return myMessage(context,
                                       message: logic.comments[index]);
                                 }
-                                return anotherMessage(context,
-                                    message: logic.comments[index]);
+                                return AnotherMessage(
+                                    message: logic.comments[index],logic: logic,);
                               },
                             ),
                             SizedBox(
@@ -253,9 +254,16 @@ class CommentPage extends StatelessWidget {
               Container(
                 transformAlignment: Alignment.bottomLeft,
                 alignment: Alignment.bottomLeft,
-                child: Text(
-                  "${message.createdAt}",
-                  style: H4GrayTextStyle,
+                child: Row(
+                  children: [
+                    Text(
+                      "${message.createdAt}",
+                      style: H4GrayTextStyle,
+                    ),
+                    GestureDetector(
+                      child: Text('رد'),
+                    )
+                  ],
                 ),
               ),
             ],
@@ -342,12 +350,25 @@ class CommentPage extends StatelessWidget {
                     ]),
                   ),
                 ),
+
                 Container(
                   transformAlignment: Alignment.bottomLeft,
                   alignment: Alignment.bottomLeft,
-                  child: Text(
-                    "${message.createdAt}",
-                    style: H5GrayTextStyle,
+                  child:Container(
+                    transformAlignment: Alignment.bottomLeft,
+                    alignment: Alignment.bottomLeft,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "${message.createdAt}",
+                          style: H4GrayTextStyle,
+                        ),
+                        GestureDetector(
+                          child: Text('رد',style: H3RegularDark,),
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 if (message.user?.id == mainController.authUser.value?.id || logic.product.value?.user?.id == mainController.authUser.value?.id)

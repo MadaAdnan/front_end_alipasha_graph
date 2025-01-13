@@ -59,57 +59,67 @@ final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: width,
-      height: height ?? 0.08.sh,
-      child: FormBuilderTextField(
-        enabled: enabled ??true,
-        minLines: minLine,
-        obscureText: isSecure,
-        onChanged: onChanged,
-        onEditingComplete: onEditingComplete,
-        controller: controller,
-        validator: validation,
-        style: textStyle??H3BlackTextStyle,
-        keyboardType: textInputType == TextInputType.multiline && isSecure ? TextInputType.text : textInputType,
-        maxLines: isSecure ? 1 : maxLine, // Ensure maxLines is 1 when isSecure is true
-        decoration: InputDecoration(
-          prefixIcon: prefix,
-          suffixIcon: suffixIcon != null
-              ? InkWell(
-            onTap: suffixClick,
-            child: Icon(suffixIcon, size: 0.05.sw),
-          )
-              : null,
-          label:hint2==null? RichText(
-            overflow: TextOverflow.ellipsis,
-            text: TextSpan(children: [
-              TextSpan(text: "${hint ?? ''}", style: H3GrayTextStyle.copyWith(overflow: TextOverflow.ellipsis)),
-              if (isRequired) TextSpan(text: "*", style: H4RedTextStyle),
-            ]),
-          ):null,
-          hintText: hint2,
-          hintStyle: H2GrayOpacityTextStyle,
-          helperText: helperText,
-          helperStyle: H5RedTextStyle,
-          errorStyle: H4RedTextStyle,
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(radius == null ? 15.r : radius!),
-            borderSide: const BorderSide(
-              color: GrayDarkColor,
-            ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if(helperText!=null)
+        Text('$helperText',style: H5RedTextStyle,),
+        if(helperText!=null)
+          SizedBox(height: 0.003.sh,),
+        SizedBox(
+          width: width,
+          height: height ?? 0.08.sh,
+          child: FormBuilderTextField(
+            enabled: enabled ??true,
+            minLines: minLine,
+            obscureText: isSecure,
+            onChanged: onChanged,
+            onEditingComplete: onEditingComplete,
+            controller: controller,
+            validator: validation,
+            style: textStyle??H3BlackTextStyle,
+            keyboardType: textInputType == TextInputType.multiline && isSecure ? TextInputType.text : textInputType,
+            maxLines: isSecure ? 1 : maxLine, // Ensure maxLines is 1 when isSecure is true
+            decoration: InputDecoration(
+              prefixIcon: prefix,
+              suffixIcon: suffixIcon != null
+                  ? InkWell(
+                onTap: suffixClick,
+                child: Icon(suffixIcon, size: 0.05.sw),
+              )
+                  : null,
+              label:hint2==null? RichText(
+                overflow: TextOverflow.ellipsis,
+                text: TextSpan(children: [
+                  TextSpan(text: "${hint ?? ''}", style: H3GrayTextStyle.copyWith(overflow: TextOverflow.ellipsis)),
+                  if (isRequired) TextSpan(text: "*", style: H4RedTextStyle),
+                ]),
+              ):null,
+              hintText: hint2,
+              hintStyle: H2GrayOpacityTextStyle,
+
+              helperStyle: H5RedTextStyle,
+              errorStyle: H4RedTextStyle,
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(radius == null ? 15.r : radius!),
+                borderSide: const BorderSide(
+                  color: GrayDarkColor,
+                ),
+              ),
+              contentPadding: EdgeInsets.all(20.h),
+              filled: true,
+              fillColor: fill,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(radius == null ? 15.r : radius!),
+                borderSide: const BorderSide(
+                  color: GrayDarkColor,
+                ),
+              ),
+            ), name: '',
           ),
-          contentPadding: EdgeInsets.all(20.h),
-          filled: true,
-          fillColor: fill,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(radius == null ? 15.r : radius!),
-            borderSide: const BorderSide(
-              color: GrayDarkColor,
-            ),
-          ),
-        ), name: '',
-      ),
+        )
+      ],
     );
   }
 

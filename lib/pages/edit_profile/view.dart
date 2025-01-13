@@ -300,21 +300,7 @@ class EditProfilePage extends StatelessWidget {
                         print(value.dialCode);
                       },
                     ),*/
-                    InputComponent(
-                        name: 'address',
-                        isRequired: true,
-                        width: 1.sw,
-                        radius: 30.r,
-                        hint: 'العنوان',
-                        controller: logic.addressController,
-                        fill: WhiteColor,
-                        textInputType: TextInputType.text,
-                        validation: (text) {
-                          if (text == '' || text == null) {
-                            return "العنوان مطلوب";
-                          }
-                          return null;
-                        }),
+
                     Obx(() {
                       return Container(
                         child: FormBuilderDropdown<int>(
@@ -409,6 +395,25 @@ class EditProfilePage extends StatelessWidget {
                             ]),
                       );
                     }),
+                    SizedBox(
+                      height: 0.02.sh,
+                    ),
+                    InputComponent(
+                        name: 'address',
+                        isRequired: true,
+                        width: 1.sw,
+                        radius: 30.r,
+                        hint: 'العنوان التفصيلي',
+                        helperText: 'مثال : دمشق - ساحة المرجة - جانب حلويات أمية',
+                        controller: logic.addressController,
+                        fill: WhiteColor,
+                        textInputType: TextInputType.text,
+                        validation: (text) {
+                          if (text == '' || text == null) {
+                            return "العنوان مطلوب";
+                          }
+                          return null;
+                        }),
                     SizedBox(
                       height: 0.02.sh,
                     ),

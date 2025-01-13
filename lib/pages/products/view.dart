@@ -4,6 +4,7 @@ import 'package:ali_pasha_graph/components/product_components/minimize_details_p
 import 'package:ali_pasha_graph/components/product_components/minimize_details_product_component_loading.dart';
 import 'package:ali_pasha_graph/components/progress_loading.dart';
 import 'package:ali_pasha_graph/helpers/enums.dart';
+import 'package:ali_pasha_graph/helpers/helper_class.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
 import 'package:animated_icon/animated_icon.dart';
@@ -30,7 +31,8 @@ class ProductsPage extends StatelessWidget {
   final logic = Get.find<ProductsLogic>();
   MainController mainController = Get.find<MainController>();
   RxBool followLoading = RxBool(false);
-ScrollController scrollController=ScrollController();
+  ScrollController scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,7 +73,6 @@ ScrollController scrollController=ScrollController();
                     )
                   ],
                 ),
-
             ],
           ),
         );
@@ -79,13 +80,14 @@ ScrollController scrollController=ScrollController();
       backgroundColor: WhiteColor,
       body: NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification scrollInfo) {
-            mainController.logger.d(scrollInfo.metrics.pixels >=
-                scrollInfo.metrics.maxScrollExtent * 0.8 );
-            mainController.logger.w(logic.hasMorePage.value);
+        mainController.logger.d(scrollInfo.metrics.pixels >=
+            scrollInfo.metrics.maxScrollExtent * 0.8);
+        mainController.logger.w(logic.hasMorePage.value);
 
         if (scrollInfo.metrics.pixels >=
                 scrollInfo.metrics.maxScrollExtent * 0.8 &&
-            logic.hasMorePage.value && !logic.loadingProducts.value) {
+            logic.hasMorePage.value &&
+            !logic.loadingProducts.value) {
           logic.nextPage();
         }
         return true;
@@ -93,7 +95,7 @@ ScrollController scrollController=ScrollController();
         Color? color = logic.seller.value?.is_verified == true
             ? logic.seller.value?.id_color!.toColor()
             : RedColor;
-        if (logic.loading.value && logic.page.value==1) {
+        if (logic.loading.value && logic.page.value == 1) {
           return ListView(
             controller: scrollController,
             children: [
@@ -160,73 +162,93 @@ ScrollController scrollController=ScrollController();
                           width: 0.1.sw,
                           decoration: BoxDecoration(
                               color: Colors.black.withOpacity(0.6),
-                              shape: BoxShape.circle
-
-                          ),
-                          child:  PopupMenuButton(
+                              shape: BoxShape.circle),
+                          child: PopupMenuButton(
                             iconColor: WhiteColor,
                             itemBuilder: (context) => [
-                              PopupMenuItem(value: '1',child:Row(
-                                children: [
-                                  Icon(
-                                    FontAwesomeIcons.shareNodes,
-                                    color: color,
-                                    size: 0.05.sw,
-                                  ),
-                                  Text('مشاركة الملف الشخصي',style: H4RegularDark,)
-                                ],
-                              ) ,),
-                              PopupMenuItem(value: '2',child:Row(
-                                children: [
-                                  Icon(
-                                    FontAwesomeIcons.headset,
-                                    color: color,
-                                    size: 0.05.sw,
-                                  ),
-                                  SizedBox(width: 0.01.sw,),
-                                  Text('إبلاغ عن مشكلة',style: H4RegularDark,)
-                                ],
-                              ) ,),
+                              PopupMenuItem(
+                                value: '1',
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      FontAwesomeIcons.shareNodes,
+                                      color: color,
+                                      size: 0.05.sw,
+                                    ),
+                                    Text(
+                                      'مشاركة الملف الشخصي',
+                                      style: H4RegularDark,
+                                    )
+                                  ],
+                                ),
+                              ),
+                              PopupMenuItem(
+                                value: '2',
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      FontAwesomeIcons.headset,
+                                      color: color,
+                                      size: 0.05.sw,
+                                    ),
+                                    SizedBox(
+                                      width: 0.01.sw,
+                                    ),
+                                    Text(
+                                      'إبلاغ عن مشكلة',
+                                      style: H4RegularDark,
+                                    )
+                                  ],
+                                ),
+                              ),
                             ],
-                            onSelected: (value){
-                              String? msg='إبلاغ عن المتجر : ${logic.seller.value?.seller_name} - تم الإبلاغ عن من قبل المستخدم : ${mainController.authUser.value?.name}';
-                              switch(value){
+                            onSelected: (value) {
+                              String? msg =
+                                  'إبلاغ عن المتجر : ${logic.seller.value?.seller_name} - تم الإبلاغ عن من قبل المستخدم : ${mainController.authUser.value?.name}';
+                              switch (value) {
                                 case '1':
                                   Share.share(
-                                      'https://ali-pasha.com/products?id=${mainController
-                                          .authUser.value?.id}');
+                                      'https://ali-pasha.com/products?id=${mainController.authUser.value?.id}');
                                   break;
                                 case '2':
-                               if(mainController.settings.value.support?.id !=null){
-
-                                 mainController.createCommunity(sellerId: mainController.settings.value.support!.id!,message: msg);
-                               }else{
-
-                                 openUrl(url: "https://wa.me/${mainController.settings.value.social?.phone}?text=$msg");
-                               }
+                                  if (mainController
+                                          .settings.value.support?.id !=
+                                      null) {
+                                    mainController.createCommunity(
+                                        sellerId: mainController
+                                            .settings.value.support!.id!,
+                                        message: msg);
+                                  } else {
+                                    openUrl(
+                                        url:
+                                            "https://wa.me/${mainController.settings.value.social?.phone}?text=$msg");
+                                  }
                                   break;
                               }
-                            },offset: Offset(0, 0.05.sh),),
+                            },
+                            offset: Offset(0, 0.05.sh),
+                          ),
                         ),
                       ],
                     ),
                   ),
                 ),
 
-                Container(
-                  child: Expanded(
-                      child: ListView(
-                    padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
-                    children: [
-                      Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              if (logic.seller.value?.is_verified == true)
-                                Container(
-                                  alignment: Alignment.center,
+                Expanded(
+                    child: ListView(
+                  padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
+                  children: [
+                    Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            if (logic.seller.value?.is_verified == true)
+                              Container(
+                                alignment: Alignment.center,
+                                child: Transform.translate(
+                                  offset: Offset(0, 0.016.sh),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
@@ -235,7 +257,7 @@ ScrollController scrollController=ScrollController();
                                       Container(
                                         padding: EdgeInsets.symmetric(
                                             vertical: 0.007.sh),
-                                        child: InkWell(
+                                        child: GestureDetector(
                                           onTap: () {
                                             openUrl(
                                                 url:
@@ -330,108 +352,81 @@ ScrollController scrollController=ScrollController();
                                     ],
                                   ),
                                 ),
-
-                              Expanded(
-
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      height: 0.04.sh,
+                              ),
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    height: 0.04.sh,
+                                  ),
+                                  Container(
+                                    alignment: Alignment.center,
+                                    child: SellerNameComponent(
+                                      alignment: MainAxisAlignment.center,
+                                      white: false,
+                                      color: color,
+                                      isVerified:
+                                          logic.seller.value?.is_verified ??
+                                              false,
+                                      seller: logic.seller.value,
                                     ),
+                                  ),
+                                  if (logic.seller.value?.info?.length != 0)
                                     Container(
-                                      alignment: Alignment.center,
-                                      child: SellerNameComponent(
-                                        alignment: MainAxisAlignment.center,
-                                        white: false,
-                                        color: color,
-                                        isVerified:
-                                            logic.seller.value?.is_verified ??
-                                                false,
-                                        seller: logic.seller.value,
-                                      ),
-                                    ),
-                                    if (logic.seller.value?.info?.length != 0)
-                                      Container(
-                                        height: 0.05.sh,
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 0.01.sh),
-                                        child: logic.seller.value
-                                                    ?.is_verified ==
-                                                true
-                                            ? Text(
-                                                "${logic.seller.value?.info}",
-                                                style: H4GrayTextStyle,
-                                                overflow: TextOverflow.ellipsis,
-                                              )
-                                            : null,
-                                      ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      child: ((logic.seller.value?.address !=
-                                                  null &&
-                                              logic.seller.value?.address !=
-                                                  ''))
-                                          ? Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Flexible(
-                                                    child: AutoSizeText(
-                                                  "${logic.seller.value?.address}",
-                                                  style: H4GrayTextStyle,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                )),
-                                                Icon(
-                                                  FontAwesomeIcons.locationDot,
-                                                  color: GrayDarkColor,
-                                                  size: 0.04.sw,
-                                                ),
-                                              ],
+                                      height: 0.05.sh,
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 0.01.sh),
+                                      child: logic.seller.value?.is_verified ==
+                                              true
+                                          ? Text(
+                                              "${logic.seller.value?.info}",
+                                              style: H4GrayTextStyle,
+                                              overflow: TextOverflow.ellipsis,
                                             )
                                           : null,
                                     ),
-                                    Container(
-                                      alignment: Alignment.bottomCenter,
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 0.02.sh),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          InkWell(
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              children: [
-                                                Obx(() {
-                                                  return Text(
-                                                    '${logic.seller.value?.followingCount}'
-                                                        .toFormatNumberK(),
-                                                    style:
-                                                        H0RegularDark.copyWith(
-                                                            fontWeight:
-                                                                FontWeight.w900,
-                                                            color: color),
-                                                    textDirection:
-                                                        TextDirection.ltr,
-                                                  );
-                                                }),
-                                                Text(
-                                                  "متابعين",
-                                                  style: H4RegularDark,
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          InkWell(
-                                            onTap: () {},
-                                            child: Column(
-                                              children: [
-                                                Text(
-                                                  "${logic.seller.value?.total_views}"
+                                  Container(
+                                    alignment: Alignment.center,
+                                    child: ((logic.seller.value?.address !=
+                                                null &&
+                                            logic.seller.value?.address != ''))
+                                        ? Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Flexible(
+                                                  child: AutoSizeText(
+                                                "${logic.seller.value?.address}",
+                                                style: H4GrayTextStyle,
+                                                overflow: TextOverflow.ellipsis,
+                                              )),
+                                              Icon(
+                                                FontAwesomeIcons.locationDot,
+                                                color: GrayDarkColor,
+                                                size: 0.04.sw,
+                                              ),
+                                            ],
+                                          )
+                                        : null,
+                                  ),
+                                  Container(
+                                    alignment: Alignment.bottomCenter,
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 0.02.sh),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        InkWell(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              Obx(() {
+                                                return Text(
+                                                  '${logic.seller.value?.followingCount}'
                                                       .toFormatNumberK(),
                                                   style: H0RegularDark.copyWith(
                                                       fontWeight:
@@ -439,91 +434,73 @@ ScrollController scrollController=ScrollController();
                                                       color: color),
                                                   textDirection:
                                                       TextDirection.ltr,
-                                                ),
-                                                Text(
-                                                  "مشاهدات",
-                                                  style: H4RegularDark,
-                                                )
-                                              ],
-                                            ),
+                                                );
+                                              }),
+                                              Text(
+                                                "متابعين",
+                                                style: H4RegularDark,
+                                              )
+                                            ],
                                           ),
-                                          InkWell(
-                                            child: Column(
-                                              children: [
-                                                Obx(() {
-                                                  return Text(
-                                                    '${logic.seller.value?.followers!.length}'
-                                                        .toFormatNumberK(),
-                                                    style:
-                                                        H0RegularDark.copyWith(
-                                                            fontWeight:
-                                                                FontWeight.w900,
-                                                            color: color),
-                                                    textDirection:
-                                                        TextDirection.ltr,
-                                                  );
-                                                }),
-                                                Text(
-                                                  "أتابعه",
-                                                  style: H4RegularDark,
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    10.verticalSpace,
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        if (logic.seller.value?.is_verified ==
-                                            true)
-                                          InkWell(
-                                            onTap: () {
-                                              Get.toNamed(GALLERY_PAGE,
-                                                  arguments:
-                                                      logic.seller.value?.id);
-                                            },
-                                            child: Container(
-                                              width: 0.22.sw,
-                                              alignment: Alignment.center,
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 0.01.sh,
-                                                  horizontal: 0.02.sw),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15.r),
-                                                  color: logic.seller.value
-                                                              ?.is_verified ==
-                                                          true
-                                                      ? color
-                                                      : RedColor),
-                                              child: Text(
-                                                'معرض الصور',
-                                                style: H4WhiteTextStyle,
-                                              ),
-                                            ),
-                                          ),
-                                        SizedBox(
-                                          width: 0.02.sw,
                                         ),
                                         InkWell(
+                                          onTap: () {},
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                "${logic.seller.value?.total_views}"
+                                                    .toFormatNumberK(),
+                                                style: H0RegularDark.copyWith(
+                                                    fontWeight: FontWeight.w900,
+                                                    color: color),
+                                                textDirection:
+                                                    TextDirection.ltr,
+                                              ),
+                                              Text(
+                                                "مشاهدات",
+                                                style: H4RegularDark,
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        InkWell(
+                                          child: Column(
+                                            children: [
+                                              Obx(() {
+                                                return Text(
+                                                  '${logic.seller.value?.followers!.length}'
+                                                      .toFormatNumberK(),
+                                                  style: H0RegularDark.copyWith(
+                                                      fontWeight:
+                                                          FontWeight.w900,
+                                                      color: color),
+                                                  textDirection:
+                                                      TextDirection.ltr,
+                                                );
+                                              }),
+                                              Text(
+                                                "أتابعه",
+                                                style: H4RegularDark,
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  10.verticalSpace,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      if (logic.seller.value?.is_verified ==
+                                          true)
+                                        InkWell(
                                           onTap: () {
-
-                                            if (mainController.authUser.value !=
-                                                null && !mainController.createCommunityLodaing.value) {
-                                              mainController.createCommunity(
-                                                  sellerId:
-                                                      logic.seller.value!.id!);
-                                            }else{
-                                              mainController.showToast(text: 'يرجى تسجيل الدخول أولاً',type: 'error');
-
-                                            }
+                                            Get.toNamed(GALLERY_PAGE,
+                                                arguments:
+                                                    logic.seller.value?.id);
                                           },
                                           child: Container(
                                             width: 0.22.sw,
@@ -540,238 +517,272 @@ ScrollController scrollController=ScrollController();
                                                     ? color
                                                     : RedColor),
                                             child: Text(
-                                              'رسالة خاصة',
+                                              'معرض الصور',
                                               style: H4WhiteTextStyle,
                                             ),
                                           ),
                                         ),
-                                        SizedBox(
-                                          width: 0.02.sw,
-                                        ),
-                                        Obx(() {
-                                          if (followLoading.value) {
-                                            return Center(
-                                              child: AnimateIcon(
-                                                key: UniqueKey(),
-                                                onTap: () {},
-                                                iconType:
-                                                    IconType.continueAnimation,
-                                                height: 0.055.sw,
-                                                width: 0.055.sw,
-                                                color: RedColor,
-                                                animateIcon: AnimateIcons.bell,
-                                              ),
-                                            );
-                                          }
-                                          return InkWell(
-                                            onTap: () async {
-                                              if (mainController
-                                                          .authUser.value !=
-                                                      null &&
-                                                  mainController.authUser.value
-                                                          ?.followers
-                                                          ?.firstWhereOrNull(
-                                                              (el) =>
-                                                                  el.seller
-                                                                      ?.id ==
-                                                                  logic
-                                                                      .seller
-                                                                      .value!
-                                                                      .id!) ==
-                                                      null) {
-                                                followLoading.value = true;
-                                                await mainController.follow(
-                                                    sellerId: logic
-                                                        .seller.value!.id!);
-                                                followLoading.value = false;
+                                      SizedBox(
+                                        width: 0.02.sw,
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          HelperClass.connectWithSeller(
+                                              phone: logic.seller.value!.phone!,
+                                              sellerId:
+                                                  logic.seller.value!.id!);
+                                          /* if (mainController.authUser.value !=
+                                                  null && !mainController.createCommunityLodaing.value) {
+                                                mainController.createCommunity(
+                                                    sellerId:
+                                                    logic.seller.value!.id!);
                                               }else{
                                                 mainController.showToast(text: 'يرجى تسجيل الدخول أولاً',type: 'error');
 
-                                              }
-                                            },
-                                            child: Container(
-                                              width: 0.22.sw,
-                                              alignment: Alignment.center,
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 0.01.sh,
-                                                  horizontal: 0.02.sw),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15.r),
-                                                  color: logic.seller.value
-                                                              ?.is_verified ==
-                                                          true
-                                                      ? color
-                                                      : RedColor),
-                                              child: seller != null
-                                                  ? Text(
-                                                      'أتابعه',
-                                                      style: H4WhiteTextStyle,
-                                                    )
-                                                  : Text(
-                                                      'متابعة',
-                                                      style: H4WhiteTextStyle,
-                                                    ),
+                                              }*/
+                                        },
+                                        child: Container(
+                                          width: 0.22.sw,
+                                          alignment: Alignment.center,
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 0.01.sh,
+                                              horizontal: 0.02.sw),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(15.r),
+                                              color: logic.seller.value
+                                                          ?.is_verified ==
+                                                      true
+                                                  ? color
+                                                  : RedColor),
+                                          child: Text(
+                                            'رسالة خاصة',
+                                            style: H4WhiteTextStyle,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 0.02.sw,
+                                      ),
+                                      Obx(() {
+                                        if (followLoading.value) {
+                                          return Center(
+                                            child: AnimateIcon(
+                                              key: UniqueKey(),
+                                              onTap: () {},
+                                              iconType:
+                                                  IconType.continueAnimation,
+                                              height: 0.055.sw,
+                                              width: 0.055.sw,
+                                              color: RedColor,
+                                              animateIcon: AnimateIcons.bell,
                                             ),
                                           );
-                                        }),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 0.03.sh,
-                          ),
-                          Container(
-                            width: 1.sw,
-                            height: 0.04.sh,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    logic.categoryId.value = null;
-                                  },
-                                  child: Container(
-                                    width: 0.25.sw,
-                                    margin: EdgeInsets.only(right: 0.02.sw),
-                                    alignment: Alignment.center,
-                                    height: 0.02.sh,
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 0.002.sh,
-                                        horizontal: 0.02.sw),
-                                    decoration: BoxDecoration(
-                                        color: logic.categoryId.value != null
-                                            ? GrayDarkColor
-                                            : color,
-                                        borderRadius:
-                                            BorderRadius.circular(15.r)),
-                                    child: Text(
-                                      'الكل',
-                                      style: H4WhiteTextStyle,
-                                    ),
-                                  ),
-                                ),
-                                ...List.generate(
-                                    logic.categories.length,
-                                    (index) => InkWell(
-                                          onTap: () {
-                                            logic.categoryId.value =
-                                                logic.categories[index].id;
+                                        }
+                                        return InkWell(
+                                          onTap: () async {
+                                            if (mainController.authUser.value !=
+                                                    null &&
+                                                mainController.authUser.value
+                                                        ?.followers
+                                                        ?.firstWhereOrNull(
+                                                            (el) =>
+                                                                el.seller?.id ==
+                                                                logic
+                                                                    .seller
+                                                                    .value!
+                                                                    .id!) ==
+                                                    null) {
+                                              followLoading.value = true;
+                                              await mainController.follow(
+                                                  sellerId:
+                                                      logic.seller.value!.id!);
+                                              followLoading.value = false;
+                                            } else {
+                                              mainController.showToast(
+                                                  text:
+                                                      'يرجى تسجيل الدخول أولاً',
+                                                  type: 'error');
+                                            }
                                           },
                                           child: Container(
-                                            width: 0.25.sw,
-                                            margin:
-                                                EdgeInsets.only(right: 0.02.sw),
+                                            width: 0.22.sw,
                                             alignment: Alignment.center,
-                                            height: 0.02.sh,
                                             padding: EdgeInsets.symmetric(
-                                                vertical: 0.002.sh,
+                                                vertical: 0.01.sh,
                                                 horizontal: 0.02.sw),
                                             decoration: BoxDecoration(
-                                                color: logic.categoryId.value !=
-                                                        logic.categories[index]
-                                                            .id
-                                                    ? GrayDarkColor
-                                                    : color,
                                                 borderRadius:
-                                                    BorderRadius.circular(
-                                                        15.r)),
-                                            child: Text(
-                                              '${logic.categories[index].name}',
-                                              style: H4WhiteTextStyle,
-                                            ),
+                                                    BorderRadius.circular(15.r),
+                                                color: logic.seller.value
+                                                            ?.is_verified ==
+                                                        true
+                                                    ? color
+                                                    : RedColor),
+                                            child: seller != null
+                                                ? Text(
+                                                    'أتابعه',
+                                                    style: H4WhiteTextStyle,
+                                                  )
+                                                : Text(
+                                                    'متابعة',
+                                                    style: H4WhiteTextStyle,
+                                                  ),
                                           ),
-                                        ))
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 0.02.sh,
-                      ),
-                      Obx(() {
-                        if (logic.loadingProducts.value && logic.page.value==1) {
-                          return Column(
-                            children: [
-                              ...List.generate(
-                                  3,
-                                  (i) =>
-                                      MinimizeDetailsProductComponentLoading())
-                            ],
-                          );
-                        }
-                        return Column(
-                          children: [
-                            ...List.generate(
-                              logic.products.length,
-                              (index) => Column(
-                                children: [
-                                  if (logic.advices.length > 0 &&
-                                      index % 5 == 0)
-                                    AdviceComponent(
-                                        advice: logic.advices[
-                                            index % logic.advices.length]),
-                                  Obx(() {
-                                   if(logic.products[index].type=='product'){
-                                     return MinimizeDetailsProductComponent(
-                                       post: logic.products[index],
-                                       cartLoading:
-                                       mainController.cartLoading.value,
-                                       TitleColor: color,
-                                       onClick: () {
-                                         Get.toNamed(PRODUCT_PAGE,
-                                             arguments:
-                                             logic.products[index].id);
-                                       },
-                                     );
-                                   } else if( logic.products[index].type=='tender'){
-                                     return MinimizeDetailsTenderComponent(
-                                       post: logic.products[index],
-                                       cartLoading:
-                                       mainController.cartLoading.value,
-                                       TitleColor: color,
-                                       onClick: () {
-                                         Get.toNamed(PRODUCT_PAGE,
-                                             arguments:
-                                             logic.products[index].id);
-                                       },
-                                     );
-                                   }
-                                   else{
-                                     return MinimizeDetailsJobComponent(
-                                       post: logic.products[index],
-                                       cartLoading:
-                                       mainController.cartLoading.value,
-                                       TitleColor: color,
-                                       onClick: () {
-                                         Get.toNamed(PRODUCT_PAGE,
-                                             arguments:
-                                             logic.products[index].id);
-                                       },
-                                     );
-                                   }
-                                  }),
+                                        );
+                                      }),
+                                    ],
+                                  ),
                                 ],
                               ),
                             ),
-                            if (logic.loadingProducts.value && logic.page.value>1)
-                              Container(
-                                height: 0.05.sw,
-                                child: ProgressLoading(width: 0.05.sw,),
-                              )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 0.03.sh,
+                        ),
+                        Container(
+                          width: 1.sw,
+                          height: 0.04.sh,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  logic.categoryId.value = null;
+                                },
+                                child: Container(
+                                  width: 0.25.sw,
+                                  margin: EdgeInsets.only(right: 0.02.sw),
+                                  alignment: Alignment.center,
+                                  height: 0.02.sh,
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 0.002.sh, horizontal: 0.02.sw),
+                                  decoration: BoxDecoration(
+                                      color: logic.categoryId.value != null
+                                          ? GrayDarkColor
+                                          : color,
+                                      borderRadius:
+                                          BorderRadius.circular(15.r)),
+                                  child: Text(
+                                    'الكل',
+                                    style: H4WhiteTextStyle,
+                                  ),
+                                ),
+                              ),
+                              ...List.generate(
+                                  logic.categories.length,
+                                  (index) => InkWell(
+                                        onTap: () {
+                                          logic.categoryId.value =
+                                              logic.categories[index].id;
+                                        },
+                                        child: Container(
+                                          width: 0.25.sw,
+                                          margin:
+                                              EdgeInsets.only(right: 0.02.sw),
+                                          alignment: Alignment.center,
+                                          height: 0.02.sh,
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 0.002.sh,
+                                              horizontal: 0.02.sw),
+                                          decoration: BoxDecoration(
+                                              color: logic.categoryId.value !=
+                                                      logic.categories[index].id
+                                                  ? GrayDarkColor
+                                                  : color,
+                                              borderRadius:
+                                                  BorderRadius.circular(15.r)),
+                                          child: Text(
+                                            '${logic.categories[index].name}',
+                                            style: H4WhiteTextStyle,
+                                          ),
+                                        ),
+                                      ))
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 0.02.sh,
+                    ),
+                    Obx(() {
+                      if (logic.loadingProducts.value &&
+                          logic.page.value == 1) {
+                        return Column(
+                          children: [
+                            ...List.generate(3,
+                                (i) => MinimizeDetailsProductComponentLoading())
                           ],
                         );
-
-                      }),
-                    ],
-                  )),
-                ),
+                      }
+                      return Column(
+                        children: [
+                          ...List.generate(
+                            logic.products.length,
+                            (index) => Column(
+                              children: [
+                                if (logic.advices.length > 0 && index % 5 == 0)
+                                  AdviceComponent(
+                                      advice: logic.advices[
+                                          index % logic.advices.length]),
+                                Obx(() {
+                                  if (logic.products[index].type == 'product') {
+                                    return MinimizeDetailsProductComponent(
+                                      post: logic.products[index],
+                                      cartLoading:
+                                          mainController.cartLoading.value,
+                                      TitleColor: color,
+                                      onClick: () {
+                                        Get.toNamed(PRODUCT_PAGE,
+                                            arguments:
+                                                logic.products[index].id);
+                                      },
+                                    );
+                                  } else if (logic.products[index].type ==
+                                      'tender') {
+                                    return MinimizeDetailsTenderComponent(
+                                      post: logic.products[index],
+                                      cartLoading:
+                                          mainController.cartLoading.value,
+                                      TitleColor: color,
+                                      onClick: () {
+                                        Get.toNamed(PRODUCT_PAGE,
+                                            arguments:
+                                                logic.products[index].id);
+                                      },
+                                    );
+                                  } else {
+                                    return MinimizeDetailsJobComponent(
+                                      post: logic.products[index],
+                                      cartLoading:
+                                          mainController.cartLoading.value,
+                                      TitleColor: color,
+                                      onClick: () {
+                                        Get.toNamed(PRODUCT_PAGE,
+                                            arguments:
+                                                logic.products[index].id);
+                                      },
+                                    );
+                                  }
+                                }),
+                              ],
+                            ),
+                          ),
+                          if (logic.loadingProducts.value &&
+                              logic.page.value > 1)
+                            Container(
+                              height: 0.05.sw,
+                              child: ProgressLoading(
+                                width: 0.05.sw,
+                              ),
+                            )
+                        ],
+                      );
+                    }),
+                  ],
+                ))
                 // if is_verified
               ],
             ),
@@ -779,7 +790,7 @@ ScrollController scrollController=ScrollController();
               top: 0.16.sh,
               child: Builder(
                   builder: (context) => InkWell(
-                        onTap: () {
+                       /* onTap: () {
                           showDialog(
                             context: context,
                             builder: (context) => Dialog(
@@ -834,7 +845,7 @@ ScrollController scrollController=ScrollController();
                               ),
                             ),
                           );
-                        },
+                        },*/
                         child: Container(
                           width: 1.sw,
                           height: 0.12.sh,

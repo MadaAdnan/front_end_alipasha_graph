@@ -1,9 +1,12 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
+import 'package:ali_pasha_graph/components/progress_loading.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
+import 'package:ali_pasha_graph/helpers/components.dart';
 import 'package:ali_pasha_graph/helpers/enums.dart';
 import 'package:ali_pasha_graph/helpers/product_enums.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
+import 'package:ali_pasha_graph/pages/profile/logic.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -327,7 +330,7 @@ class MinimizeDetailsJobComponent extends StatelessWidget {
     this.TitleColor,
     this.canEdit,
   });
-
+RxBool loading=RxBool(false);
   final Color? TitleColor;
   final ProductModel post;
   final Function()? onClick;
@@ -513,14 +516,57 @@ class MinimizeDetailsJobComponent extends StatelessWidget {
                               text: ' - ${post.sub1?.name}',
                               style: H4GrayTextStyle),
                       ])),
-                      Container(
-                        child: SellerNameComponent(
-                          onTap: onClick,
-                            text: 'منشور بواسطة:',
-                            textStyle: H4RegularDark,
-                            color: TitleColor,
-                            seller: post.user,
-                            isVerified: post.user?.is_verified == true),
+                      Row(
+                        children: [
+                          Expanded(child: Container(
+                            child: SellerNameComponent(
+                                onTap: onClick,
+                                text: 'منشور بواسطة:',
+                                textStyle: H4RegularDark,
+                                color: TitleColor,
+                                seller: post.user,
+                                isVerified: post.user?.is_verified == true),
+                          )),
+                          if(mainController.authUser.value?.id == post.user?.id)
+                            IconButton(onPressed: (){
+                              Get.dialog(AlertDialog(
+                                content: Container(
+                                  height: 0.15.sh,
+                                  child: Obx(() {
+                                    if(loading.value){
+                                      return Container(alignment: Alignment.center,child: ProgressLoading(width: 0.1.sw,),);
+                                    }
+                                    return Container(child: Text('هل أنت متأكد من حذف المنشور ؟',style: H2RedTextBoldStyle,),);
+
+                                  }),
+                                ),
+                                actions: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      MaterialButton(onPressed: (){
+                                        Get.back();
+                                      },child: Text('إلغاء',style: H3RegularDark,),color: GrayDarkColor,),
+                                      SizedBox(width: 0.02.sw,),
+                                      MaterialButton(onPressed: ()async{
+                                        loading.value=true;
+                                        int? productId= await mainController.deleteProduct(productId: post.id!);
+                                        if(productId!=null){
+                                          ProfileLogic profile=Get.find<ProfileLogic>();
+                                          int index=  profile.products.indexWhere((el)=>el.id==productId);
+                                          if(index >-1){
+                                            profile.products.removeAt(index);
+                                          }
+                                        }
+                                        loading.value=false;
+                                        Get.back();
+                                      },child: Text('إستمرار',style: H3WhiteTextStyle,),color: RedColor,),
+                                    ],
+                                  )
+                                ],
+                              ));
+                            }, icon: Icon(FontAwesomeIcons.trash,size: 0.04.sw,color: RedColor,))
+                        ],
                       ),
                       Expanded(
                         child: RichText(

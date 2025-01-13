@@ -861,7 +861,29 @@ class MainController extends GetxController {
       if (res?.data?['data']?['me'] != null) {
         pusher.value = null;
         await setUserJson(json: res?.data?['data']?['me']);
-
+if(authUser.value?.invoicesSeller_count !=0){
+  Get.dialog(AlertDialog(
+    content: Container(
+      height: 0.1.sh,
+      child: Center(child: Text('لديك طلبات جديدة',style: H2RedTextStyle,),),
+    ),
+    actions: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          MaterialButton(onPressed: (){
+            Get.offAndToNamed(INVOICE_PAGE);
+          },child: Text('ذهاب إلى الطلبات',style: H4WhiteTextStyle,),color: RedColor,),
+        SizedBox(width: 0.05.sw,),
+          MaterialButton(onPressed: (){
+            Get.back();
+          },child: Text('إغلاق',style: H4WhiteTextStyle,),color: GrayDarkColor,),
+        ],
+      ),
+    ],
+  ));
+}
         OneSignal.login("${authUser.value?.id}");
         OneSignal.User.addEmail("${authUser.value?.email}");
       }
@@ -902,5 +924,33 @@ class MainController extends GetxController {
       logger.e(e);
     }
     loading.value = false;
+  }
+
+ Future<int?> deleteProduct({required int productId}) async {
+    loading.value = true;
+
+    query.value = '''
+    mutation DeleteProduct {
+    deleteProduct(id: "${productId}") {
+        id
+        name
+    }
+}
+
+    ''';
+    try {
+      dio.Response? res = await fetchData();
+
+      if (res?.data?['data']?['deleteProduct'] != null) {
+        showToast(text:'تمت العملية بنجاح', );
+        return productId;
+
+      }
+      if(res?.data?['errors']?[0]?['message']!=null){
+       showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
+      }
+    } catch (e) {}
+    loading.value = false;
+   return null;
   }
 }

@@ -147,9 +147,9 @@ query MainCategories {
           "sub2_id": sub2Category.value?.id,
           "sub3_id": sub3Category.value?.id,
           "start_date":
-              "${typeProduct.value != 'job' ? '' : startDateController.text}",
+              "${typeProduct.value != 'job' ? DateTime.now(): startDateController.text}",
           "end_date":
-              "${typeProduct.value != 'job' ? '' : endDateController.text}",
+              "${typeProduct.value != 'job' ? DateTime.now().add(Duration(days: 365)) : endDateController.text}",
           "options":
               options.value.values.map((el) => el).expand((i) => i).toList(),
         }

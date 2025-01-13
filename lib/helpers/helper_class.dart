@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
+import 'package:logger/logger.dart';
 import 'package:lottie/lottie.dart';
 
 class HelperClass{
@@ -375,6 +376,7 @@ class HelperClass{
          children: [
            InkWell(
              onTap: (){
+               Logger().e("https://wa.me/$phone");
                openUrl(url: "https://wa.me/$phone");
              },
              child: Container(

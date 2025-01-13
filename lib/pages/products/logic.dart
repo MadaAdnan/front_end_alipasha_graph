@@ -93,6 +93,7 @@ class ProductsLogic extends GetxController {
             user {
             id
                 seller_name
+                phone
                 logo
                 image
                 is_verified

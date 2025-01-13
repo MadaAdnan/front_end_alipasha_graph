@@ -74,6 +74,7 @@ class SectionLogic extends GetxController {
             id
                 seller_name
                 image
+                phone
                 city{
                 id
                 city_id

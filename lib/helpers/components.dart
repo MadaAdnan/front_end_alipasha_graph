@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'colors.dart';
@@ -39,7 +40,12 @@ bool isAuth() {
 }
 
 Future<void> openUrl({required String url}) async {
+
+  if(url.length==0){
+    return ;
+  }
   Uri? uri = Uri.tryParse(url);
+
   try {
     if (uri != null) {
       if (!await launchUrl(uri)) {

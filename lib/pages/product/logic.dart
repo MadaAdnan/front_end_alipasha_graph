@@ -140,6 +140,7 @@ TextEditingController comment =TextEditingController();
                 seller_name
                 name
                 image
+                phone
                 is_verified
                 city{
                 id
