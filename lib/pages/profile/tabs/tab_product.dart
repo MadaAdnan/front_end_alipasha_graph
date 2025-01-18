@@ -35,8 +35,7 @@ class TabProduct extends StatelessWidget {
         children: [
         
           Obx(() {
-            Logger().d("LENTH");
-            Logger().d(logic.products.length);
+
             if (logic.loadingProduct.value && logic.products.length==0) {
               return Expanded(
                 child: ListView(

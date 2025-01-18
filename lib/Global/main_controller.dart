@@ -66,7 +66,7 @@ class MainController extends GetxController {
   RxList<AdviceModel> advices = RxList<AdviceModel>([]);
   RxList<SliderModel> sliders = RxList<SliderModel>([]);
   RxList<PricingModel> pricing = RxList([]);
-  String versionAPK = "3.0.0";
+  String versionAPK = "3.0.89";
   RxInt communityNotification = RxInt(0);
   RxBool startApp = RxBool(true); //for fill data from storage
   Rx<SettingModel> settings =
@@ -426,7 +426,11 @@ class MainController extends GetxController {
             phone
             sub_phone
         }
+        url_for_download{
+        play
+        up_down
         
+        }
         address
         weather_api
         current_version
@@ -516,6 +520,7 @@ class MainController extends GetxController {
                             ),
                             child: InkWell(
                               onTap: () {
+                                Logger().d(settings.value.urlDownload?.play);
                                 openUrl(
                                     url: "${settings.value.urlDownload?.play}");
                               },
@@ -546,6 +551,7 @@ class MainController extends GetxController {
                             ),
                             child: InkWell(
                               onTap: () {
+                                Logger().d(settings.value.urlDownload?.play);
                                 openUrl(
                                     url: settings.value.urlDownload?.direct ??
                                         'https://ali-pasha.com/app');

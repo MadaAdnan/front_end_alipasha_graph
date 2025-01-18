@@ -176,7 +176,7 @@ class JobCard extends StatelessWidget {
                     "${post?.expert}",
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
-                    style: H3RegularDark.copyWith(color: Colors.black),
+                    style: H2RegularDark.copyWith(color: Colors.black),
                     /* trimCollapsedText: "عرض المزيد",
                     trimExpandedText: "عرض أقل",
 

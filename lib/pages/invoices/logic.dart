@@ -65,6 +65,7 @@ class InvoicesLogic extends GetxController {
                 product {
                     name
                     image
+                    is_delivery
                 }
             }
         }

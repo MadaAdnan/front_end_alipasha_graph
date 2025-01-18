@@ -34,7 +34,7 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
   final bool? cartLoading;
   final bool? canEdit;
   MainController mainController = Get.find<MainController>();
-
+RxBool loading=RxBool(false);
   @override
   Widget build(BuildContext context) {
 
@@ -174,7 +174,7 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                                     isVerified: post.user?.is_verified == true),),
                               ),
                               SizedBox(height: 0.01.sh,),
-                              if(post.active=='active')
+                              if(post.active=='active'/* && mainController.authUser.value?.id != post.user?.id*/)
                                 Transform.translate(
                                   offset: Offset(0, -0.01.sh),
                                   child:GestureDetector(
@@ -192,6 +192,48 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                                     ),
                                   ),
                                 ),
+                              if(mainController.authUser.value?.id == post.user?.id)
+                                Transform.translate(
+                                  offset: Offset(0, -0.01.sh),
+                                  child: IconButton(onPressed: (){
+                                    Get.dialog(AlertDialog(
+                                      content: Container(
+                                        height: 0.15.sh,
+                                        child: Obx(() {
+                                          if(loading.value){
+                                            return Container(alignment: Alignment.center,child: ProgressLoading(width: 0.1.sw,),);
+                                          }
+                                          return Container(child: Text('هل أنت متأكد من حذف المنشور ؟',style: H2RedTextBoldStyle,),);
+
+                                        }),
+                                      ),
+                                      actions: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            MaterialButton(onPressed: (){
+                                              Get.back();
+                                            },child: Text('إلغاء',style: H3RegularDark,),color: GrayDarkColor,),
+                                            SizedBox(width: 0.02.sw,),
+                                            MaterialButton(onPressed: ()async{
+                                              loading.value=true;
+                                              int? productId= await mainController.deleteProduct(productId: post.id!);
+                                              if(productId!=null){
+                                                ProfileLogic profile=Get.find<ProfileLogic>();
+                                                int index=  profile.products.indexWhere((el)=>el.id==productId);
+                                                if(index >-1){
+                                                  profile.products.removeAt(index);
+                                                }
+                                              }
+                                              loading.value=false;
+                                              Get.back();
+                                            },child: Text('إستمرار',style: H3WhiteTextStyle,),color: RedColor,),
+                                          ],
+                                        )
+                                      ],
+                                    ));
+                                  }, icon: Icon(FontAwesomeIcons.trash,size: 0.04.sw,color: RedColor,)),
+                                )
                             ],
                           ),
                         ),
@@ -347,6 +389,7 @@ RxBool loading=RxBool(false);
           child: Container(
 
             width: 1.sw,
+
             decoration: BoxDecoration(
               color: GrayWhiteColor,
               borderRadius: BorderRadius.circular(30.r),
@@ -518,7 +561,8 @@ RxBool loading=RxBool(false);
                       ])),
                       Row(
                         children: [
-                          Expanded(child: Container(
+                          Expanded(
+                              child: Container(
                             child: SellerNameComponent(
                                 onTap: onClick,
                                 text: 'منشور بواسطة:',
@@ -566,6 +610,7 @@ RxBool loading=RxBool(false);
                                 ],
                               ));
                             }, icon: Icon(FontAwesomeIcons.trash,size: 0.04.sw,color: RedColor,))
+
                         ],
                       ),
                       Expanded(

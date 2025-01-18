@@ -107,7 +107,7 @@ RxBool is_like=RxBool(false);
                         "${post.expert!.length.isGreaterThan(5) ? post.expert : post.name}",
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
-                        style: H3RegularDark.copyWith(color: Colors.black),
+                        style: H2RegularDark.copyWith(color: Colors.black),
                       ),
                     ),
                   ),

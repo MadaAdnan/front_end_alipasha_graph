@@ -206,7 +206,7 @@ class PostCard extends StatelessWidget {
                 ),
                 15.verticalSpace,
                 Flexible(
-                  flex: 2,
+                  flex: 3,
                   child: InkWell(
                     onTap: () {
                       Get.toNamed(PRODUCT_PAGE, arguments: post.id);
@@ -217,7 +217,7 @@ class PostCard extends StatelessWidget {
                         "${post.name} ${post.expert}",
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
-                        style: H3RegularDark.copyWith(color: Colors.black),
+                        style: H2RegularDark.copyWith(color: Colors.black),
                       ),
                     ),
                   ),

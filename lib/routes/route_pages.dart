@@ -25,6 +25,8 @@ import 'package:ali_pasha_graph/pages/communities/binding.dart';
 import 'package:ali_pasha_graph/pages/communities/view.dart';
 import 'package:ali_pasha_graph/pages/contact/binding.dart';
 import 'package:ali_pasha_graph/pages/contact/view.dart';
+import 'package:ali_pasha_graph/pages/create_advice/binding.dart';
+import 'package:ali_pasha_graph/pages/create_advice/view.dart';
 import 'package:ali_pasha_graph/pages/create_community/binding.dart';
 import 'package:ali_pasha_graph/pages/create_community/view.dart';
 import 'package:ali_pasha_graph/pages/create_job/binding.dart';
@@ -211,6 +213,14 @@ class AppPages {
         name: CREATE_PRODUCT_PAGE,
         page: () => CreateProductPage(),
         binding: CreateProductBinding()),
+
+
+    GetPage(
+        middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+        name: CREATE_ADVICE_PAGE,
+        page: () => CreateAdvicePage(),
+        binding: CreateAdviceBinding()),
+
     GetPage(
         middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
         name: MY_INVOICE_PAGE,

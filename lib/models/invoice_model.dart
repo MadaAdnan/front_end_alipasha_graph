@@ -11,7 +11,7 @@ class InvoiceModel {
   String? phone;
   double? total;
   double? shipping;
-  List? items;
+  List<ItemInvoice>? items;
 
   InvoiceModel({
     this.id,

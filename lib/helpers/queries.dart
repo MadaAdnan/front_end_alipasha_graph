@@ -45,6 +45,7 @@ invoices_seller_count
            
             plans{
             id
+            ads_count
             pivot{
              expired_date
             }
@@ -112,6 +113,7 @@ unread_notifications_count
            
             plans{
             id
+            ads_count
             pivot{
              expired_date
             }

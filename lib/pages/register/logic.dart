@@ -24,6 +24,7 @@ class RegisterLogic extends GetxController {
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
 
   // TextEditingController addressController=TextEditingController();
   TextEditingController affiliateController = TextEditingController();
@@ -133,13 +134,14 @@ mutation CreateGoogleUser {
 mutation CreateUser {
     createUser(
         input: {
-            name: "${nameController.text}"
-            email: "${emailController.text}"
-            password: "${passwordController.text}"
-            phone: "${phoneController.text}"
+            name: "${nameController.text??''}"
+            email: "${emailController.text??''}"
+            password: "${passwordController.text??''}"
+            phone: "${phoneController.text??''}"
             city_id: ${int.tryParse("$citySelected") ?? null}
-            device_token: "${deviceToken}"
-            affiliate: "${affiliateController.text}"
+            device_token: "${deviceToken??''}"
+            affiliate: "${affiliateController.text??''}"
+            address:"${addressController.text??''}"
             
         }
     ) {

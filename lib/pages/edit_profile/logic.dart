@@ -12,6 +12,7 @@ import 'package:dio/dio.dart' as dio;
 
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:logger/logger.dart';
 
 class EditProfileLogic extends GetxController {
   MainController mainController = Get.find<MainController>();
@@ -142,6 +143,13 @@ class EditProfileLogic extends GetxController {
       return;
     }
     loading.value = true;
+    String color='';
+    if(colorIdController.text.length>7){
+      color="#${colorIdController.text.substring(3)}";
+    }else{
+      color=colorIdController.text;
+    }
+
     Map<String, dynamic> datajson = {
       "query": r" mutation UpdateUser($input:UpdateUserInput!) { "
           r"updateUser(input:$input) "
@@ -159,7 +167,7 @@ class EditProfileLogic extends GetxController {
           "close_time": closeTimeController.value.text??'' ,
           "open_time": openTimeController.value.text??'' ,
           "info": infoController.value.text??'' ,
-          "colorId": colorIdController.value.text??'' ,
+          "colorId": color??'' ,
           'social': {
             'instagram': instagramController.value.text??'' ,
             'face': faceController.value.text??'' ,

@@ -2,6 +2,7 @@ import 'package:ali_pasha_graph/models/comment_model.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 
 import '../../Global/main_controller.dart';
 import 'package:dio/dio.dart' as dio;
@@ -53,23 +54,25 @@ class CommentLogic extends GetxController {
     loadingComment.value = true;
     mainController.query.value = '''
       mutation CreateComment {
-    createComment(product_id: ${productId.value}, comment: "${comment.value.text}") {
+    createComment(product_id: ${productId.value}, comment: "${ comment.value.text}") {
         id
         comment
+        product_id
         created_at
+        
         user {
-        id
-            name
-            seller_name
-            image
-            is_verified
+          id
+          name
+          seller_name
+          image
+          is_verified
         }
     }
 }
 ''';
     try {
       dio.Response? res = await mainController.fetchData();
-
+Logger().d(res?.data);
       if (res?.data?['data']?['createComment'] != null) {
         comments
             .add(CommentModel.fromJson(res?.data?['data']?['createComment']));
@@ -90,10 +93,12 @@ class CommentLogic extends GetxController {
           expert
           id
           image
+          
           user{
             id
             name
             seller_name
+            is_verified
             image
           }
             comments(first: 30, page: ${page.value}) {
@@ -104,10 +109,21 @@ class CommentLogic extends GetxController {
                     id
                     comment
                     created_at
+                    comments{
+          user {
+            name
+            seller_name
+            image
+            is_verified
+          }
+          comment
+          created_at
+        }
                     user {
                     id
                     seller_name
                         name
+                        is_verified
                         image
                     }
                 }

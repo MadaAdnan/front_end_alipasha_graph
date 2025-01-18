@@ -108,7 +108,7 @@ class NetworkManager {
     for (var entry in fileData.entries) {
      dt[entry.key] = await dioo.MultipartFile.fromFile(entry.value.path,filename: '${entry.value.path}',contentType: dioo.DioMediaType("${entry.value.mimeType}","${entry.value.mimeType}"));
     }
-Get.find<MainController>().logger.e(dt['map']);
+
     try {
 
 

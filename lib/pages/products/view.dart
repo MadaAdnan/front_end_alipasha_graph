@@ -248,7 +248,7 @@ class ProductsPage extends StatelessWidget {
                               Container(
                                 alignment: Alignment.center,
                                 child: Transform.translate(
-                                  offset: Offset(0, 0.016.sh),
+                                  offset: Offset(0, 0.0.sh),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
@@ -259,13 +259,14 @@ class ProductsPage extends StatelessWidget {
                                             vertical: 0.007.sh),
                                         child: GestureDetector(
                                           onTap: () {
+                                            print("INISTA");
                                             openUrl(
                                                 url:
-                                                    "${logic.seller.value?.social?.instagram}");
+                                                "${logic.seller.value?.social?.instagram}" );
                                           },
                                           child: Icon(
                                             FontAwesomeIcons.instagram,
-                                            color: color,
+                                            color: "${logic.seller.value?.social?.instagram}".isEmpty?GrayLightColor: color,
                                             size: 0.06.sw,
                                           ),
                                         ),
@@ -281,7 +282,7 @@ class ProductsPage extends StatelessWidget {
                                             },
                                             child: Icon(
                                               FontAwesomeIcons.facebook,
-                                              color: color,
+                                              color:"${logic.seller.value?.social?.face}".isEmpty?GrayLightColor: color,
                                               size: 0.06.sw,
                                             )),
                                       ),
@@ -296,7 +297,7 @@ class ProductsPage extends StatelessWidget {
                                           },
                                           child: Icon(
                                             FontAwesomeIcons.linkedin,
-                                            color: color,
+                                            color:"${logic.seller.value?.social?.linkedin}".isEmpty?GrayLightColor: color,
                                             size: 0.06.sw,
                                           ),
                                         ),
@@ -312,7 +313,7 @@ class ProductsPage extends StatelessWidget {
                                           },
                                           child: Icon(
                                             FontAwesomeIcons.tiktok,
-                                            color: color,
+                                            color:"${logic.seller.value?.social?.linkedin}".isEmpty?GrayLightColor: color,
                                             size: 0.06.sw,
                                           ),
                                         ),
@@ -328,7 +329,7 @@ class ProductsPage extends StatelessWidget {
                                           },
                                           child: Icon(
                                             FontAwesomeIcons.whatsapp,
-                                            color: color,
+                                            color: "${logic.seller.value?.phone}".isEmpty?GrayLightColor: color,
                                             size: 0.06.sw,
                                           ),
                                         ),
@@ -344,7 +345,7 @@ class ProductsPage extends StatelessWidget {
                                           },
                                           child: Icon(
                                             FontAwesomeIcons.xTwitter,
-                                            color: color,
+                                            color:"${logic.seller.value?.social?.twitter}".isEmpty?GrayLightColor: color,
                                             size: 0.06.sw,
                                           ),
                                         ),
@@ -723,10 +724,11 @@ class ProductsPage extends StatelessWidget {
                             logic.products.length,
                             (index) => Column(
                               children: [
-                                if (logic.advices.length > 0 && index % 5 == 0)
+                                // show advice
+                               /* if (logic.advices.length > 0 && index % 5 == 0)
                                   AdviceComponent(
                                       advice: logic.advices[
-                                          index % logic.advices.length]),
+                                          index % logic.advices.length]),*/
                                 Obx(() {
                                   if (logic.products[index].type == 'product') {
                                     return MinimizeDetailsProductComponent(

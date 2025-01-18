@@ -33,18 +33,76 @@ class CommentPage extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: Stack(
-        children: [
-          if (isAuth())
-            Positioned(
-              bottom: 0.01.sh,
+      body: NotificationListener<ScrollNotification>(
+        onNotification: (ScrollNotification scrollInfo) {
+          if (scrollInfo.metrics.pixels >=
+              scrollInfo.metrics.maxScrollExtent * 0.80 &&
+              !mainController.loading.value &&
+              logic.hasMorePage.value) {
+            logic.nextPage();
+          }
+          return true;
+        },
+        child: Column(
+          children: [
+            Expanded(
+
               child: Container(
+                width: 1.sw,
+                color: WhiteColor,
+                child: SingleChildScrollView(
+                  controller: logic.scrollController,
+                  child: Obx(() {
+                    if (logic.loading.value) {
+                      return Container(
+                        width: 1.sw,
+                        height: 1.sh,
+                        alignment: Alignment.center,
+                        child: ProgressLoading(
+                          width: 0.2.sw,
+                          height: 0.2.sw,
+                        ),
+                      );
+                    }
+                    return Column(
+                      children: [
+                        ...List.generate(
+                          logic.comments.length,
+                              (index) {
+                            if (logic.comments[index].user?.id ==
+                                mainController.authUser.value?.id) {
+                              return myMessage(context,
+                                  message: logic.comments[index]);
+                            }
+                            return AnotherMessage(
+                              message: logic.comments[index],logic: logic,);
+                          },
+                        ),
+                        SizedBox(
+                          height: 0.01.sh,
+                        ),
+                        if (logic.loading.value)
+                          Container(
+                            child: Center(
+                              child: ProgressLoading(
+                                width: 0.03.sw,
+                              ),
+                            ),
+                          ),
+                      ],
+                    );
+                  }),
+                ),
+              ),
+            ),
+            if (isAuth())
+              Container(
+
                 padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
                 alignment: Alignment.center,
                 constraints: BoxConstraints(maxHeight: 0.8.sh),
                 width: 1.sw,
                 height: 0.07.sh,
-                decoration: const BoxDecoration(),
                 child: Container(
                   width: 0.9.sw,
                   child: Row(
@@ -53,142 +111,77 @@ class CommentPage extends StatelessWidget {
                     children: [
                       Expanded(
                           child: Container(
-                        child: FormBuilderTextField(
-                          name: 'msg',
-                          controller: logic.comment,
-                          style: H2RegularDark.copyWith(color: Colors.black),
-                          decoration: InputDecoration(
-                            fillColor: WhiteColor,
-                            filled: true,
-                            hintStyle: H5GrayTextStyle.copyWith(
-                              color: Colors.black.withOpacity(0.3),
-                            ),
-                            contentPadding:
-                                EdgeInsets.symmetric(horizontal: 0.02.sw),
-                            suffixIcon: Obx(() {
-                              if (logic.loadingComment.value) {
-                                return Container(
-                                  width: 0.04.sw,
-                                  height: 0.04.sw,
-                                  child: Container(
-                                      padding: const EdgeInsets.all(7),
-                                      child: const Center(
-                                        child: Padding(
-                                          padding: EdgeInsets.all(7),
-                                          child: CircularProgressIndicator(),
-                                        ),
-                                      )),
-                                );
-                              }
-                              return Container(
-                                decoration: const BoxDecoration(
-                                    color: RedColor, shape: BoxShape.circle),
-                                child: Transform.flip(
-                                  flipX: true,
-                                  child: IconButton(
-                                      onPressed: () {
-                                        logic.createComment();
-                                      },
-                                      icon: const Icon(
-                                        FontAwesomeIcons.paperPlane,
-                                        color: WhiteColor,
-                                      )),
+                            child: FormBuilderTextField(
+                              name: 'msg',
+                              controller: logic.comment,
+                              style: H2RegularDark.copyWith(color: Colors.black),
+                              decoration: InputDecoration(
+                                fillColor: WhiteColor,
+                                filled: true,
+                                hintStyle: H5GrayTextStyle.copyWith(
+                                  color: Colors.black.withOpacity(0.3),
                                 ),
-                              );
-                            }),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(150.r),
-                              borderSide: const BorderSide(
-                                color: RedColor,
+                                contentPadding:
+                                EdgeInsets.symmetric(horizontal: 0.02.sw),
+                                suffixIcon: Obx(() {
+                                  if (logic.loadingComment.value) {
+                                    return Container(
+                                      width: 0.04.sw,
+                                      height: 0.04.sw,
+                                      child: Container(
+                                          padding: const EdgeInsets.all(7),
+                                          child: const Center(
+                                            child: Padding(
+                                              padding: EdgeInsets.all(7),
+                                              child: CircularProgressIndicator(),
+                                            ),
+                                          )),
+                                    );
+                                  }
+                                  return Container(
+                                    decoration: const BoxDecoration(
+                                        color: RedColor, shape: BoxShape.circle),
+                                    child: Transform.flip(
+                                      flipX: true,
+                                      child: IconButton(
+                                          onPressed: () {
+                                            logic.createComment();
+                                          },
+                                          icon: const Icon(
+                                            FontAwesomeIcons.paperPlane,
+                                            color: WhiteColor,
+                                          )),
+                                    ),
+                                  );
+                                }),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(150.r),
+                                  borderSide: const BorderSide(
+                                    color: RedColor,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(150.r),
+                                  borderSide: const BorderSide(
+                                    color: RedColor,
+                                  ),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(150.r),
+                                  borderSide: const BorderSide(
+                                    color: RedColor,
+                                  ),
+                                ),
                               ),
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(150.r),
-                              borderSide: const BorderSide(
-                                color: RedColor,
-                              ),
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(150.r),
-                              borderSide: const BorderSide(
-                                color: RedColor,
-                              ),
-                            ),
-                          ),
-                        ),
-                      )),
+                          )),
                     ],
                   ),
                 ),
               ),
-            ),
-          NotificationListener<ScrollNotification>(
-            onNotification: (ScrollNotification scrollInfo) {
-              if (scrollInfo.metrics.pixels >=
-                      scrollInfo.metrics.maxScrollExtent * 0.80 &&
-                  !mainController.loading.value &&
-                  logic.hasMorePage.value) {
-                logic.nextPage();
-              }
-              return true;
-            },
-            child: Column(
-              children: [
-                Flexible(
-                  flex: 9,
-                  child: Container(
-                    width: 1.sw,
-                    color: WhiteColor,
-                    child: SingleChildScrollView(
-                      controller: logic.scrollController,
-                      child: Obx(() {
-                        if (logic.loading.value) {
-                          return Container(
-                            width: 1.sw,
-                            height: 1.sh,
-                            alignment: Alignment.center,
-                            child: ProgressLoading(
-                              width: 0.2.sw,
-                              height: 0.2.sw,
-                            ),
-                          );
-                        }
-                        return Column(
-                          children: [
-                            ...List.generate(
-                              logic.comments.length,
-                              (index) {
-                                if (logic.comments[index].user?.id ==
-                                    mainController.authUser.value?.id) {
-                                  return myMessage(context,
-                                      message: logic.comments[index]);
-                                }
-                                return AnotherMessage(
-                                    message: logic.comments[index],logic: logic,);
-                              },
-                            ),
-                            SizedBox(
-                              height: 0.01.sh,
-                            ),
-                            if (logic.loading.value)
-                              Container(
-                                child: Center(
-                                  child: ProgressLoading(
-                                    width: 0.03.sw,
-                                  ),
-                                ),
-                              ),
-                          ],
-                        );
-                      }),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
+          ],
+        ),
+      )
     );
   }
 
@@ -260,9 +253,7 @@ class CommentPage extends StatelessWidget {
                       "${message.createdAt}",
                       style: H4GrayTextStyle,
                     ),
-                    GestureDetector(
-                      child: Text('رد'),
-                    )
+
                   ],
                 ),
               ),

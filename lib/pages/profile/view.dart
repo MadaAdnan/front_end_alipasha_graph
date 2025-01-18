@@ -16,6 +16,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../components/expand_search.dart';
@@ -33,6 +34,7 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Logger().i(mainController.authUser.value?.social?.tiktok);
     Color? color = mainController.authUser.value?.is_verified == true
         ? mainController.authUser.value?.id_color!.toColor()
         : RedColor;
@@ -151,7 +153,7 @@ class ProfilePage extends StatelessWidget {
             left: 0,
             child: Container(
               width: 1.sw,
-              height: 0.29.sh,
+              height: 0.35.sh,
               padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
               child: Column(
                 children: [
@@ -164,15 +166,10 @@ class ProfilePage extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           child: Obx(() {
                             return Transform.translate(
-                              offset: Offset(0, -0.03.sh),
+                              offset: Offset(0, -0.01.sh),
                               child: Column(
                                 children: [
-                                  if (mainController.authUser.value?.social
-                                      ?.instagram !=
-                                      null &&
-                                      mainController.authUser.value?.social
-                                          ?.instagram !=
-                                          '')
+
                                     Container(
                                       padding: EdgeInsets.symmetric(
                                           vertical: 0.007.sh),
@@ -185,17 +182,13 @@ class ProfilePage extends StatelessWidget {
                                         },
                                         child: Icon(
                                           FontAwesomeIcons.instagram,
-                                          color: color,
+                                          color: "${mainController.authUser.value
+                                              ?.social?.instagram}".isEmpty?GrayLightColor:color,
                                           size: 0.06.sw,
                                         ),
                                       ),
                                     ),
-                                  if (mainController
-                                      .authUser.value?.social?.face !=
-                                      null &&
-                                      mainController
-                                          .authUser.value?.social?.face !=
-                                          '')
+
                                     Container(
                                       padding: EdgeInsets.symmetric(
                                           vertical: 0.007.sh),
@@ -208,16 +201,12 @@ class ProfilePage extends StatelessWidget {
                                           },
                                           child: Icon(
                                             FontAwesomeIcons.facebook,
-                                            color: color,
+                                            color: "${mainController.authUser.value
+                                                ?.social?.face}".isEmpty?GrayLightColor: color,
                                             size: 0.06.sw,
                                           )),
                                     ),
-                                  if (mainController.authUser.value?.social
-                                      ?.linkedin !=
-                                      null &&
-                                      mainController.authUser.value?.social
-                                          ?.linkedin !=
-                                          '')
+
                                     Container(
                                       padding: EdgeInsets.symmetric(
                                           vertical: 0.007.sh),
@@ -230,17 +219,13 @@ class ProfilePage extends StatelessWidget {
                                         },
                                         child: Icon(
                                           FontAwesomeIcons.linkedin,
-                                          color: color,
+                                          color:"${mainController.authUser.value
+                                              ?.social?.linkedin}".isEmpty?GrayLightColor: color,
                                           size: 0.06.sw,
                                         ),
                                       ),
                                     ),
-                                  if (mainController.authUser.value?.social
-                                      ?.linkedin !=
-                                      null &&
-                                      mainController.authUser.value?.social
-                                          ?.linkedin !=
-                                          '')
+
                                     Container(
                                       padding: EdgeInsets.symmetric(
                                           vertical: 0.007.sh),
@@ -249,19 +234,17 @@ class ProfilePage extends StatelessWidget {
                                           openUrl(
                                               url:
                                               "${mainController.authUser.value
-                                                  ?.social?.linkedin}");
+                                                  ?.social?.tiktok}");
                                         },
                                         child: Icon(
                                           FontAwesomeIcons.tiktok,
-                                          color: color,
+                                          color:"${mainController.authUser.value
+                                              ?.social?.tiktok}".isEmpty?GrayLightColor: color,
                                           size: 0.06.sw,
                                         ),
                                       ),
                                     ),
-                                  if (mainController.authUser.value?.phone !=
-                                      null &&
-                                      mainController.authUser.value?.phone !=
-                                          '')
+
                                     Container(
                                       padding: EdgeInsets.symmetric(
                                           vertical: 0.007.sh),
@@ -274,17 +257,13 @@ class ProfilePage extends StatelessWidget {
                                         },
                                         child: Icon(
                                           FontAwesomeIcons.whatsapp,
-                                          color: color,
+                                          color:"${mainController
+                                              .authUser.value?.phone}".isEmpty?GrayLightColor: color,
                                           size: 0.06.sw,
                                         ),
                                       ),
                                     ),
-                                  if (mainController.authUser.value?.social
-                                      ?.twitter !=
-                                      null &&
-                                      mainController.authUser.value?.social
-                                          ?.twitter !=
-                                          '')
+
                                     Container(
                                       padding: EdgeInsets.symmetric(
                                           vertical: 0.007.sh),
@@ -297,7 +276,8 @@ class ProfilePage extends StatelessWidget {
                                         },
                                         child: Icon(
                                           FontAwesomeIcons.xTwitter,
-                                          color: color,
+                                          color: "${mainController.authUser.value
+                                              ?.social?.twitter}".isEmpty?GrayLightColor: color,
                                           size: 0.06.sw,
                                         ),
                                       ),
@@ -329,8 +309,7 @@ class ProfilePage extends StatelessWidget {
                                       color: color,
                                       white: false,
                                       isVerified: mainController
-                                          .authUser.value?.is_verified ??
-                                          false,
+                                          .authUser.value?.is_verified ==true,
                                       seller: mainController.authUser.value,
                                     ),
                                   ),
@@ -338,7 +317,7 @@ class ProfilePage extends StatelessWidget {
                                     padding:
                                     EdgeInsets.symmetric(vertical: 0.01.sh),
                                     child: Visibility(
-                                      visible: !(mainController
+                                      visible: (mainController
                                           .authUser.value?.is_verified ==
                                           true),
                                       child: Text(
@@ -724,7 +703,7 @@ class ProfilePage extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 0.56.sh,
+            top: 0.61.sh,
             child: Container(
               width: 1.sw,
               height: 0.36.sh,

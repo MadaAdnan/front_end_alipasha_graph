@@ -6,6 +6,7 @@ const String CART_ITEM = '/cart_item';
 
 // require Auth
 const String CREATE_PRODUCT_PAGE = '/create_product';
+const String CREATE_ADVICE_PAGE = '/create_advice';
 const String CREATE_JOB_PAGE = '/create_job';
 const String CREATE_TENDER_PAGE = '/create_tender';
 const String CREATE_SERVICE_PAGE = '/create_service';

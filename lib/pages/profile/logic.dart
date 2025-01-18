@@ -1,3 +1,4 @@
+import 'dart:convert';
 
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
@@ -5,21 +6,17 @@ import 'package:ali_pasha_graph/models/advice_model.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
 import 'package:ali_pasha_graph/models/slider_model.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 
 import 'package:dio/dio.dart' as dio;
 import 'package:logger/logger.dart';
-
-
-
-
 
 class ProfileLogic extends GetxController {
   RxInt pageSelected = RxInt(0);
   TextEditingController searchController = TextEditingController();
   RxBool loading = RxBool(false);
   RxBool loadingProduct = RxBool(false);
-
 
   // Data From Api
   //  products Page
@@ -41,6 +38,8 @@ class ProfileLogic extends GetxController {
   MainController mainController = Get.find<MainController>();
   RxInt page = 1.obs;
   RxBool hasMorePage = RxBool(false);
+  TextEditingController urlController = TextEditingController();
+  Rxn<XFile> image = Rxn<XFile>(null);
   PageController pageController = PageController(
     initialPage: 0,
   );
@@ -63,7 +62,6 @@ class ProfileLogic extends GetxController {
         page.value = 1;
       }
     });
-
   }
 
   @override
@@ -106,18 +104,18 @@ class ProfileLogic extends GetxController {
             views_count
             image
             user{
-            image
-            id
-            seller_name
-            is_verified
-            city{
-            id
-            city_id
+              image
+              id
+              seller_name
+              is_verified
+              city{
+                id
+                city_id
+              }
             }
-            }
             city{
-            id
-            name
+              id
+              name
             }
             category {
               name
@@ -136,17 +134,19 @@ class ProfileLogic extends GetxController {
       if (res?.data?['data']?['myProducts'] != null) {
         hasMorePage(
             res?.data['data']?['myProducts']['paginatorInfo']['hasMorePages']);
-        if(page.value==1){
+        if (page.value == 1) {
           products([]);
         }
-        await    mainController.storage.write('products-${mainController.authUser.value?.id}', res?.data['data']['myProducts']['data']);
+        await mainController.storage.write(
+            'products-${mainController.authUser.value?.id}',
+            res?.data['data']['myProducts']['data']);
         for (var item in res?.data['data']['myProducts']['data']) {
           products.add(ProductModel.fromJson(item));
         }
-
       }
-      if(res?.data['errors']?[0]?['message']!=null){
-        mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
+      if (res?.data['errors']?[0]?['message'] != null) {
+        mainController.showToast(
+            text: '${res?.data['errors'][0]['message']}', type: 'error');
       }
     } catch (e) {
       mainController.logger.e(e);
@@ -167,8 +167,10 @@ class ProfileLogic extends GetxController {
         advices {
             image
             id
+            url
             expired_date
             views_count
+            name
         }
       
     }
@@ -238,15 +240,86 @@ class ProfileLogic extends GetxController {
     }
   }
 
+  getDataFromStorage() {
+    var listProduct = mainController.storage
+            .read('products-${mainController.authUser.value?.id}') ??
+        [];
 
-  getDataFromStorage(){
-    var listProduct = mainController.storage.read('products-${mainController.authUser.value?.id}')??[];
-Logger().f("TEST");
-Logger().f(listProduct);
-Logger().f("END");
     for (var item in listProduct) {
       products.add(ProductModel.fromJson(item));
     }
   }
 
+  deletAdvice({required int adviceId}) async {
+    mainController.query.value = '''
+    mutation DeleteAdvice {
+    deleteAdvice(id: "$adviceId") {
+        id
+    }
+}
+     ''';
+    try {
+      dio.Response? res = await mainController.fetchData();
+      if (res?.data?['data']?['deleteAdvice'] != null) {
+        int index = myAdvices.indexWhere((el) =>
+            el.id ==
+            int.tryParse("${res?.data?['data']?['deleteAdvice']['id']}"));
+        if (index > -1) {
+          myAdvices.removeAt(index);
+        }
+      }
+    } catch (e) {}
+  }
+
+  saveAdvice({required int adviceId}) async {
+    loading.value = true;
+    Map<String, dynamic> datajson = {
+      "query": r"""mutation UpdateAdvice($id:ID!,$input:UpdateAdviceInput!) {
+       updateAdvice(id:$id,input: $input){
+          image
+            id
+            url
+            expired_date
+            views_count
+            name
+       }
+      }""",
+      "variables": <String, dynamic>{
+        "input": {
+          'url': "${urlController.text ?? ''}",
+          'image': null,
+        },
+        "id": "$adviceId"
+      }
+    };
+    String map = '''
+    {
+  "image": ["variables.input.image"]
+}
+    ''';
+
+    Map<String, XFile?> data = {if (image.value != null) 'image': image.value};
+    try {
+      dio.Response res = await mainController.dio_manager
+          .executeGraphQLQueryWithFile(json.encode(datajson),
+              map: map, files: data);
+
+      if (res.data?['data']?['updateAdvice'] != null) {
+        image.value = null;
+
+        urlController.clear();
+        int index = myAdvices.indexWhere((el) => el.id == adviceId);
+        myAdvices[index] =
+            AdviceModel.fromJson(res.data?['data']?['updateAdvice']);
+        mainController.showToast(
+            text: 'تم إرسال الإعلان إلى المراجعة قبل تفعيله', type: 'success');
+      }
+      if (res?.data?['errors']?[0]?['message'] != null) {
+        mainController.showToast(
+            text: '${res?.data['errors'][0]['message']}', type: 'error');
+        mainController.logger.e("Error Send ${res?.data['errors']}");
+      }
+    } catch (e) {}
+    loading.value = false;
+  }
 }

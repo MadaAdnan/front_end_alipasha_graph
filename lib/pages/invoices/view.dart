@@ -70,7 +70,7 @@ class InvoiceCard extends StatelessWidget {
   final InvoiceModel invoice;
 
   InvoiceCard({required this.invoice});
-
+bool canShipping=true;
   RxBool loading = RxBool(false);
   RxString selectedValue = RxString('البضاعة غير متوفرة');
   RxString message = RxString('البضاعة غير متوفرة');
@@ -78,6 +78,12 @@ class InvoiceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    for(var item in invoice.items!){
+      if(item.product?.is_delivery==false){
+        canShipping=false;
+        break;
+      }
+    }
     // TODO: implement build
     return Obx(() {
       return Stack(
@@ -224,7 +230,7 @@ class InvoiceCard extends StatelessWidget {
                           ),
                           Expanded(
                               child: Text(
-                            'فريق علي باشا يشحن البضاعة بعد موافقتك وتوفر التوصيل للمنتجات',
+                            canShipping==true ?'فريق علي باشا يشحن البضاعة بعد موافقتك وتوفر التوصيل للمنتجات' : 'علي باشا لا يوفر شحن لهذا الطلب',
                             style: H4GrayTextStyle,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
