@@ -66,7 +66,7 @@ class MainController extends GetxController {
   RxList<AdviceModel> advices = RxList<AdviceModel>([]);
   RxList<SliderModel> sliders = RxList<SliderModel>([]);
   RxList<PricingModel> pricing = RxList([]);
-  String versionAPK = "3.0.89";
+  String versionAPK = "3.0.10";
   RxInt communityNotification = RxInt(0);
   RxBool startApp = RxBool(true); //for fill data from storage
   Rx<SettingModel> settings =
@@ -473,7 +473,7 @@ class MainController extends GetxController {
           Get.dialog(
               AlertDialog(
                 backgroundColor: WhiteColor,
-                content: Container(
+                content: WillPopScope(child: Container(
                   height: 0.4.sh,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -527,7 +527,7 @@ class MainController extends GetxController {
                               borderRadius: BorderRadius.circular(30.r),
                               child: Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
@@ -559,7 +559,7 @@ class MainController extends GetxController {
                               borderRadius: BorderRadius.circular(30.r),
                               child: Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
@@ -585,12 +585,12 @@ class MainController extends GetxController {
                               onTap: () {
                                 openUrl(
                                     url:
-                                        "${settings.value.urlDownload?.up_down}");
+                                    "${settings.value.urlDownload?.up_down}");
                               },
                               borderRadius: BorderRadius.circular(30.r),
                               child: Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
@@ -606,7 +606,9 @@ class MainController extends GetxController {
                       )
                     ],
                   ),
-                ),
+                ), onWillPop: (){
+                  return Future.value(false);
+                }),
               ),
               barrierDismissible: false,
               name: 'upgrade');

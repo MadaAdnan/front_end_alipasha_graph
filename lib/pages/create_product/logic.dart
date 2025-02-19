@@ -123,7 +123,7 @@ query MainCategories {
 
       if (res?.data != null && res?.data['data']?['mainCategories'] != null) {
         for (var item in res?.data['data']['mainCategories']) {
-          if (item['type'] == 'product') {
+          if (item['type'] == 'product' || item['type'] =='restaurant') {
             categories.add(CategoryModel.fromJson(item));
           }
         }

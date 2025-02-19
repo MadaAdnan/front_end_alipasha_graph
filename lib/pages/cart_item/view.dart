@@ -307,7 +307,8 @@ class CartItemPage extends StatelessWidget {
                             style: H1RegularDark,
                           ),
                           Obx(() {
-                            return Visibility(child:   InkWell(
+                            return Visibility(
+                              child:   InkWell(
                               onTap: () async {
                                 if (!isAuth()) {
                                   mainController.showToast(
