@@ -12,7 +12,7 @@ import 'package:get/get.dart';
 import 'logic.dart';
 
 class RestaurantPage extends StatelessWidget {
-  final logic = Get.put(RestaurantLogic());
+  final logic = Get.find<RestaurantLogic>();
 
   @override
   Widget build(BuildContext context) {

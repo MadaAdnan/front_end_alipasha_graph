@@ -13,7 +13,7 @@ import '../../helpers/colors.dart';
 import 'logic.dart';
 
 class NewDetailsPage extends StatelessWidget {
-  final logic = Get.put(NewDetailsLogic());
+  final logic = Get.find<NewDetailsLogic>();
 
   @override
   Widget build(BuildContext context) {

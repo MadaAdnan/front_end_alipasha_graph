@@ -15,7 +15,7 @@ import 'package:logger/logger.dart';
 import 'logic.dart';
 
 class CreateAdvicePage extends StatelessWidget {
-  final logic = Get.put(CreateAdviceLogic());
+  final logic = Get.find<CreateAdviceLogic>();
   GlobalKey<FormBuilderState> _formKey = GlobalKey<FormBuilderState>();
   MainController mainController = Get.find<MainController>();
 

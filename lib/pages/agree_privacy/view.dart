@@ -12,7 +12,7 @@ import 'package:html_viewer_elite/html_viewer_elite.dart';
 import 'logic.dart';
 
 class AgreePrivacyPage extends StatelessWidget {
-  final logic = Get.put(AgreePrivacyLogic());
+  final logic = Get.find<AgreePrivacyLogic>();
   MainController mainController = Get.find<MainController>();
   RxBool selected = RxBool(false);
 

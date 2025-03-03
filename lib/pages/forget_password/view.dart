@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 import 'logic.dart';
 
 class ForgetPasswordPage extends StatelessWidget {
-  final logic = Get.put(ForgetPasswordLogic());
+  final logic = Get.find<ForgetPasswordLogic>();
   GlobalKey<FormState> _form = GlobalKey<FormState>();
   MainController mainController = Get.find<MainController>();
 

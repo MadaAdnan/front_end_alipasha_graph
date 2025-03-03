@@ -14,7 +14,7 @@ import 'package:get/get.dart';
 import 'logic.dart';
 
 class MyInvoicePage extends StatelessWidget {
-  final logic = Get.put(MyInvoiceLogic());
+  final logic = Get.find<MyInvoiceLogic>();
 
   @override
   Widget build(BuildContext context) {

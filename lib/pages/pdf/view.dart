@@ -10,11 +10,11 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'logic.dart';
 
 class PdfPage extends StatelessWidget {
-  final logic = Get.put(PdfLogic());
+  final logic = Get.find<PdfLogic>();
 
   @override
   Widget build(BuildContext context) {
-    print(logic.path.value);
+
     return Scaffold(
 body: Container(
   child: SfPdfViewer.network('${logic.path}'),
