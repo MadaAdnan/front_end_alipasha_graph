@@ -149,7 +149,7 @@ class AppPages {
       name: HOME_PAGE,
       page: () => HomePage(),
       binding: HomeBinding(),
-      middlewares: [ActivePrivacyMiddleware()],
+    //  middlewares: [ActivePrivacyMiddleware()],
     ),
     GetPage(
       name: NEW_DETAILS,
