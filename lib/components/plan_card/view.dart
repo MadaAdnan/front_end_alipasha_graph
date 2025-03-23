@@ -28,7 +28,7 @@ class PlanCardComponent extends StatelessWidget {
         .indexWhere((el) => el.id == plan.id);
     if (index > -1) {
       currentPlan = mainController.authUser.value!.plans![index];
-      mainController.logger.e("TEST TEST1 ${currentPlan.toJson()}");
+
     }
 
     return Column(

@@ -41,10 +41,12 @@ class PlanModel {
       for (var item in data['items']) {
         listItem.add(PlanItem.fromJson(item));
       }
-      listItem.insert(0, PlanItem(active: (int.tryParse("${data['products_count']}") ?? 0) >0,item:" نشر ${ (int.tryParse("${data['products_count']}") ?? 0)} منتج / منتجات شهرياً" ));
-      listItem.insert(0, PlanItem(active: (int.tryParse("${data['special_count']}") ?? 0) >0,item:"عدد المنتجات المميزة ${int.tryParse("${data['special_count']}")}" ));
-      listItem.insert(0, PlanItem(active: (int.tryParse("${data['ads_count']}") ?? 0) >0,item:" عدد الإعلانات ${int.tryParse("${data['ads_count']}")}"));
-      listItem.insert(0, PlanItem(active: bool.tryParse("${data['special_store']}")??false,item:"متجر مميز"));
+      if(data['type']!='present'){
+        listItem.insert(0, PlanItem(active: (int.tryParse("${data['special_count']}") ?? 0) >0,item:"عدد المنتجات المميزة ${int.tryParse("${data['special_count']}")}" ));
+        listItem.insert(0, PlanItem(active: bool.tryParse("${data['special_store']}")??false,item:"متجر مميز"));
+        listItem.insert(0, PlanItem(active: (int.tryParse("${data['products_count']}") ?? 0) >0,item:" نشر ${ (int.tryParse("${data['products_count']}") ?? 0)} منتج / منتجات شهرياً" ));
+        listItem.insert(0, PlanItem(active: (int.tryParse("${data['ads_count']}") ?? 0) >0,item:" عدد الإعلانات ${int.tryParse("${data['ads_count']}")}"));
+      }
 
     }
     listItem.sort((a, b) {

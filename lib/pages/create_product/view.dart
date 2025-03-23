@@ -638,7 +638,7 @@ class CreateProductPage extends StatelessWidget {
                             children: [
                               Icon(FontAwesomeIcons.image),
                               40.horizontalSpace,
-                            RichText(
+                              RichText(
                                 text: TextSpan(children: [
                                   TextSpan(text: 'حدد صورة او عدة صور', style: H4GrayTextStyle),
                                   TextSpan(text: '*', style: H3RedTextStyle),
