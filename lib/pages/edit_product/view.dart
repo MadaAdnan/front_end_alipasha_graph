@@ -180,7 +180,7 @@ class EditProductPage extends StatelessWidget {
                                 ),
                               );
                             }),
-                            Obx(() {
+                            Expanded(child: Obx(() {
                               return Container(
                                 width: 0.4.sw,
                                 child: Column(
@@ -195,6 +195,26 @@ class EditProductPage extends StatelessWidget {
                                       },
                                       activeColor: Colors.green,
                                       value: logic.isDelivery.value,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }),),
+                            Obx(() {
+                              return Container(
+                                width: 0.4.sw,
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      'منتج مميز',
+                                      style: H4BlackTextStyle,
+                                    ),
+                                    Switch(
+                                      onChanged: (value) {
+                                        logic.isSpecial.value = value;
+                                      },
+                                      activeColor: Colors.green,
+                                      value: logic.isSpecial.value,
                                     ),
                                   ],
                                 ),

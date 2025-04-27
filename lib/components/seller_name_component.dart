@@ -54,6 +54,7 @@ class SellerNameComponent extends StatelessWidget {
             ),
           ),
         ),
+        SizedBox(width: 0.01.sw,),
         if ((isVerified == true))
           Container(
             width: 0.04.sw,

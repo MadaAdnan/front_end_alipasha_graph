@@ -82,5 +82,6 @@ const String PARTNER_PAGE = '/partner_page';
 const String SELLERS_PAGE = '/sellers_page';
 const String NEW_DETAILS = '/new_details';
 const String RESTAURANT_PAGE = '/restaurant_page';
+const String PAYMENT_PAGE = '/payment_page';
 
 

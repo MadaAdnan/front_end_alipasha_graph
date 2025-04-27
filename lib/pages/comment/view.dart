@@ -216,6 +216,7 @@ class CommentPage extends StatelessWidget {
                   "${message.user?.seller_name!.length != 0 ? message.user?.seller_name : message.user?.name}",
                   style: H3OrangeTextStyle,
                 ),
+                SizedBox(width: 0.01.sw,),
                 if (message.user?.is_verified == true)
                   Container(
                     width: 0.04.sw,
@@ -308,6 +309,7 @@ class CommentPage extends StatelessWidget {
                     "${message.user?.seller_name!.length != 0 ? message.user?.seller_name : message.user?.name}",
                     style: H5OrangeTextStyle.copyWith(color: Colors.brown),
                   ),
+                  SizedBox(width: 0.01.sw,),
                   if (message.user?.is_verified == true)
                     Container(
                       width: 0.04.sw,

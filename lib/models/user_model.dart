@@ -26,6 +26,7 @@ class UserModel {
   String? info;
   String? customImg;
   String? level;
+ bool? isAvailableCreate;
   List<ProductModel>? products;
   List<FollowerModel>? followers;
   List<PlanModel>? plans;
@@ -83,7 +84,8 @@ class UserModel {
     this.unread_notifications_count,
     this.communities,
     this.invoices_count,
-    this.invoicesSeller_count
+    this.invoicesSeller_count,
+    this.isAvailableCreate,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> data) {
@@ -130,6 +132,7 @@ class UserModel {
       info: "${data['info'] ?? ''}",
       affiliate: "${data['affiliate'] ?? ''}",
       is_special: bool.tryParse("${data['is_special']}") ?? false,
+      isAvailableCreate: bool.tryParse("${data['is_available_create']}") ?? false,
       trust: bool.tryParse("${data['trust']}") ?? false,
       is_verified: bool.tryParse("${data['is_verified']}") ?? false,
       can_create_group: bool.tryParse("${data['can_create_group']}") ?? false,

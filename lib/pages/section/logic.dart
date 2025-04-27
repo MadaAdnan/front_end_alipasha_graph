@@ -142,7 +142,7 @@ class SectionLogic extends GetxController {
     try {
       dio.Response? res = await mainController.fetchData();
       loading.value = false;
-      // mainController.logger.e(res?.data);
+
       if (res?.data?['data']?['products']['paginatorInfo'] != null) {
         hasMorePage.value =
             res?.data?['data']?['products']['paginatorInfo']['hasMorePages'];

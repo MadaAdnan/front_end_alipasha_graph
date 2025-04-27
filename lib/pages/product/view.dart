@@ -22,6 +22,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:toast/toast.dart';
 
 import '../../helpers/components.dart';
 import 'logic.dart';
@@ -224,6 +225,11 @@ class ProductPage extends StatelessWidget {
                               }
 
                               break;
+                            case '3':
+                              Clipboard.setData(ClipboardData(text: 'https://v3.ali-pasha.com/posts/${logic.productId}'));
+                              mainController.showToast(text: 'تم نسخ رابط المشاركة',type: 'success');
+
+                              break;
 
                             default:
                               print('default');
@@ -250,6 +256,25 @@ class ProductPage extends StatelessWidget {
                             ),
                           ),
                           PopupMenuItem<String>(
+                            value: '3',
+                            child: Row(
+                              children: [
+                                Icon(
+                                  FontAwesomeIcons.shareNodes,
+                                  color: GrayDarkColor,
+                                  size: 0.04.sw,
+                                ),
+                                SizedBox(
+                                  width: 0.02.sw,
+                                ),
+                                Text(
+                                  "مشاركة المنتج",
+                                  style: H3RegularDark,
+                                ),
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem<String>(
                             value: '2',
                             child: Row(
                               children: [
@@ -268,6 +293,7 @@ class ProductPage extends StatelessWidget {
                               ],
                             ),
                           ),
+
                         ],
                       ),
                     ],

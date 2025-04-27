@@ -8,6 +8,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cherry_toast/cherry_toast.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -20,7 +21,7 @@ class ShippingPage extends StatelessWidget {
 
   final logic = Get.find<ShippingLogic>();
   final MainController mainController = Get.find<MainController>();
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  GlobalKey<FormBuilderState> _formKey = GlobalKey<FormBuilderState>();
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +119,7 @@ class ShippingPage extends StatelessWidget {
             height: 0.845.sh,
             child: SingleChildScrollView(
               padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
-              child: Form(
+              child: FormBuilder(
                 key: _formKey,
                 child: Obx(() {
                   if (logic.mainController.loading.value) {
@@ -128,14 +129,33 @@ class ShippingPage extends StatelessWidget {
                   }
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Select2Component(
-                          label: 'مدينة المرسل',
-                          width: 0.5.sw,
-                          onChanged: (values) {
-                            logic.from.value = values.firstOrNull;
-                          },
-                          selectDataController: logic.fromController),
+                      FormBuilderDropdown(
+                        decoration: InputDecoration(
+                            label: Text(
+                              'مدينة المرسل',
+                              style: H4RegularDark,
+                            ),
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(color: GrayDarkColor))),
+                        items: mainController.cities
+                            .map(
+                              (el) => DropdownMenuItem(
+                                child: Text(
+                                  '${el.name}',
+                                  style: H4BlackTextStyle,
+                                ),
+                                value: el.id,
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (value) {
+                          logic.from.value = value;
+                        },
+                        name: 'city_from',
+                        style: H4BlackTextStyle,
+                      ),
                       Obx(() {
                         return Visibility(
                           visible: logic.errorFrom.value != null,
@@ -149,7 +169,7 @@ class ShippingPage extends StatelessWidget {
                         );
                       }),
                       35.verticalSpace,
-                      SizedBox(
+                      Container(
                         width: 1.sw,
                         child: InputComponent(
                           fill: WhiteColor,
@@ -160,7 +180,7 @@ class ShippingPage extends StatelessWidget {
                             return null;
                           },
                           isRequired: true,
-                          width: 0.1.sw,
+                          width: 1.sw,
                           hint: 'اسم المرسل',
                           controller: logic.nameSenderController,
                         ),
@@ -176,19 +196,38 @@ class ShippingPage extends StatelessWidget {
                             return null;
                           },
                           isRequired: true,
-                          width: 0.1.sw,
+                          width: 1.sw,
                           hint: 'عنوان المرسل',
                           controller: logic.addressSenderController,
                         ),
                       ),
                       const Divider(),
-                      Select2Component(
-                          label: 'مدينة المرسل إليه',
-                          width: 0.5.sw,
-                          onChanged: (values) {
-                            logic.to.value = values.firstOrNull;
-                          },
-                          selectDataController: logic.toController),
+                      FormBuilderDropdown(
+                        decoration: InputDecoration(
+                            label: Text(
+                              'مدينة المرسل إليه',
+                              style: H4RegularDark,
+                            ),
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(color: GrayDarkColor))),
+                        items: mainController.cities
+                            .map(
+                              (el) => DropdownMenuItem(
+                            child: Text(
+                              '${el.name}',
+                              style: H4BlackTextStyle,
+                            ),
+                            value: el.id,
+                          ),
+                        )
+                            .toList(),
+                        onChanged: (value) {
+                          logic.to.value = value;
+                        },
+                        name: 'city_to',
+                        style: H4BlackTextStyle,
+                      ),
+
                       Obx(() {
                         return Visibility(
                           visible: logic.errorTo.value != null,
@@ -213,7 +252,7 @@ class ShippingPage extends StatelessWidget {
                             return null;
                           },
                           isRequired: true,
-                          width: 0.1.sw,
+                          width: 1.sw,
                           hint: 'اسم المستلم',
                           controller: logic.nameReceiveController,
                         ),
@@ -229,7 +268,7 @@ class ShippingPage extends StatelessWidget {
                             return null;
                           },
                           isRequired: true,
-                          width: 0.1.sw,
+                          width: 1.sw,
                           hint: 'عنوان المستلم',
                           controller: logic.addressReceiveController,
                         ),
@@ -246,7 +285,7 @@ class ShippingPage extends StatelessWidget {
                             return null;
                           },
                           isRequired: true,
-                          width: 0.1.sw,
+                          width: 1.sw,
                           hint: 'هاتف المستلم',
                           controller: logic.phoneReceiveController,
                         ),
@@ -254,12 +293,12 @@ class ShippingPage extends StatelessWidget {
                       const Divider(),
                       Row(
                         children: [
-                          SizedBox(
-                            width: 0.5.sw,
+                          Expanded(
+
                             child: InputComponent(
                               suffixIcon: FontAwesomeIcons.scaleBalanced,
                               fill: WhiteColor,
-                              width: 0.7.sw,
+                              width: 0.9.sw,
                               textInputType: TextInputType.number,
                               validation: (value) {
                                 if (value?.length == 0) {
@@ -293,8 +332,8 @@ class ShippingPage extends StatelessWidget {
                       25.verticalSpace,
                       Row(
                         children: [
-                          SizedBox(
-                            width: 0.5.sw,
+                          Expanded(
+
                             child: Column(
                               children: [
                                 Row(
@@ -304,7 +343,7 @@ class ShippingPage extends StatelessWidget {
                                         suffixIcon: FontAwesomeIcons.textHeight,
                                         textInputType: TextInputType.number,
                                         fill: WhiteColor,
-                                        width: 0.1.sw,
+                                        width: 0.9.sw,
                                         validation: (value) {
                                           if (value?.length == 0) {
                                             return "الإرتفاع مطلوب";
@@ -342,7 +381,7 @@ class ShippingPage extends StatelessWidget {
                                           return null;
                                         },
                                         isRequired: true,
-                                        width: 0.1.sw,
+                                        width: 0.9.sw,
                                         hint: 'العرض',
                                         controller: logic.widthController,
                                         onChanged: (value) {
@@ -367,7 +406,7 @@ class ShippingPage extends StatelessWidget {
                                             FontAwesomeIcons.rulerHorizontal,
                                         textInputType: TextInputType.number,
                                         fill: WhiteColor,
-                                        width: 0.1.sw,
+                                        width: 0.9.sw,
                                         validation: (value) {
                                           if (value?.length == 0) {
                                             return "الطول مطلوب";
@@ -426,16 +465,19 @@ class ShippingPage extends StatelessWidget {
                           InkWell(
                             splashColor: Colors.deepOrangeAccent,
                             onTap: () {
-                              if(logic.from.value==null){
-                                mainController.showToast(text: 'يرجى تحديد مدينة المرسل',type: 'error');
-                                return ;
+                              if (logic.from.value == null) {
+                                mainController.showToast(
+                                    text: 'يرجى تحديد مدينة المرسل',
+                                    type: 'error');
+                                return;
                               }
-                              if(logic.to.value==null){
-                                mainController.showToast(text: 'يرجى تحديد مدينة المرسل إليه',type: 'error');
-                                return ;
+                              if (logic.to.value == null) {
+                                mainController.showToast(
+                                    text: 'يرجى تحديد مدينة المرسل إليه',
+                                    type: 'error');
+                                return;
                               }
                               logic.calcPrice();
-
                             },
                             child: Padding(
                               padding: EdgeInsets.all(0.01.sw),

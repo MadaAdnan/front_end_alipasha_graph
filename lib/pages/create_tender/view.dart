@@ -11,6 +11,8 @@ import 'package:intl/intl.dart';
 
 import '../../Global/main_controller.dart';
 import '../../helpers/colors.dart';
+import '../../helpers/components.dart';
+import '../../helpers/helper_class.dart';
 import '../../helpers/style.dart';
 import '../../models/category_model.dart';
 import '../../routes/routes_url.dart';
@@ -700,7 +702,67 @@ class CreateTenderPage extends StatelessWidget {
                   ),
                 ),
               ),
-              if(logic.loading.value) Container(child: Center(child: CircularProgressIndicator(),),)
+              if(logic.loading.value) Container(child: Center(child: CircularProgressIndicator(),),),
+              Obx(() => Visibility(
+                child: Positioned(
+                  right: 0.1.sw,
+                  top: 0.35.sh,
+                  child: Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
+                    width: 0.8.sw,
+
+
+                    child: Card(
+                      elevation: 9,
+                      color: WhiteColor,
+
+                      child: Padding(
+                        padding:  EdgeInsets.symmetric(horizontal: 0.02.sw),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children:[
+                              SizedBox(height: 0.01.sh,),
+                              Text(
+                                'تنبيه',style: H2RedTextBoldStyle,),
+                              Container(
+                                width: 0.2.sw,
+                                height: 0.2.sw,
+                                decoration: BoxDecoration(image: DecorationImage(image: AssetImage('assets/images/png/info.png'))),
+                              ),
+
+
+                              SizedBox(height: 0.01.sh,),
+                              Text(
+                                'لم يعد بإمكانك نشر المزيد من المنتجات , الرجاء توثيق الحساب لتتمكن من معاودة النشر.',style: H3BlackTextStyle.copyWith(height: 2),),
+                              SizedBox(height: 0.07.sh,),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  MaterialButton(onPressed: (){
+                                    Get.offNamed(PROFILE_PAGE);
+                                  },child: Text('الملف الشخصي',style: H3WhiteTextStyle,),color: OrangeColor,),
+                                  MaterialButton(onPressed: (){
+                                    // Get.back();
+                                    HelperClass.requestVerified(onConfirm: (){
+                                      if(isAuth()){
+                                        String message="ID:${mainController.authUser.value?.id} - اسم المتجر : ${mainController.authUser.value?.seller_name} - نوع الطلب توثيق الحساب";
+                                        openUrl(url: "https://wa.me/${mainController.settings.value.social?.phone}?text=$message");
+                                      }
+                                    });
+                                  },child: Text('توثيق الحساب',style: H3WhiteTextStyle,),color: RedColor,),
+                                ],
+                              )
+                            ]
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                visible:
+                mainController.authUser.value?.isAvailableCreate == false,
+              )),
             ],
           );
         }));

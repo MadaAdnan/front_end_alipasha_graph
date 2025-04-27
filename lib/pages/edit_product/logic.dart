@@ -17,6 +17,7 @@ class EditProductLogic extends GetxController {
   GetStorage box = GetStorage('ali-pasha');
   RxBool loading = RxBool(false);
   RxBool isDelivery = RxBool(false);
+  RxBool isSpecial = RxBool(false);
   int productId = Get.arguments;
   Rxn<ProductModel> product = Rxn<ProductModel>(null);
   RxList<DataImageModel> attachments = RxList([]);
@@ -121,6 +122,7 @@ query MainCategories {
             is_available
             is_delivery
             video
+            level
             listOfImages {
                 id
                 url
@@ -181,6 +183,7 @@ query MainCategories {
 
         isAvailable.value =
             bool.tryParse("${product.value?.is_available}") ?? false;
+        isSpecial.value =product.value?.level=='special';
         isDelivery.value =
             bool.tryParse("${product.value?.is_delivery}") ?? false;
         colorIds(
@@ -229,6 +232,7 @@ query MainCategories {
           "sub3_id": sub3Category.value?.id,
           "colors": colorIds.toList(),
           'video': videoController.text ,
+          'is_special':isSpecial.value
         }
       }
     };

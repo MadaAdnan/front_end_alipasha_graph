@@ -39,6 +39,7 @@ class CreateProductLogic extends GetxController {
   TextEditingController discountController = TextEditingController();
   TextEditingController videoController = TextEditingController();
   RxBool isAvailable = RxBool(true);
+  RxBool isSpecial = RxBool(false);
   RxBool isDelivery = RxBool(true);
   Rxn<CategoryModel> category = Rxn<CategoryModel>(null);
   Rxn<CategoryModel> subCategory = Rxn<CategoryModel>(null);
@@ -165,6 +166,7 @@ query MainCategories {
           "period": periodProduct.value,
           "colors": colorIds.toList(),
           'video': "${videoController.text}",
+          'is_special':isSpecial.value,
           "options":
               options.value.values.map((el) => el).expand((i) => i).toList(),
         }

@@ -157,7 +157,7 @@ class MenuPage extends StatelessWidget {
                       30.verticalSpace,
                       InkWell(
                         onTap: () {
-                          Get.dialog(
+                         /* Get.dialog(
                             AlertDialog(
                               title: Row(
                                 mainAxisAlignment:
@@ -275,7 +275,8 @@ SizedBox(height: 0.02.sh,),
                                )
                               ],
                             ),
-                          );
+                          );*/
+                          Get.offNamed(PAYMENT_PAGE);
                         },
                         child: Container(
                           alignment: Alignment.center,

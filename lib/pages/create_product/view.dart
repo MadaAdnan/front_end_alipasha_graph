@@ -17,6 +17,8 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../helpers/components.dart';
+import '../../helpers/helper_class.dart';
 import 'logic.dart';
 
 class CreateProductPage extends StatelessWidget {
@@ -59,8 +61,8 @@ class CreateProductPage extends StatelessWidget {
                                 padding: EdgeInsets.only(top: 0.02.sh),
                                 decoration: BoxDecoration(
                                     border: Border(
-                                        bottom:
-                                        BorderSide(color: RedColor, width: 2))),
+                                        bottom: BorderSide(
+                                            color: RedColor, width: 2))),
                                 child: Text(
                                   'إنشاء منشور',
                                   style: H5BlackTextStyle,
@@ -85,9 +87,10 @@ class CreateProductPage extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Icon(FontAwesomeIcons.shoppingCart,
-                                          color: logic.typePost.value != 'product'
-                                              ? GrayDarkColor
-                                              : WhiteColor,
+                                          color:
+                                              logic.typePost.value != 'product'
+                                                  ? GrayDarkColor
+                                                  : WhiteColor,
                                           size: 0.04.sw),
                                       10.horizontalSpace,
                                       Text(
@@ -159,9 +162,10 @@ class CreateProductPage extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Icon(FontAwesomeIcons.moneyBillTrendUp,
-                                          color: logic.typePost.value != 'tender'
-                                              ? GrayDarkColor
-                                              : WhiteColor,
+                                          color:
+                                              logic.typePost.value != 'tender'
+                                                  ? GrayDarkColor
+                                                  : WhiteColor,
                                           size: 0.04.sw),
                                       10.horizontalSpace,
                                       Text(
@@ -251,21 +255,23 @@ class CreateProductPage extends StatelessWidget {
                                   Container(
                                     width: 0.44.sw,
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Container(
                                             child: Text(
-                                              "انت تنشر باسم :",
-                                              style: H5BlackTextStyle,
-                                              overflow: TextOverflow.ellipsis,
-                                            )),
+                                          "انت تنشر باسم :",
+                                          style: H5BlackTextStyle,
+                                          overflow: TextOverflow.ellipsis,
+                                        )),
                                         Container(
                                             child: Text(
-                                              "${mainController.authUser.value?.seller_name ?? mainController.authUser.value?.name}",
-                                              style: H1BlackTextStyle,
-                                              overflow: TextOverflow.ellipsis,
-                                            )),
+                                          "${mainController.authUser.value?.seller_name ?? mainController.authUser.value?.name}",
+                                          style: H1BlackTextStyle,
+                                          overflow: TextOverflow.ellipsis,
+                                        )),
                                       ],
                                     ),
                                   )
@@ -278,9 +284,10 @@ class CreateProductPage extends StatelessWidget {
                                 decoration: InputDecoration(
                                   errorStyle: H5RedTextStyle,
                                   contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 0.01.sw),
+                                      EdgeInsets.symmetric(horizontal: 0.01.sw),
                                   border: OutlineInputBorder(
-                                    borderSide: BorderSide(color: GrayLightColor),
+                                    borderSide:
+                                        BorderSide(color: GrayLightColor),
                                     borderRadius: BorderRadius.circular(15.r),
                                   ),
                                 ),
@@ -328,7 +335,8 @@ class CreateProductPage extends StatelessWidget {
                       ),
                       30.verticalSpace,
                       Container(
-                        child:  Row(
+                        width: 1.sw,
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Obx(() {
@@ -351,7 +359,7 @@ class CreateProductPage extends StatelessWidget {
                                 ),
                               );
                             }),
-                            Obx(() {
+                            Expanded(child: Obx(() {
                               return Container(
                                 width: 0.4.sw,
                                 child: Column(
@@ -370,11 +378,32 @@ class CreateProductPage extends StatelessWidget {
                                   ],
                                 ),
                               );
+                            })),
+                            Obx(() {
+                              return Container(
+                                width: 0.4.sw,
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      'منتج مميز',
+                                      style: H4BlackTextStyle,
+                                    ),
+                                    Switch(
+                                      onChanged: (value) {
+                                        logic.isSpecial.value = value;
+                                      },
+                                      activeColor: Colors.green,
+                                      value: logic.isSpecial.value,
+                                    ),
+                                  ],
+                                ),
+                              );
                             })
                           ],
                         ),
                       ),
                       30.verticalSpace,
+
                       Container(
                         width: 1.sw,
                         height: 0.08.sh,
@@ -388,10 +417,10 @@ class CreateProductPage extends StatelessWidget {
                           controller: logic.nameController,
                           decoration: InputDecoration(
                             errorStyle: H5RedTextStyle,
-
                             label: RichText(
                               text: TextSpan(children: [
-                                TextSpan(text: 'اسم المنتج', style: H4GrayTextStyle),
+                                TextSpan(
+                                    text: 'اسم المنتج', style: H4GrayTextStyle),
                                 TextSpan(text: '*', style: H3RedTextStyle),
                               ]),
                             ),
@@ -421,11 +450,12 @@ class CreateProductPage extends StatelessWidget {
                             alignLabelWithHint: true,
                             label: RichText(
                               text: TextSpan(children: [
-                                TextSpan(text: 'الوصف المنتج', style: H4GrayTextStyle),
+                                TextSpan(
+                                    text: 'الوصف المنتج',
+                                    style: H4GrayTextStyle),
                                 TextSpan(text: '*', style: H3RedTextStyle),
                               ]),
                             ),
-
                             labelStyle: H4GrayTextStyle,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15.r),
@@ -447,19 +477,31 @@ class CreateProductPage extends StatelessWidget {
                               children: [
                                 Container(
                                   width: 0.6.sw,
-                                  child: RichText(text: TextSpan(children:[
-                                    TextSpan(text: 'ملاحظة : ',style: H5RedTextStyle,),
-                                    TextSpan(text: 'السعر التنافسي يزيد من فرص جذب العملاء',style: H5RedTextStyle,)
+                                  child: RichText(
+                                      text: TextSpan(children: [
+                                    TextSpan(
+                                      text: 'ملاحظة : ',
+                                      style: H5RedTextStyle,
+                                    ),
+                                    TextSpan(
+                                      text:
+                                          'السعر التنافسي يزيد من فرص جذب العملاء',
+                                      style: H5RedTextStyle,
+                                    )
                                   ])),
                                 ),
                                 Container(
                                   width: 0.3.sw,
-                                  child: Text('ضع القيمة 0 إذا لم يتوفر حسم',style: H5RedTextStyle,),
+                                  child: Text(
+                                    'ضع القيمة 0 إذا لم يتوفر حسم',
+                                    style: H5RedTextStyle,
+                                  ),
                                 ),
-
                               ],
                             ),
-                            SizedBox(height: 0.01.sh,),
+                            SizedBox(
+                              height: 0.01.sh,
+                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -485,19 +527,20 @@ class CreateProductPage extends StatelessWidget {
                                           FontAwesomeIcons.dollarSign,
                                           size: 0.03.sw,
                                         ),
-
-
                                         label: RichText(
                                           text: TextSpan(children: [
-                                            TextSpan(text: 'السعر الأصلي بالدولار', style: H4GrayTextStyle),
-                                            TextSpan(text: '*', style: H3RedTextStyle),
+                                            TextSpan(
+                                                text: 'السعر الأصلي بالدولار',
+                                                style: H4GrayTextStyle),
+                                            TextSpan(
+                                                text: '*',
+                                                style: H3RedTextStyle),
                                           ]),
                                         ),
-
                                         labelStyle: H4GrayTextStyle,
                                         border: OutlineInputBorder(
-                                            borderSide:
-                                            BorderSide(color: GrayLightColor))),
+                                            borderSide: BorderSide(
+                                                color: GrayLightColor))),
                                   ),
                                 ),
                                 Container(
@@ -520,11 +563,10 @@ class CreateProductPage extends StatelessWidget {
                                         labelText: 'بعد الحسم',
                                         labelStyle: H4GrayTextStyle,
                                         border: OutlineInputBorder(
-                                            borderSide:
-                                            BorderSide(color: GrayLightColor))),
+                                            borderSide: BorderSide(
+                                                color: GrayLightColor))),
                                   ),
                                 ),
-
                               ],
                             )
                           ],
@@ -537,10 +579,12 @@ class CreateProductPage extends StatelessWidget {
                         width: 1.sw,
                         height: 0.06.sh,
                         child: FormBuilderTextField(
-                          validator:FormBuilderValidators.compose([ FormBuilderValidators.url(
-                              errorText: 'يرجى إدخال رابط صحيح',
-                              checkNullOrEmpty: false),
-                            FormBuilderValidators.startsWith('https://youtube.com/',
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.url(
+                                errorText: 'يرجى إدخال رابط صحيح',
+                                checkNullOrEmpty: false),
+                            FormBuilderValidators.startsWith(
+                                'https://youtube.com/',
                                 errorText: 'يرجى إدخال رابط من يوتيوب فقط',
                                 checkNullOrEmpty: false)
                           ]),
@@ -569,9 +613,11 @@ class CreateProductPage extends StatelessWidget {
                             Get.defaultDialog(
                                 title: 'إختر مكان الصورة',
                                 titleStyle: H3BlackTextStyle,
-                                titlePadding: EdgeInsets.symmetric(vertical: 0.02.sh),
+                                titlePadding:
+                                    EdgeInsets.symmetric(vertical: 0.02.sh),
                                 content: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     InkWell(
@@ -580,8 +626,7 @@ class CreateProductPage extends StatelessWidget {
                                           imagSource: ImageSource.gallery,
                                           onChange: (file, fileSize) {
                                             logic.images.add(file!);
-                                          }
-                                          ,
+                                          },
                                         );
                                         Get.back();
                                       },
@@ -640,70 +685,79 @@ class CreateProductPage extends StatelessWidget {
                               40.horizontalSpace,
                               RichText(
                                 text: TextSpan(children: [
-                                  TextSpan(text: 'حدد صورة او عدة صور', style: H4GrayTextStyle),
+                                  TextSpan(
+                                      text: 'حدد صورة او عدة صور',
+                                      style: H4GrayTextStyle),
                                   TextSpan(text: '*', style: H3RedTextStyle),
                                 ]),
                               ),
-
                             ],
                           ),
                         ),
                       ),
 
-
-
                       30.verticalSpace,
                       Obx(
-                            () => Row(
+                        () => Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             ...List.generate(
                                 logic.images.length,
-                                    (index) => Stack(
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: 0.01.sw),
-                                      width: 0.22.sw,
-                                      height: 0.22.sw,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                          BorderRadius.circular(15.r),
-                                          image: DecorationImage(
-                                              image: FileImage(File.fromUri(
-                                                  Uri.file(logic
-                                                      .images[index].path))))),
-                                    ),
-                                    Positioned(
-                                      right: 0,
-                                      top: 0,
-                                      child: InkWell(
-                                          onTap: () {
-                                            logic.images.removeAt(index);
-                                          },
-                                          child: Container(
-                                            alignment: Alignment.center,
-                                            width: 0.06.sw,
-                                            height: 0.06.sw,
-                                            decoration: const BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: RedColor,
-                                            ),
-                                            child: Icon(
-                                              Icons.close,
-                                              color: WhiteColor,
-                                              size: 0.04.sw,
-                                            ),
-                                          )),
-                                    )
-                                  ],
-                                ))
+                                (index) => Stack(
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 0.01.sw),
+                                          width: 0.22.sw,
+                                          height: 0.22.sw,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(15.r),
+                                              image: DecorationImage(
+                                                  image: FileImage(File.fromUri(
+                                                      Uri.file(logic
+                                                          .images[index]
+                                                          .path))))),
+                                        ),
+                                        Positioned(
+                                          right: 0,
+                                          top: 0,
+                                          child: InkWell(
+                                              onTap: () {
+                                                logic.images.removeAt(index);
+                                              },
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                width: 0.06.sw,
+                                                height: 0.06.sw,
+                                                decoration: const BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: RedColor,
+                                                ),
+                                                child: Icon(
+                                                  Icons.close,
+                                                  color: WhiteColor,
+                                                  size: 0.04.sw,
+                                                ),
+                                              )),
+                                        )
+                                      ],
+                                    ))
                           ],
                         ),
                       ),
                       Obx(() {
-                        return Visibility(child: Container(child: Text('${logic.errorImage.value}',style: H5RedTextStyle,),alignment: Alignment.centerRight,),visible: logic.errorImage.value!=null,);
+                        return Visibility(
+                          child: Container(
+                            child: Text(
+                              '${logic.errorImage.value}',
+                              style: H5RedTextStyle,
+                            ),
+                            alignment: Alignment.centerRight,
+                          ),
+                          visible: logic.errorImage.value != null,
+                        );
                       }),
                       30.verticalSpace,
                       Container(
@@ -724,19 +778,21 @@ class CreateProductPage extends StatelessWidget {
                                 errorStyle: H5RedTextStyle,
                                 label: RichText(
                                   text: TextSpan(children: [
-                                    TextSpan(text: 'القسم الرئيسي', style: H4GrayTextStyle),
+                                    TextSpan(
+                                        text: 'القسم الرئيسي',
+                                        style: H4GrayTextStyle),
                                     TextSpan(text: '*', style: H3RedTextStyle),
                                   ]),
                                 ),
-
                                 border: OutlineInputBorder(
-                                    borderSide: BorderSide(color: GrayLightColor))),
+                                    borderSide:
+                                        BorderSide(color: GrayLightColor))),
                             onChanged: (value) => logic.category.value = value,
                             name: 'category_id',
                             items: [
                               ...List.generate(
                                 logic.categories.length,
-                                    (index) => DropdownMenuItem<CategoryModel>(
+                                (index) => DropdownMenuItem<CategoryModel>(
                                   child: Text(
                                     '${logic.categories[index].name}',
                                     style: H3BlackTextStyle,
@@ -763,19 +819,23 @@ class CreateProductPage extends StatelessWidget {
                                   errorStyle: H5RedTextStyle,
                                   label: RichText(
                                     text: TextSpan(children: [
-                                      TextSpan(text: 'القسم الفرعي', style: H4GrayTextStyle),
-                                      TextSpan(text: '*', style: H3RedTextStyle),
+                                      TextSpan(
+                                          text: 'القسم الفرعي',
+                                          style: H4GrayTextStyle),
+                                      TextSpan(
+                                          text: '*', style: H3RedTextStyle),
                                     ]),
                                   ),
-
                                   border: OutlineInputBorder(
-                                      borderSide: BorderSide(color: GrayLightColor))),
-                              onChanged: (value) => logic.subCategory.value = value,
+                                      borderSide:
+                                          BorderSide(color: GrayLightColor))),
+                              onChanged: (value) =>
+                                  logic.subCategory.value = value,
                               name: 'sub_id',
                               items: [
                                 ...List.generate(
                                   categories.length,
-                                      (index) => DropdownMenuItem<CategoryModel>(
+                                  (index) => DropdownMenuItem<CategoryModel>(
                                     child: Text(
                                       '${categories[index].name}',
                                       style: H3BlackTextStyle,
@@ -787,7 +847,7 @@ class CreateProductPage extends StatelessWidget {
                             ),
                           );
                         }
-                        return SizedBox(height:0);
+                        return SizedBox(height: 0);
                       }),
                       30.verticalSpace,
                       Obx(() {
@@ -807,13 +867,15 @@ class CreateProductPage extends StatelessWidget {
                                     style: H3GrayTextStyle,
                                   ),
                                   border: OutlineInputBorder(
-                                      borderSide: BorderSide(color: GrayLightColor))),
-                              onChanged: (value) => logic.sub2Category.value = value,
+                                      borderSide:
+                                          BorderSide(color: GrayLightColor))),
+                              onChanged: (value) =>
+                                  logic.sub2Category.value = value,
                               name: 'sub2_id',
                               items: [
                                 ...List.generate(
                                   categories.length,
-                                      (index) => DropdownMenuItem<CategoryModel>(
+                                  (index) => DropdownMenuItem<CategoryModel>(
                                     child: Text(
                                       '${categories[index].name}',
                                       style: H3BlackTextStyle,
@@ -825,14 +887,15 @@ class CreateProductPage extends StatelessWidget {
                             ),
                           );
                         }
-                        return SizedBox(height:0);
+                        return SizedBox(height: 0);
                       }),
                       30.verticalSpace,
                       Obx(() {
                         if (logic.sub2Category.value != null &&
                             logic.sub2Category.value!.children!.length > 0) {
                           List<CategoryModel> categories =
-                              logic.sub2Category.value!.children?.toList() ?? [];
+                              logic.sub2Category.value!.children?.toList() ??
+                                  [];
                           return Container(
                             child: FormBuilderDropdown<CategoryModel>(
                               decoration: InputDecoration(
@@ -842,13 +905,15 @@ class CreateProductPage extends StatelessWidget {
                                     style: H3GrayTextStyle,
                                   ),
                                   border: OutlineInputBorder(
-                                      borderSide: BorderSide(color: GrayLightColor))),
-                              onChanged: (value) => logic.sub3Category.value = value,
+                                      borderSide:
+                                          BorderSide(color: GrayLightColor))),
+                              onChanged: (value) =>
+                                  logic.sub3Category.value = value,
                               name: 'sub3_id',
                               items: [
                                 ...List.generate(
                                   categories.length,
-                                      (index) => DropdownMenuItem<CategoryModel>(
+                                  (index) => DropdownMenuItem<CategoryModel>(
                                     child: Text(
                                       '${categories[index].name}',
                                       style: H3BlackTextStyle,
@@ -860,7 +925,7 @@ class CreateProductPage extends StatelessWidget {
                             ),
                           );
                         }
-                        return SizedBox(height:0);
+                        return SizedBox(height: 0);
                       }),
                       30.verticalSpace,
                       Obx(() {
@@ -870,59 +935,23 @@ class CreateProductPage extends StatelessWidget {
                             children: [
                               ...List.generate(
                                   logic.subCategory.value!.attributes!.length,
-                                      (index) {
-                                    AttributeModel attr =
+                                  (index) {
+                                AttributeModel attr =
                                     logic.subCategory.value!.attributes![index];
-                                    if (attr.type == 'limit') {
-                                      return Container(
-                                        height: 0.06.sh,
-                                        margin: EdgeInsets.only(bottom: 0.02.sh),
-                                        child: FormBuilderDropdown<int>(
-                                            onChanged: (value) {
-                                              if (value != null) {
-                                                logic.options.value[attr.id!] = [value];
-                                              }
-                                            },
-
-                                            decoration: InputDecoration(
-                                              errorStyle: H5RedTextStyle,
-                                              labelText: '${attr.name}',
-                                              labelStyle: H3GrayTextStyle,
-                                              border: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  color: GrayLightColor,
-                                                ),
-                                              ),
-                                            ),
-                                            name: 'options.${attr.id}',
-                                            items: [
-                                              ...List.generate(
-                                                attr.attributes!.length,
-                                                    (i) => DropdownMenuItem<int>(
-
-                                                  child: Text(
-                                                    '${attr.attributes![i].name}',
-                                                    style: H3BlackTextStyle,
-                                                  ),
-                                                  value: attr.attributes![i].id,
-                                                ),
-                                              )
-                                            ]),
-                                      );
-                                    } else if (attr.type == 'multiple') {
-                                      return FormBuilderFilterChip(
-                                        labelStyle: H3BlackTextStyle,
-                                        alignment: WrapAlignment.spaceEvenly,
-                                        crossAxisAlignment: WrapCrossAlignment.center,
-                                        checkmarkColor: WhiteColor,
-                                        selectedColor: RedColor.withOpacity(0.5),
-                                        onChanged: (values) {
-                                          if (values != null) {
-                                            logic.options.value[attr.id!] = values;
+                                if (attr.type == 'limit') {
+                                  return Container(
+                                    height: 0.06.sh,
+                                    margin: EdgeInsets.only(bottom: 0.02.sh),
+                                    child: FormBuilderDropdown<int>(
+                                        onChanged: (value) {
+                                          if (value != null) {
+                                            logic.options.value[attr.id!] = [
+                                              value
+                                            ];
                                           }
                                         },
-                                        name: 'options',
                                         decoration: InputDecoration(
+                                          errorStyle: H5RedTextStyle,
                                           labelText: '${attr.name}',
                                           labelStyle: H3GrayTextStyle,
                                           border: OutlineInputBorder(
@@ -931,23 +960,61 @@ class CreateProductPage extends StatelessWidget {
                                             ),
                                           ),
                                         ),
-                                        options: [
+                                        name: 'options.${attr.id}',
+                                        items: [
                                           ...List.generate(
                                             attr.attributes!.length,
-                                                (i) => FormBuilderChipOption(
+                                            (i) => DropdownMenuItem<int>(
+                                              child: Text(
+                                                '${attr.attributes![i].name}',
+                                                style: H3BlackTextStyle,
+                                              ),
                                               value: attr.attributes![i].id,
-                                              child: Text('${attr.attributes![i].name}'),
                                             ),
                                           )
-                                        ],
-                                      );
-                                    }
-                                    return SizedBox(height:0);
-                                  })
+                                        ]),
+                                  );
+                                } else if (attr.type == 'multiple') {
+                                  return FormBuilderFilterChip(
+                                    labelStyle: H3BlackTextStyle,
+                                    alignment: WrapAlignment.spaceEvenly,
+                                    crossAxisAlignment:
+                                        WrapCrossAlignment.center,
+                                    checkmarkColor: WhiteColor,
+                                    selectedColor: RedColor.withOpacity(0.5),
+                                    onChanged: (values) {
+                                      if (values != null) {
+                                        logic.options.value[attr.id!] = values;
+                                      }
+                                    },
+                                    name: 'options',
+                                    decoration: InputDecoration(
+                                      labelText: '${attr.name}',
+                                      labelStyle: H3GrayTextStyle,
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: GrayLightColor,
+                                        ),
+                                      ),
+                                    ),
+                                    options: [
+                                      ...List.generate(
+                                        attr.attributes!.length,
+                                        (i) => FormBuilderChipOption(
+                                          value: attr.attributes![i].id,
+                                          child: Text(
+                                              '${attr.attributes![i].name}'),
+                                        ),
+                                      )
+                                    ],
+                                  );
+                                }
+                                return SizedBox(height: 0);
+                              })
                             ],
                           );
                         }
-                        return SizedBox(height:0);
+                        return SizedBox(height: 0);
                       }),
                       30.verticalSpace,
                       Obx(() {
@@ -966,62 +1033,67 @@ class CreateProductPage extends StatelessWidget {
                                 children: [
                                   ...List.generate(
                                       logic.colors.length,
-                                          (index) => InkWell(
-                                        onTap: () {
-                                          if (logic.colorIds
-                                              .contains(logic.colors[index].id)) {
-                                            logic.colorIds
-                                                .remove(logic.colors[index].id);
-                                          } else {
-                                            logic.colorIds
-                                                .add(logic.colors[index].id!);
-                                          }
-                                        },
-                                        child: Container(
-                                          margin: EdgeInsets.all(0.02.sw),
-                                          width: 0.1.sw,
-                                          height: 0.1.sw,
-                                          decoration: BoxDecoration(
-                                              border: logic.colorIds.contains(
-                                                  logic.colors[index].id)
-                                                  ? Border.all(color: RedColor)
-                                                  : null,
-                                              shape: BoxShape.circle,
-                                              color: logic.colors[index].code
-                                                  ?.toColor()),
-                                          child: Container(
-                                            width: 0.05.sw,
-                                            height: 0.05.sw,
-                                            decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color: GrayLightColor,
-                                                    width: 2),
-                                                shape: BoxShape.circle,
-                                                color: logic.colors[index].code
-                                                    ?.toColor()),
-                                          ),
-                                        ),
-                                      )),
-
+                                      (index) => InkWell(
+                                            onTap: () {
+                                              if (logic.colorIds.contains(
+                                                  logic.colors[index].id)) {
+                                                logic.colorIds.remove(
+                                                    logic.colors[index].id);
+                                              } else {
+                                                logic.colorIds.add(
+                                                    logic.colors[index].id!);
+                                              }
+                                            },
+                                            child: Container(
+                                              margin: EdgeInsets.all(0.02.sw),
+                                              width: 0.1.sw,
+                                              height: 0.1.sw,
+                                              decoration: BoxDecoration(
+                                                  border: logic.colorIds
+                                                          .contains(logic
+                                                              .colors[index].id)
+                                                      ? Border.all(
+                                                          color: RedColor)
+                                                      : null,
+                                                  shape: BoxShape.circle,
+                                                  color: logic
+                                                      .colors[index].code
+                                                      ?.toColor()),
+                                              child: Container(
+                                                width: 0.05.sw,
+                                                height: 0.05.sw,
+                                                decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color: GrayLightColor,
+                                                        width: 2),
+                                                    shape: BoxShape.circle,
+                                                    color: logic
+                                                        .colors[index].code
+                                                        ?.toColor()),
+                                              ),
+                                            ),
+                                          )),
                                 ],
                               ),
                             ],
                           );
                         }
-                        return SizedBox(height:0);
+                        return SizedBox(height: 0);
                       }),
                       80.verticalSpace,
                       InkWell(
                         onTap: () {
-                          logic.errorImage.value=null;
-                          if(logic.images.length==0){
-                            logic.errorImage.value="يرجى تحديد صورة واحدة على الأقل";
-                            return ;
+                          logic.errorImage.value = null;
+                          if (logic.images.length == 0) {
+                            logic.errorImage.value =
+                                "يرجى تحديد صورة واحدة على الأقل";
+                            return;
                           }
                           if (_formState.currentState?.validate() == true) {
                             logic.saveData();
                           } else {
-                            final firstErrorField = _formState.currentState?.context
+                            final firstErrorField = _formState
+                                .currentState?.context
                                 .findRenderObject() as RenderBox?;
 
                             if (firstErrorField != null) {
@@ -1047,18 +1119,83 @@ class CreateProductPage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(height: 0.03.sh,),
+                      SizedBox(
+                        height: 0.03.sh,
+                      ),
                     ],
                   ),
                 ),
               ),
             ),
-            if(logic.loading.value) Container(child: Center(child: CircularProgressIndicator(),),)
+            if (logic.loading.value)
+              Container(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            Obx(() => Visibility(
+              child: Positioned(
+                right: 0.1.sw,
+                top: 0.35.sh,
+                child: Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
+                  width: 0.8.sw,
+
+
+                  child: Card(
+                    elevation: 9,
+                    color: WhiteColor,
+
+                    child: Padding(
+                      padding:  EdgeInsets.symmetric(horizontal: 0.02.sw),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children:[
+                            SizedBox(height: 0.01.sh,),
+                            Text(
+                              'تنبيه',style: H2RedTextBoldStyle,),
+                            Container(
+                              width: 0.2.sw,
+                              height: 0.2.sw,
+                              decoration: BoxDecoration(image: DecorationImage(image: AssetImage('assets/images/png/info.png'))),
+                            ),
+
+
+                            SizedBox(height: 0.01.sh,),
+                            Text(
+                              'لم يعد بإمكانك نشر المزيد من المنتجات , الرجاء توثيق الحساب لتتمكن من معاودة النشر.',style: H3BlackTextStyle.copyWith(height: 2),),
+                            SizedBox(height: 0.07.sh,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                MaterialButton(onPressed: (){
+                                  Get.offNamed(PROFILE_PAGE);
+                                },child: Text('الملف الشخصي',style: H3WhiteTextStyle,),color: OrangeColor,),
+                                MaterialButton(onPressed: (){
+                                  // Get.back();
+                                  HelperClass.requestVerified(onConfirm: (){
+                                    if(isAuth()){
+                                      String message="ID:${mainController.authUser.value?.id} - اسم المتجر : ${mainController.authUser.value?.seller_name} - نوع الطلب توثيق الحساب";
+                                      openUrl(url: "https://wa.me/${mainController.settings.value.social?.phone}?text=$message");
+                                    }
+                                  });
+                                },child: Text('توثيق الحساب',style: H3WhiteTextStyle,),color: RedColor,),
+                              ],
+                            )
+                          ]
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              visible:
+              mainController.authUser.value?.isAvailableCreate == false,
+            )),
           ],
         );
       }),
     );
   }
-
-
 }

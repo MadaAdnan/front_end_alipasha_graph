@@ -20,6 +20,8 @@ class SettingModel {
   String? privacy;
   bool? active_live;
   String? live_id;
+  String? shamCash;
+  String? wallet;
   List<MaterialSetting>? material_izaz;
   List<MaterialSetting>? material_idlib;
   ExchangeGold? gold;
@@ -56,7 +58,9 @@ class SettingModel {
     this.createdAt,
     this.support,
     this.delivery,
-    this.urlDownload
+    this.urlDownload,
+    this.shamCash,
+    this.wallet,
   });
 
   factory SettingModel.fromJson(Map<String, dynamic> data) {
@@ -90,6 +94,8 @@ class SettingModel {
       dollar_value: "${data['dollar_value'] ?? ''}",
       less_amount_point_pull: "${data['less_amount_point_pull'] ?? ''}",
       live_id: "${data['live_id'] ?? ''}",
+      wallet: "${data['wallet'] ?? ''}",
+      shamCash: "${data['sham_cash'] ?? ''}",
       msg_delivery: "${data['msg_delivery'] ?? ''}",
       privacy: "${data['privacy'] ?? ''}",
       social:

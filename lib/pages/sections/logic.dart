@@ -61,7 +61,7 @@ class SectionsLogic extends GetxController {
    if( mainController.storage.hasData('sectionID.${id}')){
 
      var oldCount= mainController.storage.read('sectionID.${id}');
-     mainController.logger.d("DDD ${oldCount!=count}");
+
      if(oldCount!=count){
        return false;
      }else{

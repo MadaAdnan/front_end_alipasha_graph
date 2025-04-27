@@ -259,7 +259,7 @@ class ProductsPage extends StatelessWidget {
                                             vertical: 0.007.sh),
                                         child: GestureDetector(
                                           onTap: () {
-                                            print("INISTA");
+
                                             openUrl(
                                                 url:
                                                 "${logic.seller.value?.social?.instagram}" );

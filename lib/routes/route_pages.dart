@@ -79,6 +79,8 @@ import 'package:ali_pasha_graph/pages/orders/binding.dart';
 import 'package:ali_pasha_graph/pages/orders/view.dart';
 import 'package:ali_pasha_graph/pages/partner/binding.dart';
 import 'package:ali_pasha_graph/pages/partner/view.dart';
+import 'package:ali_pasha_graph/pages/payment/binding.dart';
+import 'package:ali_pasha_graph/pages/payment/view.dart';
 import 'package:ali_pasha_graph/pages/pdf/binding.dart';
 import 'package:ali_pasha_graph/pages/pdf/view.dart';
 import 'package:ali_pasha_graph/pages/plan/binding.dart';
@@ -149,7 +151,7 @@ class AppPages {
       name: HOME_PAGE,
       page: () => HomePage(),
       binding: HomeBinding(),
-    //  middlewares: [ActivePrivacyMiddleware()],
+      //  middlewares: [ActivePrivacyMiddleware()],
     ),
     GetPage(
       name: NEW_DETAILS,
@@ -169,22 +171,18 @@ class AppPages {
       binding: PdfBinding(),
       middlewares: [],
     ),
-
-
     GetPage(
       name: RESTAURANT_PAGE,
       page: () => RestaurantPage(),
       binding: RestaurantBinding(),
       middlewares: [],
     ),
-
     GetPage(
       name: MAINTENANCE_PAGE,
       page: () => MaintenancePage(),
       binding: MaintenanceBinding(),
       middlewares: [],
     ),
-
     GetPage(
       name: GALLERY_PAGE,
       page: () => GalleryPage(),
@@ -197,122 +195,168 @@ class AppPages {
       binding: CommentBinding(),
       middlewares: [],
     ),
-
     GetPage(
       name: TEST_PAGE,
       page: () => TestPage(),
       binding: TestBinding(),
       middlewares: [],
     ),
-
-
-
-
     GetPage(
-        middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+      name: PAYMENT_PAGE,
+      page: () => PaymentPage(),
+      binding: PaymentBinding(),
+      middlewares: [IsLoggedIn()],
+    ),
+    GetPage(
+        middlewares: [
+          IsLoggedIn(),
+          VerifyEmailMiddleware(),
+          CompleteProfileMiddleware()
+        ],
         name: CREATE_PRODUCT_PAGE,
         page: () => CreateProductPage(),
         binding: CreateProductBinding()),
-
-
     GetPage(
-        middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+        middlewares: [
+          IsLoggedIn(),
+          VerifyEmailMiddleware(),
+          CompleteProfileMiddleware()
+        ],
         name: CREATE_ADVICE_PAGE,
         page: () => CreateAdvicePage(),
         binding: CreateAdviceBinding()),
-
     GetPage(
-        middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+        middlewares: [
+          IsLoggedIn(),
+          VerifyEmailMiddleware(),
+          CompleteProfileMiddleware()
+        ],
         name: MY_INVOICE_PAGE,
         page: () => MyInvoicePage(),
         binding: MyInvoiceBinding()),
     GetPage(
-        middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+        middlewares: [
+          IsLoggedIn(),
+          VerifyEmailMiddleware(),
+          CompleteProfileMiddleware()
+        ],
         name: INVOICE_PAGE,
         page: () => InvoicesPage(),
         binding: InvoicesBinding()),
-
     GetPage(
-        middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+        middlewares: [
+          IsLoggedIn(),
+          VerifyEmailMiddleware(),
+          CompleteProfileMiddleware()
+        ],
         name: NOTIFICATION_PAGE,
         page: () => NotificationPage(),
         binding: NotificationBinding()),
-
-
     GetPage(
-        middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+        middlewares: [
+          IsLoggedIn(),
+          VerifyEmailMiddleware(),
+          CompleteProfileMiddleware()
+        ],
         name: MY_ORDER_SHIPPING_PAGE,
         page: () => OrdersPage(),
         binding: OrdersBinding()),
     GetPage(
-        middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+        middlewares: [
+          IsLoggedIn(),
+          VerifyEmailMiddleware(),
+          CompleteProfileMiddleware()
+        ],
         name: CREATE_JOB_PAGE,
         page: () => CreateJobPage(),
         binding: CreateJobBinding()),
-
     GetPage(
-        middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+        middlewares: [
+          IsLoggedIn(),
+          VerifyEmailMiddleware(),
+          CompleteProfileMiddleware()
+        ],
         name: CREATE_TENDER_PAGE,
         page: () => CreateTenderPage(),
         binding: CreateTenderBinding()),
-
     GetPage(
-        middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+        middlewares: [
+          IsLoggedIn(),
+          VerifyEmailMiddleware(),
+          CompleteProfileMiddleware()
+        ],
         name: CREATE_SERVICE_PAGE,
         page: () => CreateServicePage(),
         binding: CreateServiceBinding()),
-
     GetPage(
-        middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+        middlewares: [
+          IsLoggedIn(),
+          VerifyEmailMiddleware(),
+          CompleteProfileMiddleware()
+        ],
         name: Edit_SERVICE_PAGE,
         page: () => EditServicePage(),
         binding: EditServiceBinding()),
-
     GetPage(
-        middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+        middlewares: [
+          IsLoggedIn(),
+          VerifyEmailMiddleware(),
+          CompleteProfileMiddleware()
+        ],
         name: Edit_TENDER_PAGE,
         page: () => EditTenderPage(),
         binding: EditTenderBinding()),
-
     GetPage(
-        middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+        middlewares: [
+          IsLoggedIn(),
+          VerifyEmailMiddleware(),
+          CompleteProfileMiddleware()
+        ],
         name: Edit_JOB_PAGE,
         page: () => EditJobPage(),
         binding: EditJobBinding()),
-
     GetPage(
-        middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+        middlewares: [
+          IsLoggedIn(),
+          VerifyEmailMiddleware(),
+          CompleteProfileMiddleware()
+        ],
         name: Edit_PRODUCT_PAGE,
         page: () => EditProductPage(),
         binding: EditProductBinding()),
-
     GetPage(
         name: CART_SELLER,
         page: () => CartSellerPage(),
         binding: CartSellerBinding()),
-
     GetPage(
         name: CART_ITEM,
         page: () => CartItemPage(),
         binding: CartItemBinding()),
-
-
-
-
-
     GetPage(name: MENU_PAGE, page: () => MenuPage(), binding: MenuBinding()),
     GetPage(
-        middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+        middlewares: [
+          IsLoggedIn(),
+          VerifyEmailMiddleware(),
+          CompleteProfileMiddleware()
+        ],
         name: PROFILE_PAGE,
         page: () => ProfilePage(),
         binding: ProfileBinding()),
     GetPage(
-        middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+        middlewares: [
+          IsLoggedIn(),
+          VerifyEmailMiddleware(),
+          CompleteProfileMiddleware()
+        ],
         name: BALANCES_PAGE,
         page: () => BalancePage(),
         binding: BalanceBinding()),
     GetPage(
-      middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+      middlewares: [
+        IsLoggedIn(),
+        VerifyEmailMiddleware(),
+        CompleteProfileMiddleware()
+      ],
       name: SHIPPING_PAGE,
       page: () => ShippingPage(),
       binding: ShippingBinding(),
@@ -341,41 +385,45 @@ class AppPages {
       binding: VerifyEmailBinding(),
     ),
     GetPage(
-      middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+      middlewares: [
+        IsLoggedIn(),
+        VerifyEmailMiddleware(),
+        CompleteProfileMiddleware()
+      ],
       name: FOLLOWERS_PAGE,
       page: () => FollowersPage(),
       binding: FollowersBinding(),
     ),
-
     GetPage(
-      middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+      middlewares: [
+        IsLoggedIn(),
+        VerifyEmailMiddleware(),
+        CompleteProfileMiddleware()
+      ],
       name: FOLLOWING_PAGE,
       page: () => FollowingPage(),
       binding: FollowingBinding(),
     ),
-
     GetPage(
-      middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+      middlewares: [
+        IsLoggedIn(),
+        VerifyEmailMiddleware(),
+        CompleteProfileMiddleware()
+      ],
       name: CREATE_COMMUNITY_PAGE,
       page: () => CreateCommunityPage(),
       binding: CreateCommunityBinding(),
     ),
-
-
-
     GetPage(
       name: JOBS_PAGE,
       page: () => JobsPage(),
       binding: JobsBinding(),
     ),
-
     GetPage(
       name: VIDEO_PLAYER_POST_PAGE,
       page: () => VideoPlayerPostPage(),
       binding: VideoPlayerPostBinding(),
     ),
-
-
     GetPage(
         name: TENDERS_PAGE,
         page: () => TendersPage(),
@@ -411,35 +459,51 @@ class AppPages {
       binding: SearchBinding(),
     ),
     GetPage(
-      middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+      middlewares: [
+        IsLoggedIn(),
+        VerifyEmailMiddleware(),
+        CompleteProfileMiddleware()
+      ],
       name: COMMUNITIES_PAGE,
       page: () => CommunitiesPage(),
       binding: CommunitiesBinding(),
     ),
     GetPage(
-      middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+      middlewares: [
+        IsLoggedIn(),
+        VerifyEmailMiddleware(),
+        CompleteProfileMiddleware()
+      ],
       name: CHAT_PAGE,
       page: () => ChatPage(),
       binding: ChatBinding(),
     ),
-
     GetPage(
-      middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+      middlewares: [
+        IsLoggedIn(),
+        VerifyEmailMiddleware(),
+        CompleteProfileMiddleware()
+      ],
       name: GROUP_PAGE,
       page: () => GroupPage(),
       binding: GroupBinding(),
     ),
-
     GetPage(
-      middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+      middlewares: [
+        IsLoggedIn(),
+        VerifyEmailMiddleware(),
+        CompleteProfileMiddleware()
+      ],
       name: CHANNEL_PAGE,
       page: () => ChannelPage(),
       binding: ChannelBinding(),
     ),
-
-
     GetPage(
-      middlewares: [IsLoggedIn(), VerifyEmailMiddleware(),CompleteProfileMiddleware()],
+      middlewares: [
+        IsLoggedIn(),
+        VerifyEmailMiddleware(),
+        CompleteProfileMiddleware()
+      ],
       name: PLAN_PAGE,
       page: () => PlanPage(),
       binding: PlanBinding(),
@@ -475,14 +539,11 @@ class AppPages {
       page: () => AsksPage(),
       binding: AsksBinding(),
     ),
-
     GetPage(
       name: LIVE_PAGE,
       page: () => LivePage(),
       binding: LiveBinding(),
     ),
-
-
     GetPage(
       name: ASK_PAGE,
       page: () => AskPage(),

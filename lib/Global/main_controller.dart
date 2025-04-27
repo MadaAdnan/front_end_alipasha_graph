@@ -92,7 +92,6 @@ class MainController extends GetxController {
       if (value != null && value.length > 30) {
         getMe();
       }
-      try {} catch (e) {}
       if (value == null) {
         storage.remove('token');
         storage.remove('user');
@@ -305,7 +304,10 @@ class MainController extends GetxController {
     }
   }
 
-  getUserFromStorage() {
+  getUserFromStorage() async{
+    if(token.value !=null && token.value!.length>30){
+    await getMe();
+  }
     if (storage.hasData('user')) {
       var user = storage.read('user');
       authUser.value = UserModel.fromJson(user);
@@ -867,6 +869,7 @@ class MainController extends GetxController {
       dio.Response? res = await fetchData();
 
       if (res?.data?['data']?['me'] != null) {
+        Logger().e(res?.data?['data']?['me']);
         pusher.value = null;
         await setUserJson(json: res?.data?['data']?['me']);
 if(authUser.value?.invoicesSeller_count !=0){

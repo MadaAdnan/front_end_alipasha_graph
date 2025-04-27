@@ -126,6 +126,44 @@ class HelperClass{
              SizedBox(
                height: 0.01.sh,
              ),
+             Container(
+               child: Column(
+                 mainAxisAlignment: MainAxisAlignment.start,
+                 crossAxisAlignment: CrossAxisAlignment.start,
+                 children: [
+                   Row(
+                     mainAxisAlignment: MainAxisAlignment.start,
+                     crossAxisAlignment: CrossAxisAlignment.start,
+                     children: [
+                       Icon(
+                         FontAwesomeIcons.circleCheck,
+                         size: 0.04.sw,
+                         color: Colors.green,
+                       ),
+                       SizedBox(
+                         width: 0.02.sw,
+                       ),
+                       Expanded(
+                           child: Text('إمكانية النشر',
+                             style: H3BlackTextStyle,maxLines: 3,softWrap: true,overflow: TextOverflow.ellipsis,)),
+                     ],
+                   ),
+                   Row(
+                     children: [
+                       SizedBox(
+                         width: 0.06.sw,
+                       ),
+                       Expanded(child:  Text('نشر منتجات غير محدود',
+                         style:
+                         H3GrayTextStyle,maxLines: 3,softWrap: true,overflow: TextOverflow.ellipsis,),)
+                     ],
+                   )
+                 ],
+               ),
+             ),
+             SizedBox(
+               height: 0.01.sh,
+             ),
              //LIST
              Container(
                child: Column(

@@ -8,6 +8,7 @@ info
 open_time
 close_time
 total_views
+is_available_create
 communities{
 id
 }
@@ -77,6 +78,7 @@ info
 open_time
 close_time
 total_views
+is_available_create
 communities{
 id
 }

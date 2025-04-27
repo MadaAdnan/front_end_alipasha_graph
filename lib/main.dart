@@ -27,7 +27,7 @@ void main() async {
   OneSignal.Notifications.requestPermission(true);
 // Subscribe to all events (initial link and further)
   final sub = appLinks.uriLinkStream.listen((uri) {
-   print('URI LINK IS : $uri');
+ //  print('URI LINK IS : $uri');
   });
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.white, // لون الشريط

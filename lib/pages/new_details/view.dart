@@ -208,7 +208,7 @@ class NewDetailsPage extends StatelessWidget {
                   data: "${logic.post.value?.info}",
                   onAnchorTap: (url, context, attributes, element) =>
                       openUrl(url: "$url"),
-                  style: {"*":Style.fromTextStyle(H3RegularDark)},
+                  style: {"*":Style.fromTextStyle(H2RegularDark.copyWith(height: 2))},
                 ),
               ),
               SizedBox(
