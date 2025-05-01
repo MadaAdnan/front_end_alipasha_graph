@@ -50,7 +50,7 @@ mutation Login {
 
 ''');
       dio.Response? res = await mainController.fetchData();
-      //  mainController.logger.e(res?.data?['data']?['login']?['user']);
+        mainController.logger.e(res?.data?['data']);
       if (res?.data?['data']?['login'] != null) {
         mainController.setUserJson(json: res?.data?['data']?['login']?['user']);
         mainController.setToken(

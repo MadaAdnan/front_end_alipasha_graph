@@ -1,9 +1,11 @@
 import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
+import 'package:ali_pasha_graph/helpers/queries.dart';
 import 'package:ali_pasha_graph/models/filter_model.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:logger/logger.dart';
 import '../../Global/main_controller.dart';
 
 class SearchLogic extends GetxController {
@@ -107,15 +109,7 @@ class SearchLogic extends GetxController {
         query SearchSeller {
     
     searchSeller(search: "${filterModel?.search ?? ''}",${filterModel?.cityId != null ? "city_id: ${filterModel!.cityId!}" : ""}) {
-        id
-        seller_name
-        level
-        image
-        is_verified
-        address
-        city {
-            name
-        }
+        ${AUTH_FIELDS}
     }
 }
       ''';
@@ -135,6 +129,7 @@ class SearchLogic extends GetxController {
       }
 
       if(res?.data?['data']?['searchSeller']!=null){
+        Logger().e(res?.data?['data']?['searchSeller']);
         for(var item in res?.data?['data']?['searchSeller']){
           sellers.add(UserModel.fromJson(item));
         }

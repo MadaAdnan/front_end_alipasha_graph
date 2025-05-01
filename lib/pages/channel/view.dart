@@ -157,8 +157,10 @@ class ChannelPage extends StatelessWidget {
                               SizedBox(
                                 width: 0.005.sw,
                               ),
-                              Text(
-                                "كتم الإشعارات",
+                              Text(logic.communityModel.value.pivotCommunity
+                                  ?.notify ==
+                                  true?
+                                "كتم الإشعارات":"تفعيل الإشعارات",
                                 style: H3RegularDark,
                               ),
                             ],

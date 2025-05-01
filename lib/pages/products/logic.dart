@@ -5,6 +5,7 @@ import 'package:ali_pasha_graph/models/user_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:logger/logger.dart';
 
 import '../../helpers/queries.dart';
 import '../../models/product_model.dart';
@@ -16,7 +17,7 @@ class ProductsLogic extends GetxController {
   RxBool loading = RxBool(false);
   RxBool loadingProducts = RxBool(false);
   RxInt page = RxInt(1);
-  RxnInt sellerId = RxnInt(Get.arguments?.id??int.tryParse("${Get.parameters['id']}") ?? null);
+  RxnInt sellerId = RxnInt(null);
   Rxn<UserModel> seller = Rxn<UserModel>(null);
   RxList<ProductModel> products = RxList<ProductModel>([]);
   RxList<CategoryModel> categories = RxList<CategoryModel>([]);
@@ -66,9 +67,11 @@ class ProductsLogic extends GetxController {
     } else {
       loadingProducts.value = true;
     }
+    sellerId.value=Get.arguments?.id??int.tryParse("${Get.parameters['id']}") ?? null;
+Logger().t(''' products(search: "${search.value}", sub1_id:${categoryId.value},user_id: ${sellerId.value}, first: 35, page: ${page.value}) { ''');
     mainController.query.value = '''
    query Products {
-    products(search: "${search.value}" sub1_id:${categoryId.value},user_id: ${sellerId.value}, first: 35, page: ${page.value}) {
+    products(search: "${search.value}", sub1_id:${categoryId.value},user_id: ${sellerId.value}, first: 35, page: ${page.value}) {
         paginatorInfo {
             hasMorePages
         }
@@ -135,7 +138,7 @@ class ProductsLogic extends GetxController {
   ''';
     try {
       dio.Response? res = await mainController.fetchData();
-     // mainController.logger.e(res?.data?['data']?['products']);
+      mainController.logger.e(res?.data);
       if (res?.data?['data']?['products']?['paginatorInfo'] != null) {
         hasMorePage.value =
             res?.data?['data']?['products']?['paginatorInfo']['hasMorePages'];

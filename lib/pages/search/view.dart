@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 
 import '../../components/seller_name_component.dart';
 import '../../helpers/colors.dart';
@@ -95,6 +96,7 @@ class SearchPage extends StatelessWidget {
                       if(logic.filterModel!.type=='seller')
                         ...List.generate(logic.sellers.length, (index)=>GestureDetector(
                           onTap: (){
+
                             Get.toNamed(PRODUCTS_PAGE,parameters: {"id":"${logic.sellers[index].id}"},);
                           },
                           child: Container(
