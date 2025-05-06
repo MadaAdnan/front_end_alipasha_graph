@@ -89,13 +89,21 @@ class HomeLogic extends GetxController {
               is_verified
               city{
                 id
-               city_id
+                code_city
+                level
+               
+              }
+              area{
+                id
+                code_city
+                level
+               
               }
             }
           
             city {
             id
-                name
+            name
                
             }
             start_date
@@ -149,23 +157,14 @@ class HomeLogic extends GetxController {
       image
       custom
     }
-    
-    cities{
-      id
-      name
-      is_delivery
-      image
-      city_id
-    }
-    
     mainCity{
       id
       name
-      city_id
       children{
        id
       name
-      city_id
+      code_city
+      level
       }
     }
     
@@ -183,6 +182,8 @@ class HomeLogic extends GetxController {
 
     try {
       dio.Response? res = await mainController.fetchData();
+      Logger().t("SSP");
+      Logger().t(res?.data?['data']?['specialSeller']);
       loading.value = false;
       if (res?.data?['data']?['LatestProduct']?['paginatorInfo']
               ?['hasMorePages'] !=

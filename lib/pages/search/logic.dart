@@ -65,13 +65,23 @@ class SearchLogic extends GetxController {
         data {
             id
             user {
+           id
                 seller_name
                 logo
                 image
                   is_verified
             }
-            city {
-                name
+            city{
+            id
+            code_city
+                level
+            name
+            }
+             area{
+             id
+            code_city
+                level
+            name
             }
             category {
                 name

@@ -31,6 +31,7 @@ class UserModel {
   List<FollowerModel>? followers;
   List<PlanModel>? plans;
   CityModel? city;
+  CityModel? area;
   bool? is_special;
   bool? trust;
   double? totalBalance;
@@ -86,6 +87,7 @@ class UserModel {
     this.invoices_count,
     this.invoicesSeller_count,
     this.isAvailableCreate,
+    this.area
   });
 
   factory UserModel.fromJson(Map<String, dynamic> data) {
@@ -158,6 +160,7 @@ class UserModel {
       totalPoint: double.tryParse("${data['total_point']}") ?? 0,
       email_verified_at: "${data['email_verified_at'] ?? ''}",
       city: data['city'] != null ? CityModel.fromJson(data['city']) : null,
+      area: data['area'] != null ? CityModel.fromJson(data['area']) : null,
       social:
           data['social'] != null ? SocialModel.fromJson(data['social']) : null,
       products: listProducts.toList(),
@@ -190,6 +193,7 @@ class UserModel {
       'affiliate': affiliate,
       'info': info,
       'city': city?.toJson(),
+      'area': city?.toJson(),
       'plans': plans?.map((el) => el.toJson()).toList() ?? [],
       // this.customImg,
       'total_balance': totalBalance,

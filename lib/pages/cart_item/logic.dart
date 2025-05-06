@@ -2,9 +2,11 @@ import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/helpers/cart_helper.dart';
 import 'package:ali_pasha_graph/helpers/components.dart';
 import 'package:ali_pasha_graph/models/cart_model.dart';
+import 'package:ali_pasha_graph/models/city_model.dart';
 import 'package:ali_pasha_graph/models/pricing_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 
 class CartItemLogic extends GetxController {
   Rxn<CartModel> cart = Rxn<CartModel>(Get.arguments);
@@ -15,20 +17,24 @@ class CartItemLogic extends GetxController {
   RxDouble shipping = RxDouble(0);
   RxDouble totalShipping = RxDouble(0);
   RxBool loading = RxBool(false);
-  TextEditingController addressController=TextEditingController();
-  TextEditingController phoneController=TextEditingController();
-RxString address=RxString('');
-RxString phone=RxString('');
+  RxBool isAvailable = RxBool(true);
+  TextEditingController addressController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  RxString address = RxString('');
+  RxString phone = RxString('');
+
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    address.value=mainController.authUser.value?.address??'';
-    phone.value=mainController.authUser.value?.phone??'';
-    addressController.value=TextEditingValue(text: mainController.authUser.value?.address??'');
-    phoneController.value=TextEditingValue(text: mainController.authUser.value?.phone??'');
+    address.value = mainController.authUser.value?.address ?? '';
+    phone.value = mainController.authUser.value?.phone ?? '';
+    addressController.value =
+        TextEditingValue(text: mainController.authUser.value?.address ?? '');
+    phoneController.value =
+        TextEditingValue(text: mainController.authUser.value?.phone ?? '');
     mainController.pricing
-        .sort((a, b) => a.weight?.compareTo(b.weight??0)??0);
+        .sort((a, b) => a.weight?.compareTo(b.weight ?? 0) ?? 0);
   }
 
   @override
@@ -37,19 +43,30 @@ RxString phone=RxString('');
     getCart();
   }
 
-  getCart() async{
-   var list=await CartHelper.getCart();
-    carts(
-       list.where(
+  getCart() async {
+    var list = await CartHelper.getCart();
+    carts(list
+        .where(
             (el) => el.seller?.seller_name == cart.value?.seller?.seller_name)
         .toList());
+    int index=carts.indexWhere((el)=>el.product?.user?.area?.code==null);
+    if(mainController.authUser.value?.area?.code==null){
+      isAvailable.value=false;
+    }
+    if(index>-1){
+      isAvailable.value=false;
+    }
+    int index2=carts.indexWhere((el)=>el.product?.is_delivery!=true);
+    if(index2>-1){
+      isAvailable.value=false;
+    }
     total.value = carts.length > 0
-        ? carts.fold(0.0,
-            (previousValue, element) {
+        ? carts.fold(0.0, (previousValue, element) {
             double elementPrice = element.product?.is_discount == true
                 ? element.product?.discount ?? 0.0
                 : element.product?.price ?? 0;
             int elementQty = element.qty ?? 0;
+
             return previousValue + (elementPrice * elementQty);
           })
         : 0.0;
@@ -66,44 +83,44 @@ RxString phone=RxString('');
   }
 
   calcShipping() {
-
     PricingModel? pricing = mainController.pricing
         .firstWhereOrNull((el) => el.weight! >= shipping.value);
     CartModel firstCart = carts.first;
     if (pricing == null) {
-    throw  Exception('الوزن أكبر من المسموح يرجى التواصل مع الإدارة');
+      throw Exception('الوزن أكبر من المسموح يرجى التواصل مع الإدارة');
     }
 
-    var authCity = mainController.authUser.value?.city?.cityId != null
-        ? mainController.authUser.value?.city?.cityId
-        : mainController.authUser.value?.city?.id;
-    var sellerCity = firstCart.seller?.city?.cityId != null
-        ? firstCart.seller?.city?.cityId
-        : firstCart.seller?.city?.id;
-mainController.logger.f(mainController.pricing.first.toJson());
-mainController.logger.f(pricing.toJson());
+    CityModel? authCity = mainController.authUser.value?.area;
+    CityModel? sellerCity = firstCart.seller?.area;
+
+    int step = 1;
+   // check if same city
+      if (authCity?.code != null && sellerCity?.code == authCity?.code) {
+        totalShipping.value = pricing.internal_price!;
+        step=(authCity?.level ?? 0) + (authCity?.level ?? 0)-1;
+      } else {
+        totalShipping.value = pricing.external_price!;
+        step=(authCity?.level ?? 0) + (sellerCity?.level ?? 0);
+      }
+
+      Logger().d("CARTY");
+      Logger().d("${sellerCity?.level}");
+      Logger().d("${authCity?.name}");
+      Logger().d("${step} => ${totalShipping.value} => ${(totalShipping.value / 3)} -- ${totalShipping.value}");
+      totalShipping.value += (totalShipping.value / 3) * step;
 
 
-mainController.logger.f(shipping.value);
-  var index= carts.indexWhere((el)=>el.product?.is_delivery==true);
-  if(index >-1){
-    if (authCity != null && sellerCity != null && authCity == sellerCity) {
-      totalShipping.value = pricing.internal_price!;
-    } else {
-      totalShipping.value = pricing.external_price!;
-    }
-  }else{
-    totalShipping.value = 0;
-  }
   }
 
   createOrder() async {
-
-    loading.value=true;
-if(mainController.authUser.value!.address!.isEmpty || mainController.authUser.value!.phone!.isEmpty){
-  mainController.showToast(text: 'يرجى إكمال الملف الشخصي وإضافة عنوان ورقم هاتف',type: 'error');
-  return;
-}
+    loading.value = true;
+    if (mainController.authUser.value!.address!.isEmpty ||
+        mainController.authUser.value!.phone!.isEmpty) {
+      mainController.showToast(
+          text: 'يرجى إكمال الملف الشخصي وإضافة عنوان ورقم هاتف',
+          type: 'error');
+      return;
+    }
     // Map<String, dynamic> data = {};
     // data['seller_id'] = carts.first.seller?.id;
     // data['weight'] = shipping.value;
@@ -119,10 +136,8 @@ if(mainController.authUser.value!.address!.isEmpty || mainController.authUser.va
       'address': address.value,
       'phone': phone.value,
       'items': carts
-          .map((el) => {
-        "product_id": "${el.product?.id}",
-        'qty': el.qty?.toDouble()
-      })
+          .map((el) =>
+              {"product_id": "${el.product?.id}", 'qty': el.qty?.toDouble()})
           .toList(),
     };
     mainController.logger.i(data);
@@ -140,29 +155,26 @@ if(mainController.authUser.value!.address!.isEmpty || mainController.authUser.va
     
     }
      ''';
-    mainController.variables.value={'input': data};
+    mainController.variables.value = {'input': data};
     try {
       calcShipping();
       var res = await mainController.fetchData();
       mainController.logger.f(res?.data);
-      if(res?.data?['data']?['createInvoice']!=null){
+      if (res?.data?['data']?['createInvoice'] != null) {
         mainController.showToast(text: 'الطلب بإنتظار المراجعة شكراً لك');
-        for(var i in carts){
-          mainController.deleteFromCart(
-              product: i.product!);
-
+        for (var i in carts) {
+          mainController.deleteFromCart(product: i.product!);
         }
-        await mainController
-            .refreshCart();
+        await mainController.refreshCart();
         getCart();
-      }else{
+      } else {
         throw Exception('خطأ في الطلب يرجى المحاولة لاحقاً');
       }
-
     } catch (e) {
-      mainController.showToast(text: '$e'.replaceAll('Exception:', ''),type: 'error');
+      mainController.showToast(
+          text: '$e'.replaceAll('Exception:', ''), type: 'error');
     }
-    loading.value=false;
+    loading.value = false;
   }
 
   calcWithAi(String msg) async {

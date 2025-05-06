@@ -110,12 +110,22 @@ class ProfileLogic extends GetxController {
               is_verified
               city{
                 id
-                city_id
+               
+                 code_city
+                level
+              }
+               area{
+                id
+               
+                 code_city
+                level
               }
             }
             city{
               id
               name
+              code_city
+                level
             }
             category {
               name

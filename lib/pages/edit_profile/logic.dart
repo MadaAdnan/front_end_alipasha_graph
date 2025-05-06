@@ -21,8 +21,9 @@ class EditProfileLogic extends GetxController {
   RxList<CityModel> mainCities = RxList<CityModel>([]);
   RxBool loading = RxBool(false);
   RxBool loadingPassword = RxBool(false);
-  RxnInt cityId = RxnInt(null);
-  RxnInt mainCityId = RxnInt(null);
+  Rxn<CityModel> city = Rxn<CityModel>(null);
+  Rxn<CityModel> area = Rxn<CityModel>(null);
+  Rxn<CityModel> mainCity = Rxn<CityModel>(null);
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
@@ -105,28 +106,22 @@ class EditProfileLogic extends GetxController {
     me {
    $AUTH_FIELDS
     }
-    cities{
-    name
-    id
-    }
+    
 }
     ''';
     try {
       dio.Response? res = await mainController.fetchData();
-      mainController.logger.d(res?.data);
+
       if (res?.data?['data']?['me'] != null) {
-        mainController.logger.d(res?.data?['data']?['me']);
+
         user.value = UserModel.fromJson(res?.data?['data']?['me']);
-        cityId.value = user.value?.city?.id;
-        mainCityId.value = user.value?.city?.cityId;
+        city.value = user.value?.city;
+        area.value = user.value?.area;
+
         mainController.setUserJson(json: res?.data?['data']?['me']);
       }
 
-      if (res?.data?['data']?['cities'] != null) {
-        for (var item in res?.data?['data']?['cities']) {
-          cities.add(CityModel.fromJson(item));
-        }
-      }
+      cities.addAll(mainController.mainCities);
       if (res?.data?['errors']?[0]?['message'] != null) {
         mainController.showToast(
             text: '${res?.data['errors'][0]['message']}', type: 'error');
@@ -138,8 +133,12 @@ class EditProfileLogic extends GetxController {
   }
 
   saveData() async {
-    if(cityId.value==null){
-      mainController.showToast(text: 'يرجى تحديد المدينة ',type: 'error');
+    if(city.value?.id==null){
+      mainController.showToast(text: 'يرجى تحديد المحافظة ',type: 'error');
+      return;
+    }
+    if(area.value?.id==null){
+      mainController.showToast(text: 'يرجى تحديد المنطقة ',type: 'error');
       return;
     }
     loading.value = true;
@@ -161,7 +160,8 @@ class EditProfileLogic extends GetxController {
           "email": mainController.authUser.value?.email??'' ,
           "password": passwordController.value.text??'',
           "phone": phoneController.value.text ??'',
-          "city_id": cityId.value,
+          "city_id": city.value?.id,
+          "area_id": area.value?.id,
           "seller_name": sellerNameController.value.text??'' ,
           "address": addressController.value.text??'' ,
           "close_time": closeTimeController.value.text??'' ,
@@ -193,13 +193,14 @@ class EditProfileLogic extends GetxController {
       if (avatar.value != null) 'image': avatar.value,
       if (logo.value != null) 'logo': logo.value,
     };
-    mainController.logger.e(avatar.value?.path);
+   // mainController.logger.e(avatar.value?.path);
     try {
       dio.Response res = await mainController.dio_manager
           .executeGraphQLQueryWithFile(json.encode(datajson),
               map: map, files: data);
       mainController.logger.d(res.data);
       if (res.data['data']['updateUser'] != null) {
+        user.value=UserModel.fromJson( res.data['data']['updateUser']);
         mainController.setUserJson(json: res.data['data']['updateUser']);
 
         messageBox(

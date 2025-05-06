@@ -52,6 +52,15 @@ class RestaurantLogic extends GetxController {
                 name
             }
             city{
+            id
+            code_city
+                level
+            name
+            }
+             area{
+             id
+            code_city
+                level
             name
             }
         }

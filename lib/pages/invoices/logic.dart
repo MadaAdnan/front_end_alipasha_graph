@@ -55,6 +55,8 @@ class InvoicesLogic extends GetxController {
                 phone
                 image
                 city{
+                code_city
+                level
                 name
                 }
             }
@@ -106,6 +108,8 @@ class InvoicesLogic extends GetxController {
                 phone
                 image
                 city{
+                code_city
+                level
                 name
                 }
             }

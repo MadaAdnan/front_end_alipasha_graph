@@ -5,6 +5,7 @@ import 'package:ali_pasha_graph/models/category_model.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
 import 'package:get/get.dart';
 import "package:dio/dio.dart" as dio;
+import 'package:logger/logger.dart';
 
 class SectionLogic extends GetxController {
   MainController mainController = Get.find<MainController>();
@@ -63,7 +64,7 @@ class SectionLogic extends GetxController {
 
     mainController.query.value = '''
     query Products {
-    products(  order_by: { column: "${orderBy[0] ?? 'created_at'}", orderBy: "${orderBy[1] ?? 'desc'}" },category_id: ${mainCategory.value ?? null},sub1_id:${categoryId.value ?? null}, page: ${page.value}, first: 25) {
+    products(  order_by: { column: "${orderBy[0] ?? 'created_at'}", orderBy: "${orderBy[1] ?? 'desc'}" },category_id: ${mainCategory.value},sub1_id:${categoryId.value }, page: ${page.value}, first: 25) {
         paginatorInfo {
             hasMorePages
         }
@@ -77,6 +78,14 @@ class SectionLogic extends GetxController {
                 phone
                 city{
                 id
+                code_city
+                level
+                city_id
+              }
+              area{
+                id
+                code_city
+                level
                 city_id
               }
             }
@@ -140,9 +149,11 @@ class SectionLogic extends GetxController {
     ''';
 
     try {
+      Logger().t("SECTIONSD");
       dio.Response? res = await mainController.fetchData();
       loading.value = false;
 
+Logger().t(res?.data);
       if (res?.data?['data']?['products']['paginatorInfo'] != null) {
         hasMorePage.value =
             res?.data?['data']?['products']['paginatorInfo']['hasMorePages'];
@@ -191,8 +202,8 @@ class SectionLogic extends GetxController {
       } else {
         advices.addAll(mainController.advices);
       }
-    } on CustomException catch (e) {
-      mainController.logger.e(e.message);
+    }  catch (e) {
+      mainController.logger.e(e);
     }
 
     loading.value = false;

@@ -1,4 +1,4 @@
-const AUTH_USER=''' 
+const AUTH_USER = '''
  user {
             id
             name
@@ -57,6 +57,12 @@ invoices_seller_count
                 id
                  city_id
             }
+            area {
+                name
+                id
+                code_city
+                level
+            }
             followers {
                 seller{
                
@@ -67,7 +73,7 @@ invoices_seller_count
         }
 ''';
 
-const AUTH_FIELDS='''
+const AUTH_FIELDS = '''
             id
             name
              is_verified
@@ -124,7 +130,20 @@ unread_notifications_count
              city {
                 name
                 id
-                city_id
+                code_city
+                level
+                children{
+                id 
+                code_city 
+                level
+                name
+                }
+            }
+             area {
+                name
+                id
+                code_city
+                level
             }
             followers {
                 seller{
