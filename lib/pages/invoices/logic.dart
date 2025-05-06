@@ -55,9 +55,18 @@ class InvoicesLogic extends GetxController {
                 phone
                 image
                 city{
+                id
+                  name
+                is_delivery
                 code_city
                 level
-                name
+                }
+                area{
+                id
+                  name
+                is_delivery
+                code_city
+                level
                 }
             }
             items {
@@ -108,9 +117,18 @@ class InvoicesLogic extends GetxController {
                 phone
                 image
                 city{
+               id
+                  name
+                is_delivery
                 code_city
                 level
-                name
+                }
+                area{
+                id
+                  name
+                is_delivery
+                code_city
+                level
                 }
             }
             items {

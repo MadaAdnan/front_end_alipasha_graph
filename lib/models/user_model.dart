@@ -193,7 +193,7 @@ class UserModel {
       'affiliate': affiliate,
       'info': info,
       'city': city?.toJson(),
-      'area': city?.toJson(),
+      'area': area?.toJson(),
       'plans': plans?.map((el) => el.toJson()).toList() ?? [],
       // this.customImg,
       'total_balance': totalBalance,

@@ -144,7 +144,19 @@ TextEditingController comment =TextEditingController();
                 is_verified
                 city{
                 id
-                 city_id
+                  name
+                is_delivery
+                code_city
+                level
+                id
+              }
+               area{
+                id
+                  name
+                is_delivery
+                code_city
+                level
+                id
               }
             }
             city {

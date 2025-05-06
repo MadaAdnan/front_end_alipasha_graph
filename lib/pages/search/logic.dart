@@ -70,19 +70,24 @@ class SearchLogic extends GetxController {
                 logo
                 image
                   is_verified
-            }
-            city{
+                   city{
             id
             code_city
                 level
             name
             }
-             area{
+                  area{
              id
             code_city
                 level
             name
             }
+            }
+            city{
+          
+            name
+            }
+             
             category {
                 name
             }
@@ -126,8 +131,8 @@ class SearchLogic extends GetxController {
       }
 
       dio.Response? res = await mainController.fetchData();
-
-      if (res?.data['data']['products'] != null) {
+Logger().d(res?.data);
+      if (res?.data?['data']?['products'] != null) {
         hasMorePage.value = res?.data['data']['products']['paginatorInfo']
                 ['hasMorePages'] ??
             false;

@@ -101,6 +101,9 @@ Logger().t(''' products(search: "${search.value}", sub1_id:${categoryId.value},u
                 image
                 is_verified
                 city{
+                
+                name
+                is_delivery
                 code_city
                 level
                 id
@@ -110,6 +113,8 @@ Logger().t(''' products(search: "${search.value}", sub1_id:${categoryId.value},u
                 code_city
                 level
                 id
+                 name
+                is_delivery
                 
               }
             }
