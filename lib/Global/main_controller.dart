@@ -12,6 +12,7 @@ import 'package:ali_pasha_graph/models/cart_model.dart';
 import 'package:ali_pasha_graph/models/category_model.dart';
 import 'package:ali_pasha_graph/models/community_model.dart';
 import 'package:ali_pasha_graph/models/message_community_model.dart';
+import 'package:ali_pasha_graph/models/notification_model.dart';
 import 'package:ali_pasha_graph/models/pricing_model.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
 import 'package:ali_pasha_graph/models/setting_model.dart';
@@ -66,7 +67,7 @@ class MainController extends GetxController {
   RxList<AdviceModel> advices = RxList<AdviceModel>([]);
   RxList<SliderModel> sliders = RxList<SliderModel>([]);
   RxList<PricingModel> pricing = RxList([]);
-  String versionAPK = "3.0.10";
+  String versionAPK = "3.1.0";
   RxInt communityNotification = RxInt(0);
   RxBool startApp = RxBool(true); //for fill data from storage
   Rx<SettingModel> settings =
@@ -144,9 +145,6 @@ class MainController extends GetxController {
   }
 
   communitySubscribe(String channelName) {
-
-
-
     Channel channel = pusher.value!.subscribe(channelName);
 
     channels.add(channel);
@@ -304,10 +302,10 @@ class MainController extends GetxController {
     }
   }
 
-  getUserFromStorage() async{
-    if(token.value !=null && token.value!.length>30){
-    await getMe();
-  }
+  getUserFromStorage() async {
+    if (token.value != null && token.value!.length > 30) {
+      await getMe();
+    }
     if (storage.hasData('user')) {
       var user = storage.read('user');
       authUser.value = UserModel.fromJson(user);
@@ -333,7 +331,6 @@ class MainController extends GetxController {
   }
 
   createCommunity({required int sellerId, String? message}) async {
-
     if (createCommunityLodaing.value) {
       return;
     }
@@ -453,7 +450,11 @@ class MainController extends GetxController {
           id
           name
         }
+        wallet
+        sham_cash
     }
+    
+    
    
 }
     ''';
@@ -475,142 +476,152 @@ class MainController extends GetxController {
           Get.dialog(
               AlertDialog(
                 backgroundColor: WhiteColor,
-                content: WillPopScope(child: Container(
-                  height: 0.4.sh,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                                text: 'يرجى تحديث التطبيق إلى النسخة ',
-                                style: H3BlackTextStyle),
-                            TextSpan(
-                                text: ' ${settings.value.current_version}',
-                                style: H3RedTextStyle),
-                          ],
-                        ),
-                      ),
-                      RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                                text: 'الإصدار الحالي ',
-                                style: H3BlackTextStyle),
-                            TextSpan(text: versionAPK, style: H3RedTextStyle),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        child: Text(
-                          'حمل النسخة الجديدة من',
-                          style: H2OrangeTextStyle,
-                        ),
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                content: WillPopScope(
+                    child: Container(
+                      height: 0.4.sh,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 0.02.sh, horizontal: 0.02.sw),
-                            decoration: BoxDecoration(
-                              color: Colors.green.withOpacity(0.3),
-                              borderRadius: BorderRadius.circular(30.r),
-                            ),
-                            child: InkWell(
-                              onTap: () {
-                                Logger().d(settings.value.urlDownload?.play);
-                                openUrl(
-                                    url: "${settings.value.urlDownload?.play}");
-                              },
-                              borderRadius: BorderRadius.circular(30.r),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'متجر GOOGLE PLAY',
-                                    style: H3RegularDark,
-                                  ),
-                                  const Icon(FontAwesomeIcons.googlePlay),
-                                ],
-                              ),
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                    text: 'يرجى تحديث التطبيق إلى النسخة ',
+                                    style: H3BlackTextStyle),
+                                TextSpan(
+                                    text: ' ${settings.value.current_version}',
+                                    style: H3RedTextStyle),
+                              ],
                             ),
                           ),
-                          SizedBox(
-                            height: 0.01.sh,
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                    text: 'الإصدار الحالي ',
+                                    style: H3BlackTextStyle),
+                                TextSpan(
+                                    text: versionAPK, style: H3RedTextStyle),
+                              ],
+                            ),
                           ),
                           Container(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 0.02.sh, horizontal: 0.02.sw),
-                            decoration: BoxDecoration(
-                              color: Colors.orange.withOpacity(0.3),
-                              borderRadius: BorderRadius.circular(30.r),
-                            ),
-                            child: InkWell(
-                              onTap: () {
-                                Logger().d(settings.value.urlDownload?.play);
-                                openUrl(
-                                    url: settings.value.urlDownload?.direct ??
-                                        'https://ali-pasha.com/app');
-                              },
-                              borderRadius: BorderRadius.circular(30.r),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'تحميل مباشر APK',
-                                    style: H3RegularDark,
-                                  ),
-                                  const Icon(FontAwesomeIcons.mobileScreen),
-                                ],
-                              ),
+                            child: Text(
+                              'حمل النسخة الجديدة من',
+                              style: H2OrangeTextStyle,
                             ),
                           ),
-                          SizedBox(
-                            height: 0.01.sh,
-                          ),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 0.02.sh, horizontal: 0.02.sw),
-                            decoration: BoxDecoration(
-                              color: Colors.blue.withOpacity(0.3),
-                              borderRadius: BorderRadius.circular(30.r),
-                            ),
-                            child: InkWell(
-                              onTap: () {
-                                openUrl(
-                                    url:
-                                    "${settings.value.urlDownload?.up_down}");
-                              },
-                              borderRadius: BorderRadius.circular(30.r),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'من موفع AppToDown',
-                                    style: H3RegularDark,
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 0.02.sh, horizontal: 0.02.sw),
+                                decoration: BoxDecoration(
+                                  color: Colors.green.withOpacity(0.3),
+                                  borderRadius: BorderRadius.circular(30.r),
+                                ),
+                                child: InkWell(
+                                  onTap: () {
+                                    Logger()
+                                        .d(settings.value.urlDownload?.play);
+                                    openUrl(
+                                        url:
+                                            "${settings.value.urlDownload?.play}");
+                                  },
+                                  borderRadius: BorderRadius.circular(30.r),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'متجر GOOGLE PLAY',
+                                        style: H3RegularDark,
+                                      ),
+                                      const Icon(FontAwesomeIcons.googlePlay),
+                                    ],
                                   ),
-                                  const Icon(FontAwesomeIcons.circleDown),
-                                ],
+                                ),
                               ),
-                            ),
+                              SizedBox(
+                                height: 0.01.sh,
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 0.02.sh, horizontal: 0.02.sw),
+                                decoration: BoxDecoration(
+                                  color: Colors.orange.withOpacity(0.3),
+                                  borderRadius: BorderRadius.circular(30.r),
+                                ),
+                                child: InkWell(
+                                  onTap: () {
+                                    Logger()
+                                        .d(settings.value.urlDownload?.play);
+                                    openUrl(
+                                        url: settings
+                                                .value.urlDownload?.direct ??
+                                            'https://ali-pasha.com/app');
+                                  },
+                                  borderRadius: BorderRadius.circular(30.r),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'تحميل مباشر APK',
+                                        style: H3RegularDark,
+                                      ),
+                                      const Icon(FontAwesomeIcons.mobileScreen),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 0.01.sh,
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 0.02.sh, horizontal: 0.02.sw),
+                                decoration: BoxDecoration(
+                                  color: Colors.blue.withOpacity(0.3),
+                                  borderRadius: BorderRadius.circular(30.r),
+                                ),
+                                child: InkWell(
+                                  onTap: () {
+                                    openUrl(
+                                        url:
+                                            "${settings.value.urlDownload?.up_down}");
+                                  },
+                                  borderRadius: BorderRadius.circular(30.r),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'من موفع AppToDown',
+                                        style: H3RegularDark,
+                                      ),
+                                      const Icon(FontAwesomeIcons.circleDown),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
                           )
                         ],
-                      )
-                    ],
-                  ),
-                ), onWillPop: (){
-                  return Future.value(false);
-                }),
+                      ),
+                    ),
+                    onWillPop: () {
+                      return Future.value(false);
+                    }),
               ),
               barrierDismissible: false,
               name: 'upgrade');
@@ -864,7 +875,13 @@ class MainController extends GetxController {
 // Get Auth Data
   Future<void> getMe() async {
     query.value = ''' query Me {
-    me {$AUTH_FIELDS} }''';
+    me {$AUTH_FIELDS} 
+    forceNotification{
+    title
+    body
+    }
+    }
+    ''';
     try {
       dio.Response? res = await fetchData();
 
@@ -872,31 +889,147 @@ class MainController extends GetxController {
         Logger().e(res?.data?['data']?['me']);
         pusher.value = null;
         await setUserJson(json: res?.data?['data']?['me']);
-if(authUser.value?.invoicesSeller_count !=0){
-  Get.dialog(AlertDialog(
-    content: Container(
-      height: 0.1.sh,
-      child: Center(child: Text('لديك طلبات جديدة',style: H2RedTextStyle,),),
-    ),
-    actions: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          MaterialButton(onPressed: (){
-            Get.offAndToNamed(INVOICE_PAGE);
-          },child: Text('ذهاب إلى الطلبات',style: H4WhiteTextStyle,),color: RedColor,),
-        SizedBox(width: 0.05.sw,),
-          MaterialButton(onPressed: (){
-            Get.back();
-          },child: Text('إغلاق',style: H4WhiteTextStyle,),color: GrayDarkColor,),
-        ],
-      ),
-    ],
-  ));
-}
+        if (authUser.value?.invoicesSeller_count != 0) {
+          Get.dialog(AlertDialog(
+            content: Container(
+              height: 0.1.sh,
+              child: Center(
+                child: Text(
+                  'لديك طلبات جديدة',
+                  style: H2RedTextStyle,
+                ),
+              ),
+            ),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  MaterialButton(
+                    onPressed: () {
+                      Get.offAndToNamed(INVOICE_PAGE);
+                    },
+                    child: Text(
+                      'ذهاب إلى الطلبات',
+                      style: H4WhiteTextStyle,
+                    ),
+                    color: RedColor,
+                  ),
+                  SizedBox(
+                    width: 0.05.sw,
+                  ),
+                  MaterialButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    child: Text(
+                      'إغلاق',
+                      style: H4WhiteTextStyle,
+                    ),
+                    color: GrayDarkColor,
+                  ),
+                ],
+              ),
+            ],
+          ));
+        }
         OneSignal.login("${authUser.value?.id}");
         OneSignal.User.addEmail("${authUser.value?.email}");
+      }
+      if (res?.data?['data']?['forceNotification'] != null) {
+        Logger().e("NOTNOT");
+        Logger().e(res?.data?['data']?['forceNotification']);
+        DataNotification notification =
+            DataNotification.fromJson(res?.data?['data']?['forceNotification']);
+        Get.dialog(AlertDialog(
+          content: Column(
+            children: [
+              //Container(width: 0.01.sw,height: 0.01.sw,color: RedColor,),
+              Container(
+                width: 1.sw,
+                child: Stack(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                            child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              "${notification.title}",
+                              style: H1BlackTextStyle,
+                            ),
+                            SizedBox(
+                              height: 0.01.sh,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    "${notification.body}",
+                                    style: H3RegularDark,
+                                  ),
+                                ),
+                                Container(
+                                  width: 0.25.sw,
+                                  height: 0.25.sw,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: AssetImage(
+                                            'assets/images/png/forcenotification.png')),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                  onTap: () {},
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 0.06.sw,
+                                        vertical: 0.017.sh),
+                                    child: Text(
+                                      "نشر منتج جديد",
+                                      style: H3WhiteTextStyle,
+                                    ),
+                                    decoration: BoxDecoration(
+                                        color: DarkColor,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(30.r))),
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {},
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 0.06.sw,
+                                        vertical: 0.017.sh),
+                                    child: Text(
+                                      "مشاركة متجري",
+                                      style: H3WhiteTextStyle,
+                                    ),
+                                    decoration: BoxDecoration(
+                                        color: DarkColor,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(30.r))),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        )),
+                      ],
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ));
       }
     } catch (e) {}
   }
@@ -937,7 +1070,7 @@ if(authUser.value?.invoicesSeller_count !=0){
     loading.value = false;
   }
 
- Future<int?> deleteProduct({required int productId}) async {
+  Future<int?> deleteProduct({required int productId}) async {
     loading.value = true;
 
     query.value = '''
@@ -953,15 +1086,16 @@ if(authUser.value?.invoicesSeller_count !=0){
       dio.Response? res = await fetchData();
 
       if (res?.data?['data']?['deleteProduct'] != null) {
-        showToast(text:'تمت العملية بنجاح', );
+        showToast(
+          text: 'تمت العملية بنجاح',
+        );
         return productId;
-
       }
-      if(res?.data?['errors']?[0]?['message']!=null){
-       showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
+      if (res?.data?['errors']?[0]?['message'] != null) {
+        showToast(text: '${res?.data['errors'][0]['message']}', type: 'error');
       }
     } catch (e) {}
     loading.value = false;
-   return null;
+    return null;
   }
 }

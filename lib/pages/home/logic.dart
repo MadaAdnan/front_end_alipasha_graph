@@ -186,8 +186,7 @@ class HomeLogic extends GetxController {
 
     try {
       dio.Response? res = await mainController.fetchData();
-      Logger().t("SSP");
-      Logger().t(res?.data?['data']?['specialSeller']);
+
       loading.value = false;
       if (res?.data?['data']?['LatestProduct']?['paginatorInfo']
               ?['hasMorePages'] !=

@@ -5,6 +5,7 @@ import 'package:ali_pasha_graph/components/product_components/minimize_details_p
 import 'package:ali_pasha_graph/components/progress_loading.dart';
 import 'package:ali_pasha_graph/models/category_model.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -13,6 +14,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../helpers/colors.dart';
 import '../../helpers/style.dart';
+import '../../models/city_model.dart';
 import 'logic.dart';
 
 class SectionPage extends StatelessWidget {
@@ -181,6 +183,49 @@ class SectionPage extends StatelessWidget {
         },
         child: Column(
           children: [
+            if (!logic.loadingProduct.value)
+              Obx(() {
+                return Container(
+
+                  width: 0.9.sw,
+                  height: 0.064.sh,
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
+                  margin: EdgeInsets.symmetric(vertical: 0.02.sh),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: DarkColor),
+                      borderRadius: BorderRadius.circular(15.r)),
+                  child: CustomDropdown<CityModel>.search(
+                    controller: logic.cityController.value,
+                    noResultFoundBuilder: (context, text) => Text(
+                      "$text",
+                      style: H3BlackTextStyle,
+                    ),
+                    noResultFoundText: 'لم يتم العثور على نتائج',
+                    searchHintText: 'إبحث عن مدينة',
+                    hintText: 'كل المدن',
+                    hintBuilder: (context, hint, enabled) => Text(
+                      "$hint",
+                      style: H3BlackTextStyle,
+                    ),
+                    items: logic.mainController.mainCities,
+                    listItemBuilder:
+                        (context, item, isSelected, onItemSelect) => Text(
+                      '${item.name}',
+                      style: H3BlackTextStyle,
+                    ),
+                    headerBuilder: (context, selectedItem, enabled) => Text(
+                      '${selectedItem.name}',
+                      style: H3BlackTextStyle,
+                    ),
+                    onChanged: (value) {
+                      logic.cityModel.value = value;
+                    },
+                  ),
+                );
+              }),
+
+            // sub cats
             Container(
               width: 1.sw,
               height: 0.05.sh,
@@ -201,6 +246,8 @@ class SectionPage extends StatelessWidget {
                             highlightColor: GrayWhiteColor,
                             child: _loadingbuildSubSection());
                       }),
+
+
                     if (!logic.loadingProduct.value)
                       ...List.generate(logic.category.value!.children!.length,
                               (index) {
@@ -212,6 +259,7 @@ class SectionPage extends StatelessWidget {
                 );
               }),
             ),
+            if(logic.loading.value==false)
             Expanded(
               child: SingleChildScrollView(
                 controller: _scrollController,

@@ -220,7 +220,7 @@ class FilterPage extends StatelessWidget {
                       "$hint",
                       style: H3BlackTextStyle,
                     ),
-                    items: logic.mainController.cities,
+                    items: logic.mainController.mainCities,
                     listItemBuilder:
                         (context, item, isSelected, onItemSelect) => Text(
                       '${item.name}',

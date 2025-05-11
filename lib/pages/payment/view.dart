@@ -25,6 +25,7 @@ class PaymentPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(horizontal: 0.01.sw),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -87,7 +88,7 @@ class PaymentPage extends StatelessWidget {
                         RichText(
                             text: TextSpan(children: [
                           TextSpan(
-                            text: 'معرفك الخاص هو : ',
+                            text: 'رقم حسابك : ',
                             style: H4RegularDark,
                           ),
                           TextSpan(
@@ -113,95 +114,57 @@ class PaymentPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
+                Container(
+                  alignment: Alignment.center,
                   padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
+
+                  width:1.sw,
+                  child:Image.network("${mainController.settings.value?.shamCash}",width: 0.5.sw,height: 0.5.sw,)),
+                SizedBox(
+                  height: 0.01.sh,
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
+                  color: GrayLightColor,
+                  width: 1.sw,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        width: 0.1.sw,
-                        height: 0.01.sh,
-                        decoration: BoxDecoration(
-                            color: Colors.black, shape: BoxShape.circle),
-                      ),
-                      Text(
-                        "الخطوة الأولى : ",
-                        style: H3RegularDark,
-                      )
+                      RichText(text: TextSpan(children:
+                      [
+                        TextSpan(text: "رقم الحساب : ",style: H4RedTextStyle,),
+                        TextSpan(text: "${mainController.settings.value?.wallet}",style: H4RegularDark,)
+                      ])),
+                      IconButton(onPressed: ()async {
+                        await Clipboard.setData(ClipboardData(text: '${mainController.settings.value?.wallet}'));
+                        mainController.showToast(text: 'تم نسخ المعرف بنجاح',type: 'success');
+                      }, icon:Icon( FontAwesomeIcons.copy))
                     ],
                   ),
                 ),
                 SizedBox(
                   height: 0.01.sh,
                 ),
-                Image(image: AssetImage('assets/images/payment/payment1.jpg')),
-              ],
-            ),
-            SizedBox(
-              height: 0.01.sh,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 0.1.sw,
-                        height: 0.01.sh,
-                        decoration: BoxDecoration(
-                            color: Colors.black, shape: BoxShape.circle),
-                      ),
-                      Text(
-                        "الخطوة الثانية : ",
-                        style: H3RegularDark,
-                      )
-                    ],
-                  ),
-                ),
+                Text("خطوات شحن الرصيد :",style: H2RegularDark,),
+                Image(image: AssetImage('assets/images/payment/1.png')),
                 SizedBox(
                   height: 0.01.sh,
                 ),
-                Image(image: AssetImage('assets/images/payment/payment2.jpg')),
-              ],
-            ),
-            SizedBox(
-              height: 0.01.sh,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 0.1.sw,
-                        height: 0.01.sh,
-                        decoration: BoxDecoration(
-                            color: Colors.black, shape: BoxShape.circle),
-                      ),
-                      Text(
-                        "الخطوة الثالثة : ",
-                        style: H3RegularDark,
-                      )
-                    ],
-                  ),
-                ),
+                Image(image: AssetImage('assets/images/payment/2.png')),
                 SizedBox(
                   height: 0.01.sh,
                 ),
-                Image(image: AssetImage('assets/images/payment/payment3.jpg')),
+                Image(image: AssetImage('assets/images/payment/3.png')),
+                SizedBox(
+                  height: 0.01.sh,
+                ),
+
               ],
-            )
+            ),
+
+
+
+
           ],
         ),
       ),

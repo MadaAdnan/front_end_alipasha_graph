@@ -25,7 +25,7 @@ class BalanceModel {
     }
     return BalanceModel(
       id: int.tryParse("${data['id']}"),
-      info: "${data['id'] ?? ''}",
+      info: "${data['info'] ?? ''}",
       createdAt: "${data['created_at'] ?? ''}",
       credit: double.tryParse("${data['credit'] ?? 0}"),
       debit: double.tryParse("${data['debit'] ?? 0}"),

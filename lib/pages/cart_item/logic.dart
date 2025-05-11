@@ -91,22 +91,21 @@ class CartItemLogic extends GetxController {
     }
 
     CityModel? authCity = mainController.authUser.value?.area;
-    CityModel? sellerCity = firstCart.seller?.area;
-
+    CityModel? sellerCity = firstCart.product?.user?.area;
     int step = 1;
    // check if same city
       if (authCity?.code != null && sellerCity?.code == authCity?.code) {
         totalShipping.value = pricing.internal_price!;
-        step=(authCity?.level ?? 0) + (authCity?.level ?? 0)-1;
+
       } else {
         totalShipping.value = pricing.external_price!;
-        step=(authCity?.level ?? 0) + (sellerCity?.level ?? 0);
-      }
 
+      }
+    step=(authCity?.level ?? 0) + (sellerCity?.level ?? 0)-1;
       Logger().d("CARTY");
-      Logger().d("${sellerCity?.level}");
-      Logger().d("${authCity?.name}");
-      Logger().d("${step} => ${totalShipping.value} => ${(totalShipping.value / 3)} -- ${totalShipping.value}");
+      Logger().d("${sellerCity?.code} - ${sellerCity?.level}");
+      Logger().d("${authCity?.code} - ${authCity?.level}");
+      Logger().d("Steps :${step} => Shipping : ${totalShipping.value} => Ratio : ${(totalShipping.value / 3)} ");
       totalShipping.value += (totalShipping.value / 3) * step;
 
 
@@ -142,8 +141,8 @@ class CartItemLogic extends GetxController {
     };
     mainController.logger.i(data);
     mainController.query.value = r'''
-    mutation CreateInvoice($input:InvoiceInput!){
-      createInvoice(input:$input){
+    mutation CreateNewInvoice($input:InvoiceInput!){
+      createNewInvoice(input:$input){
           id
           user{
             name
@@ -159,15 +158,19 @@ class CartItemLogic extends GetxController {
     try {
       calcShipping();
       var res = await mainController.fetchData();
-      mainController.logger.f(res?.data);
-      if (res?.data?['data']?['createInvoice'] != null) {
+      Logger().e("NEW ORDER");
+      Logger().e(res?.data);
+      if (res?.data?['data']?['createNewInvoice'] != null) {
         mainController.showToast(text: 'الطلب بإنتظار المراجعة شكراً لك');
         for (var i in carts) {
           mainController.deleteFromCart(product: i.product!);
         }
         await mainController.refreshCart();
         getCart();
-      } else {
+      }else if(res?.data?['errors']?[0]?['message']!=null){
+        throw Exception("${res?.data?['errors']?[0]?['message']}");
+      }
+      else {
         throw Exception('خطأ في الطلب يرجى المحاولة لاحقاً');
       }
     } catch (e) {

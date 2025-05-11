@@ -2,7 +2,9 @@ import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
 import 'package:ali_pasha_graph/models/advice_model.dart';
 import 'package:ali_pasha_graph/models/category_model.dart';
+import 'package:ali_pasha_graph/models/city_model.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:get/get.dart';
 import "package:dio/dio.dart" as dio;
 import 'package:logger/logger.dart';
@@ -20,7 +22,10 @@ class SectionLogic extends GetxController {
   RxList<AdviceModel> advices = RxList<AdviceModel>([]);
   Rxn<CategoryModel> category = Rxn<CategoryModel>(null);
   RxList orderBy = RxList(['created_at', 'desc']);
-
+Rxn<CityModel> cityModel=Rxn(null);
+  Rx<SingleSelectController<CityModel>> cityController =
+  Rx<SingleSelectController<CityModel>>(
+      SingleSelectController<CityModel>(null));
   nextPage() {
     if (hasMorePage.value) {
       page.value += 1;
@@ -45,6 +50,9 @@ class SectionLogic extends GetxController {
     ever(page, (value) {
       getPosts();
     });
+    ever(cityModel, (value) {
+      getPosts();
+    });
 
     mainCategory.value = Get.arguments;
   }
@@ -64,7 +72,7 @@ class SectionLogic extends GetxController {
 
     mainController.query.value = '''
     query Products {
-    products(  order_by: { column: "${orderBy[0] ?? 'created_at'}", orderBy: "${orderBy[1] ?? 'desc'}" },category_id: ${mainCategory.value},sub1_id:${categoryId.value }, page: ${page.value}, first: 25) {
+    products(  order_by: { column: "${orderBy[0] ?? 'created_at'}", orderBy: "${orderBy[1] ?? 'desc'}" },city_id: ${cityModel.value?.id} ,category_id: ${mainCategory.value},sub1_id:${categoryId.value }, page: ${page.value}, first: 25) {
         paginatorInfo {
             hasMorePages
         }
@@ -149,11 +157,10 @@ class SectionLogic extends GetxController {
     ''';
 
     try {
-      Logger().t("SECTIONSD");
       dio.Response? res = await mainController.fetchData();
-      loading.value = false;
 
-Logger().t(res?.data);
+
+
       if (res?.data?['data']?['products']['paginatorInfo'] != null) {
         hasMorePage.value =
             res?.data?['data']?['products']['paginatorInfo']['hasMorePages'];

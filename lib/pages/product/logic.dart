@@ -148,7 +148,7 @@ TextEditingController comment =TextEditingController();
                 is_delivery
                 code_city
                 level
-                id
+              
               }
                area{
                 id
@@ -156,7 +156,7 @@ TextEditingController comment =TextEditingController();
                 is_delivery
                 code_city
                 level
-                id
+               
               }
             }
             city {

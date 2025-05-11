@@ -86,7 +86,7 @@ class PostCard extends StatelessWidget {
                                     child: SellerNameComponent(
                                       isVerified:
                                       post.user?.is_verified == true,
-                                      textStyle: H1BlackTextStyle,
+                                      textStyle: H2BlackTextStyle,
                                       seller: post.user,
                                     ),
                                   ),
@@ -96,7 +96,7 @@ class PostCard extends StatelessWidget {
                                     '${post.city?.name ?? ''} - ${post.category
                                         ?.name ?? ''} - ${post.sub1?.name ??
                                         ''}',
-                                    style: H4GrayOpacityTextStyle,
+                                    style: H5GrayOpacityTextStyle,
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 )
@@ -217,7 +217,7 @@ class PostCard extends StatelessWidget {
                         "${post.name} ${post.expert}",
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
-                        style: H2RegularDark.copyWith(color: Colors.black),
+                        style: H3RegularDark.copyWith(color: Colors.black),
                       ),
                     ),
                   ),

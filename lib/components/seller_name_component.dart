@@ -39,7 +39,7 @@ class SellerNameComponent extends StatelessWidget {
         Flexible(
           child: InkWell(
             onTap:onTap ?? (){
-              print("SELLER ${seller?.id}");
+
               Get.toNamed(PRODUCTS_PAGE,arguments: seller);
             },
             child: Text(

@@ -5,6 +5,7 @@ import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 
 import 'logic.dart';
 
@@ -84,12 +85,15 @@ class BalancePage extends StatelessWidget {
   }
 
   _buildHeader({String? title, double? width}) {
+
+
     return Container(
       alignment: Alignment.center,
       width: width ?? 0.3.sw,
       height: 0.04.sh,
       decoration: BoxDecoration(
-          color: GrayLightColor, border: Border.all(color: GrayDarkColor)),
+          color: GrayLightColor,
+          border: Border.all(color: GrayDarkColor)),
       child: Text(
         '${title}',
         style: H2BlackTextStyle.copyWith(fontWeight: FontWeight.bold),
@@ -98,13 +102,14 @@ class BalancePage extends StatelessWidget {
   }
 
   _buildCell({String? title, Color? color, double? width}) {
+    double? value=double.tryParse("$title");
     return Container(
       width: width ?? 0.3.sw,
       height: 0.04.sh,
       alignment: Alignment.center,
       decoration: BoxDecoration(
         border: Border.all(
-          color: GrayWhiteColor,
+          color: GrayWhiteColor ,
         ),
         color: color,
       ),

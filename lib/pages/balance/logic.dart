@@ -2,6 +2,7 @@ import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/models/balance_model.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:logger/logger.dart';
 
 class BalanceLogic extends GetxController {
   MainController mainController = Get.find<MainController>();
@@ -45,7 +46,9 @@ class BalanceLogic extends GetxController {
   ''';
 
     dio.Response? res = await mainController.fetchData();
-    if (res?.data != null) {
+    Logger().e("BALANCER" );
+    Logger().e(res?.data?['data']?['balances']?['data'] );
+    if (res?.data?['data']?['balances']?['data'] != null) {
       for (var item in res?.data['data']['balances']['data']) {
         balances.add(BalanceModel.fromJson(item));
       }
