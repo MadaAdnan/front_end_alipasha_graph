@@ -125,9 +125,12 @@ extension CategoryTypeEnum on String {
         return "مثلج";
       case "Light sleet":
         return "صقيع";
+      case "Partly cloudy":
+        return "غائم جزئياً";
+      case "Thunder outbreak in nearby":
+        return "ماطر";
       default:
-        print(this);
-        return this;
+        return this.split(" ")[0];
     }
   }
 
@@ -140,11 +143,27 @@ extension CategoryTypeEnum on String {
         return "منتهي";
       case 'canceled':
         return "ملغي";
-        default:
-          return this;
+      default:
+        return this;
+    }
+  }
+  String communityType() {
+    switch (this) {
+      case 'group':
+        return "(مجموعة)";
+
+      case 'channel':
+        return "(قناة)";
+      case 'chat':
+        return "(محادثة)";
+
+      default:
+        return this;
     }
   }
 }
+
+
 
 extension FormatNumber on String {
   String toFormatNumber() {
@@ -192,7 +211,6 @@ extension ProductActiveEnum on String {
       case "active":
         return "مفعل";
 
-
       case "pending":
         return "بالإنتظار";
 
@@ -209,7 +227,6 @@ extension ProductActiveEnum on String {
       case "active":
         return FontAwesomeIcons.check;
 
-
       case "pending":
         return FontAwesomeIcons.clock;
 
@@ -225,7 +242,6 @@ extension ProductActiveEnum on String {
     switch (this) {
       case "active":
         return Colors.green;
-
 
       case "pending":
         return OrangeColor;

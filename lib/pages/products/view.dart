@@ -208,7 +208,7 @@ class ProductsPage extends StatelessWidget {
                               switch (value) {
                                 case '1':
                                   Share.share(
-                                      'https://ali-pasha.com/products?id=${mainController.authUser.value?.id}');
+                                      'https://v3.ali-pasha.com/profile?id=${logic.seller.value?.id}');
                                   break;
                                 case '2':
                                   if (mainController
@@ -528,6 +528,10 @@ class ProductsPage extends StatelessWidget {
                                       ),
                                       InkWell(
                                         onTap: () {
+                                          if(mainController.authUser.value?.id==null){
+                                            mainController.showToast(text: "يرجى تسجيل الدخول أولاً",type: "error");
+                                            return;
+                                          }
                                           HelperClass.connectWithSeller(
                                               phone: logic.seller.value!.phone!,
                                               sellerId:

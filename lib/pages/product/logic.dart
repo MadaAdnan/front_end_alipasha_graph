@@ -6,24 +6,25 @@ import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:logger/logger.dart';
 
 class ProductLogic extends GetxController {
-  RxInt pageIndex = RxInt(int.tryParse("${Get.parameters['index']}")??0);
-  PageController pageController = PageController(initialPage: int.tryParse("${Get.parameters['index']}")??0);
-  RxDouble rate=RxDouble(0);
+  RxInt pageIndex = RxInt(int.tryParse("${Get.parameters['index']}") ?? 0);
+  PageController pageController = PageController(
+      initialPage: int.tryParse("${Get.parameters['index']}") ?? 0);
+  RxDouble rate = RxDouble(0);
   RxBool loading = RxBool(false);
   RxBool loadingComment = RxBool(false);
   RxBool loadingRate = RxBool(false);
   RxBool loadingGetComment = RxBool(false);
   MainController mainController = Get.find<MainController>();
   RxnInt productId = RxnInt(null);
-ScrollController scrollController=ScrollController();
+  ScrollController scrollController = ScrollController();
   Rxn<ProductModel> product = Rxn<ProductModel>(null);
   RxList<ProductModel> products = RxList<ProductModel>([]);
   RxList<CommentModel> comments = RxList<CommentModel>([]);
 
-TextEditingController comment =TextEditingController();
-
+  TextEditingController comment = TextEditingController();
 
   @override
   void onInit() {
@@ -34,7 +35,6 @@ TextEditingController comment =TextEditingController();
       comments.clear();
       comment.clear();
       getProduct();
-
     });
   }
 
@@ -42,8 +42,8 @@ TextEditingController comment =TextEditingController();
   void onReady() {
     // TODO: implement onReady
     super.onReady();
-    if(productId.value==null){
-      productId.value=int.tryParse("${Get.parameters['id']}");
+    if (productId.value == null) {
+      productId.value = int.tryParse("${Get.parameters['id']}");
     }
     getProduct();
     mainController.logger.w("PREVIOUS:");
@@ -51,9 +51,8 @@ TextEditingController comment =TextEditingController();
   }
 
   Future<void> getProduct() async {
-
-    if(Get.previousRoute=='/notification_page'){
-      Get.toNamed(COMMENTS_PAGE,parameters: {"id":"${ productId.value}"});
+    if (Get.previousRoute == '/notification_page') {
+      Get.toNamed(COMMENTS_PAGE, parameters: {"id": "${productId.value}"});
       return;
     }
     loading.value = true;
@@ -101,6 +100,7 @@ TextEditingController comment =TextEditingController();
         product {
           id
           is_rate
+          is_like
           vote_avg
           weight
            name
@@ -189,7 +189,7 @@ TextEditingController comment =TextEditingController();
       if (res?.data?['data']?['product']['product'] != null) {
         product.value =
             ProductModel.fromJson(res?.data?['data']?['product']['product']);
-        rate.value=product.value?.vote_avg??0;
+        rate.value = product.value?.vote_avg ?? 0;
       }
 
       if (res?.data?['data']?['product']['products'] != null) {
@@ -204,14 +204,13 @@ TextEditingController comment =TextEditingController();
     loading.value = false;
   }
 
-
-
-  Future<void> rateProduct() async {
-
+  like() async {
+    loadingRate.value = true;
     mainController.query.value = '''
-    mutation AddVote {
-    addVote(productId: ${productId}, vote: ${rate.value.toInt()}) {
+    mutation AddLike{
+addLike(product_id:"${product.value!.id}"){
           id
+          is_like
           is_rate
           vote_avg
           weight
@@ -237,6 +236,10 @@ TextEditingController comment =TextEditingController();
             turkey_price {
                 price
                 discount
+            } 
+             syr_price {
+                price
+                discount
             }
             image
             video
@@ -244,26 +247,28 @@ TextEditingController comment =TextEditingController();
             docs
             created_at
             user {
-            id
-                seller_name
-                name
-                image
-                is_verified
-                city{
+              id
+              seller_name
+              name
+              image
+              phone
+              is_verified
+              city{
+                id
+                  name
+                is_delivery
                 code_city
                 level
-                id
-               
+              
               }
                area{
+                id
+                name
+                is_delivery
                 code_city
                 level
-                id
-                 
+               
               }
-            }
-            city {
-                name
             }
             category {
                 name
@@ -277,21 +282,22 @@ TextEditingController comment =TextEditingController();
             }
            
             
-        }
 }
-     ''';
+}
+    
+    ''';
     try {
-      loadingRate.value = true;
       dio.Response? res = await mainController.fetchData();
-     //mainController.logger.f(res?.data);
-      if (res?.data['data']?['addVote'] != null) {
-        product.value = ProductModel.fromJson(res?.data['data']?['addVote']);
-        rate.value=product.value?.vote_avg??0;
-        mainController.showToast(text: "تم التقييم بنجاح",);
+Logger().e(res?.data);
+      if (res?.data?['data']?['addLike'] != null) {
+        ProductModel prod =
+            ProductModel.fromJson(res?.data?['data']?['addLike']);
+
+        product.value = prod;
       }
-    } catch (e) {
-      mainController.logger.e("Error Add Vote $e");
-    }
+    } catch (e) {}
     loadingRate.value = false;
   }
+
+
 }

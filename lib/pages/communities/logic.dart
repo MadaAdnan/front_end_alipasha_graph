@@ -72,7 +72,7 @@ class CommunitiesLogic extends GetxController {
                 name
                 seller_name
                 image
-                trust
+                is_verified
             }
             pivot {
                 is_manager

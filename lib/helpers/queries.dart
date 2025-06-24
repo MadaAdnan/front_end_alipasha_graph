@@ -11,6 +11,12 @@ total_views
 is_available_create
 communities{
 id
+name
+users{
+name
+seller_name
+id
+}
 }
 unread_notifications_count
             seller_name
@@ -78,17 +84,23 @@ const AUTH_FIELDS = '''
             name
              is_verified
              invoices_count
-invoices_seller_count
-id_color
-info
-open_time
-close_time
-total_views
-is_available_create
-communities{
-id
-}
-unread_notifications_count
+              invoices_seller_count
+              id_color
+              info
+              open_time
+              close_time
+              total_views
+              is_available_create
+              communities{
+                id
+                name
+                users{
+                  name
+                  seller_name
+                  id
+                }
+              }
+              unread_notifications_count
             seller_name
             email_verified_at
             email

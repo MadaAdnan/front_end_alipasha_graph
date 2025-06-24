@@ -103,55 +103,7 @@ class EditProductPage extends StatelessWidget {
                                 ],
                               ),
                             ),
-                           /* Container(
-                              width: 0.38.sw,
-                              child: FormBuilderDropdown(
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: GrayLightColor),
-                                    borderRadius: BorderRadius.circular(15.r),
-                                  ),
-                                ),
-                                onChanged: (value) {
-                                  logic.periodProduct.value = value;
-                                },
-                                initialValue: logic.periodProduct.value,
-                                items: [
-                                  DropdownMenuItem(
-                                      value: 360,
-                                      child: Text(
-                                        'نشر بدون مدة',
-                                        style: H5BlackTextStyle,
-                                      )),
-                                  DropdownMenuItem(
-                                      value: 90,
-                                      child: Text(
-                                        'نشر لمدة 3 أشهر',
-                                        style: H5BlackTextStyle,
-                                      )),
-                                  DropdownMenuItem(
-                                      value: 30,
-                                      child: Text(
-                                        'نشر لمدة شهر واحد',
-                                        style: H5BlackTextStyle,
-                                      )),
-                                  DropdownMenuItem(
-                                      value: 15,
-                                      child: Text(
-                                        'نشر لمدة 15 يوم',
-                                        style: H5BlackTextStyle,
-                                      )),
-                                  DropdownMenuItem(
-                                      value: 7,
-                                      child: Text(
-                                        'نشر لمدة اسبوع واحد',
-                                        style: H5BlackTextStyle,
-                                      )),
-                                ],
-                                name: 'period',
-                              ),
-                            ),*/
+
                           ],
                         ),
                       ),
@@ -286,7 +238,7 @@ class EditProductPage extends StatelessWidget {
                       // body
                       Container(
                         width: 1.sw,
-                        height: 0.09.sh,
+                        height: 0.12.sh,
                         child: Column(
                           children: [
                             Row(

@@ -4,6 +4,7 @@ import 'package:ali_pasha_graph/components/fields_components/select2_component.d
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/components.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
+import 'package:ali_pasha_graph/models/city_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cherry_toast/cherry_toast.dart';
 
@@ -13,6 +14,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 
 import 'logic.dart';
 
@@ -43,8 +45,8 @@ class ShippingPage extends StatelessWidget {
                     child: Row(
                       children: [
                         Container(
-                          width: 0.12.sw,
-                          height: 0.12.sw,
+                          width: 0.11.sw,
+                          height: 0.11.sw,
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               border:
@@ -65,12 +67,12 @@ class ShippingPage extends StatelessWidget {
                                     TextSpan(
                                       text:
                                           " ${mainController.authUser.value?.seller_name} ",
-                                      style: H3BlackTextStyle,
+                                      style: H4BlackTextStyle,
                                     ),
                                     TextSpan(
                                       text:
                                           " (${mainController.authUser.value?.city?.name}) ",
-                                      style: H5RegularDark,
+                                      style: H6RegularDark,
                                     ),
                                   ]),
                                 ),
@@ -131,31 +133,72 @@ class ShippingPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      FormBuilderDropdown(
-                        decoration: InputDecoration(
-                            label: Text(
-                              'مدينة المرسل',
-                              style: H4RegularDark,
+                      Obx(() {
+                        return FormBuilderDropdown<CityModel?>(
+                          decoration: InputDecoration(
+                              label: Text(
+                                'محافظة المرسل',
+                                style: H4RegularDark,
+                              ),
+                              border: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: GrayDarkColor))),
+                          items: mainController.mainCities?.length!=null?mainController.mainCities
+                              .map(
+                                (el) => DropdownMenuItem(
+                                  child: Text(
+                                    '${el.name}',
+                                    style: H4BlackTextStyle,
+                                  ),
+                                  value: el,
+                                ),
+                              )
+                              .toList():[],
+                          onChanged: (value) {
+                            logic.fromCity.value = value;
+                          },
+                          name: 'city_from',
+                          style: H4BlackTextStyle,
+                        );
+                      }),
+                      30.verticalSpace,
+                      // From City Id
+                      Obx(() {
+                        if(logic.fromCity.value!=null && logic.fromCity.value!.children!.length>0){
+                          return FormBuilderDropdown<CityModel?>(
+                            decoration: InputDecoration(
+                              label: Text(
+                                'مدينة المرسل',
+                                style: H4RegularDark,
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(color: GrayDarkColor),
+                              ),
                             ),
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide(color: GrayDarkColor))),
-                        items: mainController.cities
-                            .map(
-                              (el) => DropdownMenuItem(
+                            onChanged: (value) {
+                              logic.from.value = value;
+                            },
+                            name: 'city_from_id',
+                            style: H4BlackTextStyle,
+                            initialValue: logic.from.value,
+                            items:logic.fromCity.value!.children!
+                                .map(
+                                  (el) => DropdownMenuItem(
                                 child: Text(
                                   '${el.name}',
                                   style: H4BlackTextStyle,
                                 ),
-                                value: el.id,
+                                value: el,
                               ),
                             )
-                            .toList(),
-                        onChanged: (value) {
-                          logic.from.value = value;
-                        },
-                        name: 'city_from',
-                        style: H4BlackTextStyle,
-                      ),
+                                .toList(),
+                          );
+                        }
+                        else{
+                          return Container();
+                        }
+                      }),
+
                       Obx(() {
                         return Visibility(
                           visible: logic.errorFrom.value != null,
@@ -202,32 +245,72 @@ class ShippingPage extends StatelessWidget {
                         ),
                       ),
                       const Divider(),
-                      FormBuilderDropdown(
-                        decoration: InputDecoration(
-                            label: Text(
-                              'مدينة المرسل إليه',
-                              style: H4RegularDark,
+                      30.verticalSpace,
+                      Obx(() {
+                        return FormBuilderDropdown<CityModel?>(
+                          decoration: InputDecoration(
+                              label: Text(
+                                'مدينة المرسل إليه',
+                                style: H4RegularDark,
+                              ),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(color: GrayDarkColor))),
+                          items: mainController.mainCities
+                              .map(
+                                (el) => DropdownMenuItem(
+                              child: Text(
+                                '${el.name}',
+                                style: H4BlackTextStyle,
+                              ),
+                              value: el,
                             ),
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide(color: GrayDarkColor))),
-                        items: mainController.cities
-                            .map(
-                              (el) => DropdownMenuItem(
-                            child: Text(
-                              '${el.name}',
-                              style: H4BlackTextStyle,
+                          )
+                              .toList(),
+                          onChanged: (value) {
+                            logic.toCity.value = value;
+                          },
+                          name: 'city_to',
+                          style: H4BlackTextStyle,
+                        );
+                      }),
+                      30.verticalSpace,
+                     // to City ID
+                      Obx(() {
+                        if(logic.toCity.value!=null && logic.toCity.value!.children!.length>0){
+                          return FormBuilderDropdown<CityModel?>(
+                            decoration: InputDecoration(
+                              label: Text(
+                                'مدينة المستلم',
+                                style: H4RegularDark,
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(color: GrayDarkColor),
+                              ),
                             ),
-                            value: el.id,
-                          ),
-                        )
-                            .toList(),
-                        onChanged: (value) {
-                          logic.to.value = value;
-                        },
-                        name: 'city_to',
-                        style: H4BlackTextStyle,
-                      ),
 
+                            onChanged: (value) {
+                              logic.to.value = value;
+                            },
+                            name: 'city_to_id',
+                            style: H4BlackTextStyle,
+                            initialValue: logic.to.value,
+                            items:logic.toCity.value!.children!
+                                .map(
+                                  (el) => DropdownMenuItem(
+                                child: Text(
+                                  '${el.name}',
+                                  style: H4BlackTextStyle,
+                                ),
+                                value: el,
+                              ),
+                            )
+                                .toList(),
+                          );
+                        }
+                        else{
+                          return Container();
+                        }
+                      }),
                       Obx(() {
                         return Visibility(
                           visible: logic.errorTo.value != null,
@@ -294,7 +377,6 @@ class ShippingPage extends StatelessWidget {
                       Row(
                         children: [
                           Expanded(
-
                             child: InputComponent(
                               suffixIcon: FontAwesomeIcons.scaleBalanced,
                               fill: WhiteColor,
@@ -333,7 +415,6 @@ class ShippingPage extends StatelessWidget {
                       Row(
                         children: [
                           Expanded(
-
                             child: Column(
                               children: [
                                 Row(
@@ -506,7 +587,7 @@ class ShippingPage extends StatelessWidget {
                                 color: GrayLightColor,
                               ),
                               child: Text(
-                                '${logic.totalPrice} \$',
+                                '${logic.totalPrice.toStringAsFixed(2)} \$',
                                 style: H3OrangeTextStyle,
                               ),
                             );
@@ -637,35 +718,60 @@ class ShippingPage extends StatelessWidget {
                         height: 0.01.sh,
                       ),
                       Obx(() {
+                        if(logic.isDelivary.value==true){
+                          return InkWell(
+                            splashColor: RedColor,
+                            highlightColor: Colors.yellow,
+                            onTap: () {
+                              if (logic.from.value == null) {
+                                logic.errorFrom.value = "مدينة المرسل مطلوبة";
+                              } else {
+                                logic.errorFrom.value = null;
+                              }
+                              if (logic.to.value == null) {
+                                logic.errorTo.value = "مدينة المرسل إليه مطلوبة";
+                              } else {
+                                logic.errorTo.value = null;
+                              }
+
+                              if (logic.totalBalance.value > 0) {
+                                if (_formKey.currentState?.validate() == true &&
+                                    logic.errorFrom.value == null &&
+                                    logic.errorTo.value == null) {
+                                  _buildDialogConfirm();
+                                }
+                              } else {
+                                CherryToast.info(
+                                  title: Text("تنبيه", style: H3OrangeTextStyle),
+                                  action: Text("لا تملك رصيد لطلب الشحن",
+                                      style: H3BlackTextStyle),
+                                ).show(context);
+                              }
+                            },
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                  top: 0.006.sh, bottom: 0.009.sh),
+                              width: 0.6.sw,
+                              height: 0.1.sw,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15.r),
+                                color: logic.totalBalance.value > 0 &&
+                                    logic.totalPrice.value != null &&
+                                    logic.totalPrice.value! > 0
+                                    ? RedColor
+                                    : GrayDarkColor,
+                              ),
+                              child: Text(
+                                'تقديم طلب الشحن',
+                                style: H3WhiteTextStyle,
+                              ),
+                            ),
+                          );
+                        }
                         return InkWell(
                           splashColor: RedColor,
                           highlightColor: Colors.yellow,
-                          onTap: () {
-                            if (logic.from.value == null) {
-                              logic.errorFrom.value = "مدينة المرسل مطلوبة";
-                            } else {
-                              logic.errorFrom.value = null;
-                            }
-                            if (logic.to.value == null) {
-                              logic.errorTo.value = "مدينة المرسل إليه مطلوبة";
-                            } else {
-                              logic.errorTo.value = null;
-                            }
-
-                            if (logic.totalBalance.value > 0) {
-                              if (_formKey.currentState?.validate() == true &&
-                                  logic.errorFrom.value == null &&
-                                  logic.errorTo.value == null) {
-                                _buildDialogConfirm();
-                              }
-                            } else {
-                              CherryToast.info(
-                                title: Text("تنبيه", style: H3OrangeTextStyle),
-                                action: Text("لا تملك رصيد لطلب الشحن",
-                                    style: H3BlackTextStyle),
-                              ).show(context);
-                            }
-                          },
                           child: Container(
                             padding: EdgeInsets.only(
                                 top: 0.006.sh, bottom: 0.009.sh),
@@ -681,7 +787,7 @@ class ShippingPage extends StatelessWidget {
                                   : GrayDarkColor,
                             ),
                             child: Text(
-                              'تقديم طلب الشحن',
+                              'مدينة المرسل أو المستلم غير متاحة للشحن',
                               style: H3WhiteTextStyle,
                             ),
                           ),

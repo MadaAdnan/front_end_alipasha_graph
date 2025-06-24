@@ -28,7 +28,6 @@ class PlanCardComponent extends StatelessWidget {
         .indexWhere((el) => el.id == plan.id);
     if (index > -1) {
       currentPlan = mainController.authUser.value!.plans![index];
-
     }
 
     return Column(
@@ -52,7 +51,9 @@ class PlanCardComponent extends StatelessWidget {
                     constraints: BoxConstraints.expand(height: 0.7.sh),
                     child: Card(
                       elevation: 0,
-                      color: index > -1 ? Colors.green.withOpacity(0.6) : Colors.deepPurple.withOpacity(0.8),
+                      color: index > -1
+                          ? Colors.green.withOpacity(0.6)
+                          : Colors.deepPurple.withOpacity(0.8),
                       child: Container(
                         padding: EdgeInsets.symmetric(vertical: 0.01.sh),
                         width: MediaQuery.of(context).size.width * 0.8,
@@ -63,9 +64,15 @@ class PlanCardComponent extends StatelessWidget {
                           children: [
                             Container(
                               alignment: Alignment.center,
-                              child: RichText(text: TextSpan(children: [
-                                TextSpan(text:  "${plan.name}",style: H1OrangeTextStyle),
-                                TextSpan(text: " ( ${plan.duration!.planDuration()} ) ",style: H4WhiteTextStyle),
+                              child: RichText(
+                                  text: TextSpan(children: [
+                                TextSpan(
+                                    text: "${plan.name}",
+                                    style: H1OrangeTextStyle),
+                                TextSpan(
+                                    text:
+                                        " ( ${plan.duration!.planDuration()} ) ",
+                                    style: H4WhiteTextStyle),
                               ])),
                             ),
                             Container(
@@ -73,44 +80,37 @@ class PlanCardComponent extends StatelessWidget {
                                   vertical: 0.01.sh, horizontal: 0.02.sw),
                               child: Text(
                                 "${plan.info}",
-                                style: H3WhiteTextStyle
-                                   ,
+                                style: H3WhiteTextStyle,
                                 textAlign: TextAlign.center,
                               ),
                             ),
-                            if(  plan.duration!='free')
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    "${plan.price} \$",
-                                    style: plan.is_discount == false
-                                        ? H1OrangeTextStyle
-                                        : H1GrayTextStyle.copyWith(
-                                        decoration:
-                                        TextDecoration.lineThrough),
-                                  ),
-                                ),
-                                if (plan.is_discount == true)
+                            if (plan.duration != 'free')
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
                                   Container(
-                                    margin: EdgeInsets.only(right: 0.04.sw),
                                     alignment: Alignment.center,
                                     child: Text(
-                                      "${plan.discount} \$",
-                                      style: H1RedTextStyle,
+                                      "${plan.price} \$",
+                                      style: plan.is_discount == false
+                                          ? H1OrangeTextStyle
+                                          : H1GrayTextStyle.copyWith(
+                                              decoration:
+                                                  TextDecoration.lineThrough),
                                     ),
                                   ),
-                              ],
-                            ) ,
-
-
-
-
-
-
+                                  if (plan.is_discount == true)
+                                    Container(
+                                      margin: EdgeInsets.only(right: 0.04.sw),
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        "${plan.discount} \$",
+                                        style: H1RedTextStyle,
+                                      ),
+                                    ),
+                                ],
+                              ),
                             ...List.generate(plan.items!.length, (i) {
                               return Padding(
                                 padding: EdgeInsets.symmetric(
@@ -142,7 +142,6 @@ class PlanCardComponent extends StatelessWidget {
                                 ),
                               );
                             }),
-
                           ],
                         ),
                       ),
@@ -151,10 +150,55 @@ class PlanCardComponent extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () {
-                    try{
-                      logic.subscribePlan(planId: plan.id!);
-                    }on CustomException catch(e){
-                      Toast.show("${e.message}",gravity: Toast.center,duration: Toast.lengthLong);
+                    if(index==-1){
+                      Get.dialog(AlertDialog(
+                        content: Container(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                color: Colors.transparent,
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "إشتراك بالخطة  (${plan.name}) ",
+                                  style: H1BlackTextStyle,
+                                ),
+                              ),
+                              Container(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "سيتم خصم مبلغ  ${plan.price} \$ من رصيدك ",
+                                  style: H2OrangeTextStyle,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        actions: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              MaterialButton(
+                                color: RedColor,
+                                onPressed: () {
+                                  Get.back();
+                                },
+                                child: Text('إلغاء',style: H4WhiteTextStyle,),
+                              ),
+                              MaterialButton(
+                                color: OrangeColor,
+                                onPressed: () {
+                                  logic.subscribePlan(planId: plan.id!);
+                                  Get.back();
+                                },
+                                child: Text('متابعة',style: H4WhiteTextStyle,),
+                              ),
+                            ],
+                          )
+                        ],
+                      ));
                     }
 
                   },
@@ -169,7 +213,9 @@ class PlanCardComponent extends StatelessWidget {
                     child: Text(
                       index == -1
                           ? 'إشتراك'
-                          : plan.duration=='free'?'تم الإشتراك':'تم الإشتراك حتى (${currentPlan?.pivot?.expired_date})',
+                          : plan.duration == 'free'
+                              ? 'تم الإشتراك'
+                              : 'تم الإشتراك حتى (${currentPlan?.pivot?.expired_date})',
                       style: index == -1 ? H3WhiteTextStyle : H3BlackTextStyle,
                     ),
                   ),

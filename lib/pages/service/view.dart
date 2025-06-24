@@ -52,7 +52,7 @@ ScrollController _scrollController=ScrollController();
             ),
             Container(
               width: 1.sw,
-              height: 0.108.sh,
+              height: 0.114.sh,
               child: Obx(() {
                 return ListView(
                   padding: EdgeInsets.symmetric(vertical: 0.01.sh,horizontal: 0.02.sw),

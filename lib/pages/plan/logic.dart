@@ -83,21 +83,19 @@ special_store
     ''';
     try {
       dio.Response? res = await mainController.fetchData();
-      // mainController.logger.i("${res?.data}");
+       mainController.logger.i("${res?.data}");
       if (res?.data?['errors']?[0]?['message'] != null) {
-        messageBox(
-            title: 'خطأ',
-            message: res?.data['errors'][0]?['message'],
-            isError: true);
+        throw  Exception(res?.data['errors'][0]?['message']);
       }
       if (res?.data?['data']?['subscribePlan'] != null) {
-        mainController.setUserJson(json: res?.data['data']['subscribePlan']);
-        if (res?.data['data']['subscribePlan']['total_balance'] != null) {
-          balance.value = double.tryParse(
-              res?.data['data']['subscribePlan']['total_balance']);
+        mainController.showToast(text:"تم الاشتراك بنجاح",type: 'success');
+        mainController.setUserJson(json: res?.data?['data']?['subscribePlan']);
+        if (res?.data?['data']?['subscribePlan']?['total_balance'] != null) {
+          balance.value = double.tryParse("${res?.data['data']['subscribePlan']['total_balance']}");
         }
       }
     } catch (e) {
+      mainController.showToast(text:"$e",type: 'error');
       mainController.logger.e("Error In Subscribe Plan $e");
     }
     loading.value = false;

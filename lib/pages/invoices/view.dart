@@ -21,6 +21,7 @@ class InvoicesPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: WhiteColor,
       appBar: AppBar(
+        elevation: 8,
         backgroundColor: WhiteColor,
         shadowColor: WhiteColor,
         surfaceTintColor: WhiteColor,
@@ -50,6 +51,11 @@ class InvoicesPage extends StatelessWidget {
                 width: 0.3.sw,
               ),
             );
+          }else if(logic.invoices.length == 0 && !logic.loading.value){
+            return Container(
+              alignment: Alignment.center,
+              padding: EdgeInsets.symmetric(vertical: 0.1.sh),
+              child: Text('لا يوجد مبيعات',style: H3BlackTextStyle,),);
           }
           return ListView(
             padding: EdgeInsets.symmetric(horizontal: 0.02.sw),

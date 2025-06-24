@@ -114,7 +114,7 @@ class NetworkManager {
 
 
       final formData = dioo.FormData.fromMap(dt);
-      Get.find<MainController>().logger.e(dt);
+
       final response = await dio.post(
         '',
         data: formData,

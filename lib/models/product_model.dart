@@ -123,8 +123,8 @@ class ProductModel {
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> data) {
-    Logger().e('ERRORS@@ :');
-    Logger().e(data);
+    //Logger().e('ERRORS@@ :');
+    //Logger().e(data);
     List<ColorModel> listColor = [];
     List<AttributeProducts> listAttr = [];
     List<DataImageModel> listOfDocsList = [];

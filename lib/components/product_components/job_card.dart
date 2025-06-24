@@ -80,7 +80,7 @@ class JobCard extends StatelessWidget {
                               width: 0.6.sw,
                               child: Text(
                                 '${post?.city?.name ?? ''} - ${post?.category?.name ?? ''} - ${post?.sub1?.name ?? ''}',
-                                style: H4GrayOpacityTextStyle,
+                                style: H5GrayOpacityTextStyle,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ))
@@ -168,15 +168,15 @@ class JobCard extends StatelessWidget {
                     })
                   ],
                 ),
-                15.verticalSpace,
+                10.verticalSpace,
                 SizedBox(
                   width: 1.sw,
-                  height: 0.044.sh,
+                  height: 0.048.sh,
                   child: Text(
                     "${post?.expert}",
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
-                    style: H2RegularDark.copyWith(color: Colors.black),
+                    style: H3RegularDark.copyWith(color: Colors.black),
                     /* trimCollapsedText: "عرض المزيد",
                     trimExpandedText: "عرض أقل",
 

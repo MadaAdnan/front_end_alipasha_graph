@@ -121,7 +121,7 @@ width: 0.67.sw,
                             if (post.type == 'product')
                               Text(
                                 "${post.name}",
-                                style: H2RedTextBoldStyle.copyWith(
+                                style: H3RedTextStyle.copyWith(
                                     color: DarkColor),
                               ),
                             if (post.type == 'job' ||
@@ -142,7 +142,7 @@ width: 0.67.sw,
                                           ? H4RegularDark.copyWith(
                                           decoration:
                                           TextDecoration.lineThrough)
-                                          : H2RedTextBoldStyle,
+                                          : H3RedTextStyle,
                                     ),
                                     if (post.is_discount == true)
                                       TextSpan(

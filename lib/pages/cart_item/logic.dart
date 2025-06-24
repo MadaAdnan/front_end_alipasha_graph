@@ -8,6 +8,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 
+import '../../routes/routes_url.dart';
+
 class CartItemLogic extends GetxController {
   Rxn<CartModel> cart = Rxn<CartModel>(Get.arguments);
   RxList<CartModel> carts = RxList<CartModel>([]);
@@ -94,15 +96,17 @@ class CartItemLogic extends GetxController {
     CityModel? sellerCity = firstCart.product?.user?.area;
     int step = 1;
    // check if same city
-      if (authCity?.code != null && sellerCity?.code == authCity?.code) {
+    totalShipping.value = pricing.internal_price!;
+     /* if (authCity?.code != null && sellerCity?.code == authCity?.code) {
         totalShipping.value = pricing.internal_price!;
 
       } else {
         totalShipping.value = pricing.external_price!;
 
-      }
+      }*/
     step=(authCity?.level ?? 0) + (sellerCity?.level ?? 0)-1;
       Logger().d("CARTY");
+      Logger().d("${pricing.toJson()}");
       Logger().d("${sellerCity?.code} - ${sellerCity?.level}");
       Logger().d("${authCity?.code} - ${authCity?.level}");
       Logger().d("Steps :${step} => Shipping : ${totalShipping.value} => Ratio : ${(totalShipping.value / 3)} ");
@@ -167,6 +171,7 @@ class CartItemLogic extends GetxController {
         }
         await mainController.refreshCart();
         getCart();
+        Get.offNamed(MY_INVOICE_PAGE);
       }else if(res?.data?['errors']?[0]?['message']!=null){
         throw Exception("${res?.data?['errors']?[0]?['message']}");
       }

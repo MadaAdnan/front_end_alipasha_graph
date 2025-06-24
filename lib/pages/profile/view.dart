@@ -114,7 +114,7 @@ class ProfilePage extends StatelessWidget {
                            switch(value){
                              case '1':
                                Share.share(
-                                   'https://ali-pasha.com/products?id=${mainController
+                                   'https://v3.ali-pasha.com/profile?id=${mainController
                                        .authUser.value?.id}');
                                break;
                              case '2':
@@ -594,7 +594,7 @@ class ProfilePage extends StatelessWidget {
                       }),
                     ),
                   ),
-                  30.verticalSpace,
+                  22.verticalSpace,
                   Transform.translate(
                     offset: Offset(0, 0),
                     child: Container(

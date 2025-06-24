@@ -1,16 +1,20 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/components/fields_components/input_component.dart';
 import 'package:ali_pasha_graph/components/home_app_bar/view.dart';
+import 'package:ali_pasha_graph/components/plan_card/view.dart';
 import 'package:ali_pasha_graph/components/progress_loading.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
+import 'package:ali_pasha_graph/helpers/enums.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'logic.dart';
@@ -49,7 +53,8 @@ class CommunitiesPage extends StatelessWidget {
                   break;
               }
             },
-            itemBuilder: (context) => [
+            itemBuilder: (context) =>
+            [
               PopupMenuItem(
                 value: 'join',
                 child: Row(
@@ -126,7 +131,7 @@ class CommunitiesPage extends StatelessWidget {
       body: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollInfo) {
           if (scrollInfo.metrics.pixels >=
-                  scrollInfo.metrics.maxScrollExtent * 0.80 &&
+              scrollInfo.metrics.maxScrollExtent * 0.80 &&
               !mainController.loading.value &&
               logic.hasMorePage.value) {
             logic.nextPage();
@@ -191,7 +196,7 @@ class CommunitiesPage extends StatelessWidget {
                       child: Container(
                         margin: EdgeInsets.only(top: 0.01.sh),
                         padding: EdgeInsets.symmetric(horizontal: 0.01.sw),
-                        height: 0.08.sh,
+                        height: 0.097.sh,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30.r),
                           color: WhiteColor,
@@ -201,197 +206,142 @@ class CommunitiesPage extends StatelessWidget {
                               spreadRadius: 0.006,
                               blurRadius: 0.5,
                               offset:
-                                  Offset(0, 1), // changes position of shadow
+                              Offset(0, 1), // changes position of shadow
                             ),
                           ],
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.max,
                           children: [
-                            // image
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Container(
-                                  width: 0.13.sw,
-                                  height: 0.13.sw,
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: CachedNetworkImageProvider(
-                                              "${logic.communities[index].type == 'chat' ? friend?.image : logic.communities[index].image}"),
-                                          fit: BoxFit.cover),
-                                      shape: BoxShape.circle),
+                                Stack(
+                                  children: [
+                                    Container(
+                                      width: 0.1.sw,
+                                      height: 0.1.sw,
+                                      decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              image: CachedNetworkImageProvider(
+                                                  "${logic.communities[index]
+                                                      .type == 'chat' ? friend
+                                                      ?.image : logic
+                                                      .communities[index].image}"),
+                                              fit: BoxFit.cover),
+                                          shape: BoxShape.circle),
+
+                                    ),
+                                    Positioned(
+                                      bottom:0,
+                                      left: 0,
+                                      child: Transform.translate(
+                                        offset: Offset(0, 0.01.sh),
+                                        child:  (friend?.is_verified == true &&
+                                            logic.communities[index].type == 'chat')?
+                                        Container(
+                                          width: 0.05.sw, // أو 0.04.sw إذا أردت نسبي
+                                          height: 0.05.sw,
+                                          margin: EdgeInsets.only(left: 2), // فقط إذا أردت مسافة صغيرة
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: Svg("assets/images/svg/verified.svg"),
+                                              fit: BoxFit.cover,
+                                            ),
+                                            shape: BoxShape.circle,
+                                          ),
+                                        ):null,
+                                      ),
+                                    ),
+                                  ],
                                 ),
+                                10.horizontalSpace,
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Builder(builder: (context) {
 
-                                // title
-                                Container(
-                                  width: 0.6.sw,
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      RichText(
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          text: TextSpan(children: [
-                                            if (logic.communities[index].type ==
-                                                'chat')
-                                              WidgetSpan(
-                                                  alignment:
-                                                      PlaceholderAlignment.top,
-                                                  child: Container(
-                                                    child: Text(' (محادثة) ',
-                                                        style: H5RedTextStyle),
-                                                  )),
-                                            if (logic.communities[index].type ==
-                                                'group')
-                                              WidgetSpan(
-                                                  alignment:
-                                                      PlaceholderAlignment.top,
-                                                  child: Container(
-                                                    child: Text(' (مجموعة) ',
-                                                        style: H5RedTextStyle),
-                                                  )),
-                                            if (logic.communities[index].type ==
-                                                'channel')
-                                              WidgetSpan(
-                                                  alignment:
-                                                      PlaceholderAlignment.top,
-                                                  child: Container(
-                                                    child: Text(' (قناة) ',
-                                                        style: H5RedTextStyle),
-                                                  )),
-                                            WidgetSpan(child: Container(
-                                              child:
-                                                  Builder(builder: (context) {
-                                                String? name = '';
+                                      String? name = '';
+                                      IconData icon = FontAwesomeIcons.comments;
 
-                                                if (logic.communities[index]
-                                                        .type !=
-                                                    'chat') {
-                                                  name = logic
-                                                      .communities[index].name;
-                                                } else {
-                                                  name = friend?.seller_name!
-                                                              .length !=
-                                                          0
-                                                      ? friend?.seller_name
-                                                      : friend?.name;
-                                                }
-                                                return RichText(
-                                                    text: TextSpan(children: [
-                                                  if (friend?.trust == true &&
-                                                      logic.communities[index]
-                                                              .type ==
-                                                          'chat')
-                                                    WidgetSpan(
-                                                        alignment:
-                                                            PlaceholderAlignment
-                                                                .middle,
-                                                        child: Icon(
-                                                          FontAwesomeIcons.rust,
-                                                          size: 0.04.sw,
-                                                          color: OrangeColor,
-                                                        )),
-                                                  TextSpan(
-                                                    text: ' $name',
-                                                    style: H3BlackTextStyle
-                                                        .copyWith(
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                    ),
-                                                  ),
-                                                ]));
-                                              }),
-                                            )),
-                                          ])),
-                                      20.verticalSpace,
-                                      RichText(
-                                          text: TextSpan(children: [
-                                        TextSpan(
-                                            text: 'عدد المشتركين :',
-                                            style: H5RegularDark),
-                                        TextSpan(
-                                            text:
-                                                '${logic.communities[index].users_count}',
-                                            style: H4OrangeTextStyle),
-                                      ])),
-                                    ],
-                                  ),
+                                      if (logic.communities[index].type ==
+                                          'group') {
+                                        icon = FontAwesomeIcons.users;
+                                        name = logic.communities[index].name;
+                                      } else if (logic
+                                          .communities[index].type ==
+                                          'channel') {
+                                        icon = FontAwesomeIcons.hornbill;
+                                        name = logic.communities[index].name;
+                                      } else {
+                                        name = friend?.seller_name!.length != 0
+                                            ? friend?.seller_name
+                                            : friend?.name;
+                                      }
+                                      return SizedBox(
+                                        width: 0.6.sw,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Expanded(
+                                              child: Text(
+                                                "$name ",
+                                                style: H3BlackTextStyle,
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                              ),
+                                            ),
+
+
+                                            Text(
+                                              " ${logic.communities[index].type!.communityType()}",
+                                              style: H3OrangeTextStyle,
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                      ;
+                                    }),
+                                    Text(
+                                      'عدد المشتركين (${logic.communities[index]
+                                          .users_count})',
+                                      style: H4RegularDark,
+                                    )
+                                  ],
                                 ),
                               ],
                             ),
-
-                            Container(
-                              width: 0.2.sw,
-                              child: Row(
-                                children: [
-                                  Container(
-                                    width: 0.06.sw,
-                                    alignment: Alignment.center,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        if (logic.communities[index].type ==
-                                            'chat')
-                                          Icon(
-                                            FontAwesomeIcons.comments,
-                                            size: 0.04.sw,
-                                            color: GrayDarkColor,
-                                          ),
-                                        if (logic.communities[index].type ==
-                                            'group')
-                                          Icon(
-                                            FontAwesomeIcons.users,
-                                            size: 0.04.sw,
-                                            color: GrayDarkColor,
-                                          ),
-                                        if (logic.communities[index].type ==
-                                            'channel')
-                                          Icon(
-                                            FontAwesomeIcons.bullhorn,
-                                            size: 0.04.sw,
-                                            color: GrayDarkColor,
-                                          ),
-                                        45.verticalSpace,
-                                      ],
-                                    ),
-                                  ),
-// notify
-                                  Container(
-                                    width: 0.14.sw,
-                                    padding: EdgeInsets.only(left: 0.01.sw),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        if (logic.communities[index].unRead! >
-                                            0)
-                                          Badge.count(
-                                              count: logic
-                                                  .communities[index].unRead!),
-                                        20.verticalSpace,
-                                        Text(
-                                          '${logic.communities[index].lastChange}',
-                                          style: H5GrayOpacityTextStyle,
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
+                            // LastChange
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Builder(
+                                  builder: (context) {
+                                    IconData icon = FontAwesomeIcons.comments;
+                                    bool is_verified =
+                                        friend?.is_verified ?? false;
+                                    if (logic.communities[index].type ==
+                                        'group') {
+                                      icon = FontAwesomeIcons.users;
+                                    } else if (logic.communities[index].type ==
+                                        'channel') {
+                                      icon = FontAwesomeIcons.bullhorn;
+                                    }
+                                    return Icon(
+                                      icon,
+                                      color: OrangeColor,
+                                    );
+                                  },
+                                ),
+                                Text(
+                                  '  ${logic.communities[index].lastChange}',
+                                  style: H5RegularDark,
+                                )
+                              ],
                             )
-                            //icon
                           ],
                         ),
                       ),
@@ -400,123 +350,129 @@ class CommunitiesPage extends StatelessWidget {
                   if (logic.loading.value && logic.communities.length == 0)
                     ...List.generate(
                       4,
-                      (index) => Shimmer.fromColors(
-                          baseColor: GrayLightColor,
-                          highlightColor: GrayWhiteColor,
-                          child: Container(
-                            margin: EdgeInsets.only(top: 0.01.sh),
-                            padding: EdgeInsets.symmetric(horizontal: 0.01.sw),
-                            height: 0.08.sh,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30.r),
-                              color: WhiteColor,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.25),
-                                  spreadRadius: 0.006,
-                                  blurRadius: 0.5,
-                                  offset: Offset(
-                                      0, 1), // changes position of shadow
-                                ),
-                              ],
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                // image
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      width: 0.13.sw,
-                                      height: 0.13.sw,
-                                      decoration:
-                                          BoxDecoration(shape: BoxShape.circle),
-                                    ),
-
-                                    // title
-                                    Container(
-                                      width: 0.62.sw,
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            '',
-                                            style: H3BlackTextStyle,
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 1,
-                                          ),
-                                          20.verticalSpace,
-                                          RichText(
-                                              text: TextSpan(children: [
-                                            TextSpan(
-                                                text: 'عدد المشتركين :',
-                                                style: H5RegularDark),
-                                            TextSpan(
-                                                text: ' ',
-                                                style: H4OrangeTextStyle),
-                                          ])),
-                                        ],
-                                      ),
+                          (index) =>
+                          Shimmer.fromColors(
+                              baseColor: GrayLightColor,
+                              highlightColor: GrayWhiteColor,
+                              child: Container(
+                                margin: EdgeInsets.only(top: 0.01.sh),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 0.01.sw),
+                                height: 0.08.sh,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30.r),
+                                  color: WhiteColor,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.25),
+                                      spreadRadius: 0.006,
+                                      blurRadius: 0.5,
+                                      offset: Offset(
+                                          0, 1), // changes position of shadow
                                     ),
                                   ],
                                 ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    // image
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment
+                                          .start,
+                                      crossAxisAlignment: CrossAxisAlignment
+                                          .center,
+                                      children: [
+                                        Container(
+                                          width: 0.13.sw,
+                                          height: 0.13.sw,
+                                          decoration:
+                                          BoxDecoration(shape: BoxShape.circle),
+                                        ),
 
-                                Container(
-                                  width: 0.2.sw,
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        width: 0.06.sw,
-                                        alignment: Alignment.center,
-                                        child: Column(
-                                          mainAxisAlignment:
+                                        // title
+                                        Container(
+                                          width: 0.62.sw,
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                '',
+                                                style: H3BlackTextStyle,
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                              ),
+                                              20.verticalSpace,
+                                              RichText(
+                                                  text: TextSpan(children: [
+                                                    TextSpan(
+                                                        text: 'عدد المشتركين :',
+                                                        style: H5RegularDark),
+                                                    TextSpan(
+                                                        text: ' ',
+                                                        style: H4OrangeTextStyle),
+                                                  ])),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+
+                                    Container(
+                                      width: 0.2.sw,
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 0.06.sw,
+                                            alignment: Alignment.center,
+                                            child: Column(
+                                              mainAxisAlignment:
                                               MainAxisAlignment.center,
-                                          crossAxisAlignment:
+                                              crossAxisAlignment:
                                               CrossAxisAlignment.start,
-                                          children: [
-                                            Icon(
-                                              FontAwesomeIcons.comments,
-                                              size: 0.04.sw,
-                                              color: RedColor,
+                                              children: [
+                                                Icon(
+                                                  FontAwesomeIcons.comments,
+                                                  size: 0.04.sw,
+                                                  color: RedColor,
+                                                ),
+                                                45.verticalSpace,
+                                              ],
                                             ),
-                                            45.verticalSpace,
-                                          ],
-                                        ),
-                                      ),
+                                          ),
 // notify
-                                      Container(
-                                        width: 0.14.sw,
-                                        padding: EdgeInsets.only(left: 0.01.sw),
-                                        child: Column(
-                                          mainAxisAlignment:
+                                          Container(
+                                            width: 0.14.sw,
+                                            padding: EdgeInsets.only(
+                                                left: 0.01.sw),
+                                            child: Column(
+                                              mainAxisAlignment:
                                               MainAxisAlignment.center,
-                                          crossAxisAlignment:
+                                              crossAxisAlignment:
                                               CrossAxisAlignment.end,
-                                          children: [
-                                            Badge.count(count: 10),
-                                            20.verticalSpace,
-                                            Text(
-                                              '',
-                                              style: H5GrayOpacityTextStyle,
-                                            )
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                )
-                                //icon
-                              ],
-                            ),
-                          )),
+                                              children: [
+                                                Badge.count(count: 10),
+                                                20.verticalSpace,
+                                                Text(
+                                                  '',
+                                                  style: H5GrayOpacityTextStyle,
+                                                )
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                    //icon
+                                  ],
+                                ),
+                              )),
                     )
                 ],
               );
@@ -573,10 +529,10 @@ class CommunitiesPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InkWell(
-                  onTap:()async{
-            await  logic.accessCommunity();
-            Get.back();
-            },
+                  onTap: () async {
+                    await logic.accessCommunity();
+                    Get.back();
+                  },
                   child: Container(
                     alignment: Alignment.center,
                     padding: EdgeInsets.symmetric(

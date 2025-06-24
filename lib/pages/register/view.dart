@@ -278,40 +278,59 @@ class RegisterPage extends StatelessWidget {
                       SizedBox(
                         height: 0.02.sh,
                       ),
-                      Obx(() {
-                        return FormBuilderDropdown(
-                            name: 'city',
-                            validator: FormBuilderValidators.required(errorText: 'يرجى تحديد المدينة'),
-                            decoration: InputDecoration(
-                              suffixIcon: Icon(FontAwesomeIcons.city),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(30.r),
-                                  borderSide:
-                                      BorderSide(color: GrayLightColor)),
-                              label: Text(
-                                'المدينة',
-                                style: H3RegularDark,
-                              ),
-                            ),
-                            onChanged: (value) {
-                              logic.citySelected.value = value;
-                            },
-                            items: mainController.mainCities
-                                .where((el) =>
-                                    el.id == logic.mainCitySelected.value)
-                                .first
-                                .children!
-                                .map(
-                                  (city) => DropdownMenuItem(
-                                    value: city.id,
-                                    child: Text(
-                                      '${city.name}',
-                                      style: H3RegularDark,
-                                    ),
-                                  ),
-                                )
-                                .toList());
-                      }),
+                       Obx((){
+                         if(logic.mainCitySelected.value!=null){
+                           return FormBuilderDropdown(
+                               name: 'city',
+                               validator: FormBuilderValidators.required(errorText: 'يرجى تحديد المدينة'),
+                               decoration: InputDecoration(
+                                 suffixIcon: Icon(FontAwesomeIcons.city),
+                                 border: OutlineInputBorder(
+                                     borderRadius: BorderRadius.circular(30.r),
+                                     borderSide:
+                                     BorderSide(color: GrayLightColor)),
+                                 label: Text(
+                                   'المدينة',
+                                   style: H3RegularDark,
+                                 ),
+                               ),
+                               onChanged: (value) {
+                                 logic.citySelected.value = value;
+                               },
+                               items: mainController.mainCities
+                                   .where((el) =>
+                               el.id == logic.mainCitySelected.value)
+                                   .first
+                                   .children!
+                                   .map(
+                                     (city) => DropdownMenuItem(
+                                   value: city.id,
+                                   child: Text(
+                                     '${city.name}',
+                                     style: H3RegularDark,
+                                   ),
+                                 ),
+                               )
+                                   .toList());
+                         }
+                         return FormBuilderDropdown(
+                             name: 'city',
+                             validator: FormBuilderValidators.required(errorText: 'يرجى تحديد المدينة'),
+                             decoration: InputDecoration(
+                               suffixIcon: Icon(FontAwesomeIcons.city),
+                               border: OutlineInputBorder(
+                                   borderRadius: BorderRadius.circular(30.r),
+                                   borderSide:
+                                   BorderSide(color: GrayLightColor)),
+                               label: Text(
+                                 'المدينة',
+                                 style: H3RegularDark,
+                               ),
+                             ),
+
+                             items: []);
+                       }),
+
                       Obx(() {
                         return Visibility(
                             visible: logic.errorCity.value != null,

@@ -8,7 +8,7 @@ class PusherService {
 
   static PusherClient init({String? token}) {
     var options = PusherOptions(
-      host: '85.215.154.88',
+      host: 'pazarpasha.com',
       encrypted: false,
       //
       // host: '192.168.11.200',

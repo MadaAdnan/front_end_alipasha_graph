@@ -21,7 +21,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
+
 import 'package:shimmer/shimmer.dart';
 
 import '../../helpers/components.dart';
@@ -36,6 +36,7 @@ class HomePage extends StatelessWidget {
   bool exit = false;
   GlobalKey<FormState> _form = GlobalKey<FormState>();
   RxnString privacy=RxnString('');
+  int i = 0;
   @override
   Widget build(BuildContext context) {
 
@@ -118,8 +119,7 @@ class HomePage extends StatelessWidget {
                       scrollInfo.metrics.minScrollExtent - 1 &&
                   !mainController.loading.value &&
                   logic.hasMorePage.value) {
-                Logger()
-                    .f('UPDATA'); // استدعاء تحديث الصفحة عند الوصول إلى الأعلى
+
               }
 
               if (scrollInfo is ScrollUpdateNotification) {
@@ -298,20 +298,28 @@ class HomePage extends StatelessWidget {
                               logic.products.length +
                                   (logic.loading.value ? 1 : 0),
                               (index) {
-                                int i = 0;
+
                                 if (mainController.advices.length > 0) {
-                                  i = index % mainController.advices.length;
+                                  if(i< mainController.advices.length && index%5==0){
+                                    i++;
+                                  }
+                                  if(i >=mainController.advices.length){
+                                    i=0;
+                                  }
+
                                 }
+                                int adviceLength=5;
 
                                 if (index < logic.products.length) {
                                   switch (logic.products[index].type) {
                                     case 'job':
                                     case 'search_job':
                                     case "tender":
+
                                       return Column(
                                         children: [
                                           JobCard(post: logic.products[index]),
-                                          if (index % 5 == 0 &&
+                                          if (index % adviceLength == 0 &&
                                               i < mainController.advices.length)
                                             AdviceComponent(
                                               advice: mainController.advices[i],
@@ -319,10 +327,11 @@ class HomePage extends StatelessWidget {
                                         ],
                                       );
                                     case 'news':
+
                                       return Column(
                                         children: [
                                           NewsCard(post: logic.products[index]),
-                                          if (index % 5 == 0 &&
+                                          if (index % adviceLength == 0 &&
                                               i < mainController.advices.length)
                                             AdviceComponent(
                                               advice: mainController.advices[i],
@@ -333,7 +342,7 @@ class HomePage extends StatelessWidget {
                                       return Column(
                                         children: [
                                           PostCard(post: logic.products[index]),
-                                          if (index % 5 == 0 &&
+                                          if (index % adviceLength == 0 &&
                                               i < mainController.advices.length)
                                             AdviceComponent(
                                               advice: mainController.advices[i],

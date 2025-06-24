@@ -2,6 +2,7 @@ import 'package:ali_pasha_graph/helpers/components.dart';
 import 'package:ali_pasha_graph/helpers/redcord_manager.dart';
 import 'package:ali_pasha_graph/models/message_community_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
+import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -53,52 +54,64 @@ class ChatPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Flexible(
+                      child: InkWell(
+                        onTap: (){
+                          UserModel? user = logic
+                              .communityModel.value?.users!
+                              .firstWhere((el) =>
+                          el.id !=
+                              mainController.authUser.value?.id);
+                          Get.offNamed(PRODUCTS_PAGE,arguments: user,parameters: {"id":"${user?.id ?? ''}"});
+                        },
                         child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
-                      alignment: Alignment.center,
-                      height: 0.085.sh,
-                      child: Row(
-                        children: [
-                          if (logic.communityModel.value?.users != null)
-                            Builder(builder: (context) {
-                              UserModel? user = logic
-                                  .communityModel.value?.users!
-                                  .firstWhere((el) =>
-                                      el.id !=
+                          padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
+                          alignment: Alignment.center,
+                          height: 0.085.sh,
+                          child: Row(
+                            children: [
+                              if (logic.communityModel.value?.users != null)
+                                Builder(builder: (context) {
+                                  UserModel? user = logic
+                                      .communityModel.value?.users!
+                                      .firstWhere((el) =>
+                                  el.id !=
                                       mainController.authUser.value?.id);
 
-                              return Container(
-                                width: 0.15.sw,
-                                height: 0.15.sw,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                    image: CachedNetworkImageProvider(
-                                        "${user?.image}"),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              );
-                            }),
-                          SizedBox(
-                            width: 0.03.sw,
+                                  return Container(
+                                    width: 0.15.sw,
+                                    height: 0.15.sw,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                        image: CachedNetworkImageProvider(
+                                            "${user?.image}"),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  );
+                                }),
+                              SizedBox(
+                                width: 0.03.sw,
+                              ),
+                              Builder(builder: (context) {
+                                UserModel? user = logic
+                                    .communityModel.value?.users!
+                                    .firstWhere((el) =>
+                                el.id !=
+                                    mainController.authUser.value?.id);
+
+                                return Flexible(
+                                    child: Text(
+                                      '${user?.seller_name?.length != 0 ? user?.seller_name : user?.name}',
+                                      style: H3WhiteTextStyle,
+                                      overflow: TextOverflow.ellipsis,
+                                    ));
+                              }),
+                            ],
                           ),
-                          Builder(builder: (context) {
-                            UserModel? user = logic.communityModel.value?.users!
-                                .firstWhere((el) =>
-                                    el.id != mainController.authUser.value?.id);
-                            print('after Where');
-                            print('${user?.name}');
-                            return Flexible(
-                                child: Text(
-                              '${user?.seller_name?.length != 0 ? user?.seller_name : user?.name}',
-                              style: H3WhiteTextStyle,
-                              overflow: TextOverflow.ellipsis,
-                            ));
-                          }),
-                        ],
+                        ),
                       ),
-                    )),
+                    ),
                     Flexible(
                         child: PopupMenuButton<String>(
                       color: WhiteColor,
@@ -583,33 +596,38 @@ class ChatPage extends StatelessWidget {
                   text: TextSpan(children: [
                     ..."${message.body}".split(' ').map((el) {
                       if (isURL("$el")) {
-                        if(el.startsWith('https://wa.me')){
+                        if (el.startsWith('https://wa.me')) {
                           return WidgetSpan(
                               child: InkWell(
-                                onTap: () {
-                                  openUrl(url: '$el');
-                                },
-                                child: Container(
-                                  alignment:Alignment.center,
-                                  padding:EdgeInsets.symmetric(horizontal: 0.02.sw,vertical: 0.01.sh),
-                                  margin:EdgeInsets.only(top: 0.01.sh),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'تواصل عبر واتسآب',
-                                        style: H3WhiteTextStyle,
-                                      ),
-                                      SizedBox(width: 0.02.sw,),
-                                      Icon(FontAwesomeIcons.whatsapp,color: WhiteColor,)
-                                    ],
+                            onTap: () {
+                              openUrl(url: '$el');
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 0.02.sw, vertical: 0.01.sh),
+                              margin: EdgeInsets.only(top: 0.01.sh),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'تواصل عبر واتسآب',
+                                    style: H3WhiteTextStyle,
                                   ),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(30.r),
-                                      color: Colors.green
+                                  SizedBox(
+                                    width: 0.02.sw,
                                   ),
-                                ),
-                              ));
+                                  Icon(
+                                    FontAwesomeIcons.whatsapp,
+                                    color: WhiteColor,
+                                  )
+                                ],
+                              ),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30.r),
+                                  color: Colors.green),
+                            ),
+                          ));
                         }
                         return TextSpan(
                           recognizer: TapGestureRecognizer()
@@ -762,33 +780,38 @@ class ChatPage extends StatelessWidget {
                     text: TextSpan(children: [
                       ..."${message.body}".split(' ').map((el) {
                         if (isURL("$el")) {
-                          if(el.startsWith('https://wa.me')){
+                          if (el.startsWith('https://wa.me')) {
                             return WidgetSpan(
                                 child: InkWell(
-                                  onTap: () {
-                                    openUrl(url: '$el');
-                                  },
-                                  child: Container(
-                                    alignment:Alignment.center,
-                                    padding:EdgeInsets.symmetric(horizontal: 0.02.sw,vertical: 0.01.sh),
-                                    margin:EdgeInsets.only(top: 0.01.sh),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'تواصل عبر واتسآب',
-                                          style: H3WhiteTextStyle,
-                                        ),
-                                        SizedBox(width: 0.02.sw,),
-                                        Icon(FontAwesomeIcons.whatsapp,color: WhiteColor,)
-                                      ],
+                              onTap: () {
+                                openUrl(url: '$el');
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 0.02.sw, vertical: 0.01.sh),
+                                margin: EdgeInsets.only(top: 0.01.sh),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'تواصل عبر واتسآب',
+                                      style: H3WhiteTextStyle,
                                     ),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(30.r),
-                                        color: Colors.green
+                                    SizedBox(
+                                      width: 0.02.sw,
                                     ),
-                                  ),
-                                ));
+                                    Icon(
+                                      FontAwesomeIcons.whatsapp,
+                                      color: WhiteColor,
+                                    )
+                                  ],
+                                ),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30.r),
+                                    color: Colors.green),
+                              ),
+                            ));
                           }
                           return TextSpan(
                             recognizer: TapGestureRecognizer()

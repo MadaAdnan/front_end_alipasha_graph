@@ -164,9 +164,11 @@ class HomeLogic extends GetxController {
     mainCity{
       id
       name
+      is_delivery
       children{
        id
       name
+      is_delivery
       code_city
       level
       }

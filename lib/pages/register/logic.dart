@@ -29,6 +29,7 @@ class RegisterLogic extends GetxController {
   // TextEditingController addressController=TextEditingController();
   TextEditingController affiliateController = TextEditingController();
   RxnInt citySelected = RxnInt(null);
+  RxnInt areaSelected = RxnInt(null);
   RxnInt mainCitySelected = RxnInt(null);
 
   String? deviceToken;
@@ -138,7 +139,8 @@ mutation CreateUser {
             email: "${emailController.text??''}"
             password: "${passwordController.text??''}"
             phone: "${phoneController.text??''}"
-            city_id: ${int.tryParse("$citySelected") ?? null}
+            city_id: ${int.tryParse("${mainCitySelected.value}") ?? null}
+            area_id: ${int.tryParse("${citySelected.value}") ?? null}
             device_token: "${deviceToken??''}"
             affiliate: "${affiliateController.text??''}"
             address:"${addressController.text??''}"

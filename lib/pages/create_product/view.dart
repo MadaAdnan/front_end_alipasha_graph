@@ -468,7 +468,7 @@ class CreateProductPage extends StatelessWidget {
 
                       Container(
                         width: 1.sw,
-                        height: 0.09.sh,
+                        height: 0.12.sh,
                         child: Column(
                           children: [
                             Row(

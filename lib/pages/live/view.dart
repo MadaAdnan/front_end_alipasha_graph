@@ -106,13 +106,13 @@ class LivePage extends StatelessWidget {
                                     children: [
                                       Text(
                                         "${logic.messages[index].user?.name}",
-                                        style: H5OrangeTextStyle.copyWith(color: Colors.brown),
+                                        style: H4OrangeTextStyle.copyWith(color: Colors.brown),
                                       ),
                                       Container(
                                         constraints: BoxConstraints(minWidth: 0.001.sw,maxWidth: 0.7.sw),
                                         child: Text(
                                           "${logic.messages[index].body}",
-                                          style: H4RegularDark,
+                                          style: H3RegularDark,
                                           maxLines: 4,
                                           overflow: TextOverflow.ellipsis,
                                         ),
@@ -124,7 +124,7 @@ class LivePage extends StatelessWidget {
                                         alignment: Alignment.bottomLeft,
                                         child:  Text(
                                           "${logic.messages[index].createdAt}",
-                                          style: H5GrayTextStyle,
+                                          style: H4GrayTextStyle,
                                         ),
                                       )
                                     ],
@@ -181,13 +181,13 @@ class LivePage extends StatelessWidget {
                                     children: [
                                       Text(
                                         "${logic.messages[index].user?.name}",
-                                        style: H5OrangeTextStyle,
+                                        style: H4OrangeTextStyle,
                                       ),
                                       Container(
                                         constraints: BoxConstraints(minWidth: 0.001.sw,maxWidth: 0.7.sw),
                                         child: Text(
                                           "${logic.messages[index].body}",
-                                          style: H4RegularDark,
+                                          style: H3RegularDark,
                                           maxLines: 4,
                                           overflow: TextOverflow.ellipsis,
                                         ),
@@ -197,7 +197,7 @@ class LivePage extends StatelessWidget {
                                         alignment: Alignment.bottomLeft,
                                         child:  Text(
                                           "${logic.messages[index].createdAt}",
-                                          style: H5GrayTextStyle,
+                                          style: H4GrayTextStyle,
                                         ),
                                       ),
                                     ],

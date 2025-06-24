@@ -286,73 +286,54 @@ class EditProfilePage extends StatelessWidget {
                           }
                           return null;
                         }),
-                    /*IntlPhoneField(
-                      controller: logic.phoneController,
-                      decoration: InputDecoration(
-                        labelText: 'Phone Number',
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(),
-                        ),
-                      ),
-                      initialCountryCode: 'SY',
-                      onChanged: (phone) {
-                        logic.phoneController.value=TextEditingValue(text: phone.countryISOCode);
-                      },
-                      onCountryChanged: (value) {
-                        print(value.dialCode);
-                      },
-                    ),*/
 
                     Obx(() {
-                      CityModel? currentCity=null;
-                      if(logic.user.value?.city!=null){
-                        currentCity =logic.cities.firstWhere((el)=>el.id==logic.user.value?.city?.id);
-                      }
+                        return Container(
+                          child: FormBuilderDropdown<CityModel>(
+                              validator: FormBuilderValidators.required(
+                                  errorText: "يرجى تحديد المحافظة"),
+                              name: 'city_id',
+                              initialValue:mainController.mainCities.where((el)=>el.id==mainController.authUser.value?.city?.id).firstOrNull ,
+                              onChanged: (value){
+                                logic.city.value = value;
+                                // logic.area.value=value?.children?.first;
 
-                      return Container(
-                        child: FormBuilderDropdown<CityModel>(
-                            validator: FormBuilderValidators.required(
-                                errorText: "يرجى تحديد المحافظة"),
-                            name: 'city_id',
-                            initialValue:currentCity ,
-                            onChanged: (value){
-                              logic.city.value = value;
-                             // logic.area.value=value?.children?.first;
-
-                            }
-                                ,
-                            decoration: InputDecoration(
-                              label: RichText(
-                                text: TextSpan(children: [
-                                  TextSpan(
-                                      text: 'المحافظة', style: H4GrayTextStyle),
-                                  TextSpan(text: ' * ', style: H3RedTextStyle),
-                                ]),
+                              }
+                              ,
+                              decoration: InputDecoration(
+                                label: RichText(
+                                  text: TextSpan(children: [
+                                    TextSpan(
+                                        text: 'المحافظة', style: H4GrayTextStyle),
+                                    TextSpan(text: ' * ', style: H3RedTextStyle),
+                                  ]),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderSide:
+                                  const BorderSide(color: GrayDarkColor),
+                                  borderRadius: BorderRadius.circular(30.r),
+                                ),
+                                contentPadding:
+                                EdgeInsets.symmetric(horizontal: 0.02.sw),
                               ),
-                              border: OutlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: GrayDarkColor),
-                                borderRadius: BorderRadius.circular(30.r),
-                              ),
-                              contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 0.02.sw),
-                            ),
-                            items: [
-                              ...List.generate(
-                                mainController.mainCities.length,
-                                (index) {
+                              items: [
+                                ...List.generate(
+                                  mainController.mainCities.length,
+                                      (index) {
 
-                                  return  DropdownMenuItem<CityModel>(
-                                    value: mainController.mainCities[index],
-                                    child: Text(
-                                      '${mainController.mainCities[index].name}',
-                                      style: H3GrayTextStyle,
-                                    ),
-                                  );
-                                },
-                              )
-                            ]),
-                      );
+                                    return  DropdownMenuItem<CityModel>(
+                                      value: mainController.mainCities[index],
+                                      child: Text(
+                                        '${mainController.mainCities[index].name}',
+                                        style: H3GrayTextStyle,
+                                      ),
+                                    );
+                                  },
+                                )
+                              ]),
+                        );
+
+
                     }),
                     SizedBox(
                       height: 0.01.sh,
@@ -365,10 +346,8 @@ class EditProfilePage extends StatelessWidget {
                           currentCity=logic.city.value!.children![index];
                         }
                       }
-
-                      return Visibility(
-                        visible: logic.city.value?.children?.length!=null,
-                        child: Container(
+                      if(logic.city.value!=null){
+                        return Container(
                           child: FormBuilderDropdown<CityModel>(
                               validator: FormBuilderValidators.required(
                                   errorText: "يرجى تحديد المدينة"),
@@ -403,8 +382,35 @@ class EditProfilePage extends StatelessWidget {
                                   ),
                                 )
                               ]),
-                        ),
+                        );
+                      }
+                      return Container(
+                        child: FormBuilderDropdown<CityModel>(
+                            validator: FormBuilderValidators.required(
+                                errorText: "يرجى تحديد المدينة"),
+                            name: 'area_id',
+
+                            decoration: InputDecoration(
+                              label: RichText(
+                                text: TextSpan(children: [
+                                  TextSpan(
+                                      text: 'المدينة', style: H4GrayTextStyle),
+                                  TextSpan(text: ' * ', style: H3RedTextStyle),
+                                ]),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide:
+                                const BorderSide(color: GrayDarkColor),
+                                borderRadius: BorderRadius.circular(30.r),
+                              ),
+                              contentPadding:
+                              EdgeInsets.symmetric(horizontal: 0.02.sw),
+                            ),
+                            items: [
+
+                            ]),
                       );
+
                     }),
                     SizedBox(
                       height: 0.02.sh,

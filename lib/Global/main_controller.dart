@@ -67,7 +67,7 @@ class MainController extends GetxController {
   RxList<AdviceModel> advices = RxList<AdviceModel>([]);
   RxList<SliderModel> sliders = RxList<SliderModel>([]);
   RxList<PricingModel> pricing = RxList([]);
-  String versionAPK = "3.1.0";
+  String versionAPK = "3.1.1";
   RxInt communityNotification = RxInt(0);
   RxBool startApp = RxBool(true); //for fill data from storage
   Rx<SettingModel> settings =
@@ -107,15 +107,7 @@ class MainController extends GetxController {
       if (value != null) {
         globalChannelSubscribe();
         if (authUser.value?.id != null) {
-          var createCommunityChannel =
-              pusher.value!.channel('community.${authUser.value?.id}');
-          createCommunityChannel.bind('community.create', (e) {
-            getMe();
-          });
-          for (var item in authUser.value?.communities ?? []) {
-            communitySubscribe(
-                'private-message.${item?.id}.${authUser.value?.id}');
-          }
+          communitySubscribe('private-user.${authUser.value?.id}');
         }
       } else {
         pusher.value = PusherService.init(token: "${token.value}");
@@ -123,7 +115,7 @@ class MainController extends GetxController {
     });
     ever(authUser, (value) {
       if (value != null) {
-        resubscribeAllChannels();
+        communitySubscribe('private-user.${authUser.value?.id}');
       }
     });
   }
@@ -136,7 +128,6 @@ class MainController extends GetxController {
   globalChannelSubscribe() {
     var channel = pusher.value!.channel('change-setting');
     channel.bind('update-setting', (e) {
-      logger.w(e);
       if (e['setting'] != null) {
         settings.value = SettingModel.fromJson(e['setting']);
       }
@@ -147,39 +138,32 @@ class MainController extends GetxController {
   communitySubscribe(String channelName) {
     Channel channel = pusher.value!.subscribe(channelName);
 
-    channels.add(channel);
-    channel.bind('message.create', handelEventCommunity);
+    channel.bind('community.create', handelCreateCommunity);
+    channel.bind('message.create', handelCreateMessage);
   }
 
-  handelEventCommunity(e) {
-    if (e['message']['user']['id'] != authUser.value?.id) {
-      if (Get.currentRoute != CHAT_PAGE &&
-          Get.currentRoute != COMMUNITIES_PAGE) {
-        communityNotification.value += 1;
-      }
-      // community Page
-      else if (Get.currentRoute == COMMUNITIES_PAGE) {
+  handelCreateMessage(e) {
+
+    if (e['message'] != null) {
+
+      //Check Is Page Community
+      if (Get.currentRoute == COMMUNITIES_PAGE) {
         if (e['message']?['community'] != null) {
           CommunityModel community =
-              CommunityModel.fromJson(e['message']?['community']);
+          CommunityModel.fromJson(e['message']?['community']);
           int index = Get.find<CommunitiesLogic>()
               .communities
               .indexWhere((el) => el.id == community.id);
           if (index == -1) {
             Get.find<CommunitiesLogic>().communities.insert(0, community);
-          } else {
-            Get.find<CommunitiesLogic>().communities.removeAt(index);
-
-            Get.find<CommunitiesLogic>().communities.insert(0, community);
           }
         }
       }
-
-      // Chat Page
-      else if (Get.currentRoute == CHAT_PAGE ||
+      // Check Is Any Chat Page
+      else if ((Get.currentRoute == CHAT_PAGE ||
           Get.currentRoute == GROUP_PAGE ||
-          Get.currentRoute == CHANNEL_PAGE) {
-        if (e['message'] != null) {
+          Get.currentRoute == CHANNEL_PAGE)) {
+        if (e['message'] != null && Get.arguments?.id == e['message']?['community']?['id']) {
           MessageModel message = MessageModel.fromJson(e['message']);
           switch (message.community?.type) {
             case 'chat':
@@ -214,22 +198,37 @@ class MainController extends GetxController {
           }
         }
       }
+      else{
+        communityNotification.value += 1;
+      }
     }
   }
 
-  void resubscribeAllChannels() {
-    if (pusher.value != null) {
-      pusher.value!.disconnect();
-      pusher.value = PusherService.init(token: "${token.value}");
-      pusher.value!.connect();
-    }
-    for (var channel in channels) {
-      pusher.value!.unsubscribe(channel.name);
-      var newChannel = pusher.value!.subscribe(channel.name);
-      newChannel.bind('message.create', handelEventCommunity);
-      logger.w('Re-subscribed to channel: ${channel.name}');
+
+  handelCreateCommunity(e) {
+    if (e['community'] != null) {
+      if (Get.currentRoute == COMMUNITIES_PAGE) {
+        CommunityModel community =
+            CommunityModel.fromJson(e['message']?['community']);
+        int index = Get.find<CommunitiesLogic>()
+            .communities
+            .indexWhere((el) => el.id == community.id);
+        if (index == -1) {
+          Get.find<CommunitiesLogic>().communities.insert(0, community);
+        } else {
+          Get.find<CommunitiesLogic>().communities.removeAt(index);
+
+          Get.find<CommunitiesLogic>().communities.insert(0, community);
+        }
+      } else {
+        communityNotification.value += 1;
+      }
     }
   }
+
+
+
+
 
   Future<dio.Response?> fetchData() async {
     loading.value = true;
@@ -382,9 +381,6 @@ class MainController extends GetxController {
         CommunityModel community = CommunityModel.fromJson(
             res?.data?['data']['createChat']['community']);
         pusher.value = null;
-
-        communitySubscribe(
-            'private-message.${community.id}.${authUser.value?.id}');
         Get.offAndToNamed(CHAT_PAGE,
             arguments: community,
             parameters: {"msg": message != null ? message : ''});
@@ -428,7 +424,7 @@ class MainController extends GetxController {
         url_for_download{
         play
         up_down
-        
+        direct
         }
         address
         weather_api
@@ -465,10 +461,17 @@ class MainController extends GetxController {
         setUserJson(json: res?.data?['data']['me']);
       }
       if (res?.data?['data']?['advices'] != null) {
+        // Logger().i("ADDDS");
+        // Logger().i(res?.data?['data']['advices']);
+
         for (var item in res?.data?['data']['advices']) {
+          // Logger().i(item);
           advices.add(AdviceModel.fromJson(item));
         }
+
       }
+      // Logger().i("Settings");
+      // Logger().i(res?.data);
       if (res?.data?['data']?['settings'] != null) {
         settings.value = SettingModel.fromJson(res?.data?['data']['settings']);
         if (settings.value.force_upgrade == true &&
@@ -525,8 +528,7 @@ class MainController extends GetxController {
                                 ),
                                 child: InkWell(
                                   onTap: () {
-                                    Logger()
-                                        .d(settings.value.urlDownload?.play);
+
                                     openUrl(
                                         url:
                                             "${settings.value.urlDownload?.play}");
@@ -559,8 +561,7 @@ class MainController extends GetxController {
                                 ),
                                 child: InkWell(
                                   onTap: () {
-                                    Logger()
-                                        .d(settings.value.urlDownload?.play);
+
                                     openUrl(
                                         url: settings
                                                 .value.urlDownload?.direct ??
@@ -886,7 +887,7 @@ class MainController extends GetxController {
       dio.Response? res = await fetchData();
 
       if (res?.data?['data']?['me'] != null) {
-        Logger().e(res?.data?['data']?['me']);
+        // Logger().e(res?.data?['data']?['me']);
         pusher.value = null;
         await setUserJson(json: res?.data?['data']?['me']);
         if (authUser.value?.invoicesSeller_count != 0) {

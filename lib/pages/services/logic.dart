@@ -106,6 +106,7 @@ class ServicesLogic extends GetxController {
         for (var item in res?.data?['data']?['mainCategories']) {
           if (item['children'] != null) {
             for (var i in item['children']) {
+
               categories.add(CategoryModel.fromJson(i));
             }
           }

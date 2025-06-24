@@ -92,7 +92,7 @@ class AdviceComponent extends StatelessWidget {
                                   ? FontAwesomeIcons.bell
                                   : FontAwesomeIcons.solidBell,
                               color: index == -1 ? RedColor : WhiteColor,
-                              size: 0.02.sh,
+                              size: 0.015.sh,
                             ),
                             Text(
                               '${index == -1 ? 'متابعة' : 'أتابعه'}',

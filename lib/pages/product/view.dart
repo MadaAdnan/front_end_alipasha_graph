@@ -45,7 +45,7 @@ class ProductPage extends StatelessWidget {
             padding:
                 EdgeInsets.symmetric(horizontal: 0.01.sw, vertical: 0.005.sh),
             width: 1.sw,
-            height: 0.06.sh,
+            height: 0.07.sh,
             decoration: const BoxDecoration(color: WhiteColor, boxShadow: [
               BoxShadow(
                 color: Colors.black,
@@ -101,22 +101,22 @@ class ProductPage extends StatelessWidget {
                           Row(
                             children: [
                               Text(
-                                "${logic.product.value?.user?.seller_name ?? ''}",
-                                style: H4BlackTextStyle.copyWith(
+                                "${logic.product.value?.user?.seller_name ?? ''} ",
+                                style: H5BlackTextStyle.copyWith(
                                     fontWeight: FontWeight.w900,
                                     color: Colors.black),
                               ),
                               if ((logic.product.value?.user?.is_verified ==
                                   true))
                                 Container(
-                                  width: 0.04.sw,
-                                  height: 0.04.sw,
+                                  width: 0.02.sw,
+                                  height: 0.02.sw,
                                   decoration: BoxDecoration(
                                       image: DecorationImage(
                                           image: Svg(
-                                    "assets/images/svg/verified.svg",
-                                    size: Size(0.01.sw, 0.01.sw),
-                                  ))),
+                                            "assets/images/svg/verified.svg",
+                                            size: Size(0.01.sw, 0.01.sw),
+                                          ))),
                                 ),
                             ],
                           )
@@ -226,8 +226,12 @@ class ProductPage extends StatelessWidget {
 
                               break;
                             case '3':
-                              Clipboard.setData(ClipboardData(text: 'https://v3.ali-pasha.com/posts/${logic.productId}'));
-                              mainController.showToast(text: 'تم نسخ رابط المشاركة',type: 'success');
+                              Clipboard.setData(ClipboardData(
+                                  text:
+                                      'https://v3.ali-pasha.com/posts/${logic.productId}'));
+                              mainController.showToast(
+                                  text: 'تم نسخ رابط المشاركة',
+                                  type: 'success');
 
                               break;
 
@@ -293,7 +297,6 @@ class ProductPage extends StatelessWidget {
                               ],
                             ),
                           ),
-
                         ],
                       ),
                     ],
@@ -391,45 +394,52 @@ class ProductPage extends StatelessWidget {
                           SizedBox(
                             width: 0.03.sw,
                           ),
-                         Obx(() {
-                           return Visibility(child:  InkWell(
-                             onTap: () {
-                               if (logic.product.value?.user?.id != null &&
-                                   !mainController
-                                       .createCommunityLodaing.value) {
-                                 String message=""" المنتج ${logic.product.value!.name}   \n   معرف المنتج: ${logic.product.value!.id} """;
-                                 HelperClass.connectWithSeller(phone: logic.product.value!.user!.phone!,sellerId:logic.product.value!.user!.id!,message: message );
-
-                               }
-                             },
-                             child: Container(
-                               width: 0.35.sw,
-                               height: 0.06.sh,
-                               alignment: Alignment.center,
-                               decoration: BoxDecoration(
-                                 color: RedColor,
-                                 borderRadius: BorderRadius.circular(30.r),
-                               ),
-                               child: Row(
-                                 mainAxisAlignment: MainAxisAlignment.center,
-                                 children: [
-                                   Text(
-                                     'مراسلة التاجر',
-                                     style: H3WhiteTextStyle,
-                                   ),
-                                   SizedBox(
-                                     width: 0.02.sw,
-                                   ),
-                                   Icon(
-                                     FontAwesomeIcons.comments,
-                                     color: WhiteColor,
-                                     size: 0.04.sw,
-                                   )
-                                 ],
-                               ),
-                             ),
-                           ),visible: mainController.authUser.value?.id!=null,);
-                         })
+                          InkWell(
+                            onTap: () {
+                              if(mainController.authUser.value?.id == null){
+                                mainController.showToast(text: "يرجى تسجيل الدخول أولاً",type: "error");
+                                return;
+                              }
+                              if (
+                              !mainController
+                                  .createCommunityLodaing.value) {
+                                String message =
+                                """ المنتج ${logic.product.value!.name}   \n   معرف المنتج: ${logic.product.value!.id} """;
+                                HelperClass.connectWithSeller(
+                                    phone:
+                                    logic.product.value!.user!.phone!,
+                                    sellerId:
+                                    logic.product.value!.user!.id!,
+                                    message: message);
+                              }
+                            },
+                            child: Container(
+                              width: 0.35.sw,
+                              height: 0.06.sh,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: RedColor,
+                                borderRadius: BorderRadius.circular(30.r),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'مراسلة التاجر',
+                                    style: H3WhiteTextStyle,
+                                  ),
+                                  SizedBox(
+                                    width: 0.02.sw,
+                                  ),
+                                  Icon(
+                                    FontAwesomeIcons.comments,
+                                    color: WhiteColor,
+                                    size: 0.04.sw,
+                                  )
+                                ],
+                              ),
+                            ),
+                          )
                         ],
                       );
                     }),
@@ -719,7 +729,6 @@ class ProductPage extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     crossAxisAlignment:
@@ -747,17 +756,16 @@ class ProductPage extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.center,
+                                        CrossAxisAlignment.center,
                                     children: [
                                       Text(
                                         "${logic.product.value?.syrPrice?.price?.toStringAsFixed(2)}",
                                         style: H4RegularDark.copyWith(
                                             decoration:
-                                            TextDecoration.lineThrough),
+                                                TextDecoration.lineThrough),
                                       ),
                                       Text(
                                         " ل.س",
@@ -773,7 +781,6 @@ class ProductPage extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-
                                 ],
                               )),
                             if (logic.product.value?.is_discount != true)
@@ -801,7 +808,7 @@ class ProductPage extends StatelessWidget {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.center,
+                                        CrossAxisAlignment.center,
                                     children: [
                                       Text(
                                         "${logic.product.value?.turkey_price?.price?.toStringAsFixed(2)}",
@@ -817,7 +824,7 @@ class ProductPage extends StatelessWidget {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.center,
+                                        CrossAxisAlignment.center,
                                     children: [
                                       Text(
                                         "${logic.product.value?.syrPrice?.price?.toStringAsFixed(2)}",
@@ -846,92 +853,37 @@ class ProductPage extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              SizedBox(
-                                width: 0.4.sw,
-                                child: FormBuilderRatingBar(
-                                  onChanged: (value) =>
-                                      logic.rate.value = value ?? 0,
-                                  name: 'rate',
-                                  maxRating: 5,
-                                  minRating: 1,
-                                  itemCount: 5,
-                                  itemSize: 0.05.sw,
-                                  initialRating: double.tryParse(
-                                          "${logic.product.value?.vote_avg}") ??
-                                      0,
-                                  glowColor: OrangeColor,
-                                  enabled: true,
-                                  tapOnlyMode: true,
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(
-                                        borderSide: BorderSide.none),
-                                  ),
-                                  ratingWidget: RatingWidget(
-                                      full: const Icon(
-                                        FontAwesomeIcons.solidStar,
-                                        color: OrangeColor,
-                                      ),
-                                      half: const Icon(
-                                        FontAwesomeIcons.starHalfStroke,
-                                        color: OrangeColor,
-                                      ),
-                                      empty: const Icon(
-                                        FontAwesomeIcons.star,
-                                        color: GrayDarkColor,
-                                      )),
-                                  unratedColor: GrayDarkColor,
-                                  glow: true,
-                                  glowRadius: 0.4.r,
-                                ),
-                              ),
-                              SizedBox(
+                              Container(
+                                margin: EdgeInsets.symmetric(vertical: 0.01.sh),
                                 width: 0.24.sw,
                                 child: Obx(() {
-                                  if (logic.loadingRate.value) {
-                                    return InkWell(
-                                      child: Container(
-                                        padding: EdgeInsets.all(0.01.sw),
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                          color: RedColor,
-                                          borderRadius:
-                                              BorderRadius.circular(30.r),
-                                        ),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Expanded(
-                                                child: AutoSizeText(
-                                              'جاري التقييم',
-                                              style: H4WhiteTextStyle,
-                                              overflow: TextOverflow.ellipsis,
-                                            )),
-                                            SizedBox(
-                                              width: 0.02.sw,
-                                            ),
-                                            Icon(
-                                              FontAwesomeIcons.voteYea,
-                                              color: WhiteColor,
-                                              size: 0.04.sw,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  }
+
                                   return InkWell(
                                     onTap: () {
-                                      logic.rateProduct();
+                                      if (mainController.authUser.value ==
+                                          null) {
+                                        mainController.showToast(
+                                            type: "error",
+                                            text: "يرجى تسجيل الدخول");
+                                        return;
+                                      }
+                                      logic.like();
                                     },
                                     child: Container(
                                       padding: EdgeInsets.all(0.01.sw),
                                       alignment: Alignment.center,
                                       width: 0.33.sw,
                                       decoration: BoxDecoration(
-                                        color: RedColor,
+                                        color:
+                                            logic.product.value?.is_like == true
+                                                ? RedColor
+                                                : Colors.transparent,
+                                        border: Border.all(
+                                            color:
+                                                logic.product.value?.is_like ==
+                                                        true
+                                                    ? RedColor
+                                                    : GrayDarkColor),
                                         borderRadius:
                                             BorderRadius.circular(30.r),
                                       ),
@@ -941,16 +893,16 @@ class ProductPage extends StatelessWidget {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          if (logic.product.value?.is_vote ==
+                                          if (logic.product.value?.is_like ==
                                               true)
                                             Text(
-                                              'إعادة تقييم',
+                                              'أعجبني',
                                               style: H4WhiteTextStyle,
                                             )
                                           else
                                             Text(
-                                              ' تقييم',
-                                              style: H4WhiteTextStyle,
+                                              ' إعجاب',
+                                              style: H4BlackTextStyle,
                                             ),
                                           SizedBox(
                                             width: 0.02.sw,
@@ -959,13 +911,21 @@ class ProductPage extends StatelessWidget {
                                               true)
                                             Icon(
                                               FontAwesomeIcons.refresh,
-                                              color: WhiteColor,
+                                              color: logic.product.value
+                                                          ?.is_like ==
+                                                      true
+                                                  ? WhiteColor
+                                                  : GrayDarkColor,
                                               size: 0.04.sw,
                                             )
                                           else
                                             Icon(
-                                              FontAwesomeIcons.voteYea,
-                                              color: WhiteColor,
+                                              FontAwesomeIcons.thumbsUp,
+                                              color: logic.product.value
+                                                          ?.is_like ==
+                                                      true
+                                                  ? WhiteColor
+                                                  : GrayDarkColor,
                                               size: 0.04.sw,
                                             ),
                                         ],
@@ -1083,7 +1043,6 @@ class ProductPage extends StatelessWidget {
                           ),
                         ),
                       ),
-
                   ],
                 ),
               ),
@@ -1215,7 +1174,9 @@ class ProductPage extends StatelessWidget {
                                   );
                               }
                             }),
-                          if(logic.product.value?.type=='tender' || logic.product.value?.type=='job' || logic.product.value?.type=='search_job')
+                          if (logic.product.value?.type == 'tender' ||
+                              logic.product.value?.type == 'job' ||
+                              logic.product.value?.type == 'search_job')
                             _detailsJob()
                         ],
                       )
@@ -1227,50 +1188,111 @@ class ProductPage extends StatelessWidget {
       ),
     );
   }
-  Widget _detailsJob(){
+
+  Widget _detailsJob() {
     return Container(
       width: 1.sw,
       padding: EdgeInsets.symmetric(horizontal: 0.01.sw),
       child: Column(
         children: [
-          Visibility(child: Row(
-            children: [
-              Text('كود التقديم : ',style: H3OrangeTextStyle,),
-              InkWell(child: Text('${logic.product.value?.code}',style: H3RegularDark,),onTap: ()async{
-               await Clipboard.setData(ClipboardData(text: '${logic.product.value?.code}'));
-               mainController.showToast(text: 'تم نسخ الكود',type: 'success');
-              },),
-            ],
-          ),visible: logic.product.value?.code!=''),
-          Visibility(child: Row(
-            children: [
-              Text('رقم الهاتف : ',style: H3OrangeTextStyle,),
-              InkWell(child: Text('${logic.product.value?.phone}',style: H3RegularDark,),onTap: (){
-                openUrl(url: "https://wa.me/${logic.product.value?.phone?.startsWith('+')==true?logic.product.value?.phone?.replaceFirst('+',''):logic.product.value?.phone}");
-              },),
-            ],
-          ),visible: logic.product.value?.phone!=''),
-          SizedBox(height: 0.015.sh,),
-          Visibility(child: Row(
-            children: [
-              Text('البريد الإلكتروني : ',style: H3OrangeTextStyle,),
-              InkWell(child: Text('${logic.product.value?.email}',style: H3RegularDark,),onTap: (){
-                openUrl(url: "mailto:${logic.product.value?.email}");
-              },),
-            ],
-          ),visible: logic.product.value?.email!=''),
-          SizedBox(height: 0.015.sh,),
-          Visibility(child: Row(
-            children: [
-              Text('رابط التقديم : ',style: H3OrangeTextStyle,),
-              Expanded(
-                child: InkWell(child: Container(width:1.sw,child: Text('${logic.product.value?.url}',style: H3RegularDark,maxLines: 2,overflow: TextOverflow.ellipsis,)),onTap: (){
-                  openUrl(url: "${logic.product.value?.url}",);
-                },),
+          Visibility(
+              child: Row(
+                children: [
+                  Text(
+                    'كود التقديم : ',
+                    style: H3OrangeTextStyle,
+                  ),
+                  InkWell(
+                    child: Text(
+                      '${logic.product.value?.code}',
+                      style: H3RegularDark,
+                    ),
+                    onTap: () async {
+                      await Clipboard.setData(
+                          ClipboardData(text: '${logic.product.value?.code}'));
+                      mainController.showToast(
+                          text: 'تم نسخ الكود', type: 'success');
+                    },
+                  ),
+                ],
               ),
-            ],
-          ),visible: logic.product.value?.url!=''),
-          SizedBox(height: 0.015.sh,),
+              visible: logic.product.value?.code != ''),
+          Visibility(
+              child: Row(
+                children: [
+                  Text(
+                    'رقم الهاتف : ',
+                    style: H3OrangeTextStyle,
+                  ),
+                  InkWell(
+                    child: Text(
+                      '${logic.product.value?.phone}',
+                      style: H3RegularDark,
+                    ),
+                    onTap: () {
+                      openUrl(
+                          url:
+                              "https://wa.me/${logic.product.value?.phone?.startsWith('+') == true ? logic.product.value?.phone?.replaceFirst('+', '') : logic.product.value?.phone}");
+                    },
+                  ),
+                ],
+              ),
+              visible: logic.product.value?.phone != ''),
+          SizedBox(
+            height: 0.015.sh,
+          ),
+          Visibility(
+              child: Row(
+                children: [
+                  Text(
+                    'البريد الإلكتروني : ',
+                    style: H3OrangeTextStyle,
+                  ),
+                  InkWell(
+                    child: Text(
+                      '${logic.product.value?.email}',
+                      style: H3RegularDark,
+                    ),
+                    onTap: () {
+                      openUrl(url: "mailto:${logic.product.value?.email}");
+                    },
+                  ),
+                ],
+              ),
+              visible: logic.product.value?.email != ''),
+          SizedBox(
+            height: 0.015.sh,
+          ),
+          Visibility(
+              child: Row(
+                children: [
+                  Text(
+                    'رابط التقديم : ',
+                    style: H3OrangeTextStyle,
+                  ),
+                  Expanded(
+                    child: InkWell(
+                      child: Container(
+                          width: 1.sw,
+                          child: Text(
+                            '${logic.product.value?.url}',
+                            style: H3RegularDark,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          )),
+                      onTap: () {
+                        openUrl(
+                          url: "${logic.product.value?.url}",
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              visible: logic.product.value?.url != ''),
+          SizedBox(
+            height: 0.015.sh,
+          ),
         ],
       ),
     );
