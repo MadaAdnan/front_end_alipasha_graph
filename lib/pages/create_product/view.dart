@@ -857,6 +857,7 @@ class CreateProductPage extends StatelessWidget {
                               logic.subCategory.value!.children?.toList() ?? [];
                           return Container(
                             child: FormBuilderDropdown<CategoryModel>(
+
                               validator: FormBuilderValidators.required(
                                   errorText: 'يرجى تحديد الفرعي 2',
                                   checkNullOrEmpty: true),
@@ -975,7 +976,7 @@ class CreateProductPage extends StatelessWidget {
                                         ]),
                                   );
                                 } else if (attr.type == 'multiple') {
-                                  return FormBuilderFilterChip(
+                                  return FormBuilderFilterChips(
                                     labelStyle: H3BlackTextStyle,
                                     alignment: WrapAlignment.spaceEvenly,
                                     crossAxisAlignment:

@@ -652,7 +652,7 @@ class EditJobPage extends StatelessWidget {
                                         ]),
                                   );
                                 } else if (attr.type == 'multiple') {
-                                  return FormBuilderFilterChip(
+                                  return FormBuilderFilterChips(
                                     onChanged: (values) {
                                       if (values != null) {
                                         logic.options.value[attr.id!] = values;

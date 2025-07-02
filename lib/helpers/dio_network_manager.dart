@@ -51,8 +51,7 @@ class NetworkManager {
         store: MemCacheStore(),
         // يمكن تخزين البيانات مؤقتًا في الذاكرة
         policy: CachePolicy.forceCache,
-        // سيتم استخدام التخزين المؤقت دائمًا دون عمليات تحقق
-        hitCacheOnErrorExcept: [
+hitCacheOnErrorCodes: [
           401,
           403
         ], // سيتم استخدام التخزين المؤقت في حالة الأخطاء إلا في حالات محددة

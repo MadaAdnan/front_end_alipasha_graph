@@ -19,7 +19,10 @@ import 'firebase_options.dart';
 /// https://www.figma.com/design/px6a4uJqQMFINZtOZtSPDP/ali-pasha-home?node-id=0-1&t=VcJBc4HEx3FehtIf-1
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  if(Firebase.apps.isEmpty){
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  }
+
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   final appLinks = AppLinks(); // AppLinks is singleton
   OneSignal.Debug.setLogLevel(OSLogLevel.verbose);

@@ -280,7 +280,8 @@ height: 1.sh,
                       Container(
                         width: 1.sw,
                         height: 0.08.sh,
-                        child: FormBuilderChoiceChip(
+                        /*
+                        * FormBuilderFilterChip(
                           options: [
                             FormBuilderChipOption(
                               value: 'job',
@@ -311,6 +312,59 @@ height: 1.sh,
                           labelStyle: H4WhiteTextStyle,
 
                           alignment: WrapAlignment.spaceAround,
+                          decoration: InputDecoration(
+                            errorStyle: H5RedTextStyle,
+                            contentPadding: EdgeInsets.zero,
+                            floatingLabelStyle: H3BlackTextStyle,
+                            label: RichText(
+                              text: TextSpan(children: [
+                                TextSpan(
+                                    text: 'نوع المنشور ', style: H4GrayTextStyle),
+                                TextSpan(text: '*', style: H3RedTextStyle),
+                              ]),
+                            ),
+                            labelStyle: H4GrayTextStyle,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15.r),
+                            ),
+                          ),
+                        )
+                        * */
+                        child:FormBuilderDropdown(
+                          items: [
+                            DropdownMenuItem(child: Text(
+                              'شاغر وظيفي',
+                              style: H3BlackTextStyle,
+                            ),value:'job' ,),
+                            DropdownMenuItem(child: Text(
+                              'أبحث عن وظيفة',
+                              style: H3BlackTextStyle,
+                            ),value:'search_job' ,)
+                          ],
+                         /* options: [
+                            FormBuilderChipOption(
+                              value: 'job',
+                              child: Text(
+                                'شاغر وظيفي',
+                                style: H3BlackTextStyle,
+                              ),
+                            ),
+                            FormBuilderChipOption(
+                              value: 'search_job',
+                              child: Text(
+                                'أبحث عن وظيفة',
+                                style: H3BlackTextStyle,
+                              ),
+                            ),
+                          ],*/
+                          name: 'type',
+                          validator: FormBuilderValidators.required(
+                              errorText: 'يرجى إختيار نوع المنشور',
+                              checkNullOrEmpty: true),
+                          initialValue: logic.typeProduct.value,
+                          onChanged: (value) {
+                            logic.typeProduct.value = value;
+                          },
                           decoration: InputDecoration(
                             errorStyle: H5RedTextStyle,
                             contentPadding: EdgeInsets.zero,
@@ -744,7 +798,7 @@ height: 1.sh,
                                             ]),
                                       );
                                     } else if (attr.type == 'multiple') {
-                                      return FormBuilderFilterChip(
+                                      return FormBuilderFilterChips(
                                         onChanged: (values) {
                                           if (values != null) {
                                             logic.options.value[attr.id!] = values;

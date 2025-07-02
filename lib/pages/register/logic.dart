@@ -74,7 +74,7 @@ class RegisterLogic extends GetxController {
   }
 
   Future registerGoogel() async {
-    Map<String, String>? user = await GoogleAuth.signin();
+    Map<String, String>? user = await GoogleAuth.signIn();
     if (user == null) {
       return;
     }
