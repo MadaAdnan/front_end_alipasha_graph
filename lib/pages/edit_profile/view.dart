@@ -15,6 +15,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
+import 'package:form_builder_phone_field/form_builder_phone_field.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -31,7 +32,7 @@ class EditProfilePage extends StatelessWidget {
   EditProfilePage({Key? key}) : super(key: key);
 
   final logic = Get.find<EditProfileLogic>();
-  GlobalKey<FormState> state = GlobalKey<FormState>();
+  GlobalKey<FormBuilderState> state = GlobalKey<FormBuilderState>();
   RxBool isScure = true.obs;
   RxBool isScureConfirm = true.obs;
   MainController mainController = Get.find<MainController>();
@@ -222,58 +223,102 @@ class EditProfilePage extends StatelessWidget {
                       },
                     ),
                     InputComponent(
-                        name: 'email',
-                        isRequired: true,
-                        width: 1.sw,
-                        radius: 30.r,
-                        hint: 'البريد الإلكتروني',
-                        enabled: false,
-                        controller: logic.emailController,
-                        fill: GrayLightColor,
-                        textInputType: TextInputType.emailAddress,
-                        validation: (text) {
-                          if (text == '' || text == null) {
-                            return "البريد الإلكتروني مطلوب";
-                          } else if (!text.isEmail) {
-                            return "يرجى كتابة بريد إلكتروني صحيح";
-                          }
-                          return null;
-                        }),
-                    InputComponent(
-                        name: 'phone',
-                        isRequired: true,
-                        width: 1.sw,
-                        radius: 30.r,
-                        hint: 'رقم الهاتف مع رمز الدولة',
-                        hint2: '963966047550',
-                        helperText: 'أدخل رقم الهاتف مع رمز الدولة بدون + أو 00',
-                        controller: logic.phoneController,
-                        fill: WhiteColor,
-                        textInputType: TextInputType.phone,
-                        validation: (text) {
-                          if (text == '' || text == null) {
-                            return "رقم الهاتف مطلوب";
-                          } else if (text.startsWith('+')) {
-                            return 'يرجى عدم إدخال اي رمز غير الأرقام';
-                          } else if (text.startsWith('00')) {
-                            return 'يرجى حذف 00  من بداية الرقم';
-                          }
-                          return null;
-                        }),
+                      name: 'email',
+                      isRequired: true,
+                      width: 1.sw,
+                      radius: 30.r,
+                      hint: 'البريد الإلكتروني',
+                      enabled: false,
+                      controller: logic.emailController,
+                      fill: GrayLightColor,
+                      textInputType: TextInputType.emailAddress,
+                      /*validation:FormBuilderValidators.compose([
+                          FormBuilderValidators.required(
+                              errorText: 'يرجى إدخال بريد إلكتروني'),
+                          FormBuilderValidators.match(
+                            RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'),
+                            errorText:
+                            'يرجى إدخال بريد إلكتروني صالح',
+                          ),
+                        ])*/
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 0.2.sw,
+                          height: 0.06.sh,
+                          decoration: BoxDecoration(
+                              border: Border.all(color: GrayDarkColor)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 0.09.sw,
+                                height: 0.08.sh,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: AssetImage(
+                                          'assets/images/png/syr.png')),
+                                ),
+                              ),
+                              Text('+963'),
+                            ],
+                          ),
+                        ),
+                        Container(
+                            width: 0.75.sw,
+                            child: FormBuilderTextField(
+                              controller: logic.phoneController,
+                              name: 'phone',
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(
+                                    errorText: 'يرجى إدخال رقم الهاتف'),
+                                FormBuilderValidators.match(
+                                  RegExp(r'^9\d{8}$'),
+                                  errorText:
+                                      'الرقم يجب أن يبدأ بـ 9 ويتبعه 8 أرقام (مثل: 912345678)',
+                                ),
+                              ]),
+                              decoration: InputDecoration(
+                                hintText: '966047550',
+                                labelText: 'رقم هاتف سوري',
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(color: GrayDarkColor),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: GrayDarkColor),
+                                ),
+                              ),
+                            )
+                            /*
+                         * */
+                            )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 0.01.sh,
+                    ),
                     InputComponent(
                         name: 'affiliate',
                         isRequired: false,
                         enabled: true,
                         suffixIcon: FontAwesomeIcons.copy,
-                        suffixClick: ()async{
-                         await Clipboard.setData(ClipboardData(text: "${mainController.authUser.value?.affiliate}"));
-                         mainController.showToast(text: 'تم نسخ كود الإحالة',type: 'success');
-                         return "";
+                        suffixClick: () async {
+                          await Clipboard.setData(ClipboardData(
+                              text:
+                                  "${mainController.authUser.value?.affiliate}"));
+                          mainController.showToast(
+                              text: 'تم نسخ كود الإحالة', type: 'success');
+                          return "";
                         },
                         width: 1.sw,
                         radius: 30.r,
                         hint: 'كود الإحالة',
-                        controller: TextEditingController(text: mainController.authUser.value?.affiliate),
+                        controller: TextEditingController(
+                            text: mainController.authUser.value?.affiliate),
                         fill: WhiteColor,
                         textInputType: TextInputType.phone,
                         validation: (text) {
@@ -286,67 +331,66 @@ class EditProfilePage extends StatelessWidget {
                           }
                           return null;
                         }),
-
                     Obx(() {
-                        return Container(
-                          child: FormBuilderDropdown<CityModel>(
-                              validator: FormBuilderValidators.required(
-                                  errorText: "يرجى تحديد المحافظة"),
-                              name: 'city_id',
-                              initialValue:mainController.mainCities.where((el)=>el.id==mainController.authUser.value?.city?.id).firstOrNull ,
-                              onChanged: (value){
-                                logic.city.value = value;
-                                // logic.area.value=value?.children?.first;
-
-                              }
-                              ,
-                              decoration: InputDecoration(
-                                label: RichText(
-                                  text: TextSpan(children: [
-                                    TextSpan(
-                                        text: 'المحافظة', style: H4GrayTextStyle),
-                                    TextSpan(text: ' * ', style: H3RedTextStyle),
-                                  ]),
-                                ),
-                                border: OutlineInputBorder(
-                                  borderSide:
-                                  const BorderSide(color: GrayDarkColor),
-                                  borderRadius: BorderRadius.circular(30.r),
-                                ),
-                                contentPadding:
-                                EdgeInsets.symmetric(horizontal: 0.02.sw),
+                      return Container(
+                        child: FormBuilderDropdown<CityModel>(
+                            validator: FormBuilderValidators.required(
+                                errorText: "يرجى تحديد المحافظة"),
+                            name: 'city_id',
+                            initialValue: mainController.mainCities
+                                .where((el) =>
+                                    el.id ==
+                                    mainController.authUser.value?.city?.id)
+                                .firstOrNull,
+                            onChanged: (value) {
+                              logic.city.value = value;
+                              // logic.area.value=value?.children?.first;
+                            },
+                            decoration: InputDecoration(
+                              label: RichText(
+                                text: TextSpan(children: [
+                                  TextSpan(
+                                      text: 'المحافظة', style: H4GrayTextStyle),
+                                  TextSpan(text: ' * ', style: H3RedTextStyle),
+                                ]),
                               ),
-                              items: [
-                                ...List.generate(
-                                  mainController.mainCities.length,
-                                      (index) {
-
-                                    return  DropdownMenuItem<CityModel>(
-                                      value: mainController.mainCities[index],
-                                      child: Text(
-                                        '${mainController.mainCities[index].name}',
-                                        style: H3GrayTextStyle,
-                                      ),
-                                    );
-                                  },
-                                )
-                              ]),
-                        );
-
-
+                              border: OutlineInputBorder(
+                                borderSide:
+                                    const BorderSide(color: GrayDarkColor),
+                                borderRadius: BorderRadius.circular(30.r),
+                              ),
+                              contentPadding:
+                                  EdgeInsets.symmetric(horizontal: 0.02.sw),
+                            ),
+                            items: [
+                              ...List.generate(
+                                mainController.mainCities.length,
+                                (index) {
+                                  return DropdownMenuItem<CityModel>(
+                                    value: mainController.mainCities[index],
+                                    child: Text(
+                                      '${mainController.mainCities[index].name}',
+                                      style: H3GrayTextStyle,
+                                    ),
+                                  );
+                                },
+                              )
+                            ]),
+                      );
                     }),
                     SizedBox(
                       height: 0.01.sh,
                     ),
                     Obx(() {
-                      CityModel? currentCity=null;
-                      if(logic.city.value!=null){
-                        int index=logic.city.value!.children!.indexWhere((el)=>el.id==logic.user.value?.area?.id);
-                        if(index>-1){
-                          currentCity=logic.city.value!.children![index];
+                      CityModel? currentCity = null;
+                      if (logic.city.value != null) {
+                        int index = logic.city.value!.children!.indexWhere(
+                            (el) => el.id == logic.user.value?.area?.id);
+                        if (index > -1) {
+                          currentCity = logic.city.value!.children![index];
                         }
                       }
-                      if(logic.city.value!=null){
+                      if (logic.city.value != null) {
                         return Container(
                           child: FormBuilderDropdown<CityModel>(
                               validator: FormBuilderValidators.required(
@@ -358,23 +402,27 @@ class EditProfilePage extends StatelessWidget {
                                 label: RichText(
                                   text: TextSpan(children: [
                                     TextSpan(
-                                        text: 'المدينة', style: H4GrayTextStyle),
-                                    TextSpan(text: ' * ', style: H3RedTextStyle),
+                                        text: 'المدينة',
+                                        style: H4GrayTextStyle),
+                                    TextSpan(
+                                        text: ' * ', style: H3RedTextStyle),
                                   ]),
                                 ),
                                 border: OutlineInputBorder(
                                   borderSide:
-                                  const BorderSide(color: GrayDarkColor),
+                                      const BorderSide(color: GrayDarkColor),
                                   borderRadius: BorderRadius.circular(30.r),
                                 ),
                                 contentPadding:
-                                EdgeInsets.symmetric(horizontal: 0.02.sw),
+                                    EdgeInsets.symmetric(horizontal: 0.02.sw),
                               ),
                               items: [
                                 ...List.generate(
-                                  logic.city.value?.children?.length!=null?logic.city.value!.children!.length:0,
-                                      (index) => DropdownMenuItem<CityModel>(
-                                    value:logic.city.value?.children?[index] ,
+                                  logic.city.value?.children?.length != null
+                                      ? logic.city.value!.children!.length
+                                      : 0,
+                                  (index) => DropdownMenuItem<CityModel>(
+                                    value: logic.city.value?.children?[index],
                                     child: Text(
                                       '${logic.city.value?.children?[index].name}',
                                       style: H3GrayTextStyle,
@@ -389,7 +437,6 @@ class EditProfilePage extends StatelessWidget {
                             validator: FormBuilderValidators.required(
                                 errorText: "يرجى تحديد المدينة"),
                             name: 'area_id',
-
                             decoration: InputDecoration(
                               label: RichText(
                                 text: TextSpan(children: [
@@ -400,17 +447,14 @@ class EditProfilePage extends StatelessWidget {
                               ),
                               border: OutlineInputBorder(
                                 borderSide:
-                                const BorderSide(color: GrayDarkColor),
+                                    const BorderSide(color: GrayDarkColor),
                                 borderRadius: BorderRadius.circular(30.r),
                               ),
                               contentPadding:
-                              EdgeInsets.symmetric(horizontal: 0.02.sw),
+                                  EdgeInsets.symmetric(horizontal: 0.02.sw),
                             ),
-                            items: [
-
-                            ]),
+                            items: []),
                       );
-
                     }),
                     SizedBox(
                       height: 0.02.sh,
@@ -421,7 +465,8 @@ class EditProfilePage extends StatelessWidget {
                         width: 1.sw,
                         radius: 30.r,
                         hint: 'العنوان التفصيلي',
-                        helperText: 'مثال : دمشق - ساحة المرجة - جانب حلويات أمية',
+                        helperText:
+                            'مثال : دمشق - ساحة المرجة - جانب حلويات أمية',
                         controller: logic.addressController,
                         fill: WhiteColor,
                         textInputType: TextInputType.text,
@@ -1224,7 +1269,7 @@ class EditProfilePage extends StatelessWidget {
                                           suffixIcon: isScure.value
                                               ? FontAwesomeIcons.eyeSlash
                                               : FontAwesomeIcons.eye,
-                                          suffixClick: () async{
+                                          suffixClick: () async {
                                             isScure.value = !isScure.value;
                                             return "";
                                           },
@@ -1250,7 +1295,7 @@ class EditProfilePage extends StatelessWidget {
                                           suffixIcon: isScureConfirm.value
                                               ? FontAwesomeIcons.eyeSlash
                                               : FontAwesomeIcons.eye,
-                                          suffixClick: ()async {
+                                          suffixClick: () async {
                                             isScureConfirm.value =
                                                 !isScureConfirm.value;
                                             return " ";
@@ -1375,7 +1420,11 @@ class EditProfilePage extends StatelessWidget {
           Container(
             alignment: Alignment.center,
             child: InkWell(
-              onTap: () => logic.saveData(),
+              onTap: () {
+                if (state.currentState!.validate()) {
+                  logic.saveData();
+                }
+              },
               child: Container(
                   width: 1.sw,
                   height: 0.06.sh,

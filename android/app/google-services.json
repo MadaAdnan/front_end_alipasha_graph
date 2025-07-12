@@ -2,7 +2,7 @@
   "project_info": {
     "project_number": "890729410482",
     "project_id": "alipasha-e8c82",
-    "storage_bucket": "alipasha-e8c82.appspot.com"
+    "storage_bucket": "alipasha-e8c82.firebasestorage.app"
   },
   "client": [
     {
@@ -12,7 +12,20 @@
           "package_name": "com.mada.company.ali.basha"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "890729410482-3eal3sc8jn51ejp3n2fnl4k2b6nj9oo6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mada.company.ali.basha",
+            "certificate_hash": "6b70609c543b94aea2dc27a9841ab23cfffa3e2f"
+          }
+        },
+        {
+          "client_id": "890729410482-v6ns5ghs09md1o06al2qq31233tksm4f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDWsvsJcLEnBhCIvAjzRgpL7nz9B_X77ME"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "890729410482-v6ns5ghs09md1o06al2qq31233tksm4f.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "890729410482-ad9sjsk4bu3vslij5p9eihmj96mo26am.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mada.company.ali.basha"
+              }
+            }
+          ]
         }
       }
     }

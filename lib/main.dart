@@ -20,7 +20,7 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if(Firebase.apps.isEmpty){
-    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+     await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   }
 
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;

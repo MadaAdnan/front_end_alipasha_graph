@@ -68,7 +68,7 @@ class EditProfileLogic extends GetxController {
         emailController.value =
             TextEditingValue(text: "${user.value!.email }");
         phoneController.value =
-            TextEditingValue(text: "${user.value!.phone }");
+            TextEditingValue(text: "${user.value!.phone}".replaceFirst('963', ''));
         addressController.value =
             TextEditingValue(text: "${user.value!.address }");
         sellerNameController.value =

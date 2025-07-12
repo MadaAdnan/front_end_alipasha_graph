@@ -547,7 +547,7 @@ height: 1.sh,
                         ),
                       ),
                       30.verticalSpace,
-                      Container(
+                     /* Container(
                         width: 1.sw,
                         height: 0.08.sh,
                         child: FormBuilderTextField(
@@ -562,7 +562,7 @@ height: 1.sh,
                               text: TextSpan(children: [
                                 TextSpan(
                                     text: ' رقم الهاتف ', style: H4GrayTextStyle),
-                                /* TextSpan(text: '*', style: H3RedTextStyle),*/
+                                *//* TextSpan(text: '*', style: H3RedTextStyle),*//*
                               ]),
                             ),
                             labelStyle: H4GrayTextStyle,
@@ -571,7 +571,66 @@ height: 1.sh,
                             ),
                           ),
                         ),
+                      ),*/
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                              width: 0.75.sw,
+                              alignment: Alignment.centerLeft,
+                              child: FormBuilderTextField(
+                                controller: logic.phoneController,
+                                name: 'phone',
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(
+                                      errorText: 'يرجى إدخال رقم الهاتف'),
+                                  FormBuilderValidators.match(
+                                    RegExp(r'^9\d{8}$'),
+                                    errorText:
+                                    'الرقم يجب أن يبدأ بـ 9 ويتبعه 8 أرقام (مثل: 9xxxxxxxx)',
+                                  ),
+                                ]),
+                                textAlign: TextAlign.left,
+                                decoration: InputDecoration(
+                                  hintText: '9xxxxxxxx',
+                                  hintStyle: H4GrayOpacityTextStyle,
+                                  labelText: 'رقم هاتف سوري',
+                                  border: OutlineInputBorder(
+                                    borderSide:
+                                    BorderSide(color: GrayDarkColor),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide:
+                                    BorderSide(color: GrayDarkColor),
+                                  ),
+                                ),
+                              )),
+                          Container(
+                            width: 0.2.sw,
+                            height: 0.06.sh,
+                            decoration: BoxDecoration(
+                                border: Border.all(color: GrayDarkColor)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text('+963'),
+                                Container(
+                                  width: 0.09.sw,
+                                  height: 0.08.sh,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: AssetImage(
+                                            'assets/images/png/syr.png')),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
+
                       30.verticalSpace,
 
                       Obx(() {

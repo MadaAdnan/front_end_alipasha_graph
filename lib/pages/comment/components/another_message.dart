@@ -161,6 +161,7 @@ class AnotherMessage extends StatelessWidget {
                                     ),
                                   ),
                                 ),
+                              SizedBox(width: 0.3.sw,),
                               Row(
                                 children: [
                                   Text(

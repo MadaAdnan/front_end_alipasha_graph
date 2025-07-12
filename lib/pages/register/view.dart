@@ -203,7 +203,7 @@ class RegisterPage extends StatelessWidget {
                       SizedBox(
                         height: 0.02.sh,
                       ),
-                      FormBuilderTextField(
+                      /* FormBuilderTextField(
                         style: H3RegularDark,
                         controller: logic.phoneController,
                         validator: FormBuilderValidators.compose([
@@ -233,6 +233,67 @@ class RegisterPage extends StatelessWidget {
                             helperText:
                                 "أدخل رقم الهاتف مع رمز الدولة بدون + أو 00",
                             helperStyle: H6RedTextStyle),
+                      ),*/
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                              width: 0.75.sw,
+                              alignment: Alignment.centerLeft,
+                              child: FormBuilderTextField(
+                                controller: logic.phoneController,
+                                name: 'phone',
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(
+                                      errorText: 'يرجى إدخال رقم الهاتف'),
+                                  FormBuilderValidators.match(
+                                    RegExp(r'^9\d{8}$'),
+                                    errorText:
+                                        'الرقم يجب أن يبدأ بـ 9 ويتبعه 8 أرقام (مثل: 9xxxxxxxx)',
+                                  ),
+                                ]),
+                                textAlign: TextAlign.left,
+                                decoration: InputDecoration(
+                                  hintText: '9xxxxxxxx',
+                                  hintStyle: H4GrayOpacityTextStyle,
+                                  labelText: 'رقم هاتف سوري',
+                                  border: OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: GrayDarkColor),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: GrayDarkColor),
+                                  ),
+                                ),
+                              )),
+                          Container(
+                            width: 0.2.sw,
+                            height: 0.06.sh,
+                            decoration: BoxDecoration(
+                                border: Border.all(color: GrayDarkColor)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text('+963'),
+                                Container(
+                                  width: 0.09.sw,
+                                  height: 0.08.sh,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: AssetImage(
+                                            'assets/images/png/syr.png')),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 0.01.sh,
                       ),
                       Obx(() {
                         return Visibility(
@@ -250,7 +311,8 @@ class RegisterPage extends StatelessWidget {
                       ),
                       FormBuilderDropdown(
                           name: 'mainCity',
-                          validator: FormBuilderValidators.required(errorText: 'يرجى تحديد المحافظة'),
+                          validator: FormBuilderValidators.required(
+                              errorText: 'يرجى تحديد المحافظة'),
                           decoration: InputDecoration(
                             suffixIcon: Icon(FontAwesomeIcons.city),
                             border: OutlineInputBorder(
@@ -278,59 +340,59 @@ class RegisterPage extends StatelessWidget {
                       SizedBox(
                         height: 0.02.sh,
                       ),
-                       Obx((){
-                         if(logic.mainCitySelected.value!=null){
-                           return FormBuilderDropdown(
-                               name: 'city',
-                               validator: FormBuilderValidators.required(errorText: 'يرجى تحديد المدينة'),
-                               decoration: InputDecoration(
-                                 suffixIcon: Icon(FontAwesomeIcons.city),
-                                 border: OutlineInputBorder(
-                                     borderRadius: BorderRadius.circular(30.r),
-                                     borderSide:
-                                     BorderSide(color: GrayLightColor)),
-                                 label: Text(
-                                   'المدينة',
-                                   style: H3RegularDark,
-                                 ),
-                               ),
-                               onChanged: (value) {
-                                 logic.citySelected.value = value;
-                               },
-                               items: mainController.mainCities
-                                   .where((el) =>
-                               el.id == logic.mainCitySelected.value)
-                                   .first
-                                   .children!
-                                   .map(
-                                     (city) => DropdownMenuItem(
-                                   value: city.id,
-                                   child: Text(
-                                     '${city.name}',
-                                     style: H3RegularDark,
-                                   ),
-                                 ),
-                               )
-                                   .toList());
-                         }
-                         return FormBuilderDropdown(
-                             name: 'city',
-                             validator: FormBuilderValidators.required(errorText: 'يرجى تحديد المدينة'),
-                             decoration: InputDecoration(
-                               suffixIcon: Icon(FontAwesomeIcons.city),
-                               border: OutlineInputBorder(
-                                   borderRadius: BorderRadius.circular(30.r),
-                                   borderSide:
-                                   BorderSide(color: GrayLightColor)),
-                               label: Text(
-                                 'المدينة',
-                                 style: H3RegularDark,
-                               ),
-                             ),
-
-                             items: []);
-                       }),
-
+                      Obx(() {
+                        if (logic.mainCitySelected.value != null) {
+                          return FormBuilderDropdown(
+                              name: 'city',
+                              validator: FormBuilderValidators.required(
+                                  errorText: 'يرجى تحديد المدينة'),
+                              decoration: InputDecoration(
+                                suffixIcon: Icon(FontAwesomeIcons.city),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30.r),
+                                    borderSide:
+                                        BorderSide(color: GrayLightColor)),
+                                label: Text(
+                                  'المدينة',
+                                  style: H3RegularDark,
+                                ),
+                              ),
+                              onChanged: (value) {
+                                logic.citySelected.value = value;
+                              },
+                              items: mainController.mainCities
+                                  .where((el) =>
+                                      el.id == logic.mainCitySelected.value)
+                                  .first
+                                  .children!
+                                  .map(
+                                    (city) => DropdownMenuItem(
+                                      value: city.id,
+                                      child: Text(
+                                        '${city.name}',
+                                        style: H3RegularDark,
+                                      ),
+                                    ),
+                                  )
+                                  .toList());
+                        }
+                        return FormBuilderDropdown(
+                            name: 'city',
+                            validator: FormBuilderValidators.required(
+                                errorText: 'يرجى تحديد المدينة'),
+                            decoration: InputDecoration(
+                              suffixIcon: Icon(FontAwesomeIcons.city),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(30.r),
+                                  borderSide:
+                                      BorderSide(color: GrayLightColor)),
+                              label: Text(
+                                'المدينة',
+                                style: H3RegularDark,
+                              ),
+                            ),
+                            items: []);
+                      }),
                       Obx(() {
                         return Visibility(
                             visible: logic.errorCity.value != null,
@@ -352,8 +414,8 @@ class RegisterPage extends StatelessWidget {
                           FormBuilderValidators.required(
                               errorText: "العنوان التفصيلي مطلوب"),
                           FormBuilderValidators.minLength(15,
-                              errorText: "يجب أن يكون العنوان من 15 حرف على الأقل"),
-
+                              errorText:
+                                  "يجب أن يكون العنوان من 15 حرف على الأقل"),
                         ]),
                         name: 'address',
                         keyboardType: TextInputType.text,
@@ -367,7 +429,7 @@ class RegisterPage extends StatelessWidget {
                               style: H3RegularDark,
                             ),
                             helperText:
-                            "مثال : سرمدا دوار السيارات جانب كازية كاف",
+                                "مثال : سرمدا دوار السيارات جانب كازية كاف",
                             helperStyle: H6RegularDark),
                       ),
                       SizedBox(
@@ -403,7 +465,6 @@ class RegisterPage extends StatelessWidget {
                             logic.clearError();
 
                             if (_form.currentState!.validate()) {
-
                               logic.register();
                             }
                           },

@@ -52,7 +52,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '890729410482',
     projectId: 'alipasha-e8c82',
     authDomain: 'alipasha-e8c82.firebaseapp.com',
-    storageBucket: 'alipasha-e8c82.appspot.com',
+    storageBucket: 'alipasha-e8c82.firebasestorage.app',
     measurementId: 'G-91253HTJJ4',
   );
 
@@ -61,7 +61,7 @@ class DefaultFirebaseOptions {
     appId: '1:890729410482:android:cdc056e86d7e67b7b17eab',
     messagingSenderId: '890729410482',
     projectId: 'alipasha-e8c82',
-    storageBucket: 'alipasha-e8c82.appspot.com',
+    storageBucket: 'alipasha-e8c82.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
@@ -69,7 +69,10 @@ class DefaultFirebaseOptions {
     appId: '1:890729410482:ios:1b06492a8f41d9cfb17eab',
     messagingSenderId: '890729410482',
     projectId: 'alipasha-e8c82',
-    storageBucket: 'alipasha-e8c82.appspot.com',
+    storageBucket: 'alipasha-e8c82.firebasestorage.app',
+    androidClientId: '890729410482-3eal3sc8jn51ejp3n2fnl4k2b6nj9oo6.apps.googleusercontent.com',
+    iosClientId: '890729410482-ad9sjsk4bu3vslij5p9eihmj96mo26am.apps.googleusercontent.com',
     iosBundleId: 'com.mada.company.ali.basha',
   );
+
 }
