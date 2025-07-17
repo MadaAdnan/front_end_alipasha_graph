@@ -365,7 +365,7 @@ class CreateProductPage extends StatelessWidget {
                                 child: Column(
                                   children: [
                                     Text(
-                                      'إشتراك بخدمة شحن علي باشا',
+                                      'خدمة الشحن',
                                       style: H4BlackTextStyle,
                                     ),
                                     Switch(

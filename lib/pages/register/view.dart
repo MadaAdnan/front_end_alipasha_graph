@@ -203,92 +203,79 @@ class RegisterPage extends StatelessWidget {
                       SizedBox(
                         height: 0.02.sh,
                       ),
-                      /* FormBuilderTextField(
-                        style: H3RegularDark,
-                        controller: logic.phoneController,
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(
-                              errorText: "رقم الهاتف مطلوب"),
-                          (value) {
-                            if (value!.startsWith("+")) {
-                              return "يرجى إزالة علامة +  من بداية رقم الهاتف";
-                            }
-                            if (value.startsWith("00")) {
-                              return "يرجى إزالة علامة 00  من بداية رقم الهاتف";
-                            }
-                            return null;
-                          }
-                        ]),
-                        name: 'phone',
-                        keyboardType: TextInputType.phone,
-                        decoration: InputDecoration(
-                            suffixIcon: Icon(FontAwesomeIcons.mobileScreen),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30.r),
-                                borderSide: BorderSide(color: GrayLightColor)),
-                            label: Text(
-                              'رقم الهاتف : 963966047550',
-                              style: H3RegularDark,
-                            ),
-                            helperText:
-                                "أدخل رقم الهاتف مع رمز الدولة بدون + أو 00",
-                            helperStyle: H6RedTextStyle),
-                      ),*/
+                      // Phone
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
-                              width: 0.75.sw,
-                              alignment: Alignment.centerLeft,
-                              child: FormBuilderTextField(
-                                controller: logic.phoneController,
-                                name: 'phone',
-                                validator: FormBuilderValidators.compose([
-                                  FormBuilderValidators.required(
-                                      errorText: 'يرجى إدخال رقم الهاتف'),
-                                  FormBuilderValidators.match(
-                                    RegExp(r'^9\d{8}$'),
-                                    errorText:
-                                        'الرقم يجب أن يبدأ بـ 9 ويتبعه 8 أرقام (مثل: 9xxxxxxxx)',
-                                  ),
-                                ]),
-                                textAlign: TextAlign.left,
-                                decoration: InputDecoration(
-                                  hintText: '9xxxxxxxx',
-                                  hintStyle: H4GrayOpacityTextStyle,
-                                  labelText: 'رقم هاتف سوري',
-                                  border: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: GrayDarkColor),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: GrayDarkColor),
-                                  ),
+                            width: 0.65.sw,
+                            alignment: Alignment.centerLeft,
+                            child: FormBuilderTextField(
+                              controller: logic.phoneController,
+                              name: 'phone',
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(
+                                    errorText: 'يرجى إدخال رقم الهاتف'),
+                                FormBuilderValidators.match(
+                                  RegExp(r'^9\d{8}$'),
+                                  errorText:
+                                      'الرقم يجب أن يبدأ بـ 9 ويتبعه 8 أرقام (مثل: 9xxxxxxxx)',
                                 ),
-                              )),
-                          Container(
-                            width: 0.2.sw,
-                            height: 0.06.sh,
-                            decoration: BoxDecoration(
-                                border: Border.all(color: GrayDarkColor)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text('+963'),
-                                Container(
-                                  width: 0.09.sw,
-                                  height: 0.08.sh,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            'assets/images/png/syr.png')),
-                                  ),
+                              ]),
+                              textAlign: TextAlign.left,
+                              decoration: InputDecoration(
+                                hintText: '9xxxxxxxx',
+                                hintStyle: H4GrayOpacityTextStyle,
+                                labelText: 'رقم الهاتف',
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(color: GrayDarkColor),
                                 ),
-                              ],
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: GrayDarkColor),
+                                ),
+                              ),
                             ),
+                          ),
+                          Container(
+                            width: 0.29.sw,
+                            height: 0.06.sh,
+                            child: FormBuilderDropdown<String>(
+                                decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: DarkColor))),
+                                name: 'country',
+                                initialValue: '963',
+                                onChanged: (String? value) {
+                                  logic.phoneCode.value = value;
+                                },
+                                items: mainController.countries
+                                    .map(
+                                      (country) => DropdownMenuItem<String>(
+                                          value: "${country.code}",
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                "${country.code} ",
+                                                style: H4BlackTextStyle,
+                                              ),
+                                              Container(
+                                                width: 0.1.sw,
+                                                height: 0.05.sw,
+                                                decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                        image: NetworkImage(
+                                                            "${country.img}"))),
+                                              )
+                                            ],
+                                          )),
+                                    )
+                                    .toList()),
                           ),
                         ],
                       ),

@@ -201,7 +201,7 @@ class ProductPage extends StatelessWidget {
                                         .settings.value.support!.id!,
                                     message:
                                         ''' السلام عليكم ورحمة الله وبركاته 
-                            إبلاغ  عن المنتج ${logic.product.value?.name} #${logic.product.value?.id}''');
+                            إبلاغ  عن منشور ${logic.product.value?.name} #${logic.product.value?.id}''');
                               } else {
                                 openUrl(
                                     url:
@@ -291,7 +291,7 @@ class ProductPage extends StatelessWidget {
                                   width: 0.02.sw,
                                 ),
                                 Text(
-                                  "إبلاغ عن المنتج",
+                                  "إبلاغ عن المنشور",
                                   style: H3RegularDark,
                                 ),
                               ],

@@ -7,6 +7,7 @@ import 'package:ali_pasha_graph/helpers/queries.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:logger/logger.dart';
 
 import 'package:select2dot1/select2dot1.dart';
@@ -31,7 +32,7 @@ class RegisterLogic extends GetxController {
   RxnInt citySelected = RxnInt(null);
   RxnInt areaSelected = RxnInt(null);
   RxnInt mainCitySelected = RxnInt(null);
-
+RxnString phoneCode=RxnString('963');
   String? deviceToken;
 
   Rxn<SelectDataController> citiesController =  Rxn<SelectDataController>(SelectDataController(data: []));
@@ -131,7 +132,12 @@ mutation CreateGoogleUser {
       return;
     }
     loading.value = true;
-    mainController.query.value = '''
+
+
+    try {
+
+      mainController.logger.e("REGISTER");
+      mainController.query.value = '''
 mutation CreateUser {
     createUser(
         input: {
@@ -139,6 +145,7 @@ mutation CreateUser {
             email: "${emailController.text??''}"
             password: "${passwordController.text??''}"
             phone: "${phoneController.text??''}"
+            phone_code: "${phoneCode.value??''}"
             city_id: ${int.tryParse("${mainCitySelected.value}") ?? null}
             area_id: ${int.tryParse("${citySelected.value}") ?? null}
             device_token: "${deviceToken??''}"
@@ -155,11 +162,9 @@ mutation CreateUser {
 }
 
 ''';
-
-    try {
       dio.Response? res = await mainController.fetchData();
 
-      // mainController.logger.e(res?.data);
+       mainController.logger.e(res?.data);
       if (res?.data?['data']?['createUser']?['token'] != null) {
         await mainController.setToken(
             token: res?.data?['data']?['createUser']?['token'], isWrite: true);
@@ -190,8 +195,8 @@ mutation CreateUser {
           }
         });
       }
-    } on CustomException catch (e) {
-      print(e);
+    }  catch (e) {
+      mainController.logger.e(e);
     }
     loading.value = false;
   }

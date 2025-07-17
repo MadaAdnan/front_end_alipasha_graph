@@ -6,6 +6,7 @@ import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:get_storage/get_storage.dart';
 
 class VerifyEmailLogic extends GetxController {
   MainController mainController = Get.find<MainController>();
@@ -14,11 +15,12 @@ class VerifyEmailLogic extends GetxController {
 
   RxBool loading = RxBool(false);
   RxnString error = RxnString(null);
+  RxInt timer = RxInt(0);
 
   @override
   onInit() {
     super.onInit();
-   // mainController.logger.i(mainController.storage.read('token'));
+    // mainController.logger.i(mainController.storage.read('token'));
   }
 
   verify() async {
@@ -64,7 +66,7 @@ class VerifyEmailLogic extends GetxController {
           Get.offAndToNamed(HOME_PAGE);
         }
       }
-    } on CustomException catch (e) {
+    } catch (e) {
       print('Error $e');
     }
     loading.value = false;
@@ -85,14 +87,28 @@ class VerifyEmailLogic extends GetxController {
     ''';
     try {
       dio.Response? res = await mainController.fetchData();
-      mainController.logger.e(res?.data);
+      // mainController.logger.e(res?.data);
       if (res?.data?['errors']?[0]?['extensions'] != null) {
-        error.value = res?.data?['errors']?[0]?['extensions']?['debugMessage']??null;
+        error.value =
+            res?.data?['errors']?[0]?['extensions']?['debugMessage'] ?? null;
       }
       if (res?.data?['data']?['resendEmailVerify'] != null) {
-        Get.snackbar('', '',duration: Duration(seconds: 3),titleText: Center(child: Text('نجاح العملية',style: H3RedTextStyle,)),messageText: Center(child: Text('تم إعادة إرسال كود التفعيل',style: H3BlackTextStyle,)));
+        Get.snackbar('', '',
+            duration: Duration(seconds: 3),
+            titleText: Center(
+                child: Text(
+              'نجاح العملية',
+              style: H3RedTextStyle,
+            )),
+            messageText: Center(
+                child: Text(
+              'تم إعادة إرسال كود التفعيل',
+              style: H3BlackTextStyle,
+            )));
+        timer.value = 1;
+        Future.delayed(Duration(seconds: 30), () => timer.value = 0);
       }
-    } on CustomException catch (e) {
+    } catch (e) {
       print('Error $e');
     }
     loading.value = false;

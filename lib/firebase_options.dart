@@ -25,15 +25,9 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -73,6 +67,27 @@ class DefaultFirebaseOptions {
     androidClientId: '890729410482-3eal3sc8jn51ejp3n2fnl4k2b6nj9oo6.apps.googleusercontent.com',
     iosClientId: '890729410482-ad9sjsk4bu3vslij5p9eihmj96mo26am.apps.googleusercontent.com',
     iosBundleId: 'com.mada.company.ali.basha',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyA4svvzeR9jvLFxaqLAC5JfmizwwT2BM9w',
+    appId: '1:890729410482:ios:8e15d4fcf135bb8fb17eab',
+    messagingSenderId: '890729410482',
+    projectId: 'alipasha-e8c82',
+    storageBucket: 'alipasha-e8c82.firebasestorage.app',
+    androidClientId: '890729410482-3eal3sc8jn51ejp3n2fnl4k2b6nj9oo6.apps.googleusercontent.com',
+    iosClientId: '890729410482-ei6bj7a3f1cmmufovriqfqqt6pkoooqi.apps.googleusercontent.com',
+    iosBundleId: 'com.mada.company.ali.basha.aliPashaGraph',
+  );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyB-PMTBuiJYu39iKYvZU2JTCLutdgEaR_8',
+    appId: '1:890729410482:web:0634a533cf1e239bb17eab',
+    messagingSenderId: '890729410482',
+    projectId: 'alipasha-e8c82',
+    authDomain: 'alipasha-e8c82.firebaseapp.com',
+    storageBucket: 'alipasha-e8c82.firebasestorage.app',
+    measurementId: 'G-PQ1E88D8H0',
   );
 
 }

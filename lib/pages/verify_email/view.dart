@@ -75,12 +75,24 @@ class VerifyEmailPage extends StatelessWidget {
                 );
               }),
               25.verticalSpace,
-              InkWell(
-                onTap: (){
-                  logic.resendVerifyCode();
-                },
-                child: Align(child: Text('أعد إرسال الرمز',style: H3BlackTextStyle,),alignment: Alignment.centerRight,),
-              )
+              Obx(() {
+                return Visibility(
+                  visible: logic.timer.value == 0 && !logic.loading.value,
+                  child: InkWell(
+                    onTap: () {
+                      logic.resendVerifyCode();
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 0.01.sh),
+                      child: Text(
+                        'أعد إرسال الرمز',
+                        style: H3BlackTextStyle,
+                      ),
+                      alignment: Alignment.centerRight,
+                    ),
+                  ),
+                );
+              })
             ],
           ),
         ),

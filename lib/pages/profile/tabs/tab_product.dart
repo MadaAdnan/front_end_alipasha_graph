@@ -1,4 +1,3 @@
-
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/components/product_components/minimize_details_product_component.dart';
 import 'package:ali_pasha_graph/components/product_components/minimize_details_product_component_loading.dart';
@@ -7,6 +6,7 @@ import 'package:ali_pasha_graph/pages/profile/logic.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 
@@ -33,10 +33,9 @@ class TabProduct extends StatelessWidget {
       },
       child: Column(
         children: [
-        
-          Obx(() {
 
-            if (logic.loadingProduct.value && logic.products.length==0) {
+          Obx(() {
+            if (logic.loadingProduct.value && logic.products.length == 0) {
               return Expanded(
                 child: ListView(
                   children: [
@@ -47,38 +46,88 @@ class TabProduct extends StatelessWidget {
                   ],
                 ),
               );
+            } else if (logic.products.length == 0) {
+              return   Container(
+                alignment: Alignment.center,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                        onTap: () {
+                          Get.toNamed(CREATE_PRODUCT_PAGE);
+                        },
+                        child: Icon(
+                          FontAwesomeIcons.plus,
+                          size: 0.09.sw,
+                          color: Colors.red,
+                        )),
+                    Text(
+                      'قم ببيع أول منتج',
+                      style: H3BlackTextStyle,
+                    )
+                  ],
+                ),
+              );
             }
             return Flexible(
-
               child: ListView.builder(
                 padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
                 itemBuilder: (context, index) {
                   switch (logic.products[index].type) {
                     case "service":
-                      return MinimizeDetailsServiceComponent(post: logic.products[index],TitleColor: DarkColor,canEdit: true,onClick: (){
-                        Get.toNamed(PRODUCT_PAGE,arguments:logic.products[index].id );
-                      },);
+                      return MinimizeDetailsServiceComponent(
+                        post: logic.products[index],
+                        TitleColor: DarkColor,
+                        canEdit: true,
+                        onClick: () {
+                          Get.toNamed(PRODUCT_PAGE,
+                              arguments: logic.products[index].id);
+                        },
+                      );
                     case "tender":
-                      return MinimizeDetailsTenderComponent(post: logic.products[index],TitleColor: DarkColor,canEdit: true,onClick: (){
-                        Get.toNamed(PRODUCT_PAGE,arguments:logic.products[index].id );
-                      },);
+                      return MinimizeDetailsTenderComponent(
+                        post: logic.products[index],
+                        TitleColor: DarkColor,
+                        canEdit: true,
+                        onClick: () {
+                          Get.toNamed(PRODUCT_PAGE,
+                              arguments: logic.products[index].id);
+                        },
+                      );
                     case "job":
                     case "search_job":
-                      return MinimizeDetailsJobComponent(post: logic.products[index],TitleColor: DarkColor,canEdit: true,onClick: (){
-                        Get.toNamed(PRODUCT_PAGE,arguments:logic.products[index].id );
-                      },);
+                      return MinimizeDetailsJobComponent(
+                        post: logic.products[index],
+                        TitleColor: DarkColor,
+                        canEdit: true,
+                        onClick: () {
+                          Get.toNamed(PRODUCT_PAGE,
+                              arguments: logic.products[index].id);
+                        },
+                      );
 
                     case "product":
-                     return MinimizeDetailsProductComponent(post: logic.products[index],TitleColor: DarkColor,canEdit: true,onClick: (){
-                       Get.toNamed(PRODUCT_PAGE,arguments:logic.products[index].id );
-                     },);
+                      return MinimizeDetailsProductComponent(
+                        post: logic.products[index],
+                        TitleColor: DarkColor,
+                        canEdit: true,
+                        onClick: () {
+                          Get.toNamed(PRODUCT_PAGE,
+                              arguments: logic.products[index].id);
+                        },
+                      );
 
                     default:
-                      return MinimizeDetailsServiceComponent(post: logic.products[index],TitleColor: DarkColor,onClick: (){
-                        Get.toNamed(PRODUCT_PAGE,arguments:logic.products[index].id );
-                      },);
+                      return MinimizeDetailsServiceComponent(
+                        post: logic.products[index],
+                        TitleColor: DarkColor,
+                        onClick: () {
+                          Get.toNamed(PRODUCT_PAGE,
+                              arguments: logic.products[index].id);
+                        },
+                      );
                   }
-
                 },
                 itemCount: logic.products.length,
               ),

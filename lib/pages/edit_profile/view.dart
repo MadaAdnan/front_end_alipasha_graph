@@ -247,55 +247,74 @@ class EditProfilePage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
-                          width: 0.2.sw,
-                          height: 0.06.sh,
-                          decoration: BoxDecoration(
-                              border: Border.all(color: GrayDarkColor)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 0.09.sw,
-                                height: 0.08.sh,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/png/syr.png')),
-                                ),
+                          width: 0.65.sw,
+                          alignment: Alignment.centerLeft,
+                          child: FormBuilderTextField(
+                            controller: logic.phoneController,
+                            name: 'phone',
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(
+                                  errorText: 'يرجى إدخال رقم الهاتف'),
+                              FormBuilderValidators.match(
+                                RegExp(r'^9\d{8}$'),
+                                errorText:
+                                'الرقم يجب أن يبدأ بـ 9 ويتبعه 8 أرقام (مثل: 9xxxxxxxx)',
                               ),
-                              Text('+963'),
-                            ],
+                            ]),
+                            textAlign: TextAlign.left,
+                            decoration: InputDecoration(
+                              hintText: '9xxxxxxxx',
+                              hintStyle: H4GrayOpacityTextStyle,
+                              labelText: 'رقم الهاتف',
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(color: GrayDarkColor),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: GrayDarkColor),
+                              ),
+                            ),
                           ),
                         ),
                         Container(
-                            width: 0.75.sw,
-                            child: FormBuilderTextField(
-                              controller: logic.phoneController,
-                              name: 'phone',
-                              validator: FormBuilderValidators.compose([
-                                FormBuilderValidators.required(
-                                    errorText: 'يرجى إدخال رقم الهاتف'),
-                                FormBuilderValidators.match(
-                                  RegExp(r'^9\d{8}$'),
-                                  errorText:
-                                      'الرقم يجب أن يبدأ بـ 9 ويتبعه 8 أرقام (مثل: 912345678)',
-                                ),
-                              ]),
+                          width: 0.29.sw,
+                          height: 0.06.sh,
+                          child: FormBuilderDropdown<String>(
                               decoration: InputDecoration(
-                                hintText: '966047550',
-                                labelText: 'رقم هاتف سوري',
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(color: GrayDarkColor),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: GrayDarkColor),
-                                ),
-                              ),
-                            )
-                            /*
-                         * */
-                            )
+                                  border: OutlineInputBorder(
+                                      borderSide:
+                                      BorderSide(color: DarkColor))),
+                              name: 'country',
+                              initialValue: '963',
+                              onChanged: (String? value) {
+                                logic.phoneCode.value = value;
+                              },
+                              items: mainController.countries
+                                  .map(
+                                    (country) => DropdownMenuItem<String>(
+                                    value: "${country.code}",
+                                    child: Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "${country.code} ",
+                                          style: H4BlackTextStyle,
+                                        ),
+                                        Container(
+                                          width: 0.1.sw,
+                                          height: 0.05.sw,
+                                          decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                  image: NetworkImage(
+                                                      "${country.img}"))),
+                                        )
+                                      ],
+                                    )),
+                              )
+                                  .toList()),
+                        ),
                       ],
                     ),
                     SizedBox(

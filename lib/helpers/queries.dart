@@ -25,6 +25,8 @@ unread_notifications_count
             level
          address
             phone
+            phone_code
+            full_phone
             is_seller
             image
             logo
@@ -106,7 +108,9 @@ const AUTH_FIELDS = '''
             email
             level
          address
-            phone
+             phone
+            phone_code
+            full_phone
             is_seller
             image
             logo

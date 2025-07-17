@@ -46,7 +46,7 @@ class EditProfileLogic extends GetxController {
   TextEditingController twitterController = TextEditingController();
   TextEditingController linkedInController = TextEditingController();
   TextEditingController tiktokController = TextEditingController();
-
+RxnString phoneCode =RxnString(null);
   Rxn<XFile> avatar = Rxn<XFile>(null);
   Rxn<XFile> logo = Rxn<XFile>(null);
 
@@ -93,6 +93,7 @@ class EditProfileLogic extends GetxController {
             TextEditingValue(text: "${user.value?.social?.linkedin }");
         tiktokController.value =
             TextEditingValue(text: "${user.value?.social?.tiktok }");
+        phoneCode.value="${user.value?.phone_code }";
       }
     });
   }
@@ -160,6 +161,7 @@ class EditProfileLogic extends GetxController {
           "email": mainController.authUser.value?.email??'' ,
           "password": passwordController.value.text??'',
           "phone": phoneController.value.text ??'',
+          "phone_code": "${phoneCode.value ??''}",
           "city_id": city.value?.id,
           "area_id": area.value?.id,
           "seller_name": sellerNameController.value.text??'' ,

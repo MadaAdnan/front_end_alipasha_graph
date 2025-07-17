@@ -45,7 +45,7 @@ class FollowersPage extends StatelessWidget {
           return true;
         },
         child: Obx(() {
-          if (logic.loading.value) {
+          if (logic.loading.value && logic.sellers.length ==0) {
             return Center(
               child: ProgressLoading(),
             );
@@ -76,6 +76,23 @@ class FollowersPage extends StatelessWidget {
                             logic.sellers.length,
                                 (index) =>
                                 _buildSellerCard(seller: logic.sellers[index]))
+                        else if(logic.loading.value ==true && logic.sellers.length>0)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment:
+                          CrossAxisAlignment.center,
+                          children: [
+                            Flexible(
+                                child: Container(
+                                    height: 0.06.sh,
+                                    child: ProgressLoading())),
+                            Flexible(
+                                child: Text(
+                                  'جاري جلب المزيد',
+                                  style: H4GrayTextStyle,
+                                ))
+                          ],
+                        )
                       else
                         Container(
                           width: 1.sw,

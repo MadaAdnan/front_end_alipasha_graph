@@ -16,6 +16,8 @@ class UserModel {
   String? email_verified_at;
   String? open_time;
   String? close_time;
+  String? full_phone;
+  String? phone_code;
   bool? is_delivery;
   bool? is_restaurant;
   bool? is_active;
@@ -87,7 +89,9 @@ class UserModel {
     this.invoices_count,
     this.invoicesSeller_count,
     this.isAvailableCreate,
-    this.area
+    this.area,
+    this.full_phone,
+    this.phone_code
   });
 
   factory UserModel.fromJson(Map<String, dynamic> data) {
@@ -132,6 +136,8 @@ class UserModel {
       unread_notifications_count:
           int.tryParse("${data['unread_notifications_count']}") ?? 0,
       info: "${data['info'] ?? ''}",
+      full_phone: "${data['full_phone'] ?? ''}",
+      phone_code: "${data['phone_code'] ?? ''}",
       affiliate: "${data['affiliate'] ?? ''}",
       is_special: bool.tryParse("${data['is_special']}") ?? false,
       isAvailableCreate: bool.tryParse("${data['is_available_create']}") ?? false,

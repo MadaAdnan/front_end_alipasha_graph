@@ -11,6 +11,7 @@ import 'package:ali_pasha_graph/models/advice_model.dart';
 import 'package:ali_pasha_graph/models/cart_model.dart';
 import 'package:ali_pasha_graph/models/category_model.dart';
 import 'package:ali_pasha_graph/models/community_model.dart';
+import 'package:ali_pasha_graph/models/country_model.dart';
 import 'package:ali_pasha_graph/models/message_community_model.dart';
 import 'package:ali_pasha_graph/models/notification_model.dart';
 import 'package:ali_pasha_graph/models/pricing_model.dart';
@@ -66,6 +67,7 @@ class MainController extends GetxController {
   RxList<ColorModel> colors = RxList<ColorModel>([]);
   RxList<AdviceModel> advices = RxList<AdviceModel>([]);
   RxList<SliderModel> sliders = RxList<SliderModel>([]);
+  RxList<CountryModel> countries = RxList<CountryModel>([]);
   RxList<PricingModel> pricing = RxList([]);
   String versionAPK = "3.1.1";
   RxInt communityNotification = RxInt(0);
@@ -241,9 +243,9 @@ class MainController extends GetxController {
       loading.value = false;
       DateTime endDate = DateTime.now();
       Duration responseTime = endDate.difference(startDate);
-      logger.i(
+     /* logger.i(
           "Duration Response : ${responseTime.inMilliseconds / 1000} Seconds");
-      logger.i("Response Size: ${res.data.toString().length / 1024} KB");
+      logger.i("Response Size: ${res.data.toString().length / 1024} KB");*/
       return res;
     } on dio.DioException catch (e) {
       loading.value = false;
@@ -394,7 +396,12 @@ class MainController extends GetxController {
   getAdvices() async {
     query.value = '''
     query Advices {
-  
+  countries{
+  name
+  image
+  code
+  id
+  }
       advices {
         name
         user {
@@ -470,7 +477,19 @@ class MainController extends GetxController {
         }
 
       }
-      // Logger().i("Settings");
+
+      if (res?.data?['data']?['countries'] != null) {
+        // Logger().i("ADDDS");
+        // Logger().i(res?.data?['data']['advices']);
+
+        for (var item in res?.data?['data']['countries']) {
+          // Logger().i(item);
+          countries.add(CountryModel.fromJson(item));
+        }
+
+      }
+       // Logger().i("CCO");
+       // Logger().i(countries);
       // Logger().i(res?.data);
       if (res?.data?['data']?['settings'] != null) {
         settings.value = SettingModel.fromJson(res?.data?['data']['settings']);

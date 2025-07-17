@@ -68,6 +68,7 @@ hitCacheOnErrorCodes: [
           'query': query,
           'variables': variables ?? {},
         },
+        options: dioo.Options(receiveTimeout: Duration(minutes: 2),sendTimeout: Duration(minutes: 2))
       );
       return response;
     } catch (e) {
@@ -122,6 +123,8 @@ hitCacheOnErrorCodes: [
             'Content-Type': 'multipart/form-data',
             'Accept': 'application/json',
           },
+          sendTimeout: Duration(minutes: 2),
+          receiveTimeout: Duration(minutes: 2),
         ),
       );
 
