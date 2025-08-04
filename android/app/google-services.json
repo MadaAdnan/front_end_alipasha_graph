@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "48907040413",
+    "project_id": "peaceful-nature-376111",
+    "storage_bucket": "peaceful-nature-376111.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:48907040413:android:d6e6a37a13e31fea078674",
+        "android_client_info": {
+          "package_name": "com.mada.company.ali.basha"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "48907040413-p6dvonl397mh6n63bvmk52j1bl5jrtul.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mada.company.ali.basha",
+            "certificate_hash": "3fc68e0a377b7969600220d030a956d5111c91e3"
+          }
+        },
+        {
+          "client_id": "48907040413-91roo5e49vftag7me2nj2v19h4pidfkn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBW9BKncJV4nAbBN_eRfkE5cjyK2uL9Dxo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "48907040413-91roo5e49vftag7me2nj2v19h4pidfkn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
