@@ -36,7 +36,7 @@ class AgreePrivacyPage extends StatelessWidget {
             children: [
               Container(
                 width: 1.sw,
-                height: 0.75.sh,
+                height: 0.72.sh,
                 padding: EdgeInsets.symmetric(
                     horizontal: 0.02.sw, vertical: 0.01.sh),
                 decoration: BoxDecoration(

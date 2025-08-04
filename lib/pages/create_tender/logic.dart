@@ -122,6 +122,9 @@ query MainCategories {
     if(res?.data?['errors']?[0]?['message']!=null){
       mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
     }
+    if(mainController.authUser.value?.isAvailableCreate!=true){
+     await mainController.getMe();
+    }
   }catch(e){
     mainController.logger.e('ERROR GET DATA TENDER : $e');
   }

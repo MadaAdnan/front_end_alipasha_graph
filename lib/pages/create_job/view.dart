@@ -987,7 +987,7 @@ height: 1.sh,
                   ),
                 ),
                 visible:
-                mainController.authUser.value?.isAvailableCreate == false,
+                mainController.authUser.value?.isAvailableCreate == false && logic.loading.value==false,
               )),
             ],
           );

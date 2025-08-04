@@ -388,7 +388,7 @@ class PostCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Visibility(visible: post.is_delivery==true,child: Positioned(bottom: 20.h,left: 10.w,child: Container(
+                 /* Visibility(visible: post.is_delivery==true,child: Positioned(bottom: 20.h,left: 10.w,child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 0.02.sw,vertical: 0.01.sh),
                     decoration: BoxDecoration(
                       color: Colors.black.withOpacity(0.5),
@@ -399,8 +399,8 @@ class PostCard extends StatelessWidget {
                       SizedBox(width: 0.02.sw,),
                       Text('الشحن متوفر',style: H4WhiteTextStyle,),
                     ],),
-                  ),),),
-                  Visibility(visible: post.is_delivery!=true,child: Positioned(bottom: 20.h,left: 10.w,child: Container(
+                  ),),),*/
+                  /*Visibility(visible: post.is_delivery!=true,child: Positioned(bottom: 20.h,left: 10.w,child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 0.02.sw,vertical: 0.01.sh),
                     decoration: BoxDecoration(
                         color: Colors.black.withOpacity(0.5),
@@ -411,7 +411,7 @@ class PostCard extends StatelessWidget {
                       SizedBox(width: 0.02.sw,),
                       Text('الشحن غير متوفر',style: H4RedTextStyle,),
                     ],),
-                  ),),)
+                  ),),)*/
                 ],
               ),
             ),

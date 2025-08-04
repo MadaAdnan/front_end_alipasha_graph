@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/route_middleware.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:logger/logger.dart';
 
 import '../models/user_model.dart';
 
@@ -15,9 +16,13 @@ class CompleteProfileMiddleware extends GetMiddleware {
     bool hasUser = box.hasData('user') && box.read('user') != null;
     if (hasUser) {
       UserModel user = UserModel.fromJson(box.read('user'));
-      if((user.phone=='' || user.address==''|| user.city==null || user.area==null)){
+      if((user.phone=='' || user.address==''|| user.city==null /*|| user.area==null*/)){
         messageBox(title: 'لم تكمل البيانات', message: 'من فضلك قم بتعبئة البيانات الخاصة بك',isError: true);
-
+Logger().e("DATA USER");
+Logger().e(user.phone);
+Logger().e(user.address);
+Logger().e(user.city?.name);
+Logger().e(user.area?.name);
         return RouteSettings(name: Edit_PROFILE_PAGE);
       }
       // إذا كان المستخدم لديه توكن، توجهه إلى الصفحة الرئيسية

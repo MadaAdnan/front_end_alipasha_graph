@@ -22,6 +22,7 @@ class SettingModel {
   String? live_id;
   String? shamCash;
   String? wallet;
+  String? footerOrder;
   List<MaterialSetting>? material_izaz;
   List<MaterialSetting>? material_idlib;
   ExchangeGold? gold;
@@ -61,6 +62,7 @@ class SettingModel {
     this.urlDownload,
     this.shamCash,
     this.wallet,
+    this.footerOrder,
   });
 
   factory SettingModel.fromJson(Map<String, dynamic> data) {
@@ -82,6 +84,7 @@ class SettingModel {
       longitude: double.tryParse("${data['longitude']}"),
       latitude: double.tryParse("${data['latitude']}"),
       address: "${data['address'] ?? ''}",
+      footerOrder: "${data['footer_order'] ?? ''}",
       about: "${data['about'] ?? ''}",
       active_advice: bool.tryParse("${data['active_advice'] ?? ''}") ?? false,
       active_live: bool.tryParse("${data['active_live'] ?? ''}") ?? false,

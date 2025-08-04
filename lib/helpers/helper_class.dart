@@ -414,8 +414,8 @@ class HelperClass{
          children: [
            InkWell(
              onTap: (){
-               Logger().e("https://wa.me/$phone");
-               openUrl(url: "https://wa.me/$phone");
+
+               openUrl(url: "https://wa.me/$phone?text=${message}");
              },
              child: Container(
                alignment: Alignment.center,

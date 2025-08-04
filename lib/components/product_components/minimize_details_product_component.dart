@@ -293,7 +293,7 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              if(post.is_delivery == true)
+                             /* if(post.is_delivery == true)
                                 SizedBox(width: 0.14.sw, child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -303,8 +303,7 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                                       child: Text('الشحن متوفر',
                                         style: H7BlackTextStyle,),),
 
-                                  ],),)
-                              ,
+                                  ],),),
                               if(post.is_delivery != true)
                                 SizedBox(width: 0.14.sw, child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -315,9 +314,9 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                                       child: Text('الشحن غير متوفر',
                                         style: H6BlackTextStyle,),),
 
-                                  ],),),
-                              SizedBox(width: 0.002.sw
-                                ,),
+                                  ],),),*/
+                              /*SizedBox(width: 0.002.sw
+                                ,),*/
                               // Icon Eye
                               SizedBox(width: 0.14.sw, child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,

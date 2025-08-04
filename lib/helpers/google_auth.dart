@@ -30,8 +30,7 @@ class GoogleAuth {
     _googleSignIn.initialize();
       final GoogleSignInAccount googleUser = await _googleSignIn.authenticate();
       if (googleUser == null) return null;
-Logger().i("GOOGLE USERT");
-Logger().i(googleUser.email);
+
         return {
           "email": googleUser.email,
           "name": googleUser.displayName ?? '',

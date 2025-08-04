@@ -114,9 +114,9 @@ class ProductPage extends StatelessWidget {
                                   decoration: BoxDecoration(
                                       image: DecorationImage(
                                           image: Svg(
-                                            "assets/images/svg/verified.svg",
-                                            size: Size(0.01.sw, 0.01.sw),
-                                          ))),
+                                    "assets/images/svg/verified.svg",
+                                    size: Size(0.01.sw, 0.01.sw),
+                                  ))),
                                 ),
                             ],
                           )
@@ -395,22 +395,42 @@ class ProductPage extends StatelessWidget {
                             width: 0.03.sw,
                           ),
                           InkWell(
-                            onTap: () {
-                              if(mainController.authUser.value?.id == null){
-                                mainController.showToast(text: "يرجى تسجيل الدخول أولاً",type: "error");
+                            onTap: () async {
+                              if (mainController.authUser.value?.id == null) {
+                                mainController.showToast(
+                                    text: "يرجى تسجيل الدخول أولاً",
+                                    type: "error");
                                 return;
                               }
-                              if (
-                              !mainController
+                              if (!mainController
                                   .createCommunityLodaing.value) {
-                                String message =
-                                """ المنتج ${logic.product.value!.name}   \n   معرف المنتج: ${logic.product.value!.id} """;
-                                HelperClass.connectWithSeller(
+                                StringBuffer message = StringBuffer();
+                                message
+                                    .write("السلام عليكم ورحمة الله وبركاته ");
+                                message.write("\n");
+                                message.write("📦 طلب جديد من تطبيق علي باشا:");
+                                message.write("\n");
+                                message.write(
+                                    "معرف المنتج : ${logic.product.value!.id}");
+                                message.write("\n");
+                                message.write(
+                                    "المنتج : ${logic.product.value!.name}");
+                                message.write("\n");
+                                message.write(
+                                    "سعر الوحدة : ${logic.product.value?.is_discount == true ? logic.product.value?.discount : logic.product.value?.price}");
+                                message.write("\n");
+                                message.writeln(
+                                    "${mainController.settings.value?.footerOrder}");
+                                await logic.createOrder();
+                                openUrl(
+                                    url:
+                                        "https://wa.me/${logic.product.value?.user?.phone}?text=${message}");
+                                /* HelperClass.connectWithSeller(
                                     phone:
                                     logic.product.value!.user!.phone!,
                                     sellerId:
                                     logic.product.value!.user!.id!,
-                                    message: message);
+                                    message: message);*/
                               }
                             },
                             child: Container(
@@ -846,8 +866,10 @@ class ProductPage extends StatelessWidget {
                     ),
                     Container(
                       decoration: BoxDecoration(
-                          border: Border(
-                              bottom: BorderSide(color: GrayLightColor))),
+                        border: Border(
+                          bottom: BorderSide(color: GrayLightColor),
+                        ),
+                      ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -857,7 +879,6 @@ class ProductPage extends StatelessWidget {
                                 margin: EdgeInsets.symmetric(vertical: 0.01.sh),
                                 width: 0.24.sw,
                                 child: Obx(() {
-
                                   return InkWell(
                                     onTap: () {
                                       if (mainController.authUser.value ==
@@ -936,7 +957,7 @@ class ProductPage extends StatelessWidget {
                               ),
                             ],
                           ),
-                          Row(
+                          /* Row(
                             children: [
                               Icon(FontAwesomeIcons.truckFast,
                                   size: 0.04.sw,
@@ -955,44 +976,47 @@ class ProductPage extends StatelessWidget {
                                             : RedColor),
                               )
                             ],
-                          )
+                          )*/
                         ],
                       ),
                     ),
+
                     // Colors
                     if (logic.product.value?.colors?.length != null &&
                         logic.product.value!.colors!.length > 0)
                       Expanded(
                           child: Container(
-                        width: 1.sw,
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          children: [
-                            ...List.generate(
-                                logic.product.value?.colors?.length ?? 0,
-                                (index) => Row(
+
+                            width: 1.sw,
+                            height: 0.12.sw,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              children: [
+                                ...List.generate(
+                                    logic.product.value?.colors?.length ?? 0,
+                                        (index) => Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Text(
                                           "${logic.product.value?.colors![index].name}",
                                           style: H4RegularDark,
                                         ),
                                         Container(
-                                          width: 0.07.sw,
-                                          height: 0.07.sw,
+                                          width: 0.09.sw,
+                                          height: 0.09.sw,
                                           decoration: BoxDecoration(
                                               shape: BoxShape.circle,
                                               color:
-                                                  "${logic.product.value?.colors![index].code}"
-                                                      .toColor()),
+                                              "${logic.product.value?.colors![index].code}"
+                                                  .toColor()),
                                         ),
-                                        SizedBox(
-                                          width: 0.03.sw,
-                                        )
+
                                       ],
                                     ))
-                          ],
-                        ),
-                      )),
+                              ],
+                            ),
+                          )),
                   ],
                 ),
               ),
@@ -1066,7 +1090,6 @@ class ProductPage extends StatelessWidget {
                                 ..."${logic.product.value?.info}"
                                     .split(' ')
                                     .map((el) {
-                                  print(el);
                                   if (mainController.isURL("$el")) {
                                     return TextSpan(
                                       recognizer: TapGestureRecognizer()

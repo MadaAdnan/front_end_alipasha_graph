@@ -359,7 +359,7 @@ class CreateProductPage extends StatelessWidget {
                                 ),
                               );
                             }),
-                            Expanded(child: Obx(() {
+                           /* Expanded(child: Obx(() {
                               return Container(
                                 width: 0.4.sw,
                                 child: Column(
@@ -378,7 +378,7 @@ class CreateProductPage extends StatelessWidget {
                                   ],
                                 ),
                               );
-                            })),
+                            })),*/
                             Obx(() {
                               return Container(
                                 width: 0.4.sw,
@@ -1134,6 +1134,7 @@ class CreateProductPage extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 ),
               ),
+            if(logic.loading.value==false)
             Obx(() => Visibility(
               child: Positioned(
                 right: 0.1.sw,
@@ -1192,7 +1193,7 @@ class CreateProductPage extends StatelessWidget {
                 ),
               ),
               visible:
-              mainController.authUser.value?.isAvailableCreate == false,
+              mainController.authUser.value?.isAvailableCreate == false && logic.loading.value==false,
             )),
           ],
         );

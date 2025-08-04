@@ -103,20 +103,27 @@ query MainCategories {
 ''';
     dio.Response? res = await mainController.fetchData();
     loading.value=false;
-    if (res?.data != null && res?.data['data']?['mainCategories'] != null) {
-      for (var item in res?.data['data']['mainCategories']) {
-        categories.add(CategoryModel.fromJson(item));
-      }
-    }
+ try{
+   if (res?.data != null && res?.data['data']?['mainCategories'] != null) {
+     for (var item in res?.data['data']['mainCategories']) {
+       categories.add(CategoryModel.fromJson(item));
+     }
+   }
 
-    if (res?.data != null && res?.data['data']?['cities'] != null) {
-      for (var item in res?.data['data']['cities']) {
-        cities.add(CityModel.fromJson(item));
-      }
-    }
-    if(res?.data?['errors']?[0]?['message']!=null){
-      mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
-    }
+   if (res?.data != null && res?.data['data']?['cities'] != null) {
+     for (var item in res?.data['data']['cities']) {
+       cities.add(CityModel.fromJson(item));
+     }
+   }
+   if(res?.data?['errors']?[0]?['message']!=null){
+     mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
+   }
+   if(mainController.authUser.value?.isAvailableCreate!=true){
+     await mainController.getMe();
+   }
+ }catch(e){
+   mainController.logger.e('Error GetData CreateJob :$e');
+ }
     loading.value=false;
   }
 

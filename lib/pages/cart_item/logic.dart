@@ -62,6 +62,7 @@ class CartItemLogic extends GetxController {
     if(index2>-1){
       isAvailable.value=false;
     }
+    isAvailable.value=true;
     total.value = carts.length > 0
         ? carts.fold(0.0, (previousValue, element) {
             double elementPrice = element.product?.is_discount == true
@@ -74,7 +75,7 @@ class CartItemLogic extends GetxController {
         : 0.0;
 // calc far By weight
     shipping.value = carts.length > 0
-        ? carts.where((el) => el.product?.is_delivery == true).fold(0.0,
+        ? carts/*.where((el) => el.product?.is_delivery == true)*/.fold(0.0,
             (previousValue, element) {
             var weight = (element.product?.weight ?? 0) * element.qty!;
             return previousValue + weight;
@@ -97,19 +98,9 @@ class CartItemLogic extends GetxController {
     int step = 1;
    // check if same city
     totalShipping.value = pricing.internal_price!;
-     /* if (authCity?.code != null && sellerCity?.code == authCity?.code) {
-        totalShipping.value = pricing.internal_price!;
 
-      } else {
-        totalShipping.value = pricing.external_price!;
-
-      }*/
     step=(authCity?.level ?? 0) + (sellerCity?.level ?? 0)-1;
-      Logger().d("CARTY");
-      Logger().d("${pricing.toJson()}");
-      Logger().d("${sellerCity?.code} - ${sellerCity?.level}");
-      Logger().d("${authCity?.code} - ${authCity?.level}");
-      Logger().d("Steps :${step} => Shipping : ${totalShipping.value} => Ratio : ${(totalShipping.value / 3)} ");
+
       totalShipping.value += (totalShipping.value / 3) * step;
 
 
@@ -124,15 +115,6 @@ class CartItemLogic extends GetxController {
           type: 'error');
       return;
     }
-    // Map<String, dynamic> data = {};
-    // data['seller_id'] = carts.first.seller?.id;
-    // data['weight'] = shipping.value;
-    // data['address'] = address.value;
-    // data['phone'] = phone.value;
-    // data['items'] = carts
-    //     .map((el) =>
-    //         {"product_id": "${el.product?.id}", 'qty': el.qty?.toDouble()})
-    //     .toList();
     Map<String, dynamic> data = {
       'seller_id': carts.first.seller?.id,
       'weight': shipping.value,
@@ -171,7 +153,7 @@ class CartItemLogic extends GetxController {
         }
         await mainController.refreshCart();
         getCart();
-        Get.offNamed(MY_INVOICE_PAGE);
+       // Get.offNamed(MY_INVOICE_PAGE);
       }else if(res?.data?['errors']?[0]?['message']!=null){
         throw Exception("${res?.data?['errors']?[0]?['message']}");
       }

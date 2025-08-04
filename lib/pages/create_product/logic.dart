@@ -13,6 +13,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:dio/dio.dart' as dio;
+import 'package:logger/logger.dart';
 
 import '../../helpers/components.dart';
 
@@ -65,6 +66,7 @@ class CreateProductLogic extends GetxController {
     ever(sub2Category, (value) {
       sub3Category.value = null;
     });
+
   }
 
   @override
@@ -137,6 +139,9 @@ query MainCategories {
       }
       if(res?.data?['errors']?[0]?['message']!=null){
         mainController.showToast(text:'${res?.data['errors'][0]['message']}',type: 'error' );
+      }
+      if(mainController.authUser.value?.isAvailableCreate!=true){
+       await mainController.getMe();
       }
     } catch (e) {
       mainController.logger.e('Error Get Data CreateProduct : $e');

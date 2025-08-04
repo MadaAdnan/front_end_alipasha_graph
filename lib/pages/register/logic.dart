@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
 import 'package:ali_pasha_graph/helpers/google_auth.dart';
+import 'package:ali_pasha_graph/helpers/push_notification_service.dart';
 import 'package:ali_pasha_graph/helpers/queries.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:flutter/cupertino.dart';
@@ -47,6 +48,9 @@ RxnString phoneCode=RxnString('963');
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    PushNotificationService.init().then((value) {
+      deviceToken = value;
+    });
     List<SingleItemCategoryModel> listCities = [];
     for (var city in mainController.mainCities) {
       listCities.add(SingleItemCategoryModel(
@@ -135,8 +139,6 @@ mutation CreateGoogleUser {
 
 
     try {
-
-      mainController.logger.e("REGISTER");
       mainController.query.value = '''
 mutation CreateUser {
     createUser(
@@ -164,7 +166,7 @@ mutation CreateUser {
 ''';
       dio.Response? res = await mainController.fetchData();
 
-       mainController.logger.e(res?.data);
+
       if (res?.data?['data']?['createUser']?['token'] != null) {
         await mainController.setToken(
             token: res?.data?['data']?['createUser']?['token'], isWrite: true);

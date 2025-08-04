@@ -17,7 +17,10 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -25,9 +28,15 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
-        return windows;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for windows - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -40,54 +49,22 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyB-PMTBuiJYu39iKYvZU2JTCLutdgEaR_8',
-    appId: '1:890729410482:web:519576aa2c512a83b17eab',
-    messagingSenderId: '890729410482',
-    projectId: 'alipasha-e8c82',
-    authDomain: 'alipasha-e8c82.firebaseapp.com',
-    storageBucket: 'alipasha-e8c82.firebasestorage.app',
-    measurementId: 'G-91253HTJJ4',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDWsvsJcLEnBhCIvAjzRgpL7nz9B_X77ME',
-    appId: '1:890729410482:android:cdc056e86d7e67b7b17eab',
-    messagingSenderId: '890729410482',
-    projectId: 'alipasha-e8c82',
-    storageBucket: 'alipasha-e8c82.firebasestorage.app',
+    apiKey: 'AIzaSyBW9BKncJV4nAbBN_eRfkE5cjyK2uL9Dxo',
+    appId: '1:48907040413:android:d6e6a37a13e31fea078674',
+    messagingSenderId: '48907040413',
+    projectId: 'peaceful-nature-376111',
+    storageBucket: 'peaceful-nature-376111.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyA4svvzeR9jvLFxaqLAC5JfmizwwT2BM9w',
-    appId: '1:890729410482:ios:1b06492a8f41d9cfb17eab',
-    messagingSenderId: '890729410482',
-    projectId: 'alipasha-e8c82',
-    storageBucket: 'alipasha-e8c82.firebasestorage.app',
-    androidClientId: '890729410482-3eal3sc8jn51ejp3n2fnl4k2b6nj9oo6.apps.googleusercontent.com',
-    iosClientId: '890729410482-ad9sjsk4bu3vslij5p9eihmj96mo26am.apps.googleusercontent.com',
+    apiKey: 'AIzaSyAdYxAIU__5Tf-FC6emj5dw6eeh2EK2eiw',
+    appId: '1:48907040413:ios:faffe4ae16f9433e078674',
+    messagingSenderId: '48907040413',
+    projectId: 'peaceful-nature-376111',
+    storageBucket: 'peaceful-nature-376111.firebasestorage.app',
+    androidClientId: '48907040413-9rb80gs53052qt1eajpalqqp54tedmtq.apps.googleusercontent.com',
+    iosClientId: '48907040413-7huutuodhfc4h9j85apnto9ka8qle6e3.apps.googleusercontent.com',
     iosBundleId: 'com.mada.company.ali.basha',
   );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyA4svvzeR9jvLFxaqLAC5JfmizwwT2BM9w',
-    appId: '1:890729410482:ios:8e15d4fcf135bb8fb17eab',
-    messagingSenderId: '890729410482',
-    projectId: 'alipasha-e8c82',
-    storageBucket: 'alipasha-e8c82.firebasestorage.app',
-    androidClientId: '890729410482-3eal3sc8jn51ejp3n2fnl4k2b6nj9oo6.apps.googleusercontent.com',
-    iosClientId: '890729410482-ei6bj7a3f1cmmufovriqfqqt6pkoooqi.apps.googleusercontent.com',
-    iosBundleId: 'com.mada.company.ali.basha.aliPashaGraph',
-  );
-
-  static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyB-PMTBuiJYu39iKYvZU2JTCLutdgEaR_8',
-    appId: '1:890729410482:web:0634a533cf1e239bb17eab',
-    messagingSenderId: '890729410482',
-    projectId: 'alipasha-e8c82',
-    authDomain: 'alipasha-e8c82.firebaseapp.com',
-    storageBucket: 'alipasha-e8c82.firebasestorage.app',
-    measurementId: 'G-PQ1E88D8H0',
-  );
-
 }

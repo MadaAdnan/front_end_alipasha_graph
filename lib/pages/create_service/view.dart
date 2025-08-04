@@ -675,6 +675,7 @@ class CreateServicePage extends StatelessWidget {
               ),
               if(logic.loading.value)
                 Container(child: Center(child: CircularProgressIndicator(),),),
+
               Obx(() => Visibility(
                 child: Positioned(
                   right: 0.1.sw,
@@ -733,7 +734,7 @@ class CreateServicePage extends StatelessWidget {
                   ),
                 ),
                 visible:
-                mainController.authUser.value?.isAvailableCreate == false,
+                mainController.authUser.value?.isAvailableCreate == false && logic.loading.value==false,
               )),
             ],
           );

@@ -40,6 +40,19 @@ class ProfilePage extends StatelessWidget {
         : RedColor;
     return Scaffold(
       backgroundColor: WhiteColor,
+
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Get.offAndToNamed(MY_ORDER_SHIPPING_PAGE);
+        },
+        backgroundColor: RedColor,
+        label:  Text(
+          'شحن مخصص',
+          style: H4WhiteTextStyle,
+        ),
+
+        
+      ),
       body: Stack(
         children: [
           Positioned(
@@ -78,53 +91,62 @@ class ProfilePage extends StatelessWidget {
                               ),
                             );
                           })),
-
-                     Container(
-                       width: 0.1.sw,
-                       decoration: BoxDecoration(
-                         color: Colors.black.withOpacity(0.6),
-                         shape: BoxShape.circle
-
-                       ),
-                       child:  PopupMenuButton(
-                         iconColor: WhiteColor,
-                         itemBuilder: (context) => [
-                           PopupMenuItem(value: '1',child:Row(
-                             children: [
-                               Icon(
-                                 FontAwesomeIcons.shareNodes,
-                                 color: color,
-                                 size: 0.05.sw,
-                               ),
-                               Text('مشاركة الملف الشخصي',style: H4RegularDark,)
-                             ],
-                           ) ,),
-                           PopupMenuItem(value: '2',child:Row(
-                             children: [
-                               Icon(
-                                 FontAwesomeIcons.eye,
-                                 color: color,
-                                 size: 0.05.sw,
-                               ),
-                               Text('عرض المتجر',style: H4RegularDark,)
-                             ],
-                           ) ,),
-                         ],
-                         onSelected: (value){
-                           switch(value){
-                             case '1':
-                               Share.share(
-                                   'https://v3.ali-pasha.com/profile?id=${mainController
-                                       .authUser.value?.id}');
-                               break;
-                             case '2':
-                               Get.toNamed(PRODUCTS_PAGE,arguments: mainController
-                                   .authUser.value);
-                               break;
-                           }
-                         },offset: Offset(0, 0.05.sh),),
-                     ),
-
+                      Container(
+                        width: 0.1.sw,
+                        decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.6),
+                            shape: BoxShape.circle),
+                        child: PopupMenuButton(
+                          iconColor: WhiteColor,
+                          itemBuilder: (context) => [
+                            PopupMenuItem(
+                              value: '1',
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    FontAwesomeIcons.shareNodes,
+                                    color: color,
+                                    size: 0.05.sw,
+                                  ),
+                                  Text(
+                                    'مشاركة الملف الشخصي',
+                                    style: H4RegularDark,
+                                  )
+                                ],
+                              ),
+                            ),
+                            PopupMenuItem(
+                              value: '2',
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    FontAwesomeIcons.eye,
+                                    color: color,
+                                    size: 0.05.sw,
+                                  ),
+                                  Text(
+                                    'عرض المتجر',
+                                    style: H4RegularDark,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                          onSelected: (value) {
+                            switch (value) {
+                              case '1':
+                                Share.share(
+                                    'https://v3.ali-pasha.com/profile?id=${mainController.authUser.value?.id}');
+                                break;
+                              case '2':
+                                Get.toNamed(PRODUCTS_PAGE,
+                                    arguments: mainController.authUser.value);
+                                break;
+                            }
+                          },
+                          offset: Offset(0, 0.05.sh),
+                        ),
+                      ),
                     ],
                   ),
                 );
@@ -169,119 +191,125 @@ class ProfilePage extends StatelessWidget {
                               offset: Offset(0, -0.01.sh),
                               child: Column(
                                 children: [
-
-                                    Container(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 0.007.sh),
-                                      child: InkWell(
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 0.007.sh),
+                                    child: InkWell(
+                                      onTap: () {
+                                        openUrl(
+                                            url:
+                                                "${mainController.authUser.value?.social?.instagram}");
+                                      },
+                                      child: Icon(
+                                        FontAwesomeIcons.instagram,
+                                        color:
+                                            "${mainController.authUser.value?.social?.instagram}"
+                                                    .isEmpty
+                                                ? GrayLightColor
+                                                : color,
+                                        size: 0.06.sw,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 0.007.sh),
+                                    child: InkWell(
                                         onTap: () {
                                           openUrl(
                                               url:
-                                              "${mainController.authUser.value
-                                                  ?.social?.instagram}");
+                                                  "${mainController.authUser.value?.social?.face}");
                                         },
                                         child: Icon(
-                                          FontAwesomeIcons.instagram,
-                                          color: "${mainController.authUser.value
-                                              ?.social?.instagram}".isEmpty?GrayLightColor:color,
+                                          FontAwesomeIcons.facebook,
+                                          color:
+                                              "${mainController.authUser.value?.social?.face}"
+                                                      .isEmpty
+                                                  ? GrayLightColor
+                                                  : color,
                                           size: 0.06.sw,
-                                        ),
+                                        )),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 0.007.sh),
+                                    child: InkWell(
+                                      onTap: () {
+                                        openUrl(
+                                            url:
+                                                "${mainController.authUser.value?.social?.linkedin}");
+                                      },
+                                      child: Icon(
+                                        FontAwesomeIcons.linkedin,
+                                        color:
+                                            "${mainController.authUser.value?.social?.linkedin}"
+                                                    .isEmpty
+                                                ? GrayLightColor
+                                                : color,
+                                        size: 0.06.sw,
                                       ),
                                     ),
-
-                                    Container(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 0.007.sh),
-                                      child: InkWell(
-                                          onTap: () {
-                                            openUrl(
-                                                url:
-                                                "${mainController.authUser.value
-                                                    ?.social?.face}");
-                                          },
-                                          child: Icon(
-                                            FontAwesomeIcons.facebook,
-                                            color: "${mainController.authUser.value
-                                                ?.social?.face}".isEmpty?GrayLightColor: color,
-                                            size: 0.06.sw,
-                                          )),
-                                    ),
-
-                                    Container(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 0.007.sh),
-                                      child: InkWell(
-                                        onTap: () {
-                                          openUrl(
-                                              url:
-                                              "${mainController.authUser.value
-                                                  ?.social?.linkedin}");
-                                        },
-                                        child: Icon(
-                                          FontAwesomeIcons.linkedin,
-                                          color:"${mainController.authUser.value
-                                              ?.social?.linkedin}".isEmpty?GrayLightColor: color,
-                                          size: 0.06.sw,
-                                        ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 0.007.sh),
+                                    child: InkWell(
+                                      onTap: () {
+                                        openUrl(
+                                            url:
+                                                "${mainController.authUser.value?.social?.tiktok}");
+                                      },
+                                      child: Icon(
+                                        FontAwesomeIcons.tiktok,
+                                        color:
+                                            "${mainController.authUser.value?.social?.tiktok}"
+                                                    .isEmpty
+                                                ? GrayLightColor
+                                                : color,
+                                        size: 0.06.sw,
                                       ),
                                     ),
-
-                                    Container(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 0.007.sh),
-                                      child: InkWell(
-                                        onTap: () {
-                                          openUrl(
-                                              url:
-                                              "${mainController.authUser.value
-                                                  ?.social?.tiktok}");
-                                        },
-                                        child: Icon(
-                                          FontAwesomeIcons.tiktok,
-                                          color:"${mainController.authUser.value
-                                              ?.social?.tiktok}".isEmpty?GrayLightColor: color,
-                                          size: 0.06.sw,
-                                        ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 0.007.sh),
+                                    child: InkWell(
+                                      onTap: () {
+                                        openUrl(
+                                            url:
+                                                "https://wa.me/${mainController.authUser.value?.phone}");
+                                      },
+                                      child: Icon(
+                                        FontAwesomeIcons.whatsapp,
+                                        color:
+                                            "${mainController.authUser.value?.phone}"
+                                                    .isEmpty
+                                                ? GrayLightColor
+                                                : color,
+                                        size: 0.06.sw,
                                       ),
                                     ),
-
-                                    Container(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 0.007.sh),
-                                      child: InkWell(
-                                        onTap: () {
-                                          openUrl(
-                                              url:
-                                              "https://wa.me/${mainController
-                                                  .authUser.value?.phone}");
-                                        },
-                                        child: Icon(
-                                          FontAwesomeIcons.whatsapp,
-                                          color:"${mainController
-                                              .authUser.value?.phone}".isEmpty?GrayLightColor: color,
-                                          size: 0.06.sw,
-                                        ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 0.007.sh),
+                                    child: InkWell(
+                                      onTap: () {
+                                        openUrl(
+                                            url:
+                                                "${mainController.authUser.value?.social?.twitter}");
+                                      },
+                                      child: Icon(
+                                        FontAwesomeIcons.xTwitter,
+                                        color:
+                                            "${mainController.authUser.value?.social?.twitter}"
+                                                    .isEmpty
+                                                ? GrayLightColor
+                                                : color,
+                                        size: 0.06.sw,
                                       ),
                                     ),
-
-                                    Container(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 0.007.sh),
-                                      child: InkWell(
-                                        onTap: () {
-                                          openUrl(
-                                              url:
-                                              "${mainController.authUser.value
-                                                  ?.social?.twitter}");
-                                        },
-                                        child: Icon(
-                                          FontAwesomeIcons.xTwitter,
-                                          color: "${mainController.authUser.value
-                                              ?.social?.twitter}".isEmpty?GrayLightColor: color,
-                                          size: 0.06.sw,
-                                        ),
-                                      ),
-                                    ),
+                                  ),
                                 ],
                               ),
                             );
@@ -309,38 +337,37 @@ class ProfilePage extends StatelessWidget {
                                       color: color,
                                       white: false,
                                       isVerified: mainController
-                                          .authUser.value?.is_verified ==true,
+                                              .authUser.value?.is_verified ==
+                                          true,
                                       seller: mainController.authUser.value,
                                     ),
                                   ),
                                   Container(
                                     padding:
-                                    EdgeInsets.symmetric(vertical: 0.01.sh),
+                                        EdgeInsets.symmetric(vertical: 0.01.sh),
                                     child: Visibility(
                                       visible: (mainController
-                                          .authUser.value?.is_verified ==
+                                              .authUser.value?.is_verified ==
                                           true),
                                       child: Text(
-                                        "${mainController.authUser.value
-                                            ?.info}",
+                                        "${mainController.authUser.value?.info}",
                                         style: H4GrayTextStyle,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
                                   ),
                                   if ((mainController.authUser.value?.address !=
-                                      null &&
+                                          null &&
                                       mainController.authUser.value?.address !=
                                           ''))
                                     Container(
                                       alignment: Alignment.center,
                                       child: Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            "${mainController.authUser.value
-                                                ?.address}",
+                                            "${mainController.authUser.value?.address}",
                                             style: H4GrayTextStyle,
                                           ),
                                           Icon(
@@ -358,7 +385,7 @@ class ProfilePage extends StatelessWidget {
                                           vertical: 0.02.sh),
                                       child: Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
+                                            MainAxisAlignment.spaceAround,
                                         children: [
                                           InkWell(
                                             onTap: () {
@@ -368,16 +395,15 @@ class ProfilePage extends StatelessWidget {
                                               children: [
                                                 Obx(() {
                                                   return Text(
-                                                    '${mainController.authUser
-                                                        .value?.followingCount}'
+                                                    '${mainController.authUser.value?.followingCount}'
                                                         .toFormatNumberK(),
                                                     style:
-                                                    H0RegularDark.copyWith(
-                                                        fontWeight:
-                                                        FontWeight.w900,
-                                                        color: color),
+                                                        H0RegularDark.copyWith(
+                                                            fontWeight:
+                                                                FontWeight.w900,
+                                                            color: color),
                                                     textDirection:
-                                                    TextDirection.ltr,
+                                                        TextDirection.ltr,
                                                   );
                                                 }),
                                                 Text(
@@ -393,24 +419,23 @@ class ProfilePage extends StatelessWidget {
                                               logic
                                                   .pageController
                                                   .animateToPage(
-                                                  2,
-                                                  duration: Duration(
-                                                      microseconds: 400),
-                                                  curve:
-                                                  Curves.bounceInOut);
+                                                      2,
+                                                      duration: Duration(
+                                                          microseconds: 400),
+                                                      curve:
+                                                          Curves.bounceInOut);
                                             },
                                             child: Column(
                                               children: [
                                                 Text(
-                                                  "${mainController.authUser
-                                                      .value?.total_views}"
+                                                  "${mainController.authUser.value?.total_views}"
                                                       .toFormatNumberK(),
                                                   style: H0RegularDark.copyWith(
                                                       fontWeight:
-                                                      FontWeight.w900,
+                                                          FontWeight.w900,
                                                       color: color),
                                                   textDirection:
-                                                  TextDirection.ltr,
+                                                      TextDirection.ltr,
                                                 ),
                                                 Text(
                                                   "مشاهدات",
@@ -427,17 +452,15 @@ class ProfilePage extends StatelessWidget {
                                               children: [
                                                 Obx(() {
                                                   return Text(
-                                                    '${mainController.authUser
-                                                        .value?.followers
-                                                        ?.length}'
+                                                    '${mainController.authUser.value?.followers?.length}'
                                                         .toFormatNumberK(),
                                                     style:
-                                                    H0RegularDark.copyWith(
-                                                        fontWeight:
-                                                        FontWeight.w900,
-                                                        color: color),
+                                                        H0RegularDark.copyWith(
+                                                            fontWeight:
+                                                                FontWeight.w900,
+                                                            color: color),
                                                     textDirection:
-                                                    TextDirection.ltr,
+                                                        TextDirection.ltr,
                                                   );
                                                 }),
                                                 Text(
@@ -470,12 +493,15 @@ class ProfilePage extends StatelessWidget {
                                 true)
                               InkWell(
                                   onTap: () {
-                                   HelperClass.requestVerified(onConfirm: (){
-                                     if(isAuth()){
-                                       String message="ID:${mainController.authUser.value?.id} - اسم المتجر : ${mainController.authUser.value?.seller_name} - نوع الطلب توثيق الحساب";
-                                       openUrl(url: "https://wa.me/${mainController.settings.value.social?.phone}?text=$message");
-                                     }
-                                   });
+                                    HelperClass.requestVerified(onConfirm: () {
+                                      if (isAuth()) {
+                                        String message =
+                                            "ID:${mainController.authUser.value?.id} - اسم المتجر : ${mainController.authUser.value?.seller_name} - نوع الطلب توثيق الحساب";
+                                        openUrl(
+                                            url:
+                                                "https://wa.me/${mainController.settings.value.social?.phone}?text=$message");
+                                      }
+                                    });
                                   },
                                   child: Container(
                                     width: 0.35.sw,
@@ -483,17 +509,17 @@ class ProfilePage extends StatelessWidget {
                                         vertical: 0.01.sh, horizontal: 0.02.sw),
                                     decoration: BoxDecoration(
                                         borderRadius:
-                                        BorderRadius.circular(15.r),
+                                            BorderRadius.circular(15.r),
                                         color: mainController.authUser.value
-                                            ?.is_verified ==
-                                            true
+                                                    ?.is_verified ==
+                                                true
                                             ? color
                                             : Colors.blue),
                                     child: Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.center,
+                                          MainAxisAlignment.center,
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.center,
+                                          CrossAxisAlignment.center,
                                       children: [
                                         Container(
                                           child: Text(
@@ -519,8 +545,9 @@ class ProfilePage extends StatelessWidget {
                                 true)
                               InkWell(
                                   onTap: () {
-                                    Get.toNamed(
-                                        GALLERY_PAGE, arguments: mainController.authUser.value?.id);
+                                    Get.toNamed(GALLERY_PAGE,
+                                        arguments:
+                                            mainController.authUser.value?.id);
                                   },
                                   child: Container(
                                     width: 0.35.sw,
@@ -528,17 +555,17 @@ class ProfilePage extends StatelessWidget {
                                         vertical: 0.01.sh, horizontal: 0.02.sw),
                                     decoration: BoxDecoration(
                                         borderRadius:
-                                        BorderRadius.circular(15.r),
-                                          color: mainController.authUser.value
-                                        ?.is_verified ==
-                                    true
-                                    ? color
-                                        : RedColor),
+                                            BorderRadius.circular(15.r),
+                                        color: mainController.authUser.value
+                                                    ?.is_verified ==
+                                                true
+                                            ? color
+                                            : RedColor),
                                     child: Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.center,
+                                          MainAxisAlignment.center,
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.center,
+                                          CrossAxisAlignment.center,
                                       children: [
                                         Container(
                                           child: Text(
@@ -546,12 +573,17 @@ class ProfilePage extends StatelessWidget {
                                             style: H4WhiteTextStyle,
                                           ),
                                         ),
-                                        SizedBox(width: 0.02.sw,),
-                                        Icon(FontAwesomeIcons.solidImages,size: 0.04.sw,color: WhiteColor,),
+                                        SizedBox(
+                                          width: 0.02.sw,
+                                        ),
+                                        Icon(
+                                          FontAwesomeIcons.solidImages,
+                                          size: 0.04.sw,
+                                          color: WhiteColor,
+                                        ),
                                       ],
                                     ),
                                   )),
-
                             InkWell(
                                 onTap: () {
                                   Get.toNamed(Edit_PROFILE_PAGE);
@@ -562,14 +594,14 @@ class ProfilePage extends StatelessWidget {
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(15.r),
                                       color: mainController.authUser.value
-                                          ?.is_verified ==
-                                          true
+                                                  ?.is_verified ==
+                                              true
                                           ? color
                                           : RedColor),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.center,
+                                        CrossAxisAlignment.center,
                                     children: [
                                       Container(
                                         child: Text(
@@ -619,12 +651,11 @@ class ProfilePage extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(15.r),
                                       color: logic.pageSelected.value == 0
                                           ? (mainController.authUser.value
-                                          ?.is_verified ==
-                                          true
-                                          ? "${mainController.authUser.value
-                                          ?.id_color}"
-                                          .toColor()
-                                          : RedColor)
+                                                      ?.is_verified ==
+                                                  true
+                                              ? "${mainController.authUser.value?.id_color}"
+                                                  .toColor()
+                                              : RedColor)
                                           : GrayLightColor),
                                   child: Text(
                                     'المنتجات',
@@ -649,12 +680,11 @@ class ProfilePage extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(15.r),
                                       color: logic.pageSelected.value == 1
                                           ? (mainController.authUser.value
-                                          ?.is_verified ==
-                                          true
-                                          ? "${mainController.authUser.value
-                                          ?.id_color}"
-                                          .toColor()
-                                          : RedColor)
+                                                      ?.is_verified ==
+                                                  true
+                                              ? "${mainController.authUser.value?.id_color}"
+                                                  .toColor()
+                                              : RedColor)
                                           : GrayLightColor),
                                   child: Text(
                                     'الإعلانات الممولة',
@@ -679,12 +709,11 @@ class ProfilePage extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(15.r),
                                       color: logic.pageSelected.value == 2
                                           ? (mainController.authUser.value
-                                          ?.is_verified ==
-                                          true
-                                          ? "${mainController.authUser.value
-                                          ?.id_color}"
-                                          .toColor()
-                                          : RedColor)
+                                                      ?.is_verified ==
+                                                  true
+                                              ? "${mainController.authUser.value?.id_color}"
+                                                  .toColor()
+                                              : RedColor)
                                           : GrayLightColor),
                                   child: Text(
                                     'الإحصائيات',

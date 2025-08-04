@@ -68,7 +68,7 @@ RxnString phoneCode =RxnString(null);
         emailController.value =
             TextEditingValue(text: "${user.value!.email }");
         phoneController.value =
-            TextEditingValue(text: "${user.value!.phone}".replaceFirst('963', ''));
+            TextEditingValue(text: "${user.value!.phone}".length >9 ?"${user.value!.phone}".replaceFirst('963', ''):"${user.value!.phone}");
         addressController.value =
             TextEditingValue(text: "${user.value!.address }");
         sellerNameController.value =
@@ -93,7 +93,7 @@ RxnString phoneCode =RxnString(null);
             TextEditingValue(text: "${user.value?.social?.linkedin }");
         tiktokController.value =
             TextEditingValue(text: "${user.value?.social?.tiktok }");
-        phoneCode.value="${user.value?.phone_code }";
+        phoneCode.value="${user.value?.phone_code}".length==0?'963':"${user.value?.phone_code }";
       }
     });
   }

@@ -132,7 +132,7 @@ class EditProductPage extends StatelessWidget {
                                 ),
                               );
                             }),
-                            Expanded(child: Obx(() {
+                           /* Expanded(child: Obx(() {
                               return Container(
                                 width: 0.4.sw,
                                 child: Column(
@@ -151,7 +151,7 @@ class EditProductPage extends StatelessWidget {
                                   ],
                                 ),
                               );
-                            }),),
+                            }),),*/
                             Obx(() {
                               return Container(
                                 width: 0.4.sw,

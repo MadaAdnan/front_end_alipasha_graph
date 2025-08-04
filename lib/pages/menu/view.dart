@@ -363,7 +363,7 @@ SizedBox(height: 0.02.sh,),
                   ],
                 ),
               ),
-              Padding(
+              /*Padding(
                 padding: EdgeInsets.symmetric(
                     horizontal: 0.01.sw, vertical: 0.002.sh),
                 child: Row(
@@ -388,8 +388,8 @@ SizedBox(height: 0.02.sh,),
                         title: 'شحن طرد مخصص'),
                   ],
                 ),
-              ),
-              Padding(
+              ),*/
+             /* Padding(
                 padding: EdgeInsets.symmetric(
                     horizontal: 0.01.sw, vertical: 0.002.sh),
                 child: Row(
@@ -440,7 +440,7 @@ SizedBox(height: 0.02.sh,),
                     ),
                   ],
                 ),
-              ),
+              ),*/
               Padding(
                 padding: EdgeInsets.symmetric(
                     horizontal: 0.01.sw, vertical: 0.002.sh),
@@ -480,6 +480,9 @@ SizedBox(height: 0.02.sh,),
                           },
                           image: 'assets/images/png/upgrade.png',
                           title: 'سياسة الخصوصية'),
+                    ),
+                    Expanded(
+                      child: Container()
                     ),
 
                   ],

@@ -16,6 +16,8 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import 'firebase_options.dart';
+
+
 /// https://www.figma.com/design/px6a4uJqQMFINZtOZtSPDP/ali-pasha-home?node-id=0-1&t=VcJBc4HEx3FehtIf-1
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

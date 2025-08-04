@@ -33,14 +33,14 @@ class SocialModel {
       phone: "${data['phone']??''}",
       email: "${data['email']??''}",
       face: "${data['face']??''}",
-      instagram: "${data['instagram']??''}",
-      linkedin: "${data['linkedin']??''}",
-      sub_email: "${data['sub_email']??''}",
-      sub_phone: "${data['sub_phone']??''}",
-      telegram: "${data['telegram']??''}",
-      twitter: "${data['twitter']??''}",
-      youtube: "${data['youtube']??''}",
-      tiktok: "${data['tiktok']??''}",
+      instagram: "${data['instagram'] == null || data['instagram']?.toString().toLowerCase()=='null'? data['instagram']:''}",
+      linkedin: "${data['linkedin'] == null || data['linkedin']?.toString().toLowerCase()=='null'? data['linkedin']:''}",
+      sub_email:"${data['sub_email'] == null || data['sub_email']?.toString().toLowerCase()=='null'? data['sub_email']:''}",
+      sub_phone: "${data['sub_phone'] == null || data['sub_phone']?.toString().toLowerCase()=='null'? data['sub_phone']:''}",
+      telegram: "${data['telegram'] == null || data['telegram']?.toString().toLowerCase()=='null'? data['telegram']:''}",
+      twitter:  "${data['twitter'] == null || data['twitter']?.toString().toLowerCase()=='null'? data['twitter']:''}",
+      youtube:  "${data['youtube'] == null || data['youtube']?.toString().toLowerCase()=='null'? data['youtube']:''}",
+      tiktok:  "${data['tiktok'] == null || data['tiktok']?.toString().toLowerCase()=='null'? data['tiktok']:''}",
     );
   }
 

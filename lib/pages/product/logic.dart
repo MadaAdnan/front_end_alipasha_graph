@@ -184,7 +184,7 @@ class ProductLogic extends GetxController {
 
     try {
       dio.Response? res = await mainController.fetchData();
-      mainController.logger.f(res?.data);
+     // mainController.logger.f(res?.data);
       loading.value = false;
       if (res?.data?['data']?['product']['product'] != null) {
         product.value =
@@ -298,6 +298,58 @@ Logger().e(res?.data);
     } catch (e) {}
     loadingRate.value = false;
   }
+  createOrder() async {
+    loading.value = true;
+    if (mainController.authUser.value!.address!.isEmpty ||
+        mainController.authUser.value!.phone!.isEmpty) {
+      mainController.showToast(
+          text: 'يرجى إكمال الملف الشخصي وإضافة عنوان ورقم هاتف',
+          type: 'error');
+      return;
+    }
+    Map<String, dynamic> data = {
+      'seller_id': product.value?.user?.id,
+      'weight': product.value?.weight,
+      'address': mainController.authUser.value?.address,
+      'phone': mainController.authUser.value?.phone,
+      'items': [
+        {"product_id": "${product.value?.id}", 'qty':1}
+      ],
+    };
+    mainController.logger.i(data);
+    mainController.query.value = r'''
+    mutation CreateNewInvoice($input:InvoiceInput!){
+      createNewInvoice(input:$input){
+          id
+          user{
+            name
+          }
+          seller{
+            seller_name
+          }
+      }
+    
+    }
+     ''';
+    mainController.variables.value = {'input': data};
+    try {
 
+      var res = await mainController.fetchData();
+      if (res?.data?['data']?['createNewInvoice'] != null) {
+        mainController.showToast(text: 'الطلب بإنتظار المراجعة شكراً لك');
+        await mainController.refreshCart();
+        // Get.offNamed(MY_INVOICE_PAGE);
+      }else if(res?.data?['errors']?[0]?['message']!=null){
+        throw Exception("${res?.data?['errors']?[0]?['message']}");
+      }
+      else {
+        throw Exception('خطأ في الطلب يرجى المحاولة لاحقاً');
+      }
+    } catch (e) {
+      mainController.showToast(
+          text: '$e'.replaceAll('Exception:', ''), type: 'error');
+    }
+    loading.value = false;
+  }
 
 }

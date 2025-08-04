@@ -69,7 +69,7 @@ class MainController extends GetxController {
   RxList<SliderModel> sliders = RxList<SliderModel>([]);
   RxList<CountryModel> countries = RxList<CountryModel>([]);
   RxList<PricingModel> pricing = RxList([]);
-  String versionAPK = "3.1.1";
+  String versionAPK = "3.1.6";
   RxInt communityNotification = RxInt(0);
   RxBool startApp = RxBool(true); //for fill data from storage
   Rx<SettingModel> settings =
@@ -393,6 +393,23 @@ class MainController extends GetxController {
     createCommunityLodaing.value = false;
   }
 
+
+  int? versionToInt(String version){
+    List<String> parts = version.split('.');
+
+// نملأ أي جزء ناقص بـ 0 (لضمان وجود 3 عناصر دائمًا)
+    while (parts.length < 3) {
+      parts.add('0');
+    }
+
+// ندمج الأجزاء في سلسلة واحدة
+    String numericVersion = parts.join('');
+
+// نحولها إلى عدد صحيح
+    int? versionNumber = int.tryParse(numericVersion);
+    return versionNumber;
+
+  }
   getAdvices() async {
     query.value = '''
     query Advices {
@@ -428,6 +445,7 @@ class MainController extends GetxController {
             phone
             sub_phone
         }
+        footer_order
         url_for_download{
         play
         up_down
@@ -491,10 +509,14 @@ class MainController extends GetxController {
        // Logger().i("CCO");
        // Logger().i(countries);
       // Logger().i(res?.data);
+
       if (res?.data?['data']?['settings'] != null) {
+       int? currentVersion=versionToInt(versionAPK)??1;
+
         settings.value = SettingModel.fromJson(res?.data?['data']['settings']);
+       int? forceVersion=versionToInt("${settings.value.current_version}")??1;
         if (settings.value.force_upgrade == true &&
-            settings.value.current_version != versionAPK) {
+            forceVersion > currentVersion) {
           Get.dialog(
               AlertDialog(
                 backgroundColor: WhiteColor,

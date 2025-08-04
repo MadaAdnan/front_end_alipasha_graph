@@ -445,7 +445,6 @@ class CreateTenderPage extends StatelessWidget {
                         width: 1.sw,
                         height: 0.08.sh,
                         child: FormBuilderTextField(
-
                           validator: FormBuilderValidators.required(
                               errorText: 'يرجى إدخال رقم الهاتف', checkNullOrEmpty: true),
                           name: 'phone',
@@ -763,7 +762,7 @@ class CreateTenderPage extends StatelessWidget {
                   ),
                 ),
                 visible:
-                mainController.authUser.value?.isAvailableCreate == false,
+                mainController.authUser.value?.isAvailableCreate == false && logic.loading.value==false,
               )),
             ],
           );
