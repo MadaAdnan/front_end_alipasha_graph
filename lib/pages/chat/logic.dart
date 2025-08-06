@@ -153,7 +153,7 @@ ever(communityId, (value){
   }
 
   getMessages() async {
-    Logger().f("COMM $communityId");
+   // Logger().f("COMM $communityId");
     mainController.query.value = '''
   query GetMessages {
   ${communityModel.value == null ? '''
@@ -204,7 +204,7 @@ ever(communityId, (value){
     loading.value = true;
     try {
       dio.Response? res = await mainController.fetchData();
-      mainController.logger.f(res?.data);
+     // mainController.logger.f(res?.data);
       if (res?.data['data']?['community'] != null) {
         communityModel.value =
             CommunityModel.fromJson(res?.data['data']?['community']);

@@ -69,7 +69,7 @@ class MainController extends GetxController {
   RxList<SliderModel> sliders = RxList<SliderModel>([]);
   RxList<CountryModel> countries = RxList<CountryModel>([]);
   RxList<PricingModel> pricing = RxList([]);
-  String versionAPK = "3.1.6";
+  String versionAPK = "3.1.7";
   RxInt communityNotification = RxInt(0);
   RxBool startApp = RxBool(true); //for fill data from storage
   Rx<SettingModel> settings =
@@ -79,6 +79,7 @@ class MainController extends GetxController {
   Rxn<PusherClient> pusher = Rxn<PusherClient>(null);
   late dynamic deep;
   List<Channel> channels = [];
+  RxBool showPopupShipping=RxBool(false);
 
   @override
   void onInit() {
@@ -706,8 +707,8 @@ class MainController extends GetxController {
         file.path + '.webp',
         format: CompressFormat.webp,
         quality: 80,
-        minHeight: height ?? 600,
-        minWidth: width ?? 600,
+        minHeight: height ?? 500,
+        minWidth: width ?? 500,
         rotate: 0,
         numberOfRetries: 10,
       );
@@ -724,8 +725,10 @@ class MainController extends GetxController {
       {required ImageSource imagSource,
       required Function(XFile? file, int? fileSize) onChange}) async {
     XFile? selected = await ImagePicker().pickImage(source: imagSource);
+
     if (selected != null) {
       XFile? response = await cropImage(selected);
+
       if (response != null) {
         File compressedFile = File(response.path);
         int fileSize = await compressedFile.length();
@@ -739,8 +742,8 @@ class MainController extends GetxController {
       CroppedFile? cropped = await ImageCropper().cropImage(
         compressFormat: ImageCompressFormat.png,
         sourcePath: file.path,
-        maxWidth: 600,
-        maxHeight: 600,
+        maxWidth: 500,
+        maxHeight: 500,
         compressQuality: 80,
         aspectRatio: ratio ?? const CropAspectRatio(ratioX: 1, ratioY: 1),
         uiSettings: [

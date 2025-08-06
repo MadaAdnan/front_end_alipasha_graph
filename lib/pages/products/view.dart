@@ -533,7 +533,7 @@ class ProductsPage extends StatelessWidget {
                                             return;
                                           }
                                           HelperClass.connectWithSeller(
-                                              phone: logic.seller.value!.phone!,
+                                              phone: "${logic.seller.value!.phone_code}${logic.seller.value!.phone}",
                                               sellerId:
                                                   logic.seller.value!.id!);
                                           /* if (mainController.authUser.value !=
