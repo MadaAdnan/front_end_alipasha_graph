@@ -10,8 +10,8 @@
 
     <!-- استثناء لبعض الدومينات -->
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">pazarpasha.com</domain>
-        <domain includeSubdomains="true">ali-pasha.com</domain>
+<!--        <domain includeSubdomains="true">pazarpasha.com</domain>-->
+<!--        <domain includeSubdomains="true">ali-pasha.com</domain>-->
         <domain includeSubdomains="true">127.0.0.1</domain>
         <domain includeSubdomains="true">localhost</domain>
     </domain-config>

@@ -10,6 +10,7 @@ class UserModel {
   String? seller_name;
   String? email;
   String? phone;
+  String? sphone;
   String? address;
   String? image;
   String? logo;

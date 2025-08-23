@@ -69,7 +69,7 @@ class MainController extends GetxController {
   RxList<SliderModel> sliders = RxList<SliderModel>([]);
   RxList<CountryModel> countries = RxList<CountryModel>([]);
   RxList<PricingModel> pricing = RxList([]);
-  String versionAPK = "3.1.7";
+  String versionAPK = "3.1.9";
   RxInt communityNotification = RxInt(0);
   RxBool startApp = RxBool(true); //for fill data from storage
   Rx<SettingModel> settings =
@@ -724,16 +724,31 @@ class MainController extends GetxController {
   Future<void> pickImage(
       {required ImageSource imagSource,
       required Function(XFile? file, int? fileSize) onChange}) async {
-    XFile? selected = await ImagePicker().pickImage(source: imagSource);
-
-    if (selected != null) {
-      XFile? response = await cropImage(selected);
-
-      if (response != null) {
-        File compressedFile = File(response.path);
-        int fileSize = await compressedFile.length();
-        onChange(response, fileSize);
+    try {
+      XFile? selected = await ImagePicker().pickImage(source: imagSource);
+      
+      if (selected != null) {
+        try {
+          XFile? response = await cropImage(selected);
+          
+          if (response != null) {
+            try {
+              File compressedFile = File(response.path);
+              int fileSize = await compressedFile.length();
+              onChange(response, fileSize);
+            } catch (e) {
+              logger.e("Error processing image file: $e");
+              showToast(text: 'حدث خطأ أثناء معالجة الصورة', type: 'error');
+            }
+          }
+        } catch (e) {
+          logger.e("Error cropping image: $e");
+          showToast(text: 'حدث خطأ أثناء قص الصورة', type: 'error');
+        }
       }
+    } catch (e) {
+      logger.e("Error picking image: $e");
+      showToast(text: 'حدث خطأ أثناء اختيار الصورة', type: 'error');
     }
   }
 

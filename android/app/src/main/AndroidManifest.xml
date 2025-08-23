@@ -19,6 +19,7 @@
         android:icon="@mipmap/ic_launcher"
         android:networkSecurityConfig="@xml/network_security_config"
         android:usesCleartextTraffic="false"
+        android:allowBackup="false"
         >
 
         <provider
@@ -32,7 +33,7 @@
         </provider>
 
         <!-- UCropActivity -->
-       <!-- <activity
+        <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
@@ -41,7 +42,6 @@
             android:allowTaskReparenting="false"
             android:launchMode="standard"
             />
--->
         <!-- MainActivity -->
         <activity
             android:name=".MainActivity"

@@ -421,7 +421,7 @@ class ProductPage extends StatelessWidget {
                                 message.write("\n");
                                 message.writeln(
                                     "${mainController.settings.value?.footerOrder}");
-                                await logic.createOrder();
+                               // await logic.createOrder();
                                 openUrl(
                                     url:
                                         "https://wa.me/${logic.product.value?.user?.phone}?text=${message}");

@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -259,7 +260,6 @@ class ProductsPage extends StatelessWidget {
                                             vertical: 0.007.sh),
                                         child: GestureDetector(
                                           onTap: () {
-
                                             openUrl(
                                                 url:
                                                 "${logic.seller.value?.social?.instagram}" );

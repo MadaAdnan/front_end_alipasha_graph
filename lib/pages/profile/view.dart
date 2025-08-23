@@ -34,7 +34,6 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Logger().i(mainController.authUser.value?.social?.tiktok);
     Color? color = mainController.authUser.value?.is_verified == true
         ? mainController.authUser.value?.id_color!.toColor()
         : RedColor;

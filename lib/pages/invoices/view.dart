@@ -165,11 +165,11 @@ bool canShipping=true;
                             SizedBox(
                               height: 0.02.sw,
                             ),
-                            if (invoice.phone != '')
+                            if (invoice.user?.phone != '')
                               InkWell(
                                 onTap: () {
                                   openUrl(
-                                      url: 'https://wa.me/${invoice.phone}');
+                                      url: 'https://wa.me/${invoice.user?.phone_code}${invoice.user?.phone}');
                                 },
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -183,7 +183,7 @@ bool canShipping=true;
                                       width: 0.02.sw,
                                     ),
                                     Text(
-                                      '${invoice.phone}',
+                                      '${invoice.user?.phone_code}${invoice.user?.phone}',
                                       style: H2RegularDark,
                                     )
                                   ],
