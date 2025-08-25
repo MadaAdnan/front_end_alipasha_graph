@@ -44,6 +44,7 @@ const AUTH_USER = '''
               can_create_channel
               can_create_group
               affiliate
+              is_active
               social{
                 twitter
                 face
@@ -91,6 +92,7 @@ const AUTH_FIELDS = '''
               close_time
               total_views
               is_available_create
+              is_active
               communities{
                 id
                 name

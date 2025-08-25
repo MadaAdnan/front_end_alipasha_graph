@@ -37,6 +37,7 @@ class UserModel {
   CityModel? area;
   bool? is_special;
   bool? trust;
+
   double? totalBalance;
   double? totalPoint;
   int? followingCount;
@@ -92,7 +93,8 @@ class UserModel {
     this.isAvailableCreate,
     this.area,
     this.full_phone,
-    this.phone_code
+    this.phone_code,
+
   });
 
   factory UserModel.fromJson(Map<String, dynamic> data) {

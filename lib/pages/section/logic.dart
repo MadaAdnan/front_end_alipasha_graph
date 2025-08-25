@@ -184,10 +184,10 @@ Rxn<CityModel> cityModel=Rxn(null);
       }
 
       if (res?.data?['data']?['category'] != null) {
+        Logger().e(res?.data?['data']?['category']);
         category.value =
             CategoryModel.fromJson(res?.data?['data']?['category']);
-        category.value?.children?.insert(
-            0,
+        category.value?.children?.add(
             CategoryModel(
               name: 'الكل',
             ));

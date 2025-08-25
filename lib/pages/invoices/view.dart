@@ -233,11 +233,13 @@ bool canShipping=true;
                           Text(
                             'ملاحظة : ',
                             style: H3RedTextStyle,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
                           ),
                           Expanded(
                               child: Text(
-                            canShipping==true ?'فريق علي باشا يشحن البضاعة بعد موافقتك وتوفر التوصيل للمنتجات' : 'علي باشا لا يوفر شحن لهذا الطلب',
-                            style: H4GrayTextStyle,
+                           'تواصل مع الزبون عبر الواتساب',
+                            style: H4RegularDark,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
                           )),
@@ -426,24 +428,15 @@ bool canShipping=true;
                 child: Text('البضاعة غير متوفرة', style: H3RegularDark),
               ),
               RadioMenuButton(
-                value: 'المنتج مباع',
+                value: 'الزبون بعيد لا أملك خدمة شحن',
                 groupValue: selectedValue.value,
                 onChanged: (value) {
                   selectedValue.value = value ?? '';
                   message.value = value ?? '';
                 },
-                child: Text('المنتج مباع', style: H3RegularDark),
+                child: Text('الزبون بعيد لا أملك خدمة شحن', style: H3RegularDark),
               ),
-              RadioMenuButton(
-                value: 'لا أرغب بإستخدام خدمة الشحن',
-                groupValue: selectedValue.value,
-                onChanged: (value) {
-                  selectedValue.value = value ?? '';
-                  message.value = value ?? '';
-                },
-                child:
-                    Text('لا أرغب باستخدام خدمة الشحن', style: H3RegularDark),
-              ),
+
               RadioMenuButton(
                 value: 'other',
                 groupValue: selectedValue.value,
@@ -475,6 +468,9 @@ bool canShipping=true;
                     ),
                   ),
                 ),
+
+              if(selectedValue.value=='الزبون بعيد لا أملك خدمة شحن')
+              Container(child: Text('يوفر علي باشا خدمة الشحن كميزة إختيارية إذا كان التاجر لا يستطيع توصيل المنتج إتصل بالدعم الفني للمساعدة',maxLines: 7,style: H3RedTextStyle,),)
 
             ],
           );

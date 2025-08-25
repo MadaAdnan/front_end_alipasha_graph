@@ -98,7 +98,7 @@ class MenuPage extends StatelessWidget {
                   );
                 }),
                 badges.Badge(
-                  position: badges.BadgePosition.custom(top: 0,start: 0),
+                  position: badges.BadgePosition.custom(top: -7,start: -10),
 
                   badgeContent: Obx(() {
                     return Text(

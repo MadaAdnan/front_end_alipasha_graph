@@ -498,7 +498,7 @@ class ProfilePage extends StatelessWidget {
                                             "ID:${mainController.authUser.value?.id} - اسم المتجر : ${mainController.authUser.value?.seller_name} - نوع الطلب توثيق الحساب";
                                         openUrl(
                                             url:
-                                                "https://wa.me/${mainController.settings.value.social?.phone}?text=$message");
+                                                "https://wa.me/${mainController.settings.value.social?.phone}?text=${Uri.encodeComponent('${message!.toString()}')}");
                                       }
                                     });
                                   },

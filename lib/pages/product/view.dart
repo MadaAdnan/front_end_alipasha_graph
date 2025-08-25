@@ -360,9 +360,11 @@ class ProductPage extends StatelessWidget {
                             width: 0.03.sw,
                           ),
                           InkWell(
-                            onTap: () {
-                              mainController.addToCart(
+                            onTap: ()async {
+
+                            await  mainController.addToCart(
                                   product: logic.product.value!);
+                            mainController.showToast(type: 'success',text: 'تم إضافة المنتج إلى السلة');
                             },
                             child: Container(
                               width: 0.35.sw,
@@ -402,29 +404,39 @@ class ProductPage extends StatelessWidget {
                                     type: "error");
                                 return;
                               }
+                              if(mainController.authUser.value?.is_active!=true){
+                                mainController.showToast(
+                                    type: 'error',
+                                    text:
+                                    'حسابكم محظور الرجاء التواصل مع الدعم الفني');
+                                return ;
+                              }
                               if (!mainController
                                   .createCommunityLodaing.value) {
                                 StringBuffer message = StringBuffer();
+                                message.writeln(
+                                    "${mainController.settings.value.footerOrder}");
+                                message.write("\n");
                                 message
                                     .write("السلام عليكم ورحمة الله وبركاته ");
                                 message.write("\n");
-                                message.write("📦 طلب جديد من تطبيق علي باشا:");
+                                message.write("اريد الإستفسار عن بضاعة");
                                 message.write("\n");
                                 message.write(
                                     "معرف المنتج : ${logic.product.value!.id}");
                                 message.write("\n");
                                 message.write(
-                                    "المنتج : ${logic.product.value!.name}");
+                                    "المنتج :${logic.product.value!.name} ");
                                 message.write("\n");
                                 message.write(
                                     "سعر الوحدة : ${logic.product.value?.is_discount == true ? logic.product.value?.discount : logic.product.value?.price}");
                                 message.write("\n");
-                                message.writeln(
-                                    "${mainController.settings.value?.footerOrder}");
-                               // await logic.createOrder();
+
+                                await mainController.clickWhatsApp(productId: logic.product.value!.id!);
+
                                 openUrl(
                                     url:
-                                        "https://wa.me/${logic.product.value?.user?.phone}?text=${message}");
+                                        "https://wa.me/${logic.product.value?.user?.phone}?text=${Uri.encodeComponent('${message!.toString()}')}");
                                 /* HelperClass.connectWithSeller(
                                     phone:
                                     logic.product.value!.user!.phone!,

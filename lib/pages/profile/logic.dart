@@ -108,6 +108,9 @@ class ProfileLogic extends GetxController {
               id
               seller_name
               is_verified
+              full_phone
+              phone
+              phone_code
               city{
                 id
                

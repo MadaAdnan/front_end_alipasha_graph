@@ -79,7 +79,7 @@ class MainController extends GetxController {
   Rxn<PusherClient> pusher = Rxn<PusherClient>(null);
   late dynamic deep;
   List<Channel> channels = [];
-  RxBool showPopupShipping=RxBool(false);
+  RxBool showPopupShipping = RxBool(false);
 
   @override
   void onInit() {
@@ -146,14 +146,12 @@ class MainController extends GetxController {
   }
 
   handelCreateMessage(e) {
-
     if (e['message'] != null) {
-
       //Check Is Page Community
       if (Get.currentRoute == COMMUNITIES_PAGE) {
         if (e['message']?['community'] != null) {
           CommunityModel community =
-          CommunityModel.fromJson(e['message']?['community']);
+              CommunityModel.fromJson(e['message']?['community']);
           int index = Get.find<CommunitiesLogic>()
               .communities
               .indexWhere((el) => el.id == community.id);
@@ -166,7 +164,8 @@ class MainController extends GetxController {
       else if ((Get.currentRoute == CHAT_PAGE ||
           Get.currentRoute == GROUP_PAGE ||
           Get.currentRoute == CHANNEL_PAGE)) {
-        if (e['message'] != null && Get.arguments?.id == e['message']?['community']?['id']) {
+        if (e['message'] != null &&
+            Get.arguments?.id == e['message']?['community']?['id']) {
           MessageModel message = MessageModel.fromJson(e['message']);
           switch (message.community?.type) {
             case 'chat':
@@ -200,13 +199,11 @@ class MainController extends GetxController {
               break;
           }
         }
-      }
-      else{
+      } else {
         communityNotification.value += 1;
       }
     }
   }
-
 
   handelCreateCommunity(e) {
     if (e['community'] != null) {
@@ -229,10 +226,6 @@ class MainController extends GetxController {
     }
   }
 
-
-
-
-
   Future<dio.Response?> fetchData() async {
     loading.value = true;
     DateTime startDate = DateTime.now();
@@ -244,7 +237,7 @@ class MainController extends GetxController {
       loading.value = false;
       DateTime endDate = DateTime.now();
       Duration responseTime = endDate.difference(startDate);
-     /* logger.i(
+      /* logger.i(
           "Duration Response : ${responseTime.inMilliseconds / 1000} Seconds");
       logger.i("Response Size: ${res.data.toString().length / 1024} KB");*/
       return res;
@@ -394,8 +387,7 @@ class MainController extends GetxController {
     createCommunityLodaing.value = false;
   }
 
-
-  int? versionToInt(String version){
+  int? versionToInt(String version) {
     List<String> parts = version.split('.');
 
 // نملأ أي جزء ناقص بـ 0 (لضمان وجود 3 عناصر دائمًا)
@@ -409,8 +401,8 @@ class MainController extends GetxController {
 // نحولها إلى عدد صحيح
     int? versionNumber = int.tryParse(numericVersion);
     return versionNumber;
-
   }
+
   getAdvices() async {
     query.value = '''
     query Advices {
@@ -494,7 +486,6 @@ class MainController extends GetxController {
           // Logger().i(item);
           advices.add(AdviceModel.fromJson(item));
         }
-
       }
 
       if (res?.data?['data']?['countries'] != null) {
@@ -505,17 +496,17 @@ class MainController extends GetxController {
           // Logger().i(item);
           countries.add(CountryModel.fromJson(item));
         }
-
       }
-       // Logger().i("CCO");
-       // Logger().i(countries);
+      // Logger().i("CCO");
+      // Logger().i(countries);
       // Logger().i(res?.data);
 
       if (res?.data?['data']?['settings'] != null) {
-       int? currentVersion=versionToInt(versionAPK)??1;
+        int? currentVersion = versionToInt(versionAPK) ?? 1;
 
         settings.value = SettingModel.fromJson(res?.data?['data']['settings']);
-       int? forceVersion=versionToInt("${settings.value.current_version}")??1;
+        int? forceVersion =
+            versionToInt("${settings.value.current_version}") ?? 1;
         if (settings.value.force_upgrade == true &&
             forceVersion > currentVersion) {
           Get.dialog(
@@ -570,7 +561,6 @@ class MainController extends GetxController {
                                 ),
                                 child: InkWell(
                                   onTap: () {
-
                                     openUrl(
                                         url:
                                             "${settings.value.urlDownload?.play}");
@@ -603,7 +593,6 @@ class MainController extends GetxController {
                                 ),
                                 child: InkWell(
                                   onTap: () {
-
                                     openUrl(
                                         url: settings
                                                 .value.urlDownload?.direct ??
@@ -726,11 +715,11 @@ class MainController extends GetxController {
       required Function(XFile? file, int? fileSize) onChange}) async {
     try {
       XFile? selected = await ImagePicker().pickImage(source: imagSource);
-      
+
       if (selected != null) {
         try {
           XFile? response = await cropImage(selected);
-          
+
           if (response != null) {
             try {
               File compressedFile = File(response.path);
@@ -787,6 +776,13 @@ class MainController extends GetxController {
   }
 
   Future<void> addToCart({required ProductModel product}) async {
+    if(authUser.value?.is_active!=true){
+      showToast(
+          type: 'error',
+          text:
+          'حسابكم محظور الرجاء التواصل مع الدعم الفني');
+      return ;
+    }
     cartLoading.value = true;
     try {
       List<CartModel> cartsItem = await CartHelper.addToCart(product: product);
@@ -1157,5 +1153,24 @@ class MainController extends GetxController {
     } catch (e) {}
     loading.value = false;
     return null;
+  }
+
+  Future<void> clickWhatsApp({ required int productId}) async {
+    try {
+      query.value = '''
+      mutation ClickWhatsapp {
+    clickWhatsapp(productId: $productId) {
+       id
+    }
+}
+      ''';
+      dio.Response? res = await fetchData();
+
+      if (res?.data?['data']?['clickWhatsapp'] != null) {
+
+      }
+    }  catch (e) {
+      logger.e(e);
+    }
   }
 }

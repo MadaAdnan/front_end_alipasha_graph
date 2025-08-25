@@ -222,7 +222,7 @@ class ProductsPage extends StatelessWidget {
                                   } else {
                                     openUrl(
                                         url:
-                                            "https://wa.me/${mainController.settings.value.social?.phone}?text=$msg");
+                                            "https://wa.me/${mainController.settings.value.social?.phone}?text=${Uri.encodeComponent('${msg!.toString()}')}");
                                   }
                                   break;
                               }

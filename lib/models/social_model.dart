@@ -30,7 +30,7 @@ class SocialModel {
   });
 
   factory SocialModel.fromJson(Map<String,dynamic> data){
-    Logger().e(data);
+
     return SocialModel(
       name: "${data['name'] ?? ''}",
       phone: "${data['phone'] ?? ''}",

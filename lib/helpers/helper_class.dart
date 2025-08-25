@@ -415,7 +415,7 @@ class HelperClass{
            InkWell(
              onTap: (){
 
-               openUrl(url: "https://wa.me/$phone?text=${message}");
+               openUrl(url: "https://wa.me/$phone?text=${Uri.encodeComponent("${message.toString()}")}");
              },
              child: Container(
                alignment: Alignment.center,

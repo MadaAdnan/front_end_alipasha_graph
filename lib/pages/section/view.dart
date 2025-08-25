@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../helpers/colors.dart';
@@ -68,7 +69,8 @@ class SectionPage extends StatelessWidget {
                 width: 0.1.sw,
                 height: 0.1.sw,
                 decoration: BoxDecoration(
-                    shape: BoxShape.circle, color: Colors.black.withOpacity(0.6)),
+                    shape: BoxShape.circle,
+                    color: Colors.black.withOpacity(0.6)),
                 child: PopupMenuButton(
                   iconColor: WhiteColor,
                   color: WhiteColor,
@@ -90,8 +92,7 @@ class SectionPage extends StatelessWidget {
                         break;
                     }
                   },
-                  itemBuilder: (context) =>
-                  [
+                  itemBuilder: (context) => [
                     PopupMenuItem(
                       value: 'price_up',
                       child: Row(
@@ -163,7 +164,7 @@ class SectionPage extends StatelessWidget {
       body: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollInfo) {
           if (scrollInfo.metrics.pixels >=
-              scrollInfo.metrics.maxScrollExtent * 0.80 &&
+                  scrollInfo.metrics.maxScrollExtent * 0.80 &&
               !mainController.loading.value &&
               logic.hasMorePage.value &&
               _scrollController.position.context.notificationContext ==
@@ -186,7 +187,6 @@ class SectionPage extends StatelessWidget {
             if (!logic.loadingProduct.value)
               Obx(() {
                 return Container(
-
                   width: 0.9.sw,
                   height: 0.064.sh,
                   alignment: Alignment.center,
@@ -247,71 +247,68 @@ class SectionPage extends StatelessWidget {
                             child: _loadingbuildSubSection());
                       }),
 
-
                     if (!logic.loadingProduct.value)
                       ...List.generate(logic.category.value!.children!.length,
-                              (index) {
-                            return _buildSubSection(
-                                category: logic.category.value!
-                                    .children![index]);
-                          })
+                          (index) {
+                        return _buildSubSection(
+                            category: logic.category.value!.children!.reversed
+                                .toList()[index]);
+                      })
                   ],
                 );
               }),
             ),
-            if(logic.loading.value==false)
-            Expanded(
-              child: SingleChildScrollView(
-                controller: _scrollController,
-                padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
-                child: Obx(() {
-                  return Column(
-                    children: [
-                      ...List.generate(logic.products.length, (index) {
-                        return Column(
-                          children: [
-                            MinimizeDetailsProductComponent(
-                              TitleColor: DarkColor,
-                              post: logic.products[index],
-                              onClick: () =>
-                                  Get.toNamed(PRODUCT_PAGE,
-                                      arguments: logic.products[index].id),
-                            ),
-                            if (logic.advices.length > 0 && index % 5 == 0)
-                              AdviceComponent(
-                                  advice: logic.advices[int.parse(
-                                      "${index % logic.advices.length}")])
-                          ],
-                        );
-                      }),
-                      if (logic.loading.value && logic.page.value == 1)
-                        ...List.generate(
-                            4,
-                                (index) =>
-                                Shimmer.fromColors(
-                                    baseColor: GrayLightColor,
-                                    highlightColor: GrayWhiteColor,
-                                    child:
-                                    MinimizeDetailsProductComponentLoading())),
-                      if (logic.loading.value && logic.page.value > 1)
-                        Container(
-                          alignment: Alignment.center,
-                          width: 0.1.sw,
-                          child: ProgressLoading(),
-                        ),
-                      if (!logic.hasMorePage.value && !logic.loading.value)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Text(
-                            'لا يوجد مزيد من النتائج',
-                            style: H3GrayTextStyle,
+            if (logic.loading.value == false)
+              Expanded(
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
+                  child: Obx(() {
+                    return Column(
+                      children: [
+                        ...List.generate(logic.products.length, (index) {
+                          return Column(
+                            children: [
+                              MinimizeDetailsProductComponent(
+                                TitleColor: DarkColor,
+                                post: logic.products[index],
+                                onClick: () => Get.toNamed(PRODUCT_PAGE,
+                                    arguments: logic.products[index].id),
+                              ),
+                              if (logic.advices.length > 0 && index % 5 == 0)
+                                AdviceComponent(
+                                    advice: logic.advices[int.parse(
+                                        "${index % logic.advices.length}")])
+                            ],
+                          );
+                        }),
+                        if (logic.loading.value && logic.page.value == 1)
+                          ...List.generate(
+                              4,
+                              (index) => Shimmer.fromColors(
+                                  baseColor: GrayLightColor,
+                                  highlightColor: GrayWhiteColor,
+                                  child:
+                                      MinimizeDetailsProductComponentLoading())),
+                        if (logic.loading.value && logic.page.value > 1)
+                          Container(
+                            alignment: Alignment.center,
+                            width: 0.1.sw,
+                            child: ProgressLoading(),
                           ),
-                        ),
-                    ],
-                  );
-                }),
+                        if (!logic.hasMorePage.value && !logic.loading.value)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Text(
+                              'لا يوجد مزيد من النتائج',
+                              style: H3GrayTextStyle,
+                            ),
+                          ),
+                      ],
+                    );
+                  }),
+                ),
               ),
-            ),
           ],
         ),
       ),
@@ -319,6 +316,7 @@ class SectionPage extends StatelessWidget {
   }
 
   _buildSubSection({required CategoryModel category}) {
+    Logger().i(category.toJson());
     return InkWell(
       onTap: () {
         logic.categoryId.value = category.id;

@@ -98,11 +98,12 @@ class NotificationPage extends StatelessWidget {
                             onTap: () {
                               NotificationModel notify =
                                   logic.notifications[index];
+
                               if (notify.data?.url?.length != 0) {
                                 String url = notify.data!.url!;
                                 var dataUrl =
                                     url.replaceFirst('//', '').split('/');
-
+                                Logger().i(dataUrl);
 //handelComment
                                 if (dataUrl.last.split('?')[0] == 'comments') {
                                   String id =
@@ -145,6 +146,9 @@ class NotificationPage extends StatelessWidget {
                                 }
                                 if (dataUrl[1] == 'balances') {
                                   Get.offNamed(BALANCES_PAGE);
+                                }
+                                if (dataUrl[1] == 'incomming') {
+                                  Get.offNamed(INVOICE_PAGE);
                                 }
 
                                 print(dataUrl);
