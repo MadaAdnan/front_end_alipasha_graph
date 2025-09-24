@@ -26,30 +26,40 @@ class ProductLogic extends GetxController {
 
   TextEditingController comment = TextEditingController();
 
+
+
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
-    productId.value = Get.arguments;
+
+    // كل ما productId يتغير => حدث التعليقات و جلب المنتج
     ever(productId, (value) {
       comments.clear();
       comment.clear();
-      getProduct();
+      if (value != null) {
+        getProduct();
+      }
     });
+    Logger().e("ON INIT ${productId.value}");
   }
+
+
 
   @override
   void onReady() {
-    // TODO: implement onReady
     super.onReady();
-    if (productId.value == null) {
-      productId.value = int.tryParse("${Get.parameters['id']}");
-    }
-    getProduct();
-    mainController.logger.w("PREVIOUS:");
-    mainController.logger.w(Get.previousRoute);
-  }
 
+    // تحديث productId من الـ arguments أو من الـ parameters
+    productId.value = Get.arguments ?? int.tryParse("${Get.parameters['id']}");
+
+    Logger().e("ON READY ${productId.value}");
+  }
+  @override
+  void onClose() {
+    productId.value =null; // أو null حسب حالتك
+    Logger().e("ON CLOSE ${productId.value}");
+    super.onClose();
+  }
   Future<void> getProduct() async {
     if (Get.previousRoute == '/notification_page') {
       Get.toNamed(COMMENTS_PAGE, parameters: {"id": "${productId.value}"});

@@ -56,7 +56,7 @@ class ProductPage extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: () {
-                    Get.toNamed(PRODUCTS_PAGE,
+                    Get.offNamed(PRODUCTS_PAGE,
                         arguments: logic.product.value?.user);
                   },
                   child: Row(

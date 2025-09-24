@@ -736,12 +736,12 @@ class ProductsPage extends StatelessWidget {
                                     return MinimizeDetailsProductComponent(
                                       post: logic.products[index],
                                       cartLoading:
-                                          mainController.cartLoading.value,
+                                      mainController.cartLoading.value,
                                       TitleColor: color,
                                       onClick: () {
                                         Get.toNamed(PRODUCT_PAGE,
                                             arguments:
-                                                logic.products[index].id);
+                                            logic.products[index].id,preventDuplicates: false);
                                       },
                                     );
                                   } else if (logic.products[index].type ==
@@ -749,24 +749,24 @@ class ProductsPage extends StatelessWidget {
                                     return MinimizeDetailsTenderComponent(
                                       post: logic.products[index],
                                       cartLoading:
-                                          mainController.cartLoading.value,
+                                      mainController.cartLoading.value,
                                       TitleColor: color,
                                       onClick: () {
                                         Get.toNamed(PRODUCT_PAGE,
                                             arguments:
-                                                logic.products[index].id);
+                                            logic.products[index].id);
                                       },
                                     );
                                   } else {
                                     return MinimizeDetailsJobComponent(
                                       post: logic.products[index],
                                       cartLoading:
-                                          mainController.cartLoading.value,
+                                      mainController.cartLoading.value,
                                       TitleColor: color,
                                       onClick: () {
                                         Get.toNamed(PRODUCT_PAGE,
                                             arguments:
-                                                logic.products[index].id);
+                                            logic.products[index].id);
                                       },
                                     );
                                   }

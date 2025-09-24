@@ -66,7 +66,7 @@ class PostCard extends StatelessWidget {
                     children: [
                       InkWell(
                         onTap: () {
-                          Get.toNamed(PRODUCTS_PAGE, arguments: post.user);
+                          Get.toNamed(PRODUCTS_PAGE, arguments: post.user,preventDuplicates: false);
                         },
                         child: Row(
                           children: [
@@ -209,7 +209,7 @@ class PostCard extends StatelessWidget {
                   flex: 3,
                   child: InkWell(
                     onTap: () {
-                      Get.toNamed(PRODUCT_PAGE, arguments: post.id);
+                      Get.toNamed(PRODUCT_PAGE, arguments: post.id,preventDuplicates: false);
                     },
                     child: Container(
                       width: 1.sw,

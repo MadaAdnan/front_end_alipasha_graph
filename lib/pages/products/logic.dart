@@ -153,8 +153,7 @@ class ProductsLogic extends GetxController {
   ''';
     try {
       dio.Response? res = await mainController.fetchData();
-      mainController.logger.e("Products");
-      mainController.logger.e(res?.data);
+
       if (res?.data?['data']?['products']?['paginatorInfo'] != null) {
         hasMorePage.value =
             res?.data?['data']?['products']?['paginatorInfo']['hasMorePages'];

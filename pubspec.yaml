@@ -1,6 +1,6 @@
 name: ali_pasha_graph
 description: "Ali-pasha2"
-version: 3.2.3+92
+version: 3.2.4+93
 environment:
   sdk: '>=3.4.3 <4.0.0'
 dependencies:

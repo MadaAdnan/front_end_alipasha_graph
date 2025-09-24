@@ -5,6 +5,6 @@ import 'logic.dart';
 class ProductBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => ProductLogic());
+    Get.lazyPut(() => ProductLogic(),fenix: true);
   }
 }
