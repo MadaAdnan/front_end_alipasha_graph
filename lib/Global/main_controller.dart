@@ -69,7 +69,7 @@ class MainController extends GetxController {
   RxList<SliderModel> sliders = RxList<SliderModel>([]);
   RxList<CountryModel> countries = RxList<CountryModel>([]);
   RxList<PricingModel> pricing = RxList([]);
-  String versionAPK = "3.1.9";
+  String versionAPK = "3.2.3";
   RxInt communityNotification = RxInt(0);
   RxBool startApp = RxBool(true); //for fill data from storage
   Rx<SettingModel> settings =
@@ -418,6 +418,7 @@ class MainController extends GetxController {
             id
             name
             seller_name
+            full_phone
         }
         url
         image
@@ -754,9 +755,9 @@ class MainController extends GetxController {
           AndroidUiSettings(
             toolbarTitle: 'قص الصورة',
             cropStyle: CropStyle.rectangle,
-            activeControlsWidgetColor: RedColor,
+            activeControlsWidgetColor: PrimaryColor,
             backgroundColor: Colors.grey.withOpacity(0.4),
-            toolbarColor: RedColor,
+            toolbarColor: PrimaryColor,
             toolbarWidgetColor: Colors.white,
             initAspectRatio: CropAspectRatioPreset.square,
             lockAspectRatio: true,
@@ -969,7 +970,7 @@ class MainController extends GetxController {
                       'ذهاب إلى الطلبات',
                       style: H4WhiteTextStyle,
                     ),
-                    color: RedColor,
+                    color: PrimaryColor,
                   ),
                   SizedBox(
                     width: 0.05.sw,

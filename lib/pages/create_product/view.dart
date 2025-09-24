@@ -62,7 +62,7 @@ class CreateProductPage extends StatelessWidget {
                                 decoration: BoxDecoration(
                                     border: Border(
                                         bottom: BorderSide(
-                                            color: RedColor, width: 2))),
+                                            color: PrimaryColor, width: 2))),
                                 child: Text(
                                   'إنشاء منشور',
                                   style: H5BlackTextStyle,
@@ -77,11 +77,11 @@ class CreateProductPage extends StatelessWidget {
                                     border: Border.all(
                                         color: logic.typePost.value != 'product'
                                             ? GrayDarkColor
-                                            : RedColor),
+                                            : PrimaryColor),
                                     borderRadius: BorderRadius.circular(15.r),
                                     color: logic.typePost.value != 'product'
                                         ? Colors.transparent
-                                        : RedColor,
+                                        : PrimaryColor,
                                   ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -115,11 +115,11 @@ class CreateProductPage extends StatelessWidget {
                                     border: Border.all(
                                         color: logic.typePost.value != 'job'
                                             ? GrayDarkColor
-                                            : RedColor),
+                                            : PrimaryColor),
                                     borderRadius: BorderRadius.circular(15.r),
                                     color: logic.typePost.value != 'job'
                                         ? Colors.transparent
-                                        : RedColor,
+                                        : PrimaryColor,
                                   ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -152,11 +152,11 @@ class CreateProductPage extends StatelessWidget {
                                     border: Border.all(
                                         color: logic.typePost.value != 'tender'
                                             ? GrayDarkColor
-                                            : RedColor),
+                                            : PrimaryColor),
                                     borderRadius: BorderRadius.circular(15.r),
                                     color: logic.typePost.value != 'tender'
                                         ? Colors.transparent
-                                        : RedColor,
+                                        : PrimaryColor,
                                   ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -190,11 +190,11 @@ class CreateProductPage extends StatelessWidget {
                                     border: Border.all(
                                         color: logic.typePost.value != 'service'
                                             ? GrayDarkColor
-                                            : RedColor),
+                                            : PrimaryColor),
                                     borderRadius: BorderRadius.circular(15.r),
                                     color: logic.typePost.value != 'service'
                                         ? Colors.transparent
-                                        : RedColor,
+                                        : PrimaryColor,
                                   ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -596,7 +596,7 @@ class CreateProductPage extends StatelessWidget {
                             errorStyle: H5RedTextStyle,
                             prefixIcon: Icon(
                               FontAwesomeIcons.youtube,
-                              color: RedColor,
+                              color: PrimaryColor,
                             ),
                             labelText: 'رابط الفيديو (اختياري)',
                             labelStyle: H4GrayTextStyle,
@@ -733,7 +733,7 @@ class CreateProductPage extends StatelessWidget {
                                                 height: 0.06.sw,
                                                 decoration: const BoxDecoration(
                                                   shape: BoxShape.circle,
-                                                  color: RedColor,
+                                                  color: PrimaryColor,
                                                 ),
                                                 child: Icon(
                                                   Icons.close,
@@ -982,7 +982,7 @@ class CreateProductPage extends StatelessWidget {
                                     crossAxisAlignment:
                                         WrapCrossAlignment.center,
                                     checkmarkColor: WhiteColor,
-                                    selectedColor: RedColor.withOpacity(0.5),
+                                    selectedColor: PrimaryColor.withOpacity(0.5),
                                     onChanged: (values) {
                                       if (values != null) {
                                         logic.options.value[attr.id!] = values;
@@ -1054,7 +1054,7 @@ class CreateProductPage extends StatelessWidget {
                                                           .contains(logic
                                                               .colors[index].id)
                                                       ? Border.all(
-                                                          color: RedColor)
+                                                          color: PrimaryColor)
                                                       : null,
                                                   shape: BoxShape.circle,
                                                   color: logic
@@ -1115,7 +1115,7 @@ class CreateProductPage extends StatelessWidget {
                             style: H3WhiteTextStyle,
                           ),
                           decoration: BoxDecoration(
-                            color: RedColor,
+                            color: PrimaryColor,
                             borderRadius: BorderRadius.circular(15.r),
                           ),
                         ),
@@ -1174,7 +1174,7 @@ class CreateProductPage extends StatelessWidget {
                               children: [
                                 MaterialButton(onPressed: (){
                                   Get.offNamed(PROFILE_PAGE);
-                                },child: Text('الملف الشخصي',style: H3WhiteTextStyle,),color: OrangeColor,),
+                                },child: Text('الملف الشخصي',style: H3WhiteTextStyle,),color: SecondaryColor,),
                                 MaterialButton(onPressed: (){
                                   // Get.back();
                                   HelperClass.requestVerified(onConfirm: (){
@@ -1183,7 +1183,7 @@ class CreateProductPage extends StatelessWidget {
                                       openUrl(url: "https://wa.me/${mainController.settings.value.social?.phone}?text=${Uri.encodeComponent("${message!.toString()}")}");
                                     }
                                   });
-                                },child: Text('توثيق الحساب',style: H3WhiteTextStyle,),color: RedColor,),
+                                },child: Text('توثيق الحساب',style: H3WhiteTextStyle,),color: PrimaryColor,),
                               ],
                             )
                           ]

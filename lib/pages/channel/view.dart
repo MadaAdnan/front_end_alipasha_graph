@@ -47,7 +47,7 @@ class ChannelPage extends StatelessWidget {
                 height: 0.085.sh,
                 width: 1.sw,
                 alignment: Alignment.center,
-                color: RedColor,
+                color: PrimaryColor,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -256,7 +256,7 @@ class ChannelPage extends StatelessWidget {
                                 EdgeInsets.symmetric(horizontal: 0.02.sw),
                             suffixIcon: Container(
                               decoration: const BoxDecoration(
-                                  color: RedColor, shape: BoxShape.circle),
+                                  color: PrimaryColor, shape: BoxShape.circle),
                               child: Transform.flip(
                                 flipX: true,
                                 child: Obx(() {
@@ -301,7 +301,7 @@ class ChannelPage extends StatelessWidget {
                                                                 .sw,
                                                             decoration:
                                                             BoxDecoration(
-                                                              color: RedColor,
+                                                              color: PrimaryColor,
                                                               borderRadius:
                                                               BorderRadius
                                                                   .circular(
@@ -462,7 +462,7 @@ class ChannelPage extends StatelessWidget {
                                                               decoration:
                                                               BoxDecoration(
                                                                 color:
-                                                                RedColor,
+                                                                PrimaryColor,
                                                                 borderRadius:
                                                                 BorderRadius
                                                                     .circular(
@@ -508,19 +508,19 @@ class ChannelPage extends StatelessWidget {
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(150.r),
                               borderSide: const BorderSide(
-                                color: RedColor,
+                                color: PrimaryColor,
                               ),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(150.r),
                               borderSide: const BorderSide(
-                                color: RedColor,
+                                color: PrimaryColor,
                               ),
                             ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(150.r),
                               borderSide: const BorderSide(
-                                color: RedColor,
+                                color: PrimaryColor,
                               ),
                             ),
                           ),
@@ -693,7 +693,7 @@ class ChannelPage extends StatelessWidget {
                                             blurRadius: 0.02.sw)
                                       ]),
                                   child: const Icon(Icons.close,
-                                      color: RedColor, size: 30),
+                                      color: PrimaryColor, size: 30),
                                 ),
                                 onPressed: () => Get.back(),
                               ),
@@ -871,7 +871,7 @@ class ChannelPage extends StatelessWidget {
                                               blurRadius: 0.02.sw)
                                         ]),
                                     child: const Icon(Icons.close,
-                                        color: RedColor, size: 30),
+                                        color: PrimaryColor, size: 30),
                                   ),
                                   onPressed: () => Get.back(),
                                 ),

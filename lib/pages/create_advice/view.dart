@@ -29,7 +29,7 @@ class CreateAdvicePage extends StatelessWidget {
           style: H3WhiteTextStyle,
         ),
         centerTitle: true,
-        backgroundColor: RedColor,
+        backgroundColor: PrimaryColor,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(vertical: 0.02.sh, horizontal: 0.02.sh),
@@ -146,7 +146,7 @@ class CreateAdvicePage extends StatelessWidget {
                     }
                   },
                     child: Text('حفظ', style: H3WhiteTextStyle,),
-                    color: RedColor,);
+                    color: PrimaryColor,);
                 }))
               ],
             )),

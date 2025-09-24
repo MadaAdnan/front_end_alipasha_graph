@@ -55,7 +55,7 @@ class FollowingPage extends StatelessWidget {
                 height: 0.06.sh,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                    border: Border.all(color: RedColor), color: RedColor),
+                    border: Border.all(color: PrimaryColor), color: PrimaryColor),
                 child: Text(
                   'يتابعني',
                   style: H3WhiteTextStyle,
@@ -79,7 +79,7 @@ class FollowingPage extends StatelessWidget {
                         height: 0.06.sh,
                         alignment: Alignment.center,
                         decoration:
-                        BoxDecoration(border: Border.all(color: RedColor)),
+                        BoxDecoration(border: Border.all(color: PrimaryColor)),
                         child: Text(
                           'لا يوجد لديك متابعين',
                           style: H4RedTextStyle,
@@ -164,7 +164,7 @@ _buildSellerCard2({required UserModel seller}){
                         children: [
                           Icon(
                             FontAwesomeIcons.heartCrack,
-                            color: RedColor,
+                            color: PrimaryColor,
                             size: 0.05.sw,
                           ),
                           SizedBox(
@@ -275,8 +275,8 @@ _buildSellerCard2({required UserModel seller}){
                         width: 0.3.sw,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15.r),
-                          border: Border.all(color: RedColor),
-                          color: RedColor,
+                          border: Border.all(color: PrimaryColor),
+                          color: PrimaryColor,
                         ),
                         padding: EdgeInsets.symmetric(
                             vertical: 0.015.sw, horizontal: 0.02.sw),

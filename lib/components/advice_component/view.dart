@@ -69,7 +69,7 @@ class AdviceComponent extends StatelessWidget {
                   child: Obx(() {
                     if (loading.value) {
                       return CircularProgressIndicator(
-                        color: RedColor,
+                        color: PrimaryColor,
                       );
                     }
                     return InkWell(
@@ -79,8 +79,8 @@ class AdviceComponent extends StatelessWidget {
                             horizontal: 0.015.sw, vertical: 0.005.sh),
                         width: 0.13.sw,
                         decoration: BoxDecoration(
-                          color: index == -1 ? WhiteColor : RedColor,
-                          border: Border.all(color: RedColor),
+                          color: index == -1 ? WhiteColor : PrimaryColor,
+                          border: Border.all(color: PrimaryColor),
                           borderRadius: BorderRadius.circular(15.r),
                         ),
                         child: Row(
@@ -91,7 +91,7 @@ class AdviceComponent extends StatelessWidget {
                               index == -1
                                   ? FontAwesomeIcons.bell
                                   : FontAwesomeIcons.solidBell,
-                              color: index == -1 ? RedColor : WhiteColor,
+                              color: index == -1 ? PrimaryColor : WhiteColor,
                               size: 0.015.sh,
                             ),
                             Text(

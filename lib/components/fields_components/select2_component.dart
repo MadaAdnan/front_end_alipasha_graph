@@ -41,7 +41,7 @@ class Select2Component extends StatelessWidget {
             const DropdownOverlaySettings(sizeAnimationCurve: Curves.bounceIn,),
         dropdownModalSettings:
             const DropdownModalSettings(barrierColor: GrayDarkColor,backgroundColor: WhiteColor,),
-        globalSettings: const GlobalSettings(mainColor: GrayDarkColor,activeColor:DarkColor,chipColor: RedColor,hoverListItemColor: WhiteColor,inActiveColor: DarkColor,),
+        globalSettings: const GlobalSettings(mainColor: GrayDarkColor,activeColor:DarkColor,chipColor: PrimaryColor,hoverListItemColor: WhiteColor,inActiveColor: DarkColor,),
         //pillboxTitleSettings: PillboxTitleSettings(title: 'المدينة',titleStyleDefault: HintTextStyle),
         pillboxContentMultiSettings:
             const PillboxContentMultiSettings(pillboxLayout: PillboxLayout.wrap),

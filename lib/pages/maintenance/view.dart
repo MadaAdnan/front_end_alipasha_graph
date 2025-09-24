@@ -42,7 +42,7 @@ class MaintenancePage extends StatelessWidget {
           Container(
             padding: EdgeInsets.symmetric(vertical: 0.02.sh,horizontal: 0.03.sw),
             decoration: BoxDecoration(
-              color: RedColor,
+              color: PrimaryColor,
               borderRadius: BorderRadius.circular(30.r),
             ),
             child: Text('التطبيق في وضع الصيانة يرجى محاولة الدخول بعد قليل',style: H2RegularDark.copyWith(color: WhiteColor),),

@@ -169,7 +169,7 @@ bool canShipping=true;
                               InkWell(
                                 onTap: () {
                                   openUrl(
-                                      url: 'https://wa.me/${invoice.user?.phone_code}${invoice.user?.phone}');
+                                      url: 'https://wa.me/${invoice.user?.full_phone}');
                                 },
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -377,7 +377,7 @@ bool canShipping=true;
                                 width: 0.4.sw,
                                 height: 0.1.sw,
                                 decoration: BoxDecoration(
-                                    color: RedColor,
+                                    color: PrimaryColor,
                                     borderRadius: BorderRadius.circular(150.r)),
                                 alignment: Alignment.center,
                                 child: Text(
@@ -530,7 +530,7 @@ bool canShipping=true;
                 width: 0.3.sw,
                 height: 0.1.sw,
                 decoration: BoxDecoration(
-                    color: RedColor,
+                    color: PrimaryColor,
                     borderRadius: BorderRadius.circular(150.r)),
                 alignment: Alignment.center,
                 child: Text(

@@ -50,6 +50,7 @@ class FollowingLogic extends GetxController {
         data {
             user {
                 id
+                full_phone
                 name
                 seller_name
                 image

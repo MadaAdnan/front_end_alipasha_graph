@@ -449,7 +449,7 @@ class EditServicePage extends StatelessWidget {
                             style: H3WhiteTextStyle,
                           ),
                           decoration: BoxDecoration(
-                            color: RedColor,
+                            color: PrimaryColor,
                             borderRadius: BorderRadius.circular(15.r),
                           ),
                         ),

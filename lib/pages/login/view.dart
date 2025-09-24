@@ -34,7 +34,7 @@ class LoginPage extends StatelessWidget {
                   EdgeInsets.symmetric(horizontal: 0.05.sw, vertical: 0.05.sh),
               width: 1.sw,
               height: 0.2.sh,
-              color: RedColor,
+              color: PrimaryColor,
               child: const Image(
                 image: AssetImage(
                   'assets/images/png/logo-alipasha.png',
@@ -129,7 +129,7 @@ class LoginPage extends StatelessWidget {
                               width: 0.9.sw,
                               height: 0.12.sw,
                               decoration: BoxDecoration(
-                                  color: RedColor,
+                                  color: PrimaryColor,
                                   borderRadius: BorderRadius.circular(15.r)),
                               child: Text(
                                 'تسجيل الدخول',
@@ -165,7 +165,7 @@ class LoginPage extends StatelessWidget {
                                 ),
                                 Icon(
                                   FontAwesomeIcons.google,
-                                  color: RedColor,
+                                  color: PrimaryColor,
                                 )
                               ],
                             ),
@@ -254,7 +254,7 @@ class LoginPage extends StatelessWidget {
                 padding: EdgeInsets.symmetric(vertical: 0.02.sw),
                 width: 0.25.sw,
                 decoration: BoxDecoration(
-                    color: RedColor,
+                    color: PrimaryColor,
                     borderRadius: BorderRadius.circular(30.r)
                 ),
                 child: Text('إستمرار', style: H3WhiteTextStyle,),

@@ -24,7 +24,7 @@ class CartSellerPage extends StatelessWidget {
           Container(
             height: 0.07.sh,
             width: 1.sw,
-            color: RedColor,
+            color: PrimaryColor,
             alignment: Alignment.center,
             child: Text(
               'سلة المشتريات',
@@ -68,7 +68,7 @@ class CartSellerPage extends StatelessWidget {
                                     },
                                     icon: Icon(
                                       FontAwesomeIcons.trash,
-                                      color: RedColor,
+                                      color: PrimaryColor,
                                       size: 0.04.sw,
                                     ))
                               ],
@@ -98,7 +98,7 @@ class CartSellerPage extends StatelessWidget {
           SizedBox(child: MaterialButton(onPressed: ()async{
            await mainController.emptyCart();
            logic.getSellers();
-          },child: Text('إفراغ السلة',style: H3WhiteTextStyle,),color: RedColor,),width: 1.sw,)
+          },child: Text('إفراغ السلة',style: H3WhiteTextStyle,),color: PrimaryColor,),width: 1.sw,)
         ],
       ),
     );

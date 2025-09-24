@@ -568,7 +568,7 @@ class ShippingPage extends StatelessWidget {
                                 height: 0.04.sh,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15.r),
-                                  color: RedColor,
+                                  color: PrimaryColor,
                                 ),
                                 child: Text(
                                   'أحسب كلفة الشحن',
@@ -720,7 +720,7 @@ class ShippingPage extends StatelessWidget {
                       Obx(() {
                         if(logic.isDelivary.value==true){
                           return InkWell(
-                            splashColor: RedColor,
+                            splashColor: PrimaryColor,
                             highlightColor: Colors.yellow,
                             onTap: () {
                               if (logic.from.value == null) {
@@ -759,7 +759,7 @@ class ShippingPage extends StatelessWidget {
                                 color: logic.totalBalance.value > 0 &&
                                     logic.totalPrice.value != null &&
                                     logic.totalPrice.value! > 0
-                                    ? RedColor
+                                    ? PrimaryColor
                                     : GrayDarkColor,
                               ),
                               child: Text(
@@ -770,7 +770,7 @@ class ShippingPage extends StatelessWidget {
                           );
                         }
                         return InkWell(
-                          splashColor: RedColor,
+                          splashColor: PrimaryColor,
                           highlightColor: Colors.yellow,
                           child: Container(
                             padding: EdgeInsets.only(
@@ -783,7 +783,7 @@ class ShippingPage extends StatelessWidget {
                               color: logic.totalBalance.value > 0 &&
                                       logic.totalPrice.value != null &&
                                       logic.totalPrice.value! > 0
-                                  ? RedColor
+                                  ? PrimaryColor
                                   : GrayDarkColor,
                             ),
                             child: Text(
@@ -821,7 +821,7 @@ class ShippingPage extends StatelessWidget {
           await logic.sendOrder();
           Get.back();
         },
-        color: RedColor,
+        color: PrimaryColor,
         child: Text(
           'تقديم الطلب',
           style: H3WhiteTextStyle,

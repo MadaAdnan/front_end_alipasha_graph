@@ -137,8 +137,8 @@ class ProductPage extends StatelessWidget {
                           padding: EdgeInsets.symmetric(
                               vertical: 0.01.sh, horizontal: 0.04.sw),
                           decoration: BoxDecoration(
-                            color: index > -1 ? RedColor : null,
-                            border: Border.all(color: RedColor),
+                            color: index > -1 ? PrimaryColor : null,
+                            border: Border.all(color: PrimaryColor),
                             borderRadius: BorderRadius.circular(30.r),
                           ),
                           child: InkWell(
@@ -166,14 +166,14 @@ class ProductPage extends StatelessWidget {
                                               width: 0.03.sw,
                                               color: index > -1
                                                   ? WhiteColor
-                                                  : RedColor,
+                                                  : PrimaryColor,
                                               animateIcon: AnimateIcons.bell,
                                             )
                                           : Icon(
                                               FontAwesomeIcons.bell,
                                               color: index > -1
                                                   ? WhiteColor
-                                                  : RedColor,
+                                                  : PrimaryColor,
                                               size: 0.03.sw,
                                             )),
                                   TextSpan(
@@ -181,7 +181,7 @@ class ProductPage extends StatelessWidget {
                                       style: H5WhiteTextStyle.copyWith(
                                           color: index > -1
                                               ? WhiteColor
-                                              : RedColor)),
+                                              : PrimaryColor)),
                                 ],
                               ),
                             ),
@@ -351,7 +351,7 @@ class ProductPage extends StatelessWidget {
                                 right: 0,
                                 child: Badge.count(
                                   count: mainController.carts.length,
-                                  backgroundColor: RedColor,
+                                  backgroundColor: PrimaryColor,
                                 ),
                               )
                             ],
@@ -371,7 +371,7 @@ class ProductPage extends StatelessWidget {
                               height: 0.06.sh,
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                color: RedColor,
+                                color: PrimaryColor,
                                 borderRadius: BorderRadius.circular(30.r),
                               ),
                               child: Row(
@@ -436,7 +436,7 @@ class ProductPage extends StatelessWidget {
 
                                 openUrl(
                                     url:
-                                        "https://wa.me/${logic.product.value?.user?.phone}?text=${Uri.encodeComponent('${message!.toString()}')}");
+                                        "https://wa.me/${logic.product.value?.user?.full_phone}?text=${Uri.encodeComponent('${message!.toString()}')}");
                                 /* HelperClass.connectWithSeller(
                                     phone:
                                     logic.product.value!.user!.phone!,
@@ -450,7 +450,7 @@ class ProductPage extends StatelessWidget {
                               height: 0.06.sh,
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                color: RedColor,
+                                color: PrimaryColor,
                                 borderRadius: BorderRadius.circular(30.r),
                               ),
                               child: Row(
@@ -523,7 +523,7 @@ class ProductPage extends StatelessWidget {
                           child: Container(
                             child: Icon(
                               FontAwesomeIcons.play,
-                              color: RedColor,
+                              color: PrimaryColor,
                               size: 0.2.sw,
                             ),
                           ),
@@ -562,7 +562,7 @@ class ProductPage extends StatelessWidget {
                                                 blurRadius: 0.02.sw)
                                           ]),
                                       child: const Icon(Icons.close,
-                                          color: RedColor, size: 30),
+                                          color: PrimaryColor, size: 30),
                                     ),
                                     onPressed: () => Get.back(),
                                   ),
@@ -633,7 +633,7 @@ class ProductPage extends StatelessWidget {
                                                   blurRadius: 0.02.sw)
                                             ]),
                                         child: const Icon(Icons.close,
-                                            color: RedColor, size: 30),
+                                            color: PrimaryColor, size: 30),
                                       ),
                                       onPressed: () => Get.back(),
                                     ),
@@ -682,8 +682,8 @@ class ProductPage extends StatelessWidget {
                       slideIndicator: CircularSlideIndicator(
                           slideIndicatorOptions: const SlideIndicatorOptions(
                         enableHalo: false,
-                        currentIndicatorColor: RedColor,
-                        indicatorBorderColor: RedColor,
+                        currentIndicatorColor: PrimaryColor,
+                        indicatorBorderColor: PrimaryColor,
                         enableAnimation: true,
                       ))),
                 ),
@@ -710,7 +710,7 @@ class ProductPage extends StatelessWidget {
                           children: [
                             AutoSizeText(
                               "${logic.product.value?.name}",
-                              style: H1BlackTextStyle.copyWith(
+                              style: H2BlackTextStyle.copyWith(
                                   fontWeight: FontWeight.w900,
                                   color: Colors.black),
                               overflow: TextOverflow.ellipsis,
@@ -718,7 +718,7 @@ class ProductPage extends StatelessWidget {
                             SizedBox(
                               height: 0.01.sh,
                             ),
-                            Text(
+                            AutoSizeText(
                               "منشور ${logic.product.value?.created_at}",
                               style: H4RegularDark,
                             ),
@@ -739,9 +739,9 @@ class ProductPage extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      Text(
+                                      AutoSizeText(
                                         "${logic.product.value?.price}",
-                                        style: H4RegularDark.copyWith(
+                                        style: H6RegularDark.copyWith(
                                             decoration:
                                                 TextDecoration.lineThrough),
                                       ),
@@ -750,14 +750,14 @@ class ProductPage extends StatelessWidget {
                                         size: 0.02.sw,
                                         color: GrayDarkColor,
                                       ),
-                                      Text(
+                                      AutoSizeText(
                                         "${logic.product.value?.discount}",
-                                        style: H2RedTextStyle,
+                                        style: H6RedTextStyle,
                                       ),
                                       Icon(
                                         FontAwesomeIcons.dollarSign,
                                         size: 0.03.sw,
-                                        color: RedColor,
+                                        color: PrimaryColor,
                                       ),
                                     ],
                                   ),
@@ -766,9 +766,9 @@ class ProductPage extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      Text(
+                                      AutoSizeText(
                                         "${logic.product.value?.turkey_price?.price?.toStringAsFixed(2)}",
-                                        style: H4RegularDark.copyWith(
+                                        style: H6RegularDark.copyWith(
                                             decoration:
                                                 TextDecoration.lineThrough),
                                       ),
@@ -777,14 +777,14 @@ class ProductPage extends StatelessWidget {
                                         size: 0.02.sw,
                                         color: GrayDarkColor,
                                       ),
-                                      Text(
+                                      AutoSizeText(
                                         "${logic.product.value?.turkey_price?.discount?.toStringAsFixed(2)}",
-                                        style: H2RedTextStyle,
+                                        style: H6RedTextStyle,
                                       ),
                                       Icon(
                                         FontAwesomeIcons.liraSign,
-                                        size: 0.03.sw,
-                                        color: RedColor,
+                                        size: 0.025.sw,
+                                        color: PrimaryColor,
                                       ),
                                     ],
                                   ),
@@ -793,23 +793,23 @@ class ProductPage extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      Text(
-                                        "${logic.product.value?.syrPrice?.price?.toStringAsFixed(2)}",
-                                        style: H4RegularDark.copyWith(
+                                      AutoSizeText(
+                                        "${logic.product.value?.syrPrice?.price?.toStringAsFixed(0)}",
+                                        style: H6RegularDark.copyWith(
                                             decoration:
                                                 TextDecoration.lineThrough),
                                       ),
-                                      Text(
+                                      AutoSizeText(
                                         " ل.س",
-                                        style: H6GrayOpacityTextStyle,
+                                        style: H7GrayOpacityTextStyle.copyWith(fontSize: 20.sp),
                                       ),
-                                      Text(
-                                        "${logic.product.value?.syrPrice?.discount?.toStringAsFixed(2)}",
-                                        style: H2RedTextStyle,
-                                      ),
-                                      Text(
-                                        " ل.س",
+                                      AutoSizeText(
+                                        "${logic.product.value?.syrPrice?.discount?.toStringAsFixed(0)}",
                                         style: H6RedTextStyle,
+                                      ),
+                                      AutoSizeText(
+                                        " ل.س",
+                                        style: H6RedTextStyle.copyWith(fontSize: 20.sp),
                                       ),
                                     ],
                                   ),
@@ -828,12 +828,12 @@ class ProductPage extends StatelessWidget {
                                     children: [
                                       Text(
                                         "${logic.product.value?.price?.toStringAsFixed(2)}",
-                                        style: H2RedTextStyle,
+                                        style: H6RedTextStyle,
                                       ),
                                       Icon(
                                         FontAwesomeIcons.dollarSign,
                                         size: 0.03.sw,
-                                        color: RedColor,
+                                        color: PrimaryColor,
                                       ),
                                     ],
                                   ),
@@ -842,14 +842,14 @@ class ProductPage extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      Text(
+                                      AutoSizeText(
                                         "${logic.product.value?.turkey_price?.price?.toStringAsFixed(2)}",
-                                        style: H2RedTextStyle,
+                                        style: H6RedTextStyle,
                                       ),
                                       Icon(
                                         FontAwesomeIcons.turkishLiraSign,
-                                        size: 0.03.sw,
-                                        color: RedColor,
+                                        size: 0.01.sw,
+                                        color: PrimaryColor,
                                       ),
                                     ],
                                   ),
@@ -909,13 +909,13 @@ class ProductPage extends StatelessWidget {
                                       decoration: BoxDecoration(
                                         color:
                                             logic.product.value?.is_like == true
-                                                ? RedColor
+                                                ? PrimaryColor
                                                 : Colors.transparent,
                                         border: Border.all(
                                             color:
                                                 logic.product.value?.is_like ==
                                                         true
-                                                    ? RedColor
+                                                    ? PrimaryColor
                                                     : GrayDarkColor),
                                         borderRadius:
                                             BorderRadius.circular(30.r),
@@ -1046,7 +1046,7 @@ class ProductPage extends StatelessWidget {
                           style: logic.pageIndex.value == 0
                               ? H3RedTextStyle.copyWith(
                                   decoration: TextDecoration.underline,
-                                  decorationColor: RedColor,
+                                  decorationColor: PrimaryColor,
                                 )
                               : H3RegularDark,
                         ),
@@ -1073,7 +1073,7 @@ class ProductPage extends StatelessWidget {
                             style: logic.pageIndex.value == 1
                                 ? H3RedTextStyle.copyWith(
                                     decoration: TextDecoration.underline,
-                                    decorationColor: RedColor,
+                                    decorationColor: PrimaryColor,
                                   )
                                 : H3RegularDark,
                           ),
@@ -1145,7 +1145,7 @@ class ProductPage extends StatelessWidget {
                                             style: H3RedTextStyle.copyWith(
                                                 decoration:
                                                     TextDecoration.underline,
-                                                decorationColor: RedColor),
+                                                decorationColor: PrimaryColor),
                                           ),
                                         ))
                               ],
@@ -1158,7 +1158,7 @@ class ProductPage extends StatelessWidget {
                               'منتجات ذات صلة',
                               style: H3RedTextStyle.copyWith(
                                   decoration: TextDecoration.underline,
-                                  decorationColor: RedColor),
+                                  decorationColor: PrimaryColor),
                             ),
                           if (logic.product.value?.type == 'product')
                             SizedBox(

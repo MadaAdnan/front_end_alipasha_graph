@@ -348,7 +348,7 @@ class EditProductPage extends StatelessWidget {
                             errorStyle: H5RedTextStyle,
                             prefixIcon: Icon(
                               FontAwesomeIcons.youtube,
-                              color: RedColor,
+                              color: PrimaryColor,
                             ),
                             labelText: 'رابط الفيديو (اختياري)',
                             labelStyle: H4GrayTextStyle,
@@ -486,7 +486,7 @@ class EditProductPage extends StatelessWidget {
                                                 height: 0.06.sw,
                                                 decoration: const BoxDecoration(
                                                   shape: BoxShape.circle,
-                                                  color: RedColor,
+                                                  color: PrimaryColor,
                                                 ),
                                                 child: Icon(
                                                   Icons.close,
@@ -541,7 +541,7 @@ class EditProductPage extends StatelessWidget {
                                                 height: 0.06.sw,
                                                 decoration: const BoxDecoration(
                                                   shape: BoxShape.circle,
-                                                  color: RedColor,
+                                                  color: PrimaryColor,
                                                 ),
                                                 child: Icon(
                                                   Icons.close,
@@ -751,7 +751,7 @@ class EditProductPage extends StatelessWidget {
                                                           .contains(logic
                                                               .colors[index].id)
                                                       ? Border.all(
-                                                          color: RedColor)
+                                                          color: PrimaryColor)
                                                       : null,
                                                   shape: BoxShape.circle,
                                                   color: logic
@@ -807,7 +807,7 @@ class EditProductPage extends StatelessWidget {
                             style: H3WhiteTextStyle,
                           ),
                           decoration: BoxDecoration(
-                            color: RedColor,
+                            color: PrimaryColor,
                             borderRadius: BorderRadius.circular(15.r),
                           ),
                         ),

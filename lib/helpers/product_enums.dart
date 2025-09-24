@@ -24,9 +24,9 @@ extension ProductEnums on String {
       case 'pending':
         return Colors.green;
       case 'active':
-        return OrangeColor;
+        return SecondaryColor;
       case 'block':
-        return RedColor;
+        return PrimaryColor;
       case 'hidden':
         return Colors.blueAccent;
       default:

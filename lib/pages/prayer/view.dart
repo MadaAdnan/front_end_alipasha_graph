@@ -21,7 +21,7 @@ class PrayerPage extends StatelessWidget {
             alignment: Alignment.center,
             width: 1.sw,
             height: 0.07.sh,
-            color: RedColor,
+            color: PrimaryColor,
             child: Text(
               'تطبيق علي باشا - مواقيت الصلاة',
               style: H3WhiteTextStyle,
@@ -61,7 +61,7 @@ class PrayerPage extends StatelessWidget {
                         width: 0.03.sw,
                         height: 0.03.sw,
                         decoration: BoxDecoration(
-                            color: index.value == 0 ? RedColor : GrayLightColor,
+                            color: index.value == 0 ? PrimaryColor : GrayLightColor,
                             shape: BoxShape.circle),
                       ),
                       10.horizontalSpace,
@@ -69,7 +69,7 @@ class PrayerPage extends StatelessWidget {
                         width: 0.03.sw,
                         height: 0.03.sw,
                         decoration: BoxDecoration(
-                            color: index.value == 1 ? RedColor : GrayLightColor,
+                            color: index.value == 1 ? PrimaryColor : GrayLightColor,
                             shape: BoxShape.circle),
                       )
                     ],

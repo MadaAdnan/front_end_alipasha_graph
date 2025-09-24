@@ -46,7 +46,7 @@ class SectionPage extends StatelessWidget {
                       child: Container(
                         padding: EdgeInsets.all(0.02.sw),
                         decoration: BoxDecoration(
-                          color: RedColor.withOpacity(0.5),
+                          color: PrimaryColor.withOpacity(0.5),
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(
@@ -60,7 +60,7 @@ class SectionPage extends StatelessWidget {
                       right: 0,
                       child: Badge.count(
                         count: mainController.carts.length,
-                        backgroundColor: RedColor,
+                        backgroundColor: PrimaryColor,
                       ),
                     )
                   ],
@@ -327,7 +327,7 @@ class SectionPage extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 0.001.sh, horizontal: 0.05.sw),
         decoration: BoxDecoration(
             color: logic.categoryId.value == category.id
-                ? RedColor
+                ? PrimaryColor
                 : GrayLightColor,
             borderRadius: BorderRadius.circular(15.r)),
         child: Text(

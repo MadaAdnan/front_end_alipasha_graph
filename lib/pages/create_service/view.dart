@@ -57,7 +57,7 @@ class CreateServicePage extends StatelessWidget {
                                 decoration: BoxDecoration(
                                     border: Border(
                                         bottom:
-                                        BorderSide(color: RedColor, width: 2))),
+                                        BorderSide(color: PrimaryColor, width: 2))),
                                 child: Text(
                                   'إنشاء منشور',
                                   style: H5BlackTextStyle,
@@ -75,11 +75,11 @@ class CreateServicePage extends StatelessWidget {
                                     border: Border.all(
                                         color: logic.typePost.value != 'product'
                                             ? GrayDarkColor
-                                            : RedColor),
+                                            : PrimaryColor),
                                     borderRadius: BorderRadius.circular(15.r),
                                     color: logic.typePost.value != 'product'
                                         ? Colors.transparent
-                                        : RedColor,
+                                        : PrimaryColor,
                                   ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -112,11 +112,11 @@ class CreateServicePage extends StatelessWidget {
                                     border: Border.all(
                                         color: logic.typePost.value != 'job'
                                             ? GrayDarkColor
-                                            : RedColor),
+                                            : PrimaryColor),
                                     borderRadius: BorderRadius.circular(15.r),
                                     color: logic.typePost.value != 'job'
                                         ? Colors.transparent
-                                        : RedColor,
+                                        : PrimaryColor,
                                   ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -149,11 +149,11 @@ class CreateServicePage extends StatelessWidget {
                                     border: Border.all(
                                         color: logic.typePost.value != 'tender'
                                             ? GrayDarkColor
-                                            : RedColor),
+                                            : PrimaryColor),
                                     borderRadius: BorderRadius.circular(15.r),
                                     color: logic.typePost.value != 'tender'
                                         ? Colors.transparent
-                                        : RedColor,
+                                        : PrimaryColor,
                                   ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -184,11 +184,11 @@ class CreateServicePage extends StatelessWidget {
                                     border: Border.all(
                                         color: logic.typePost.value != 'service'
                                             ? GrayDarkColor
-                                            : RedColor),
+                                            : PrimaryColor),
                                     borderRadius: BorderRadius.circular(15.r),
                                     color: logic.typePost.value != 'service'
                                         ? Colors.transparent
-                                        : RedColor,
+                                        : PrimaryColor,
                                   ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -664,7 +664,7 @@ class CreateServicePage extends StatelessWidget {
                             style: H3WhiteTextStyle,
                           ),
                           decoration: BoxDecoration(
-                            color: RedColor,
+                            color: PrimaryColor,
                             borderRadius: BorderRadius.circular(15.r),
                           ),
                         ),
@@ -715,7 +715,7 @@ class CreateServicePage extends StatelessWidget {
                                 children: [
                                   MaterialButton(onPressed: (){
                                     Get.offNamed(PROFILE_PAGE);
-                                  },child: Text('الملف الشخصي',style: H3WhiteTextStyle,),color: OrangeColor,),
+                                  },child: Text('الملف الشخصي',style: H3WhiteTextStyle,),color: SecondaryColor,),
                                   MaterialButton(onPressed: (){
                                     // Get.back();
                                     HelperClass.requestVerified(onConfirm: (){
@@ -724,7 +724,7 @@ class CreateServicePage extends StatelessWidget {
                                         openUrl(url: "https://wa.me/${mainController.settings.value.social?.phone}?text=${Uri.encodeComponent('${message!.toString()}')}");
                                       }
                                     });
-                                  },child: Text('توثيق الحساب',style: H3WhiteTextStyle,),color: RedColor,),
+                                  },child: Text('توثيق الحساب',style: H3WhiteTextStyle,),color: PrimaryColor,),
                                 ],
                               )
                             ]

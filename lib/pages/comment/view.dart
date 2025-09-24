@@ -142,7 +142,7 @@ class CommentPage extends StatelessWidget {
                                 }
                                 return Container(
                                   decoration: const BoxDecoration(
-                                      color: RedColor, shape: BoxShape.circle),
+                                      color: PrimaryColor, shape: BoxShape.circle),
                                   child: Transform.flip(
                                     flipX: true,
                                     child: IconButton(
@@ -159,19 +159,19 @@ class CommentPage extends StatelessWidget {
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(150.r),
                                 borderSide: const BorderSide(
-                                  color: RedColor,
+                                  color: PrimaryColor,
                                 ),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(150.r),
                                 borderSide: const BorderSide(
-                                  color: RedColor,
+                                  color: PrimaryColor,
                                 ),
                               ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(150.r),
                                 borderSide: const BorderSide(
-                                  color: RedColor,
+                                  color: PrimaryColor,
                                 ),
                               ),
                             ),

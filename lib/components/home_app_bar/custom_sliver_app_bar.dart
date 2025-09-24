@@ -43,17 +43,17 @@ class HomeSliverAppBarComponent extends StatelessWidget {
                     width: 0.29.sw,padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
                     child: Image(
                       image: const Svg('assets/images/svg/ali-pasha-horizantal-logo.svg',
-                          color: RedColor, source: SvgSource.asset),
+                          color: PrimaryColor, source: SvgSource.asset),
                       width: 0.27.sw,
                       height: 0.03.sh,
-                      color: RedColor,
+                      color: PrimaryColor,
                     ),
                   ),
                   Expanded(child: Container()),
                   IconButton(
                     icon: const Icon(
                       Icons.search,
-                      color: RedColor,
+                      color: PrimaryColor,
 
                     ),
                     onPressed: () {
@@ -63,7 +63,7 @@ class HomeSliverAppBarComponent extends StatelessWidget {
                   IconButton(
                     icon: const Icon(
                       Icons.live_tv,
-                      color: RedColor,
+                      color: PrimaryColor,
                     ),
                     onPressed: () {},
                   ),
@@ -94,7 +94,7 @@ class HomeSliverAppBarComponent extends StatelessWidget {
                        border: Get.currentRoute == HOME_PAGE
                            ? Border(
                          bottom: BorderSide(
-                           color: RedColor,
+                           color: PrimaryColor,
                            style: BorderStyle.solid,
                            width: 0.001.sw,
                          ),
@@ -108,7 +108,7 @@ class HomeSliverAppBarComponent extends StatelessWidget {
                        icon: Icon(
                          FontAwesomeIcons.home,
                          size: 0.04.sw,
-                         color: Get.currentRoute == HOME_PAGE ? RedColor : null,
+                         color: Get.currentRoute == HOME_PAGE ? PrimaryColor : null,
                        ),
                      ),
                    ),
@@ -118,7 +118,7 @@ class HomeSliverAppBarComponent extends StatelessWidget {
                        border: Get.currentRoute == SERVICES_PAGE
                            ? Border(
                          bottom: BorderSide(
-                           color: RedColor,
+                           color: PrimaryColor,
                            style: BorderStyle.solid,
                            width: 0.001.sw,
                          ),
@@ -132,7 +132,7 @@ class HomeSliverAppBarComponent extends StatelessWidget {
                        icon: Icon(
                          FontAwesomeIcons.bookOpen,
                          size: 0.04.sw,
-                         color: Get.currentRoute == SERVICES_PAGE ? RedColor : null,
+                         color: Get.currentRoute == SERVICES_PAGE ? PrimaryColor : null,
                          //color: RedColor,
                        ),
                      ),
@@ -143,7 +143,7 @@ class HomeSliverAppBarComponent extends StatelessWidget {
                        border: Get.currentRoute == JOBS_PAGE
                            ? Border(
                          bottom: BorderSide(
-                           color: RedColor,
+                           color: PrimaryColor,
                            style: BorderStyle.solid,
                            width: 0.001.sw,
                          ),
@@ -157,7 +157,7 @@ class HomeSliverAppBarComponent extends StatelessWidget {
                        icon: Icon(
                          FontAwesomeIcons.headset,
                          size: 0.04.sw,
-                         color: Get.currentRoute == JOBS_PAGE ? RedColor : null,
+                         color: Get.currentRoute == JOBS_PAGE ? PrimaryColor : null,
                        ),
                      ),
                    ),
@@ -167,7 +167,7 @@ class HomeSliverAppBarComponent extends StatelessWidget {
                        border: Get.currentRoute == TENDERS_PAGE
                            ? Border(
                          bottom: BorderSide(
-                           color: RedColor,
+                           color: PrimaryColor,
                            style: BorderStyle.solid,
                            width: 0.001.sw,
                          ),
@@ -181,7 +181,7 @@ class HomeSliverAppBarComponent extends StatelessWidget {
                        icon: Icon(FontAwesomeIcons.arrowTrendDown,
                            size: 0.04.sw,
                            color:
-                           Get.currentRoute == TENDERS_PAGE ? RedColor : null),
+                           Get.currentRoute == TENDERS_PAGE ? PrimaryColor : null),
                      ),
                    ),
                    Container(
@@ -190,7 +190,7 @@ class HomeSliverAppBarComponent extends StatelessWidget {
                        border: Get.currentRoute == COMMUNITIES_PAGE
                            ? Border(
                          bottom: BorderSide(
-                           color: RedColor,
+                           color: PrimaryColor,
                            style: BorderStyle.solid,
                            width: 0.001.sw,
                          ),
@@ -204,7 +204,7 @@ class HomeSliverAppBarComponent extends StatelessWidget {
                        icon: Icon(FontAwesomeIcons.comments,
                            size: 0.04.sw,
                            color: Get.currentRoute == COMMUNITIES_PAGE
-                               ? RedColor
+                               ? PrimaryColor
                                : null),
                      ),
                    ),

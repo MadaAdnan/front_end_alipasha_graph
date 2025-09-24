@@ -18,7 +18,7 @@ class ForgetPasswordPage extends StatelessWidget {
       backgroundColor: WhiteColor,
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: RedColor,
+        backgroundColor: PrimaryColor,
         title: Text(
           'نسيت كلمة المرور',
           style: H3WhiteTextStyle,
@@ -67,7 +67,7 @@ class ForgetPasswordPage extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(horizontal: 0.05.sw,
                                     vertical: 0.01.sh),
                                 decoration: BoxDecoration(
-                                  color: RedColor,
+                                  color: PrimaryColor,
                                   borderRadius: BorderRadius.circular(30.r),
 
                                 ),
@@ -86,7 +86,7 @@ class ForgetPasswordPage extends StatelessWidget {
                               padding: EdgeInsets.symmetric(horizontal: 0.05.sw,
                                   vertical: 0.01.sh),
                               decoration: BoxDecoration(
-                                color: RedColor,
+                                color: PrimaryColor,
                                 borderRadius: BorderRadius.circular(30.r),
 
                               ),
@@ -139,7 +139,7 @@ class ForgetPasswordPage extends StatelessWidget {
                               padding: EdgeInsets.symmetric(horizontal: 0.05.sw,
                                   vertical: 0.01.sh),
                               decoration: BoxDecoration(
-                                color: RedColor,
+                                color: PrimaryColor,
                                 borderRadius: BorderRadius.circular(30.r),
 
                               ),
@@ -158,7 +158,7 @@ class ForgetPasswordPage extends StatelessWidget {
                             padding: EdgeInsets.symmetric(horizontal: 0.05.sw,
                                 vertical: 0.01.sh),
                             decoration: BoxDecoration(
-                              color: RedColor,
+                              color: PrimaryColor,
                               borderRadius: BorderRadius.circular(30.r),
 
                             ),
@@ -176,7 +176,7 @@ class ForgetPasswordPage extends StatelessWidget {
                               padding: EdgeInsets.symmetric(horizontal: 0.05.sw,
                                   vertical: 0.01.sh),
                               decoration: BoxDecoration(
-                                color: RedColor,
+                                color: PrimaryColor,
                                 borderRadius: BorderRadius.circular(30.r),
 
                               ),
@@ -195,7 +195,7 @@ class ForgetPasswordPage extends StatelessWidget {
                             padding: EdgeInsets.symmetric(horizontal: 0.05.sw,
                                 vertical: 0.01.sh),
                             decoration: BoxDecoration(
-                              color: RedColor,
+                              color: PrimaryColor,
                               borderRadius: BorderRadius.circular(30.r),
 
                             ),

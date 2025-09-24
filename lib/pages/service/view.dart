@@ -43,7 +43,7 @@ ScrollController _scrollController=ScrollController();
               width: 1.sw,
               height: 0.05.sh,
               decoration: BoxDecoration(
-                color: RedColor,
+                color: PrimaryColor,
               ),
               child: Text(
                 '${logic.categoryModel.name}',
@@ -86,7 +86,7 @@ ScrollController _scrollController=ScrollController();
                               width: 0.15.sw,
                               height: 0.15.sw,
                               decoration: BoxDecoration(
-                                  border: Border.all(color:logic.selectedCity.value==null ?RedColor: GrayLightColor,width: 2),
+                                  border: Border.all(color:logic.selectedCity.value==null ?PrimaryColor: GrayLightColor,width: 2),
                                   shape: BoxShape.circle,
                                   color: Colors.red,
                                   image: DecorationImage(image: AssetImage("assets/images/png/_logo.png"))
@@ -111,7 +111,7 @@ ScrollController _scrollController=ScrollController();
                                width: 0.15.sw,
                                height: 0.15.sw,
                                decoration: BoxDecoration(
-                                   border: Border.all(color:logic.selectedCity.value?.id==logic.cities[index].id?RedColor: GrayLightColor,width: 2),
+                                   border: Border.all(color:logic.selectedCity.value?.id==logic.cities[index].id?PrimaryColor: GrayLightColor,width: 2),
                                    shape: BoxShape.circle,
                                    color: Colors.red,
                                    image: DecorationImage(image: CachedNetworkImageProvider("${logic.cities[index].image}"),fit: BoxFit.cover)

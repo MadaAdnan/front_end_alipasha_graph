@@ -23,7 +23,7 @@ class OrdersPage extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: RedColor,
+        backgroundColor: PrimaryColor,
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.r)),
         onPressed: () {
@@ -221,7 +221,7 @@ class OrdersPage extends StatelessWidget {
                                               : logic.orders[index].status ==
                                                       'success'
                                                   ? Colors.green
-                                                  : RedColor,
+                                                  : PrimaryColor,
                                         )),
                                         TextSpan(
                                           text:
@@ -233,7 +233,7 @@ class OrdersPage extends StatelessWidget {
                                                 : logic.orders[index].status ==
                                                         'success'
                                                     ? Colors.green
-                                                    : RedColor,
+                                                    : PrimaryColor,
                                           ),
                                         ),
                                       ])),

@@ -134,7 +134,7 @@ class MenuPage extends StatelessWidget {
                 Container(
                   width: 1.sw,
                   height: 0.3.sw,
-                  color: RedColor,
+                  color: PrimaryColor,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -328,7 +328,7 @@ SizedBox(height: 0.02.sh,),
                           padding: EdgeInsets.symmetric(
                               vertical: 0.01.sw, horizontal: 0.01.sw),
                           decoration: const BoxDecoration(
-                              color: RedColor, shape: BoxShape.circle),
+                              color: PrimaryColor, shape: BoxShape.circle),
                           child: Text(
                             '${mainController.carts.length}',
                             style: H4WhiteTextStyle,

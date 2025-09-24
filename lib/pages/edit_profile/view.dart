@@ -97,7 +97,7 @@ class EditProfilePage extends StatelessWidget {
                             },
                             icon: Icon(
                               FontAwesomeIcons.camera,
-                              color: RedColor.withOpacity(0.6),
+                              color: PrimaryColor.withOpacity(0.6),
                             ),
                           ),
                         )
@@ -157,7 +157,7 @@ class EditProfilePage extends StatelessWidget {
                             vertical: 0.01.sh, horizontal: 0.02.sw),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15.r),
-                            color: RedColor),
+                            color: PrimaryColor),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -1366,7 +1366,7 @@ class EditProfilePage extends StatelessWidget {
                       child: Container(
                         padding: EdgeInsets.all(0.02.sw),
                         decoration: BoxDecoration(
-                          color: RedColor,
+                          color: PrimaryColor,
                           borderRadius: BorderRadius.circular(15.r),
                         ),
                         child: Text(
@@ -1449,7 +1449,7 @@ class EditProfilePage extends StatelessWidget {
                   height: 0.06.sh,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15.r),
-                      color: RedColor),
+                      color: PrimaryColor),
                   child: Center(
                     child: Text(
                       "حفظ التغييرات",

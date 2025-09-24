@@ -442,7 +442,7 @@ class HelperClass{
                alignment: Alignment.center,
                padding: EdgeInsets.symmetric(horizontal: 0.02.sw,vertical: 0.01.sh),
                decoration: BoxDecoration(
-                 color: RedColor,
+                 color: PrimaryColor,
                  borderRadius: BorderRadius.circular(30.r),
                ),
                child: Text('مراسلة عبر تطبيق علي باشا',style: H4WhiteTextStyle,),

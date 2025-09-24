@@ -89,7 +89,7 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                           width: 0.2.sw,
                           height: 0.03.sh,
                           decoration: BoxDecoration(
-                              color: OrangeColor,
+                              color: SecondaryColor,
                               borderRadius: BorderRadius.only(
                                   bottomRight: Radius.circular(20.r),
                                   bottomLeft: Radius.circular(20.r))),
@@ -251,7 +251,7 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                                             },
                                               child: Text('إستمرار',
                                                 style: H3WhiteTextStyle,),
-                                              color: RedColor,),
+                                              color: PrimaryColor,),
                                           ],
                                         )
                                       ],
@@ -259,7 +259,7 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                                   },
                                       icon: Icon(
                                         FontAwesomeIcons.trash, size: 0.04.sw,
-                                        color: RedColor,)),
+                                        color: PrimaryColor,)),
                                 )
                             ],
                           ),
@@ -472,7 +472,7 @@ class MinimizeDetailsJobComponent extends StatelessWidget {
                           width: 0.2.sw,
                           height: 0.03.sh,
                           decoration: BoxDecoration(
-                              color: OrangeColor,
+                              color: SecondaryColor,
                               borderRadius: BorderRadius.only(
                                   bottomRight: Radius.circular(20.r),
                                   bottomLeft: Radius.circular(20.r))),
@@ -662,7 +662,7 @@ class MinimizeDetailsJobComponent extends StatelessWidget {
                                           },
                                             child: Text('إستمرار',
                                               style: H4WhiteTextStyle,),
-                                            color: RedColor,),
+                                            color: PrimaryColor,),
                                         ],
                                       )
                                     ],
@@ -670,7 +670,7 @@ class MinimizeDetailsJobComponent extends StatelessWidget {
                                 },
                                     icon: Icon(
                                       FontAwesomeIcons.trash, size: 0.04.sw,
-                                      color: RedColor,))
+                                      color: PrimaryColor,))
 
                             ],
                           ),
@@ -835,7 +835,7 @@ class MinimizeDetailsServiceComponent extends StatelessWidget {
                           width: 0.2.sw,
                           height: 0.03.sh,
                           decoration: BoxDecoration(
-                              color: OrangeColor,
+                              color: SecondaryColor,
                               borderRadius: BorderRadius.only(
                                   bottomRight: Radius.circular(20.r),
                                   bottomLeft: Radius.circular(20.r))),
@@ -1062,7 +1062,7 @@ class MinimizeDetailsTenderComponent extends StatelessWidget {
                           width: 0.2.sw,
                           height: 0.03.sh,
                           decoration: BoxDecoration(
-                              color: OrangeColor,
+                              color: SecondaryColor,
                               borderRadius: BorderRadius.only(
                                   bottomRight: Radius.circular(20.r),
                                   bottomLeft: Radius.circular(20.r))),
@@ -1143,7 +1143,7 @@ class MinimizeDetailsTenderComponent extends StatelessWidget {
                                 child: Text(
                                   "(${post.type?.toCategoryTypeLabel()})",
                                   style: H5RegularDark.copyWith(
-                                      color: OrangeColor),
+                                      color: SecondaryColor),
                                   overflow: TextOverflow.ellipsis,
                                 ))
                           ],

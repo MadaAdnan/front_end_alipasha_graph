@@ -208,7 +208,7 @@ class EditTenderPage extends StatelessWidget {
                                           },
                                         );
                                       },
-                                      icon: Icon(FontAwesomeIcons.trash,color: RedColor,))
+                                      icon: Icon(FontAwesomeIcons.trash,color: PrimaryColor,))
                                 ],
                               ),
                             )
@@ -564,7 +564,7 @@ class EditTenderPage extends StatelessWidget {
                             style: H3WhiteTextStyle,
                           ),
                           decoration: BoxDecoration(
-                            color: RedColor,
+                            color: PrimaryColor,
                             borderRadius: BorderRadius.circular(15.r),
                           ),
                         ),

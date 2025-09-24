@@ -296,6 +296,7 @@ class AnotherMessage extends StatelessWidget {
         comments{
         user {
         name
+        full_phone
         seller_name
          image
         }
@@ -307,6 +308,7 @@ class AnotherMessage extends StatelessWidget {
         user {
         id
             name
+            full_phone
             seller_name
             image
             is_verified

@@ -65,7 +65,7 @@ class VerifyEmailPage extends StatelessWidget {
                     width: 1.sw,
                     height: 0.12.sw,
                     decoration: BoxDecoration(
-                        color: RedColor,
+                        color: PrimaryColor,
                         borderRadius: BorderRadius.circular(15.r)),
                     child: Text(
                       'تفعيل',

@@ -22,7 +22,7 @@ class AgreePrivacyPage extends StatelessWidget {
       backgroundColor: WhiteColor,
       appBar: AppBar(
         title: Text('سياسة الخصوصية وشروط الإستخدام', style: H3WhiteTextStyle,),
-        backgroundColor: RedColor,),
+        backgroundColor: PrimaryColor,),
       body: Container(
         width: 1.sw,
         height: 1.sh,
@@ -69,7 +69,7 @@ class AgreePrivacyPage extends StatelessWidget {
                   padding: EdgeInsets.symmetric(
                       horizontal: 0.2.sw, vertical: 0.015.sh),
                   decoration: BoxDecoration(
-                      color: RedColor,
+                      color: PrimaryColor,
                       borderRadius: BorderRadius.circular(30.r)
                   ),
                   child: Text('موافق', style: H3WhiteTextStyle,),

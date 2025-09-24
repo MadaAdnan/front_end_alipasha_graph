@@ -64,7 +64,7 @@ class ServicesPage extends StatelessWidget {
                                     child: Container(
                                       width: 0.31.sw,
                                       height: 0.31.sw,
-                                      color: RedColor,
+                                      color: PrimaryColor,
                                     )),
                                 Shimmer.fromColors(
                                     baseColor: GrayDarkColor,
@@ -72,7 +72,7 @@ class ServicesPage extends StatelessWidget {
                                     child: Container(
                                       width: 0.31.sw,
                                       height: 0.31.sw,
-                                      color: RedColor,
+                                      color: PrimaryColor,
                                     )),
                                 Shimmer.fromColors(
                                     baseColor: GrayDarkColor,
@@ -80,7 +80,7 @@ class ServicesPage extends StatelessWidget {
                                     child: Container(
                                       width: 0.31.sw,
                                       height: 0.31.sw,
-                                      color: RedColor,
+                                      color: PrimaryColor,
                                     )),
                               ],
                             );

@@ -68,7 +68,6 @@ class ProductsLogic extends GetxController {
       loadingProducts.value = true;
     }
     sellerId.value=Get.arguments?.id??int.tryParse("${Get.parameters['id']}") ?? null;
-Logger().t(''' products(search: "${search.value}", sub1_id:${categoryId.value},user_id: ${sellerId.value}, first: 35, page: ${page.value}) { ''');
     mainController.query.value = '''
    query Products {
     products(search: "${search.value}", sub1_id:${categoryId.value},user_id: ${sellerId.value}, first: 35, page: ${page.value}) {
@@ -97,6 +96,8 @@ Logger().t(''' products(search: "${search.value}", sub1_id:${categoryId.value},u
             id
                 seller_name
                 phone
+                phone_code
+                full_phone
                 logo
                 image
                 is_verified
@@ -138,6 +139,7 @@ Logger().t(''' products(search: "${search.value}", sub1_id:${categoryId.value},u
         user {
             id
             name
+            full_phone
             seller_name
         }
         url
@@ -151,6 +153,7 @@ Logger().t(''' products(search: "${search.value}", sub1_id:${categoryId.value},u
   ''';
     try {
       dio.Response? res = await mainController.fetchData();
+      mainController.logger.e("Products");
       mainController.logger.e(res?.data);
       if (res?.data?['data']?['products']?['paginatorInfo'] != null) {
         hasMorePage.value =

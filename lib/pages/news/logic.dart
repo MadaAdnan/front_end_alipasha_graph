@@ -42,6 +42,7 @@ query Products {
         data {
             user {
                 name
+                full_phone
             }
             category {
                 name

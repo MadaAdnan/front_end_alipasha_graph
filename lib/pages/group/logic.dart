@@ -129,6 +129,7 @@ query GetMessages {
                 seller_name
                 name
                 image
+                full_phone
             }
         }
     }
@@ -176,6 +177,7 @@ query GetMessages {
             seller_name
             image
             logo
+            full_phone
         }
     }
 }
@@ -218,6 +220,7 @@ query GetMessages {
         id
         name
         image
+        full_phone
       }
       }
       }""",

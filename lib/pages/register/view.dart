@@ -35,7 +35,7 @@ class RegisterPage extends StatelessWidget {
             width: 1.sw,
             height: 0.2.sh,
             decoration: BoxDecoration(
-              color: RedColor,
+              color: PrimaryColor,
             ),
             child: const Image(
               image: AssetImage(
@@ -460,7 +460,7 @@ class RegisterPage extends StatelessWidget {
                             width: 1.sw,
                             height: 0.12.sw,
                             decoration: BoxDecoration(
-                                color: RedColor,
+                                color: PrimaryColor,
                                 borderRadius: BorderRadius.circular(15.r)),
                             child: Text(
                               'تسجيل الحساب',
@@ -511,7 +511,7 @@ class RegisterPage extends StatelessWidget {
                               ),
                               Icon(
                                 FontAwesomeIcons.google,
-                                color: RedColor,
+                                color: PrimaryColor,
                               )
                             ],
                           ),
@@ -611,7 +611,7 @@ class RegisterPage extends StatelessWidget {
                 padding: EdgeInsets.symmetric(vertical: 0.02.sw),
                 width: 0.25.sw,
                 decoration: BoxDecoration(
-                    color: RedColor, borderRadius: BorderRadius.circular(30.r)),
+                    color: PrimaryColor, borderRadius: BorderRadius.circular(30.r)),
                 child: Text(
                   'إستمرار',
                   style: H3WhiteTextStyle,

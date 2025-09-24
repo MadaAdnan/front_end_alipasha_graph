@@ -79,6 +79,7 @@ class ProductLogic extends GetxController {
             user {
               id
               seller_name
+              full_phone
               image
               is_verified
             }
@@ -141,6 +142,7 @@ class ProductLogic extends GetxController {
                 name
                 image
                 phone
+                full_phone
                 is_verified
                 city{
                 id
@@ -249,6 +251,7 @@ addLike(product_id:"${product.value!.id}"){
             user {
               id
               seller_name
+              full_phone
               name
               image
               phone
@@ -323,6 +326,7 @@ Logger().e(res?.data);
           id
           user{
             name
+            full_phone
           }
           seller{
             seller_name

@@ -31,7 +31,7 @@ class CreateCommunityPage extends StatelessWidget {
             width: 1.sw,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: RedColor,
+              color: PrimaryColor,
             ),
             child: Text(
               'إنشاء ${logic.type == 'group' ? 'مجموعة' : 'قناة'}',
@@ -158,7 +158,7 @@ class CreateCommunityPage extends StatelessWidget {
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30.r),
-                        color: RedColor,
+                        color: PrimaryColor,
                       ),
                       child: Text(
                         'إنشاء ${logic.type == 'group' ? 'مجموعة' : 'قناة'}',

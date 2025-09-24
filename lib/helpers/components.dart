@@ -63,7 +63,7 @@ Future<void> openUrl({required String url}) async {
 messageBox({String? title, String? message, bool isError = false}) {
   Get.snackbar('$title', "$message",
       backgroundColor:
-          isError ? RedColor.withOpacity(0.7) : Colors.green.withOpacity(0.7),
+          isError ? PrimaryColor.withOpacity(0.7) : Colors.green.withOpacity(0.7),
       snackStyle: SnackStyle.FLOATING,
       titleText: Text(
         '$title',

@@ -42,6 +42,7 @@ query User {
         name
         seller_name
         image
+        full_phone
         city {
             name
         }

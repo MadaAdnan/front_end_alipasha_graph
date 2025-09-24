@@ -49,10 +49,10 @@ class FilterPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(15.r),
                           border: Border.all(
                               color: logic.type == 'product'
-                                  ? RedColor
+                                  ? PrimaryColor
                                   : GrayDarkColor),
                           color:
-                              logic.type == 'product' ? RedColor : WhiteColor),
+                              logic.type == 'product' ? PrimaryColor : WhiteColor),
                       child: Text(
                         'منتج',
                         style: logic.type == 'product'
@@ -72,10 +72,10 @@ class FilterPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(15.r),
                           border: Border.all(
                               color: logic.type == 'seller'
-                                  ? RedColor
+                                  ? PrimaryColor
                                   : GrayDarkColor),
                           color:
-                              logic.type == 'seller' ? RedColor : WhiteColor),
+                              logic.type == 'seller' ? PrimaryColor : WhiteColor),
                       child: Text(
                         'متجر',
                         style: logic.type == 'seller'
@@ -95,9 +95,9 @@ class FilterPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(15.r),
                           border: Border.all(
                               color: logic.type == 'job'
-                                  ? RedColor
+                                  ? PrimaryColor
                                   : GrayDarkColor),
-                          color: logic.type == 'job' ? RedColor : WhiteColor),
+                          color: logic.type == 'job' ? PrimaryColor : WhiteColor),
                       child: Text(
                         'وظائف',
                         style: logic.type == 'job'
@@ -117,10 +117,10 @@ class FilterPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(15.r),
                           border: Border.all(
                               color: logic.type == 'tender'
-                                  ? RedColor
+                                  ? PrimaryColor
                                   : GrayDarkColor),
                           color:
-                              logic.type == 'tender' ? RedColor : WhiteColor),
+                              logic.type == 'tender' ? PrimaryColor : WhiteColor),
                       child: Text(
                         'مناقصات',
                         style: logic.type == 'tender'
@@ -140,10 +140,10 @@ class FilterPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(15.r),
                           border: Border.all(
                               color: logic.type == 'service'
-                                  ? RedColor
+                                  ? PrimaryColor
                                   : GrayDarkColor),
                           color:
-                              logic.type == 'service' ? RedColor : WhiteColor),
+                              logic.type == 'service' ? PrimaryColor : WhiteColor),
                       child: Text(
                         'خدمات',
                         style: logic.type == 'service'
@@ -163,9 +163,9 @@ class FilterPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(15.r),
                           border: Border.all(
                               color: logic.type == 'news'
-                                  ? RedColor
+                                  ? PrimaryColor
                                   : GrayDarkColor),
-                          color: logic.type == 'news' ? RedColor : WhiteColor),
+                          color: logic.type == 'news' ? PrimaryColor : WhiteColor),
                       child: Text(
                         'الأخبار',
                         style: logic.type == 'news'
@@ -411,7 +411,7 @@ class FilterPage extends StatelessWidget {
                             min: 0,
                             max: 100000,
                             divisions: 40,
-                            activeColor: RedColor,
+                            activeColor: PrimaryColor,
                             inactiveColor: GrayLightColor,
                             values: logic.priceRange.value,
                             labels: RangeLabels(
@@ -549,7 +549,7 @@ class FilterPage extends StatelessWidget {
                 'بحث',
                 style: H2WhiteTextStyle,
               ),
-              color: RedColor,
+              color: PrimaryColor,
             )
           ],
         ),

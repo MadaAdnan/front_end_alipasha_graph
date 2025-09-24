@@ -23,7 +23,7 @@ class PrivacyPage extends StatelessWidget {
             alignment: Alignment.center,
             width: 1.sw,
             height: 0.07.sh,
-            color: RedColor,
+            color: PrimaryColor,
             child: Text('تطبيق علي باشا - سياسة الخصوصية', style: H3WhiteTextStyle),
           ),
           Expanded(

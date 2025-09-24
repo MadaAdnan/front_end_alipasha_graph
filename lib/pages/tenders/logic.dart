@@ -48,6 +48,7 @@ class TendersLogic extends GetxController {
             id
                 seller_name
                 logo
+                full_phone
                 image
                   is_verified
             }

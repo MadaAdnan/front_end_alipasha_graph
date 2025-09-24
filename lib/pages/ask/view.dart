@@ -24,7 +24,7 @@ class AskPage extends StatelessWidget {
             alignment: Alignment.center,
             width: 1.sw,
             height: 0.1.sh,
-            color: RedColor,
+            color: PrimaryColor,
             child: Text(
               'تطبيق علي باشا - الاسئلة',
               style: H3WhiteTextStyle,

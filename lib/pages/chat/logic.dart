@@ -194,6 +194,7 @@ ever(communityId, (value){
                 name
                 trust
                 seller_name
+                full_phone
                 image
             }
         }
@@ -275,6 +276,7 @@ ever(communityId, (value){
             id
             name
             seller_name
+            full_phone
             image
             logo
         }
@@ -327,6 +329,7 @@ ever(communityId, (value){
       user {
         id
         name
+        full_phone
         image
       }
       }

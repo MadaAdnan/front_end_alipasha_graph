@@ -168,7 +168,7 @@ RxBool is_like=RxBool(false);
                       left: 10.w,
                       child: Container(
                         decoration: BoxDecoration(
-                            color: OrangeColor,
+                            color: SecondaryColor,
                             borderRadius: BorderRadius.circular(15.r)),
                         height: 70.h,
                         width: 150.w,
@@ -253,7 +253,7 @@ RxBool is_like=RxBool(false);
                               ? FontAwesomeIcons.solidThumbsUp
                               : FontAwesomeIcons.thumbsUp,
                           size: 0.05.sw,
-                          color: is_like.value == true ? RedColor : null,
+                          color: is_like.value == true ? PrimaryColor : null,
                         ),
                         SizedBox(
                           width: 0.004.sw,
@@ -369,6 +369,7 @@ addLike(product_id:"${post.id}"){
               image
               logo
               is_verified
+              full_phone
             }
           
             city {

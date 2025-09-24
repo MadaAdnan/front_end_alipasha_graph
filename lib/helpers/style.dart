@@ -50,12 +50,12 @@ final H0GrayTextStyle = TextStyle(
     fontSize: H0SIZE);
 final H0RedTextStyle = TextStyle(
     
-    color: RedColor,
+    color: PrimaryColor,
     fontWeight: FontWeight.bold,
     fontSize: H0SIZE);
 final H0OrangeTextStyle = TextStyle(
     
-    color: OrangeColor,
+    color: SecondaryColor,
     fontWeight: FontWeight.bold,
     fontSize: H0SIZE);
 final H0BlackTextStyle = TextStyle(
@@ -88,12 +88,12 @@ final H1GrayTextStyle = TextStyle(
     fontSize: H1SIZE);
 final H1RedTextStyle = TextStyle(
     
-    color: RedColor,
+    color: PrimaryColor,
     fontWeight: FontWeight.bold,
     fontSize: H1SIZE);
 final H1OrangeTextStyle = TextStyle(
     
-    color: OrangeColor,
+    color: SecondaryColor,
     fontWeight: FontWeight.bold,
     fontSize: H1SIZE);
 final H1BlackTextStyle = TextStyle(
@@ -126,17 +126,17 @@ final H2GrayTextStyle = TextStyle(
     fontSize: H2SIZE);
 final H2RedTextStyle = TextStyle(
     
-    color: RedColor,
+    color: PrimaryColor,
     fontWeight: FontWeight.bold,
     fontSize: H2SIZE);
 final H2RedTextBoldStyle = TextStyle(
     
-    color: RedColor,
+    color: PrimaryColor,
     fontWeight: FontWeight.w900,
     fontSize: H2SIZE);
 final H2OrangeTextStyle = TextStyle(
     
-    color: OrangeColor,
+    color: SecondaryColor,
     fontWeight: FontWeight.bold,
     fontSize: H2SIZE);
 final H2BlackTextStyle = TextStyle(
@@ -169,12 +169,12 @@ final H3GrayTextStyle = TextStyle(
     fontSize: H3SIZE);
 final H3RedTextStyle = TextStyle(
     
-    color: RedColor,
+    color: PrimaryColor,
     fontWeight: FontWeight.bold,
     fontSize: H3SIZE);
 final H3OrangeTextStyle = TextStyle(
     
-    color: OrangeColor,
+    color: SecondaryColor,
     fontWeight: FontWeight.bold,
     fontSize: H3SIZE);
 final H3BlackTextStyle = TextStyle(
@@ -207,12 +207,12 @@ final H4GrayTextStyle = TextStyle(
     fontSize: H4SIZE);
 final H4RedTextStyle = TextStyle(
     
-    color: RedColor,
+    color: PrimaryColor,
     fontWeight: FontWeight.bold,
     fontSize: H4SIZE);
 final H4OrangeTextStyle = TextStyle(
     
-    color: OrangeColor,
+    color: SecondaryColor,
     fontWeight: FontWeight.bold,
     fontSize: H4SIZE);
 final H4BlackTextStyle = TextStyle(
@@ -245,12 +245,12 @@ final H5GrayTextStyle = TextStyle(
     fontSize: H5SIZE);
 final H5RedTextStyle = TextStyle(
     
-    color: RedColor,
+    color: PrimaryColor,
     fontWeight: FontWeight.bold,
     fontSize: H5SIZE);
 final H5OrangeTextStyle = TextStyle(
     
-    color: OrangeColor,
+    color: SecondaryColor,
     fontWeight: FontWeight.bold,
     fontSize: H5SIZE);
 final H5BlackTextStyle = TextStyle(
@@ -283,12 +283,12 @@ final H6GrayTextStyle = TextStyle(
     fontSize: H6SIZE);
 final H6RedTextStyle = TextStyle(
     
-    color: RedColor,
+    color: PrimaryColor,
     fontWeight: FontWeight.bold,
     fontSize: H6SIZE);
 final H6OrangeTextStyle = TextStyle(
     
-    color: OrangeColor,
+    color: SecondaryColor,
     fontWeight: FontWeight.bold,
     fontSize: H6SIZE);
 final H6BlackTextStyle = TextStyle(
@@ -321,12 +321,12 @@ final H7GrayTextStyle = TextStyle(
     fontSize: H7SIZE);
 final H7RedTextStyle = TextStyle(
     
-    color: RedColor,
+    color: PrimaryColor,
     fontWeight: FontWeight.bold,
     fontSize: H7SIZE);
 final H7OrangeTextStyle = TextStyle(
     
-    color: OrangeColor,
+    color: SecondaryColor,
     fontWeight: FontWeight.bold,
     fontSize: H7SIZE);
 final H7BlackTextStyle = TextStyle(

@@ -332,7 +332,7 @@ class CommunitiesPage extends StatelessWidget {
                                     }
                                     return Icon(
                                       icon,
-                                      color: OrangeColor,
+                                      color: SecondaryColor,
                                     );
                                   },
                                 ),
@@ -440,7 +440,7 @@ class CommunitiesPage extends StatelessWidget {
                                                 Icon(
                                                   FontAwesomeIcons.comments,
                                                   size: 0.04.sw,
-                                                  color: RedColor,
+                                                  color: PrimaryColor,
                                                 ),
                                                 45.verticalSpace,
                                               ],
@@ -560,7 +560,7 @@ class CommunitiesPage extends StatelessWidget {
                     ),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(150.r),
-                        color: RedColor),
+                        color: PrimaryColor),
                   ),
                 )
               ],

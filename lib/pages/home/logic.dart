@@ -83,6 +83,7 @@ class HomeLogic extends GetxController {
               name
               id_color
               phone
+              full_phone
               seller_name
               image
               logo

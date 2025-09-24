@@ -29,11 +29,11 @@ extension OrderEnum on String {
       case 'confirm_complete':
         return Colors.green;
       case 'agree':
-        return OrangeColor;
+        return SecondaryColor;
       case 'away':
         return Colors.blueAccent;
       case 'canceled':
-        return RedColor;
+        return PrimaryColor;
       default:
         return GrayLightColor;
     }

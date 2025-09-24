@@ -26,7 +26,7 @@ class GalleryPage extends StatelessWidget {
          return Visibility(child: Container(
            width: 0.4.sw,
            decoration: BoxDecoration(
-               color: RedColor,
+               color: PrimaryColor,
                borderRadius: BorderRadius.circular(30.r)
            ),
            child: IconButton(
@@ -254,7 +254,7 @@ class GalleryPage extends StatelessWidget {
                                                       blurRadius: 0.02.sw)
                                                 ]),
                                             child: const Icon(Icons.close,
-                                                color: RedColor, size: 30),
+                                                color: PrimaryColor, size: 30),
                                           ),
                                           onPressed: () => Get.back(),
                                         ),
@@ -314,7 +314,7 @@ class GalleryPage extends StatelessWidget {
                                 }
                                 return Icon(
                                   FontAwesomeIcons.trash,
-                                  color: RedColor,
+                                  color: PrimaryColor,
                                 );
                               }),
                             ),

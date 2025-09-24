@@ -127,7 +127,7 @@ class MyInvoicePage extends StatelessWidget {
                         InkWell(
                           onTap: () {
                             openUrl(
-                                url: 'https://wa.me/${invoice.seller?.phone}');
+                                url: 'https://wa.me/${invoice.seller?.full_phone}');
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -183,7 +183,7 @@ class MyInvoicePage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Icon(FontAwesomeIcons.truckFast, size: 0.03.sw,
-                          color: RedColor,),
+                          color: PrimaryColor,),
                         SizedBox(width: 0.02.sw,),
                         Text('عنوان الشحن :', style: H3GrayTextStyle,)
                       ],
@@ -370,7 +370,7 @@ class MyInvoicePage extends StatelessWidget {
                                             decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.circular(
                                                     150.r),
-                                                color: RedColor
+                                                color: PrimaryColor
                                             ),
                                             child: Text(
                                               'إغلاق', style: H3WhiteTextStyle,),
@@ -471,7 +471,7 @@ class MyInvoicePage extends StatelessWidget {
                                           decoration: BoxDecoration(
                                               borderRadius: BorderRadius.circular(
                                                   150.r),
-                                              color: RedColor
+                                              color: PrimaryColor
                                           ),
                                           child: Text(
                                             'إغلاق', style: H3WhiteTextStyle,),

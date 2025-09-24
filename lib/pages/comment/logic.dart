@@ -64,6 +64,7 @@ class CommentLogic extends GetxController {
           id
           name
           seller_name
+          full_phone
           image
           is_verified
         }
@@ -97,6 +98,7 @@ Logger().d(res?.data);
           user{
             id
             name
+            full_phone
             seller_name
             is_verified
             image
@@ -115,6 +117,7 @@ Logger().d(res?.data);
             seller_name
             image
             is_verified
+            full_phone
           }
           comment
           created_at
@@ -122,6 +125,7 @@ Logger().d(res?.data);
                     user {
                     id
                     seller_name
+                    full_phone
                         name
                         is_verified
                         image

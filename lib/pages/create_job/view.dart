@@ -60,7 +60,7 @@ height: 1.sh,
                                 decoration: BoxDecoration(
                                     border: Border(
                                         bottom:
-                                        BorderSide(color: RedColor, width: 2))),
+                                        BorderSide(color: PrimaryColor, width: 2))),
                                 child: Text(
                                   'إنشاء منشور',
                                   style: H5BlackTextStyle,
@@ -78,11 +78,11 @@ height: 1.sh,
                                     border: Border.all(
                                         color: logic.typePost.value != 'product'
                                             ? GrayDarkColor
-                                            : RedColor),
+                                            : PrimaryColor),
                                     borderRadius: BorderRadius.circular(15.r),
                                     color: logic.typePost.value != 'product'
                                         ? Colors.transparent
-                                        : RedColor,
+                                        : PrimaryColor,
                                   ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -113,11 +113,11 @@ height: 1.sh,
                                     border: Border.all(
                                         color: logic.typePost.value != 'job'
                                             ? GrayDarkColor
-                                            : RedColor),
+                                            : PrimaryColor),
                                     borderRadius: BorderRadius.circular(15.r),
                                     color: logic.typePost.value != 'job'
                                         ? Colors.transparent
-                                        : RedColor,
+                                        : PrimaryColor,
                                   ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -150,11 +150,11 @@ height: 1.sh,
                                     border: Border.all(
                                         color: logic.typePost.value != 'tender'
                                             ? GrayDarkColor
-                                            : RedColor),
+                                            : PrimaryColor),
                                     borderRadius: BorderRadius.circular(15.r),
                                     color: logic.typePost.value != 'tender'
                                         ? Colors.transparent
-                                        : RedColor,
+                                        : PrimaryColor,
                                   ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -187,11 +187,11 @@ height: 1.sh,
                                     border: Border.all(
                                         color: logic.typePost.value != 'service'
                                             ? GrayDarkColor
-                                            : RedColor),
+                                            : PrimaryColor),
                                     borderRadius: BorderRadius.circular(15.r),
                                     color: logic.typePost.value != 'service'
                                         ? Colors.transparent
-                                        : RedColor,
+                                        : PrimaryColor,
                                   ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -919,7 +919,7 @@ height: 1.sh,
                             style: H3WhiteTextStyle,
                           ),
                           decoration: BoxDecoration(
-                            color: RedColor,
+                            color: PrimaryColor,
                             borderRadius: BorderRadius.circular(15.r),
                           ),
                         ),
@@ -968,7 +968,7 @@ height: 1.sh,
                                 children: [
                                   MaterialButton(onPressed: (){
                                     Get.offNamed(PROFILE_PAGE);
-                                  },child: Text('الملف الشخصي',style: H3WhiteTextStyle,),color: OrangeColor,),
+                                  },child: Text('الملف الشخصي',style: H3WhiteTextStyle,),color: SecondaryColor,),
                                   MaterialButton(onPressed: (){
                                     // Get.back();
                                     HelperClass.requestVerified(onConfirm: (){
@@ -977,7 +977,7 @@ height: 1.sh,
                                         openUrl(url: "https://wa.me/${mainController.settings.value.social?.phone}?text=${Uri.encodeComponent("${message!.toString()}")}");
                                       }
                                     });
-                                  },child: Text('توثيق الحساب',style: H3WhiteTextStyle,),color: RedColor,),
+                                  },child: Text('توثيق الحساب',style: H3WhiteTextStyle,),color: PrimaryColor,),
                                 ],
                               )
                             ]

@@ -27,7 +27,7 @@ class WeatherPage extends StatelessWidget {
             height: 0.07.sh,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: RedColor,
+              color: PrimaryColor,
             ),
             child: Text(
               'تطبيق علي باشا - حالة الطقس ',

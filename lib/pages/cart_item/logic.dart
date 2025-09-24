@@ -132,6 +132,7 @@ class CartItemLogic extends GetxController {
           id
           user{
             name
+            full_phone
           }
           seller{
             seller_name

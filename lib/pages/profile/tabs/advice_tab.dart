@@ -78,7 +78,7 @@ class AdviceTab extends StatelessWidget {
                           vertical: 0.01.sh, horizontal: 0.01.sw),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15.r),
-                          color: RedColor),
+                          color: PrimaryColor),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -323,7 +323,7 @@ class AdviceTab extends StatelessWidget {
                                             icon: Icon(
                                               FontAwesomeIcons.trash,
                                               size: 0.05.sw,
-                                              color: RedColor,
+                                              color: PrimaryColor,
                                             )),
                                       ],
                                     ),
@@ -426,7 +426,7 @@ class AdviceTab extends StatelessWidget {
                     'جاري الحذف',
                     style: H3WhiteTextStyle,
                   ),
-                  color: RedColor,
+                  color: PrimaryColor,
                 );
               }
               return MaterialButton(
@@ -438,7 +438,7 @@ class AdviceTab extends StatelessWidget {
                   'تأكيد',
                   style: H3WhiteTextStyle,
                 ),
-                color: RedColor,
+                color: PrimaryColor,
               );
             }),
             MaterialButton(
@@ -531,7 +531,7 @@ class AdviceTab extends StatelessWidget {
                     'جاري الإرسال',
                     style: H3WhiteTextStyle,
                   ),
-                  color: RedColor,
+                  color: PrimaryColor,
                 );
               }
               return MaterialButton(
@@ -545,7 +545,7 @@ class AdviceTab extends StatelessWidget {
                   'تعديل',
                   style: H3WhiteTextStyle,
                 ),
-                color: RedColor,
+                color: PrimaryColor,
               );
             }),
             MaterialButton(

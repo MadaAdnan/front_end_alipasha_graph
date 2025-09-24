@@ -23,7 +23,7 @@ class AboutPage extends StatelessWidget {
             alignment: Alignment.center,
             width: 1.sw,
             height: 0.07.sh,
-            color: RedColor,
+            color: PrimaryColor,
             child: Text('تطبيق علي باشا - من نحن', style: H3WhiteTextStyle),
           ),
           Expanded(

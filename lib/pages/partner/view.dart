@@ -35,7 +35,7 @@ class PartnerPage extends StatelessWidget {
             Container(
               width: 1.sw,
               height: 0.07.sh,
-              color: RedColor,
+              color: PrimaryColor,
               alignment: Alignment.center,
               child: Text(
                 'المراكز المعتمدة ',

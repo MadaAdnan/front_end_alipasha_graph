@@ -34,10 +34,10 @@ class HomeAppBarComponent extends StatelessWidget
                 width: 0.29.sw,
                 child: Image(
                   image: const Svg('assets/images/svg/ali-pasha-horizantal-logo.svg',
-                      color: RedColor, source: SvgSource.asset),
+                      color: PrimaryColor, source: SvgSource.asset),
                   width: 0.27.sw,
                   height: 0.03.sh,
-                  color: RedColor,
+                  color: PrimaryColor,
                 ),
                 padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
               ),
@@ -45,7 +45,7 @@ class HomeAppBarComponent extends StatelessWidget
               IconButton(
                 icon: const Icon(
                   Icons.search,
-                  color: RedColor,
+                  color: PrimaryColor,
                 ),
                 onPressed: search ??
                     () => Get.toNamed(FILTER_PAGE,
@@ -56,7 +56,7 @@ class HomeAppBarComponent extends StatelessWidget
                   icon: Icon(
                     Icons.live_tv,
                     color: mainController.settings.value.active_live == true
-                        ? RedColor
+                        ? PrimaryColor
                         : GrayLightColor,
                   ),
                   onPressed: () {
@@ -73,7 +73,7 @@ class HomeAppBarComponent extends StatelessWidget
                 icon: Obx(() {
                   return Badge.count(
                     count: mainController.authUser.value != null ?mainController.carts.length:(mainController.carts.length)+(mainController.authUser.value?.unread_notifications_count??0),
-                    backgroundColor: RedColor,
+                    backgroundColor: PrimaryColor,
                     alignment: Alignment(-0.006.sw, -0.0015.sh),
                     isLabelVisible: mainController.carts.length > 0,
                     child: Icon(
@@ -99,7 +99,7 @@ class HomeAppBarComponent extends StatelessWidget
                     border: Get.currentRoute == HOME_PAGE
                         ? Border(
                             bottom: BorderSide(
-                              color: RedColor,
+                              color: PrimaryColor,
                               style: BorderStyle.solid,
                               width: 0.001.sw,
                             ),
@@ -113,7 +113,7 @@ class HomeAppBarComponent extends StatelessWidget
                     icon: Icon(
                       FontAwesomeIcons.home,
                       size: 0.06.sw,
-                      color: Get.currentRoute == HOME_PAGE ? RedColor : null,
+                      color: Get.currentRoute == HOME_PAGE ? PrimaryColor : null,
                     ),
                   ),
                 ),
@@ -123,7 +123,7 @@ class HomeAppBarComponent extends StatelessWidget
                     border: Get.currentRoute == SECTIONS_PAGE
                         ? Border(
                             bottom: BorderSide(
-                              color: RedColor,
+                              color: PrimaryColor,
                               style: BorderStyle.solid,
                               width: 0.001.sw,
                             ),
@@ -138,7 +138,7 @@ class HomeAppBarComponent extends StatelessWidget
                       FontAwesomeIcons.layerGroup,
                       size: 0.06.sw,
                       color:
-                          Get.currentRoute == SECTIONS_PAGE ? RedColor : null,
+                          Get.currentRoute == SECTIONS_PAGE ? PrimaryColor : null,
                     ),
                   ),
                 ),
@@ -148,7 +148,7 @@ class HomeAppBarComponent extends StatelessWidget
                     border: Get.currentRoute == SERVICES_PAGE
                         ? Border(
                             bottom: BorderSide(
-                              color: RedColor,
+                              color: PrimaryColor,
                               style: BorderStyle.solid,
                               width: 0.001.sw,
                             ),
@@ -163,7 +163,7 @@ class HomeAppBarComponent extends StatelessWidget
                       FontAwesomeIcons.locationDot,
                       size: 0.06.sw,
                       color:
-                          Get.currentRoute == SERVICES_PAGE ? RedColor : null,
+                          Get.currentRoute == SERVICES_PAGE ? PrimaryColor : null,
                       //color: RedColor,
                     ),
                   ),
@@ -174,7 +174,7 @@ class HomeAppBarComponent extends StatelessWidget
                     border: Get.currentRoute == JOBS_PAGE
                         ? Border(
                             bottom: BorderSide(
-                              color: RedColor,
+                              color: PrimaryColor,
                               style: BorderStyle.solid,
                               width: 0.001.sw,
                             ),
@@ -188,7 +188,7 @@ class HomeAppBarComponent extends StatelessWidget
                     icon: Icon(
                       FontAwesomeIcons.briefcase,
                       size: 0.06.sw,
-                      color: Get.currentRoute == JOBS_PAGE ? RedColor : null,
+                      color: Get.currentRoute == JOBS_PAGE ? PrimaryColor : null,
                     ),
                   ),
                 ),
@@ -198,7 +198,7 @@ class HomeAppBarComponent extends StatelessWidget
                     border: Get.currentRoute == TENDERS_PAGE
                         ? Border(
                             bottom: BorderSide(
-                              color: RedColor,
+                              color: PrimaryColor,
                               style: BorderStyle.solid,
                               width: 0.001.sw,
                             ),
@@ -212,7 +212,7 @@ class HomeAppBarComponent extends StatelessWidget
                     icon: Icon(FontAwesomeIcons.arrowTrendDown,
                         size: 0.06.sw,
                         color:
-                            Get.currentRoute == TENDERS_PAGE ? RedColor : null),
+                            Get.currentRoute == TENDERS_PAGE ? PrimaryColor : null),
                   ),
                 ),
                 Container(
@@ -221,7 +221,7 @@ class HomeAppBarComponent extends StatelessWidget
                     border: Get.currentRoute == COMMUNITIES_PAGE
                         ? Border(
                             bottom: BorderSide(
-                              color: RedColor,
+                              color: PrimaryColor,
                               style: BorderStyle.solid,
                               width: 0.001.sw,
                             ),
@@ -237,7 +237,7 @@ class HomeAppBarComponent extends StatelessWidget
                             icon: Icon(FontAwesomeIcons.comments,
                                 size: 0.06.sw,
                                 color: Get.currentRoute == COMMUNITIES_PAGE
-                                    ? RedColor
+                                    ? PrimaryColor
                                     : null),
                           )
                         : Badge.count(
@@ -249,7 +249,7 @@ class HomeAppBarComponent extends StatelessWidget
                               icon: Icon(FontAwesomeIcons.comments,
                                   size: 0.06.sw,
                                   color: Get.currentRoute == COMMUNITIES_PAGE
-                                      ? RedColor
+                                      ? PrimaryColor
                                       : null),
                             ),
                           );
@@ -261,7 +261,7 @@ class HomeAppBarComponent extends StatelessWidget
                     border: Get.currentRoute == PROFILE_PAGE
                         ? Border(
                             bottom: BorderSide(
-                              color: RedColor,
+                              color: PrimaryColor,
                               style: BorderStyle.solid,
                               width: 0.001.sw,
                             ),
@@ -275,7 +275,7 @@ class HomeAppBarComponent extends StatelessWidget
                     icon: Icon(FontAwesomeIcons.solidUser,
                         size: 0.06.sw,
                         color:
-                            Get.currentRoute == PROFILE_PAGE ? RedColor : null),
+                            Get.currentRoute == PROFILE_PAGE ? PrimaryColor : null),
                   ),
                 ),
               ],

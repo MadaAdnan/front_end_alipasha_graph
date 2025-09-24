@@ -63,7 +63,7 @@ class ServiceLogic extends GetxController {
             user {
                 name
                 seller_name
-               
+               full_phone
                   is_verified
                
             }

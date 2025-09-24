@@ -57,7 +57,7 @@ class FollowersPage extends StatelessWidget {
                 height: 0.06.sh,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                    border: Border.all(color: RedColor), color: RedColor),
+                    border: Border.all(color: PrimaryColor), color: PrimaryColor),
                 child: Text(
                   'متاجر أتابعها',
                   style: H3WhiteTextStyle,
@@ -99,7 +99,7 @@ class FollowersPage extends StatelessWidget {
                           height: 0.06.sh,
                           alignment: Alignment.center,
                           decoration:
-                          BoxDecoration(border: Border.all(color: RedColor)),
+                          BoxDecoration(border: Border.all(color: PrimaryColor)),
                           child: Text(
                             'لم تقم بمتابعة أي متجر',
                             style: H4RedTextStyle,
@@ -190,7 +190,7 @@ class FollowersPage extends StatelessWidget {
                           children: [
                             Icon(
                               FontAwesomeIcons.heartCrack,
-                              color: RedColor,
+                              color: PrimaryColor,
                               size: 0.05.sw,
                             ),
                             SizedBox(

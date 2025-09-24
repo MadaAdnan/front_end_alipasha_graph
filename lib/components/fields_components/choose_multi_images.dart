@@ -89,7 +89,7 @@ class ChooseMultiImages extends StatelessWidget {
                             icon: const Icon(
                               FontAwesomeIcons.trash,
                               size: 20,
-                              color: RedColor,
+                              color: PrimaryColor,
                             ),
                           ),
                       ],

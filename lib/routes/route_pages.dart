@@ -99,6 +99,7 @@ import 'package:ali_pasha_graph/pages/restaurant/binding.dart';
 import 'package:ali_pasha_graph/pages/restaurant/view.dart';
 import 'package:ali_pasha_graph/pages/search/binding.dart';
 import 'package:ali_pasha_graph/pages/search/view.dart';
+import 'package:ali_pasha_graph/pages/section/view2.dart';
 import 'package:ali_pasha_graph/pages/sections/binding.dart';
 import 'package:ali_pasha_graph/pages/sections/view.dart';
 import 'package:ali_pasha_graph/pages/sellers/binding.dart';
@@ -435,7 +436,7 @@ class AppPages {
     ),
     GetPage(
       name: SECTION_PAGE,
-      page: () => SectionPage(),
+      page: () => SectionPage2(),
       binding: SectionBinding(),
     ),
     GetPage(

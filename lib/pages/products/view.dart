@@ -36,6 +36,7 @@ class ProductsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
@@ -55,7 +56,7 @@ class ProductsPage extends StatelessWidget {
                       child: Container(
                         padding: EdgeInsets.all(0.02.sw),
                         decoration: BoxDecoration(
-                          color: RedColor.withOpacity(0.5),
+                          color: PrimaryColor.withOpacity(0.5),
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(
@@ -69,7 +70,7 @@ class ProductsPage extends StatelessWidget {
                       right: 0,
                       child: Badge.count(
                         count: mainController.carts.length,
-                        backgroundColor: RedColor,
+                        backgroundColor: PrimaryColor,
                       ),
                     )
                   ],
@@ -81,9 +82,6 @@ class ProductsPage extends StatelessWidget {
       backgroundColor: WhiteColor,
       body: NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification scrollInfo) {
-        mainController.logger.d(scrollInfo.metrics.pixels >=
-            scrollInfo.metrics.maxScrollExtent * 0.8);
-        mainController.logger.w(logic.hasMorePage.value);
 
         if (scrollInfo.metrics.pixels >=
                 scrollInfo.metrics.maxScrollExtent * 0.8 &&
@@ -95,7 +93,7 @@ class ProductsPage extends StatelessWidget {
       }, child: Obx(() {
         Color? color = logic.seller.value?.is_verified == true
             ? logic.seller.value?.id_color!.toColor()
-            : RedColor;
+            : PrimaryColor;
         if (logic.loading.value && logic.page.value == 1) {
           return ListView(
             controller: scrollController,
@@ -325,7 +323,7 @@ class ProductsPage extends StatelessWidget {
                                           onTap: () {
                                             openUrl(
                                                 url:
-                                                    "https://wa.me/${logic.seller.value?.phone}");
+                                                    "https://wa.me/${logic.seller.value?.full_phone}");
                                           },
                                           child: Icon(
                                             FontAwesomeIcons.whatsapp,
@@ -516,7 +514,7 @@ class ProductsPage extends StatelessWidget {
                                                             ?.is_verified ==
                                                         true
                                                     ? color
-                                                    : RedColor),
+                                                    : PrimaryColor),
                                             child: Text(
                                               'معرض الصور',
                                               style: H4WhiteTextStyle,
@@ -559,7 +557,7 @@ class ProductsPage extends StatelessWidget {
                                                           ?.is_verified ==
                                                       true
                                                   ? color
-                                                  : RedColor),
+                                                  : PrimaryColor),
                                           child: Text(
                                             'رسالة خاصة',
                                             style: H4WhiteTextStyle,
@@ -579,7 +577,7 @@ class ProductsPage extends StatelessWidget {
                                                   IconType.continueAnimation,
                                               height: 0.055.sw,
                                               width: 0.055.sw,
-                                              color: RedColor,
+                                              color: PrimaryColor,
                                               animateIcon: AnimateIcons.bell,
                                             ),
                                           );
@@ -623,7 +621,7 @@ class ProductsPage extends StatelessWidget {
                                                             ?.is_verified ==
                                                         true
                                                     ? color
-                                                    : RedColor),
+                                                    : PrimaryColor),
                                             child: seller != null
                                                 ? Text(
                                                     'أتابعه',

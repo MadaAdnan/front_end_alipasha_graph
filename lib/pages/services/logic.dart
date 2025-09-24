@@ -89,6 +89,7 @@ class ServicesLogic extends GetxController {
         user {
             name
             seller_name
+            full_phone
             id
         }
         category {

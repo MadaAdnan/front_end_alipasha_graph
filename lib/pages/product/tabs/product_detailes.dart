@@ -65,12 +65,12 @@ class ProductDetailes extends StatelessWidget {
                 onTap: (){
                   openUrl(url: "${product?.docs[index]}");
                 },
-                child: Text("مرفق ${index+1}",style: H3RedTextStyle.copyWith(decoration: TextDecoration.underline,decorationColor: RedColor),),
+                child: Text("مرفق ${index+1}",style: H3RedTextStyle.copyWith(decoration: TextDecoration.underline,decorationColor: PrimaryColor),),
               ))
             ],
           ),
         SizedBox(height: 0.01.sh,),
-        Text('منتجات ذات صلة',style: H3RedTextStyle.copyWith(decoration: TextDecoration.underline,decorationColor: RedColor),),
+        Text('منتجات ذات صلة',style: H3RedTextStyle.copyWith(decoration: TextDecoration.underline,decorationColor: PrimaryColor),),
         SizedBox(height: 0.01.sh,),
         ...List.generate(products.length, (index){
           switch(products[index].type){

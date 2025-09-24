@@ -21,7 +21,7 @@ class PaymentPage extends StatelessWidget {
           'شحن الحساب',
           style: H3WhiteTextStyle,
         ),
-        backgroundColor: RedColor,
+        backgroundColor: PrimaryColor,
         centerTitle: true,
       ),
       body: SingleChildScrollView(

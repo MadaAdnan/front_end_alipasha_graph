@@ -54,6 +54,7 @@ RxString typeJob=RxString('');
             user {
             id
                 seller_name
+                full_phone
                 logo
                 image
                   is_verified

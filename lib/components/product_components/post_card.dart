@@ -124,9 +124,9 @@ class PostCard extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 0.009.sw, vertical: 0.004.sh),
                                 decoration: BoxDecoration(
-                                    color: RedColor,
+                                    color: PrimaryColor,
                                     borderRadius: BorderRadius.circular(15.r),
-                                    border: Border.all(color: RedColor)),
+                                    border: Border.all(color: PrimaryColor)),
                                 child: Row(
                                   children: [
                                     Icon(
@@ -158,7 +158,7 @@ class PostCard extends StatelessWidget {
                                     decoration: BoxDecoration(
                                         borderRadius:
                                         BorderRadius.circular(15.r),
-                                        border: Border.all(color: RedColor)),
+                                        border: Border.all(color: PrimaryColor)),
                                     child: Row(
                                       children: [
                                         if (loading.value == true)
@@ -171,14 +171,14 @@ class PostCard extends StatelessWidget {
                                               IconType.continueAnimation,
                                               height: 0.05.sw,
                                               width: 0.05.sw,
-                                              color: RedColor,
+                                              color: PrimaryColor,
                                               animateIcon: AnimateIcons.bell,
                                             ),
                                           ),
                                         if (loading.value == false)
                                           Icon(
                                             FontAwesomeIcons.bell,
-                                            color: RedColor,
+                                            color: PrimaryColor,
                                             size: 0.05.sw,
                                           ),
                                         3.horizontalSpace,
@@ -278,7 +278,7 @@ class PostCard extends StatelessWidget {
                       left: 10.w,
                       child: Container(
                         decoration: BoxDecoration(
-                            color: OrangeColor,
+                            color: SecondaryColor,
                             borderRadius: BorderRadius.circular(15.r)),
                         height: 70.h,
                         width: 150.w,
@@ -342,7 +342,7 @@ class PostCard extends StatelessWidget {
                           Container(
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                                color: RedColor,
+                                color: PrimaryColor,
                                 borderRadius: BorderRadius.circular(15.r)),
                             height: 90.h,
                             width: 280.w,
@@ -373,7 +373,7 @@ class PostCard extends StatelessWidget {
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                  color: RedColor,
+                                  color: PrimaryColor,
                                   borderRadius: BorderRadius.circular(10.w)),
                               height: 90.h,
                               width: 120.w,
@@ -448,7 +448,7 @@ class PostCard extends StatelessWidget {
                                 ? FontAwesomeIcons.solidThumbsUp
                                 : FontAwesomeIcons.thumbsUp,
                             size: 0.05.sw,
-                            color: is_like.value || plusOneLike.value  ? RedColor : null,
+                            color: is_like.value || plusOneLike.value  ? PrimaryColor : null,
                           ),
                           SizedBox(
                             width: 0.004.sw,
@@ -638,6 +638,7 @@ addLike(product_id:"${post.id}"){
               name
               id_color
               seller_name
+              full_phone
               image
               logo
               is_verified

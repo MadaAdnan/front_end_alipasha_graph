@@ -106,9 +106,9 @@ class JobCard extends StatelessWidget {
                               padding: EdgeInsets.symmetric(
                                   horizontal: 0.009.sw, vertical: 0.004.sh),
                               decoration: BoxDecoration(
-                                  color: RedColor,
+                                  color: PrimaryColor,
                                   borderRadius: BorderRadius.circular(15.r),
-                                  border: Border.all(color: RedColor)),
+                                  border: Border.all(color: PrimaryColor)),
                               child: Row(
                                 children: [
                                   Icon(
@@ -135,7 +135,7 @@ class JobCard extends StatelessWidget {
                                       horizontal: 0.009.sw, vertical: 0.004.sh),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(15.r),
-                                      border: Border.all(color: RedColor)),
+                                      border: Border.all(color: PrimaryColor)),
                                   child: Row(
                                     children: [
                                       if (loading.value == true)
@@ -145,7 +145,7 @@ class JobCard extends StatelessWidget {
                                       if (loading.value == false)
                                         Icon(
                                           FontAwesomeIcons.bell,
-                                          color: RedColor,
+                                          color: PrimaryColor,
                                           size: 0.05.sw,
                                         ),
                                       3.horizontalSpace,
@@ -210,7 +210,7 @@ class JobCard extends StatelessWidget {
                       left: 10.w,
                       child: Container(
                         decoration: BoxDecoration(
-                            color: OrangeColor,
+                            color: SecondaryColor,
                             borderRadius: BorderRadius.circular(15.r)),
                         height: 70.h,
                         width: 150.w,
@@ -248,7 +248,7 @@ class JobCard extends StatelessWidget {
                         child: Container(
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                              color: RedColor,
+                              color: PrimaryColor,
                               borderRadius: BorderRadius.circular(15.r)),
                           height: 90.h,
                           padding: EdgeInsets.symmetric(horizontal: 0.02.sw),

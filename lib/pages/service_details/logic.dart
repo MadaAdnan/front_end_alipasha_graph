@@ -37,6 +37,7 @@ class ServiceDetailsLogic extends GetxController {
             user {
                 name
                 seller_name
+                full_phone
                 image
                 logo
                 open_time

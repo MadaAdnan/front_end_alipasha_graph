@@ -38,7 +38,7 @@ class SellersPage extends StatelessWidget {
             Container(
               width: 1.sw,
               height: 0.05.sh,
-              color: RedColor,
+              color: PrimaryColor,
               alignment: Alignment.center,
               child: Text(
                 'تجار الجملة ',
@@ -90,7 +90,7 @@ class SellersPage extends StatelessWidget {
                               decoration: BoxDecoration(
                                 border: Border.all(
                                     color: logic.selectedCity.value?.id == null
-                                        ? RedColor
+                                        ? PrimaryColor
                                         : GrayLightColor,
                                     width: 2),
                                 shape: BoxShape.circle,
@@ -130,7 +130,7 @@ class SellersPage extends StatelessWidget {
                                               color: logic.selectedCity.value
                                                           ?.id ==
                                                       logic.categories[index].id
-                                                  ? RedColor
+                                                  ? PrimaryColor
                                                   : GrayLightColor,
                                               width: 2),
                                           shape: BoxShape.circle,

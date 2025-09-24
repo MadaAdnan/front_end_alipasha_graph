@@ -125,7 +125,7 @@ class PlanCardComponent extends StatelessWidget {
                                             : FontAwesomeIcons.ban,
                                         color: plan.items![i].active == true
                                             ? Colors.green
-                                            : RedColor,
+                                            : PrimaryColor,
                                         size: 0.07.sw),
                                     10.horizontalSpace,
                                     SizedBox(
@@ -181,14 +181,14 @@ class PlanCardComponent extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               MaterialButton(
-                                color: RedColor,
+                                color: PrimaryColor,
                                 onPressed: () {
                                   Get.back();
                                 },
                                 child: Text('إلغاء',style: H4WhiteTextStyle,),
                               ),
                               MaterialButton(
-                                color: OrangeColor,
+                                color: SecondaryColor,
                                 onPressed: () {
                                   logic.subscribePlan(planId: plan.id!);
                                   Get.back();

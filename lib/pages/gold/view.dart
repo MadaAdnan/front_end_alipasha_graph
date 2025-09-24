@@ -26,7 +26,7 @@ class GoldPage extends StatelessWidget {
             alignment: Alignment.center,
             width: 1.sw,
             height: 0.07.sh,
-            color: RedColor,
+            color: PrimaryColor,
             child: Obx(() {
               return Text(
                 '${this.index.value == 0 ? 'أسعار الذهب والفضة' : this.index.value == 1 ? 'أسعار العملات' : "أسعار المحروقات"}',
@@ -61,7 +61,7 @@ class GoldPage extends StatelessWidget {
                               height: 0.03.sw,
                                   decoration: BoxDecoration(
                                       color: i == index.value
-                                          ? RedColor
+                                          ? PrimaryColor
                                           : GrayDarkColor,
                                       shape: BoxShape.circle),
                                 ))

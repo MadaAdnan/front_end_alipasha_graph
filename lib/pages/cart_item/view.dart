@@ -77,6 +77,7 @@ class CartItemPage extends StatelessWidget {
                       ...List.generate(
                         logic.carts.length,
                         (index) {
+
                           var price =
                               (logic.carts[index].product?.is_discount == true
                                       ? logic.carts[index].product?.discount
@@ -135,7 +136,7 @@ class CartItemPage extends StatelessWidget {
                                             },
                                             child: const Icon(
                                               FontAwesomeIcons.x,
-                                              color: RedColor,
+                                              color: PrimaryColor,
                                             ),
                                           )
                                         ],
@@ -304,7 +305,7 @@ class CartItemPage extends StatelessWidget {
                     horizontal: 0.1.sw,
                   ),
                   decoration: BoxDecoration(
-                    color: RedColor,
+                    color: PrimaryColor,
                   ),
                   child: GestureDetector(
                     onTap: () {
@@ -452,6 +453,7 @@ class CartItemPage extends StatelessWidget {
                                           null,
                                       child: InkWell(
                                         onTap: () async {
+
                                           if(mainController.authUser.value?.is_active!=true){
                                             mainController.showToast(
                                               type: 'error',
@@ -536,7 +538,8 @@ class CartItemPage extends StatelessWidget {
                                           message.writeln(
                                               "العنوان : ${logic.address.value}");
 
-                                          String? phone=logic.cart.value?.seller?.phone;
+                                          String? phone=logic.cart.value?.seller?.full_phone;
+
                                           String url="https://wa.me/${phone}?text=${Uri.encodeComponent("${message.toString()}")}";
 
                                           openUrl(
@@ -590,7 +593,7 @@ class CartItemPage extends StatelessWidget {
                                 width: 0.6.sw,
                                 height: 0.08.sw,
                                 decoration: BoxDecoration(
-                                    color: RedColor,
+                                    color: PrimaryColor,
                                     borderRadius:
                                     BorderRadius.circular(150.r)),
                                 child: Text(
@@ -618,7 +621,7 @@ class CartItemPage extends StatelessWidget {
                             'الملف الشخصي',
                             style: H4WhiteTextStyle,
                           ),
-                          color: RedColor,
+                          color: PrimaryColor,
                         )
                       ],
                     );
@@ -736,7 +739,7 @@ class CartItemPage extends StatelessWidget {
                 width: 0.3.sw,
                 height: 0.1.sw,
                 decoration: BoxDecoration(
-                    color: RedColor,
+                    color: PrimaryColor,
                     borderRadius: BorderRadius.circular(150.r)),
                 alignment: Alignment.center,
                 child: Text(

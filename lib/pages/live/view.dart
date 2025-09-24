@@ -252,7 +252,7 @@ class LivePage extends StatelessWidget {
                                 }
                                 return Container(
                                   decoration: BoxDecoration(
-                                      color: RedColor, shape: BoxShape.circle),
+                                      color: PrimaryColor, shape: BoxShape.circle),
                                   child: Transform.flip(
                                     child: IconButton(
                                         onPressed: () {
@@ -274,19 +274,19 @@ class LivePage extends StatelessWidget {
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(150.r),
                                 borderSide: BorderSide(
-                                  color: RedColor,
+                                  color: PrimaryColor,
                                 ),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(150.r),
                                 borderSide: BorderSide(
-                                  color: RedColor,
+                                  color: PrimaryColor,
                                 ),
                               ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(150.r),
                                 borderSide: BorderSide(
-                                  color: RedColor,
+                                  color: PrimaryColor,
                                 ),
                               ),
                             ),

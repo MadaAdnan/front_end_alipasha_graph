@@ -51,6 +51,7 @@ query GetLiveMessages {
             id
                 name
                 image
+                full_phone
             }
             created_at
         }
@@ -97,6 +98,7 @@ mutation CreateLiveMessage {
         id
             name
             image
+            full_phone
         }
     }
 }

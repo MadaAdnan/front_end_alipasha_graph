@@ -244,10 +244,10 @@ extension ProductActiveEnum on String {
         return Colors.green;
 
       case "pending":
-        return OrangeColor;
+        return SecondaryColor;
 
       case "block":
-        return RedColor;
+        return PrimaryColor;
 
       default:
         return DarkColor;
@@ -274,6 +274,6 @@ extension IsActiveEnum on bool {
     if (this) {
       return Colors.green;
     }
-    return RedColor;
+    return PrimaryColor;
   }
 }

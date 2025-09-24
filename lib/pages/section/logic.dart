@@ -5,6 +5,8 @@ import 'package:ali_pasha_graph/models/category_model.dart';
 import 'package:ali_pasha_graph/models/city_model.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import "package:dio/dio.dart" as dio;
 import 'package:logger/logger.dart';
@@ -22,10 +24,18 @@ class SectionLogic extends GetxController {
   RxList<AdviceModel> advices = RxList<AdviceModel>([]);
   Rxn<CategoryModel> category = Rxn<CategoryModel>(null);
   RxList orderBy = RxList(['created_at', 'desc']);
-Rxn<CityModel> cityModel=Rxn(null);
+  RxnString search = RxnString('');
+  TextEditingController searchController = TextEditingController();
+  Rxn<CityModel> cityModel = Rxn(null);
+ Rx<RangeValues> priceRange = Rx(RangeValues(0, 10000));
+  RxMap<String, String> sortOrder = RxMap({
+    'created_at': 'desc',
+    'price': 'asc',
+  });
   Rx<SingleSelectController<CityModel>> cityController =
-  Rx<SingleSelectController<CityModel>>(
-      SingleSelectController<CityModel>(null));
+      Rx<SingleSelectController<CityModel>>(
+          SingleSelectController<CityModel>(null));
+
   nextPage() {
     if (hasMorePage.value) {
       page.value += 1;
@@ -38,6 +48,11 @@ Rxn<CityModel> cityModel=Rxn(null);
     super.onInit();
     getDataFromStorage();
     ever(orderBy, (value) {
+      products.clear();
+      page.value = 1;
+      getPosts();
+    });
+    ever(search, (value) {
       products.clear();
       page.value = 1;
       getPosts();
@@ -63,7 +78,11 @@ Rxn<CityModel> cityModel=Rxn(null);
     super.onReady();
     getPosts();
   }
-
+apllyFilters(){
+  products.clear();
+  page.value = 1;
+  getPosts();
+}
   Future<void> getPosts() async {
     loading.value = true;
     if (category.value == null) {
@@ -72,7 +91,7 @@ Rxn<CityModel> cityModel=Rxn(null);
 
     mainController.query.value = '''
     query Products {
-    products(  order_by: { column: "${orderBy[0] ?? 'created_at'}", orderBy: "${orderBy[1] ?? 'desc'}" },city_id: ${cityModel.value?.id} ,category_id: ${mainCategory.value},sub1_id:${categoryId.value }, page: ${page.value}, first: 25) {
+    products(sort: {created_at:"${sortOrder['created_at']}",price:"${sortOrder['price']}"},search: "${search.value}",min_price:${priceRange.value.start},max_price:${priceRange.value.end}  order_by: { column: "${orderBy[0] ?? 'created_at'}", orderBy: "${orderBy[1] ?? 'desc'}" },city_id: ${cityModel.value?.id} ,category_id: ${mainCategory.value},sub1_id:${categoryId.value}, page: ${page.value}, first: 25) {
         paginatorInfo {
             hasMorePages
         }
@@ -84,6 +103,8 @@ Rxn<CityModel> cityModel=Rxn(null);
                 seller_name
                 image
                 phone
+                full_phone
+                is_verified
                 city{
                 id
                 code_city
@@ -145,6 +166,7 @@ Rxn<CityModel> cityModel=Rxn(null);
             id
             name
             seller_name
+            full_phone
         }
         url
         image
@@ -158,16 +180,14 @@ Rxn<CityModel> cityModel=Rxn(null);
 
     try {
       dio.Response? res = await mainController.fetchData();
-
-
-
+Logger().e(res?.data);
       if (res?.data?['data']?['products']['paginatorInfo'] != null) {
         hasMorePage.value =
             res?.data?['data']?['products']['paginatorInfo']['hasMorePages'];
       }
 
       if (res?.data?['data']?['products']['data'] != null) {
-        if(page.value==1){
+        if (page.value == 1) {
           products.clear();
         }
         for (var item in res?.data?['data']?['products']['data']) {
@@ -184,21 +204,16 @@ Rxn<CityModel> cityModel=Rxn(null);
       }
 
       if (res?.data?['data']?['category'] != null) {
-        Logger().e(res?.data?['data']?['category']);
         category.value =
             CategoryModel.fromJson(res?.data?['data']?['category']);
-        category.value?.children?.add(
-            CategoryModel(
-              name: 'الكل',
-            ));
-        if (mainController.storage
-            .hasData('category-${mainCategory.value}')) {
-          mainController.storage
-              .remove('category-${mainCategory.value}');
+        category.value?.children?.add(CategoryModel(
+          name: 'الكل',
+        ));
+        if (mainController.storage.hasData('category-${mainCategory.value}')) {
+          mainController.storage.remove('category-${mainCategory.value}');
         }
         await mainController.storage.write(
-            'category-${mainCategory.value}',
-            res?.data?['data']?['category']);
+            'category-${mainCategory.value}', res?.data?['data']?['category']);
       }
 
       if (res?.data?['data']?['advices'] != null) {
@@ -209,7 +224,7 @@ Rxn<CityModel> cityModel=Rxn(null);
       } else {
         advices.addAll(mainController.advices);
       }
-    }  catch (e) {
+    } catch (e) {
       mainController.logger.e(e);
     }
 
@@ -222,20 +237,20 @@ Rxn<CityModel> cityModel=Rxn(null);
   }
 
   getDataFromStorage() {
-    var listProduct =
-        mainController.storage.read('category-products-${mainCategory.value}') ??
-            [];
-if(mainController.storage.hasData('category-${mainCategory.value}')){
-  var data=mainController.storage.read('category-${mainCategory.value}');
-  if(data['id']!=null){
-    category.value=CategoryModel.fromJson(data);
-    category.value?.children?.insert(
-        0,
-        CategoryModel(
-          name: 'الكل',
-        ));
-  }
-}
+    var listProduct = mainController.storage
+            .read('category-products-${mainCategory.value}') ??
+        [];
+    if (mainController.storage.hasData('category-${mainCategory.value}')) {
+      var data = mainController.storage.read('category-${mainCategory.value}');
+      if (data['id'] != null) {
+        category.value = CategoryModel.fromJson(data);
+        category.value?.children?.insert(
+            0,
+            CategoryModel(
+              name: 'الكل',
+            ));
+      }
+    }
     for (var item in listProduct) {
       products.add(ProductModel.fromJson(item));
     }

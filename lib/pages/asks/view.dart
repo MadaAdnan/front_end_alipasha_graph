@@ -22,7 +22,7 @@ class AsksPage extends StatelessWidget {
           Container(
               width: 1.sw,
               height: 0.1.sh,
-              color: RedColor,
+              color: PrimaryColor,
               alignment: Alignment.center,
               child: Text(
                 'تطبيق علي باشا - الاسئلة',

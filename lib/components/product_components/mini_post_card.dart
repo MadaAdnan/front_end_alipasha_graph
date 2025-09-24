@@ -80,7 +80,7 @@ class MiniPostCard extends StatelessWidget {
                           children: [
                             Icon(
                               FontAwesomeIcons.crown,
-                              color: OrangeColor,
+                              color: SecondaryColor,
                               size: 0.03.sw,
                             ),
                             Text(
@@ -183,7 +183,7 @@ width: 0.67.sw,
                             padding: EdgeInsets.symmetric(
                                 vertical: 0.01.sh, horizontal: 0.02.sw),
                             decoration: BoxDecoration(
-                                color: RedColor,
+                                color: PrimaryColor,
                                 borderRadius: BorderRadius.circular(45.r)),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -303,7 +303,7 @@ width: 0.67.sw,
                     child: Icon(
                       FontAwesomeIcons.edit,
                       size: 0.05.sw,
-                      color: OrangeColor,
+                      color: SecondaryColor,
                     ),
                   ),
                   50.horizontalSpace,
@@ -334,7 +334,7 @@ width: 0.67.sw,
                                   vertical: 0.01.sh, horizontal: 0.03.sw),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15.r),
-                                  border: Border.all(color: RedColor)),
+                                  border: Border.all(color: PrimaryColor)),
                               child: Text(
                                 ' تأكيد ',
                                 style: H4BlackTextStyle,
@@ -362,7 +362,7 @@ width: 0.67.sw,
                       child: Icon(
                         FontAwesomeIcons.trash,
                         size: 0.05.sw,
-                        color: RedColor,
+                        color: PrimaryColor,
                       ),
                     );
                   })
@@ -483,8 +483,8 @@ width: 0.67.sw,
                                       isAvilable.value = !isAvilable.value;
                                       changeAvialable();
                                     },
-                                    activeColor: RedColor,
-                                    activeTrackColor: OrangeColor,
+                                    activeColor: PrimaryColor,
+                                    activeTrackColor: SecondaryColor,
                                     inactiveTrackColor: GrayLightColor,
                                   );
                                 }),

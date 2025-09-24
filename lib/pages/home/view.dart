@@ -56,7 +56,7 @@ class HomePage extends StatelessWidget {
                     child: Container(
                       padding: EdgeInsets.all(0.02.sw),
                       decoration: BoxDecoration(
-                        color: RedColor.withOpacity(0.5),
+                        color: PrimaryColor.withOpacity(0.5),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
@@ -78,7 +78,7 @@ class HomePage extends StatelessWidget {
                           child: Container(
                             padding: EdgeInsets.all(0.02.sw),
                             decoration: BoxDecoration(
-                              color: RedColor.withOpacity(0.5),
+                              color: PrimaryColor.withOpacity(0.5),
                               shape: BoxShape.circle,
                             ),
                             child: const Icon(
@@ -90,7 +90,7 @@ class HomePage extends StatelessWidget {
                         Positioned(
                           child: Badge.count(
                             count: mainController.carts.length,
-                            backgroundColor: RedColor,
+                            backgroundColor: PrimaryColor,
                           ),
                           top: 0,
                           right: 0,

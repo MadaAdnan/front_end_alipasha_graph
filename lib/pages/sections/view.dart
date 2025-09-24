@@ -102,7 +102,7 @@ bool exit=false;
                                 top: 9,
                                 left: 0,
                                 child: Badge(
-                                  backgroundColor:!logic.isVisit(logic.categories[index].id!,logic.categories[index].productsCount!)? RedColor:GrayDarkColor,
+                                  backgroundColor:!logic.isVisit(logic.categories[index].id!,logic.categories[index].productsCount!)? PrimaryColor:GrayDarkColor,
                                   isLabelVisible: true,
                                   label: Text(
                                       "${logic.categories[index].productsCount!}"

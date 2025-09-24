@@ -77,7 +77,7 @@ class NewDetailsPage extends StatelessWidget {
                                                 blurRadius: 0.02.sw)
                                           ]),
                                       child: const Icon(Icons.close,
-                                          color: RedColor, size: 30),
+                                          color: PrimaryColor, size: 30),
                                     ),
                                     onPressed: () => Get.back(),
                                   ),
@@ -148,7 +148,7 @@ class NewDetailsPage extends StatelessWidget {
                                                   blurRadius: 0.02.sw)
                                             ]),
                                         child: const Icon(Icons.close,
-                                            color: RedColor, size: 30),
+                                            color: PrimaryColor, size: 30),
                                       ),
                                       onPressed: () => Get.back(),
                                     ),
@@ -197,7 +197,7 @@ class NewDetailsPage extends StatelessWidget {
                       slideIndicator: CircularSlideIndicator(
                           slideIndicatorOptions: const SlideIndicatorOptions(
                         enableHalo: false,
-                        currentIndicatorColor: RedColor,
+                        currentIndicatorColor: PrimaryColor,
                         enableAnimation: true,
                       ))),
                 ),
@@ -224,7 +224,7 @@ class NewDetailsPage extends StatelessWidget {
                   width: 0.4.sw,
                   height: 0.04.sh,
                   decoration: BoxDecoration(
-                    color: RedColor,
+                    color: PrimaryColor,
                     borderRadius: BorderRadius.circular(30.r),
                   ),
                   child: Text(

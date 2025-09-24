@@ -54,6 +54,7 @@ class InvoicesLogic extends GetxController {
                 name
                 phone
                 phone_code
+                full_phone
                 image
                 city{
                 id
@@ -116,6 +117,7 @@ class InvoicesLogic extends GetxController {
             user {
                 name
                 phone
+                full_phone
                 image
                 city{
                id

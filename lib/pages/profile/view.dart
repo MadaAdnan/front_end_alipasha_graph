@@ -36,7 +36,7 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     Color? color = mainController.authUser.value?.is_verified == true
         ? mainController.authUser.value?.id_color!.toColor()
-        : RedColor;
+        : PrimaryColor;
     return Scaffold(
       backgroundColor: WhiteColor,
 
@@ -44,7 +44,7 @@ class ProfilePage extends StatelessWidget {
         onPressed: () {
           Get.offAndToNamed(MY_ORDER_SHIPPING_PAGE);
         },
-        backgroundColor: RedColor,
+        backgroundColor: PrimaryColor,
         label:  Text(
           'شحن مخصص',
           style: H4WhiteTextStyle,
@@ -276,7 +276,7 @@ class ProfilePage extends StatelessWidget {
                                       onTap: () {
                                         openUrl(
                                             url:
-                                                "https://wa.me/${mainController.authUser.value?.phone}");
+                                                "https://wa.me/${mainController.authUser.value?.full_phone}");
                                       },
                                       child: Icon(
                                         FontAwesomeIcons.whatsapp,
@@ -559,7 +559,7 @@ class ProfilePage extends StatelessWidget {
                                                     ?.is_verified ==
                                                 true
                                             ? color
-                                            : RedColor),
+                                            : PrimaryColor),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
@@ -596,7 +596,7 @@ class ProfilePage extends StatelessWidget {
                                                   ?.is_verified ==
                                               true
                                           ? color
-                                          : RedColor),
+                                          : PrimaryColor),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
@@ -654,7 +654,7 @@ class ProfilePage extends StatelessWidget {
                                                   true
                                               ? "${mainController.authUser.value?.id_color}"
                                                   .toColor()
-                                              : RedColor)
+                                              : PrimaryColor)
                                           : GrayLightColor),
                                   child: Text(
                                     'المنتجات',
@@ -683,7 +683,7 @@ class ProfilePage extends StatelessWidget {
                                                   true
                                               ? "${mainController.authUser.value?.id_color}"
                                                   .toColor()
-                                              : RedColor)
+                                              : PrimaryColor)
                                           : GrayLightColor),
                                   child: Text(
                                     'الإعلانات الممولة',
@@ -712,7 +712,7 @@ class ProfilePage extends StatelessWidget {
                                                   true
                                               ? "${mainController.authUser.value?.id_color}"
                                                   .toColor()
-                                              : RedColor)
+                                              : PrimaryColor)
                                           : GrayLightColor),
                                   child: Text(
                                     'الإحصائيات',
