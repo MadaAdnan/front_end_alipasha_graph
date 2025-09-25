@@ -19,7 +19,8 @@ class MinimizeDetailsProductComponentLoading extends StatelessWidget {
       children: [
         InkWell(
 
-          child: Shimmer(gradient: LinearGradient(colors: [GrayWhiteColor,GrayLightColor,GrayWhiteColor]), child: Container(
+          child: Shimmer(gradient: LinearGradient(colors: [GrayWhiteColor,GrayLightColor,GrayWhiteColor]),
+              child: Container(
             width: 1.sw,
             decoration: BoxDecoration(
               color: GrayLightColor,

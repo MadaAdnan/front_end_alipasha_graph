@@ -38,7 +38,7 @@ class SectionPage2 extends StatelessWidget {
       body: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollInfo) {
           if (scrollInfo.metrics.pixels >=
-              scrollInfo.metrics.maxScrollExtent * 0.80 &&
+                  scrollInfo.metrics.maxScrollExtent * 0.80 &&
               !mainController.loading.value &&
               logic.hasMorePage.value &&
               _scrollController.position.context.notificationContext ==
@@ -56,29 +56,70 @@ class SectionPage2 extends StatelessWidget {
           }
           return true;
         },
-        child: Obx(() {
-          if (logic.products.length > 0) {
-            return Padding(
-              padding: const EdgeInsets.all(8),
-              child: GridView(
-                controller: _scrollController,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, // عدد الأعمدة
-                  crossAxisSpacing: 8,
-                  mainAxisSpacing: 8,
-                  childAspectRatio: 0.53, // للتحكم في طول/عرض البطاقة
-                ),
-                children: [
-                  ...logic.products.map((product) {
-                    return _ProductCard(product: product);
-                  }).toList(),
-                ],
-              ),
-            );
-          } else {
-            return Container();
-          }
-        }),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Expanded(
+              child: Obx(() {
+                if (logic.products.length == 0 && logic.loading.value == true) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: GridView(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2, // عدد الأعمدة
+                        crossAxisSpacing: 8,
+                        mainAxisSpacing: 8,
+                        childAspectRatio: 0.53, // للتحكم في طول/عرض البطاقة
+                      ),
+                      children: [
+                        ...List.generate(4, (index) => _ShimmerLoading()),
+                      ],
+                    ),
+                  );
+                } else if (logic.products.length > 0) {
+
+                  return Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: GridView(
+                      controller: _scrollController,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2, // عدد الأعمدة
+                        crossAxisSpacing: 8,
+                        mainAxisSpacing: 8,
+                        childAspectRatio: 0.53, // للتحكم في طول/عرض البطاقة
+                      ),
+                      children: [
+                        ...logic.products.map((product) {
+                          return _ProductCard(product: product);
+                        }).toList(),
+                      ],
+                    ),
+                  );
+                } else if (logic.loading.value == false &&
+                    logic.products.length == 0) {
+                  return Container(
+                    child: Center(
+                      child: Text('لا يوجد منتجات'),
+                    ),
+                  );
+                } else {
+                  return Container();
+                }
+              }),
+            ),
+            Obx(() => Visibility(
+                  child: Container(
+                      alignment: Alignment.center,
+                      child: ProgressLoading(
+                        width: 0.1.sw,
+                      )),
+                  visible:
+                      logic.loading.value == true && logic.products.length > 0,
+                ))
+          ],
+        ),
       ),
     );
   }
@@ -121,6 +162,58 @@ class SectionPage2 extends StatelessWidget {
           "القسم",
           style: H3WhiteTextStyle,
           overflow: TextOverflow.ellipsis,
+        ),
+      ),
+    );
+  }
+
+  _ShimmerLoading() {
+    return Shimmer(gradient: LinearGradient(colors: [GrayWhiteColor,GrayLightColor,GrayWhiteColor]),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              blurRadius: 6,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // صورة المنتج
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
+              ),
+              child: Container(
+                width: 1.sw,
+                height: 0.45.sw,
+
+                child: Shimmer.fromColors(
+                    child: SizedBox(width: 1.sw,height: 0.45.sw,),
+                    baseColor:GrayDarkColor , highlightColor:GrayWhiteColor,loop: 10,),
+
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Shimmer.fromColors( child: Expanded(child: Text('')),baseColor:GrayDarkColor , highlightColor:GrayWhiteColor,),
+
+                ],
+              ),
+            ),
+
+
+
+          ],
         ),
       ),
     );
@@ -251,19 +344,23 @@ class SectionPage2 extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 8),
             child: InkWell(
-              onTap: (){
-                Get.offNamed(PRODUCTS_PAGE,parameters: {"id":"${product.user?.id}"});
+              onTap: () {
+                Get.offNamed(PRODUCTS_PAGE,
+                    parameters: {"id": "${product.user?.id}"});
               },
               child: Row(
                 children: [
+                  if (product.user?.is_verified == true) SizedBox(width: 4),
+                  Expanded(
+                    child: AutoSizeText(
+                      "${product.user?.seller_name}",
+                      maxLines: 1,
+                      style: H4RedTextStyle.copyWith(
+                          overflow: TextOverflow.ellipsis),
+                    ),
+                  ),
                   if (product.user?.is_verified == true)
                     Icon(Icons.verified, color: Colors.blue, size: 16),
-                  if (product.user?.is_verified == true) SizedBox(width: 4),
-                  AutoSizeText(
-                    "${product.user?.seller_name}",
-                    maxLines: 1,
-                    style:H4RedTextStyle.copyWith(overflow: TextOverflow.ellipsis),
-                  ),
                 ],
               ),
             ),
@@ -278,17 +375,24 @@ class SectionPage2 extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  width:0.1.sw,
+                  width: 0.1.sw,
                   height: 0.1.sw,
                   decoration: BoxDecoration(
-
                     color: Colors.red,
                     shape: BoxShape.rectangle,
                     borderRadius: BorderRadius.all(Radius.circular(30.r)),
                   ),
                   child: IconButton(
                     onPressed: () {
-                      mainController.addToCart(product: product);
+                      if (mainController.authUser.value?.id != null) {
+                        mainController.addToCart(product: product);
+                        mainController.showToast(
+                            text: 'تمت إضافة المنتج إلى السلة',
+                            type: 'success');
+                      } else {
+                        mainController.showToast(
+                            text: 'الرجاء تسجيل الدخول', type: 'error');
+                      }
                     },
                     icon: const Icon(Icons.shopping_cart, color: Colors.white),
                   ),
@@ -303,7 +407,7 @@ class SectionPage2 extends StatelessWidget {
                           AutoSizeText(
                             "${product.price} \$",
                             textDirection: TextDirection.rtl,
-                            style:H7GrayOpacityTextStyle,
+                            style: H7GrayOpacityTextStyle,
                           ),
                           Positioned(
                             top: 0.02.sw,
@@ -319,7 +423,7 @@ class SectionPage2 extends StatelessWidget {
                           ),
                         ],
                       ),
-                     15.horizontalSpace,
+                      15.horizontalSpace,
                       AutoSizeText(
                         "${product.discount} \$",
                         softWrap: false,
@@ -328,7 +432,6 @@ class SectionPage2 extends StatelessWidget {
                     ],
                   ),
                 const SizedBox(width: 8),
-
                 if (product.is_discount != true)
                   AutoSizeText(
                     "\$ ${product.price}",
@@ -395,14 +498,12 @@ class CustomAppBarSection extends StatelessWidget
                     onSelected: (CityModel city) {
                       logic.cityModel.value = city;
                     },
-                    itemBuilder: (context) =>
-                        logic.mainController.mainCities
-                            .map((city) =>
-                            PopupMenuItem<CityModel>(
+                    itemBuilder: (context) => logic.mainController.mainCities
+                        .map((city) => PopupMenuItem<CityModel>(
                               value: city,
                               child: Text(city.name ?? 'Unknown City'),
                             ))
-                            .toList(),
+                        .toList(),
                     child: Container(
                       padding: EdgeInsets.symmetric(
                           horizontal: 0.01.sw, vertical: 8),
@@ -485,11 +586,9 @@ class CustomAppBarSection extends StatelessWidget
                       children: [
                         ...List.generate(
                           logic.category.value!.children!.length,
-                              (index) =>
-                              _buildInactiveTab(
-                                  category: logic.category.value!.children!
-                                      .reversed
-                                      .elementAt(index)),
+                          (index) => _buildInactiveTab(
+                              category: logic.category.value!.children!.reversed
+                                  .elementAt(index)),
                         )
                       ],
                     ),
@@ -520,8 +619,7 @@ class CustomAppBarSection extends StatelessWidget
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text("الفلترة",
-                      style:H1BlackTextStyle),
+                  Text("الفلترة", style: H1BlackTextStyle),
 
                   SizedBox(height: 20),
 
@@ -529,13 +627,15 @@ class CustomAppBarSection extends StatelessWidget
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text('حسب تاريخ النشر',style: H3RegularDark,),
+                      Text(
+                        'حسب تاريخ النشر',
+                        style: H3RegularDark,
+                      ),
                     ],
                   ),
                   Obx(() {
                     return Row(
                       children: [
-
                         Expanded(
                           child: RadioListTile<String>(
                             title: Text("الأحدث"),
@@ -569,13 +669,15 @@ class CustomAppBarSection extends StatelessWidget
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text('حسب السعر',style: H3RegularDark,),
+                      Text(
+                        'حسب السعر',
+                        style: H3RegularDark,
+                      ),
                     ],
                   ),
                   Obx(() {
                     return Row(
                       children: [
-
                         Expanded(
                           child: RadioListTile<String>(
                             title: Text("الأعلى"),
@@ -607,9 +709,9 @@ class CustomAppBarSection extends StatelessWidget
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                            "نطاق السعر: ${logic.priceRange.value.start
-                                .round()} - ${logic
-                                .priceRange.value.end.round()}",style: H3RegularDark,),
+                          "نطاق السعر: ${logic.priceRange.value.start.round()} - ${logic.priceRange.value.end.round()}",
+                          style: H3RegularDark,
+                        ),
                       ],
                     );
                   }),
@@ -636,13 +738,11 @@ class CustomAppBarSection extends StatelessWidget
                     onPressed: () {
                       // اطبع القيم المختارة للتأكد
                       Logger().i(
-                          "الترتيب حسب التاريخ: ${logic
-                              .sortOrder['created_at']}");
+                          "الترتيب حسب التاريخ: ${logic.sortOrder['created_at']}");
                       Logger()
                           .i("الترتيب حسب السعر: ${logic.sortOrder['price']}");
                       Logger().i(
-                          "نطاق السعر: ${logic.priceRange.value.start} - ${logic
-                              .priceRange.value.end}");
+                          "نطاق السعر: ${logic.priceRange.value.start} - ${logic.priceRange.value.end}");
                       logic.apllyFilters();
                       // اغلاق الـ BottomSheet
                       Get.back(); // أو Navigator.pop(context);
@@ -666,27 +766,27 @@ class CustomAppBarSection extends StatelessWidget
       },
 // ?
           child: Obx(() {
-            return Stack(
-              children: [
-                Text(
-                  "${category.name}",
-                  style: logic.categoryId.value == category.id
-                      ? H2BlackTextStyle
-                      : H3GrayTextStyle,
+        return Stack(
+          children: [
+            Text(
+              "${category.name}",
+              style: logic.categoryId.value == category.id
+                  ? H2BlackTextStyle
+                  : H3GrayTextStyle,
+            ),
+            if (logic.categoryId.value == category.id)
+              Positioned(
+                left: 0,
+                right: 0,
+                top: 0.03.sh, // مقدار الإزاحة للأسفل
+                child: Container(
+                  height: 0.003.sh,
+                  color: Colors.black,
                 ),
-                if (logic.categoryId.value == category.id)
-                  Positioned(
-                    left: 0,
-                    right: 0,
-                    top: 0.03.sh, // مقدار الإزاحة للأسفل
-                    child: Container(
-                      height: 0.003.sh,
-                      color: Colors.black,
-                    ),
-                  ),
-              ],
-            );
-          })),
+              ),
+          ],
+        );
+      })),
     );
   }
 
