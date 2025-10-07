@@ -69,7 +69,7 @@ class MainController extends GetxController {
   RxList<SliderModel> sliders = RxList<SliderModel>([]);
   RxList<CountryModel> countries = RxList<CountryModel>([]);
   RxList<PricingModel> pricing = RxList([]);
-  String versionAPK = "3.2.4";
+  String versionAPK = "3.2.5";
   RxInt communityNotification = RxInt(0);
   RxBool startApp = RxBool(true); //for fill data from storage
   Rx<SettingModel> settings =
@@ -777,12 +777,10 @@ class MainController extends GetxController {
   }
 
   Future<void> addToCart({required ProductModel product}) async {
-    if(authUser.value?.is_active!=true){
+    if (authUser.value?.is_active != true) {
       showToast(
-          type: 'error',
-          text:
-          'حسابكم محظور الرجاء التواصل مع الدعم الفني');
-      return ;
+          type: 'error', text: 'حسابكم محظور الرجاء التواصل مع الدعم الفني');
+      return;
     }
     cartLoading.value = true;
     try {
@@ -1106,7 +1104,7 @@ class MainController extends GetxController {
     return status;
   }
 
-  follow({required int sellerId}) async {
+  Future<bool> follow({required int sellerId}) async {
     loading.value = true;
     try {
       query.value = '''
@@ -1120,13 +1118,35 @@ class MainController extends GetxController {
       //  mainController.logger.e(res?.data);
       if (res?.data?['data']?['followAccount'] != null) {
         setUserJson(json: res?.data?['data']?['followAccount']);
+        loading.value = false;
+        return true;
       }
-    } on CustomException catch (e) {
+
+    }  catch (e) {
       logger.e(e);
     }
     loading.value = false;
+    return false;
   }
+  Future<void> unFollowers(int sellerId) async {
+    try {
+      query.value = '''
+      mutation FollowAccount {
+    followAccount(id: "$sellerId") {
+       $AUTH_FIELDS
+    }
+}
+      ''';
+      dio.Response? res = await fetchData();
+      // mainController.logger.e(res?.data);
+      if (res?.data?['data']?['followAccount'] != null) {
+        setUserJson(json: res?.data?['data']?['followAccount']);
 
+      }
+    }  catch (e) {
+   logger.e(e);
+    }
+  }
   Future<int?> deleteProduct({required int productId}) async {
     loading.value = true;
 
@@ -1156,7 +1176,7 @@ class MainController extends GetxController {
     return null;
   }
 
-  Future<void> clickWhatsApp({ required int productId}) async {
+  Future<void> clickWhatsApp({required int productId}) async {
     try {
       query.value = '''
       mutation ClickWhatsapp {
@@ -1167,11 +1187,11 @@ class MainController extends GetxController {
       ''';
       dio.Response? res = await fetchData();
 
-      if (res?.data?['data']?['clickWhatsapp'] != null) {
-
-      }
-    }  catch (e) {
+      if (res?.data?['data']?['clickWhatsapp'] != null) {}
+    } catch (e) {
       logger.e(e);
     }
   }
+
+
 }

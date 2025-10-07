@@ -482,7 +482,7 @@ class CartItemPage extends StatelessWidget {
                                             await logic.createOrder();
 
                                             message.writeln(
-                                                "${mainController.settings.value?.footerOrder}");
+                                                "${mainController.settings.value.footerOrder}");
                                             for (var item
                                             in logic.carts) {
                                               message.write(

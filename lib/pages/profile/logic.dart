@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/exceptions/custom_exception.dart';
 import 'package:ali_pasha_graph/models/advice_model.dart';
+import 'package:ali_pasha_graph/models/category_model.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
 import 'package:ali_pasha_graph/models/slider_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -37,13 +38,17 @@ class ProfileLogic extends GetxController {
   RxString search = RxString('');
   MainController mainController = Get.find<MainController>();
   RxInt page = 1.obs;
+  RxInt categoryId = RxInt(-1);
   RxBool hasMorePage = RxBool(false);
   TextEditingController urlController = TextEditingController();
   Rxn<XFile> image = Rxn<XFile>(null);
   PageController pageController = PageController(
     initialPage: 0,
   );
-
+RxList<CategoryModel> categories = RxList<CategoryModel>([CategoryModel(
+  id: -1,
+  name: 'كل المنتجات',
+)]);
   nextPage() {
     page.value = page.value + 1;
   }
@@ -51,6 +56,7 @@ class ProfileLogic extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
     getDataFromStorage();
     ever(page, (value) {
       getProduct();
@@ -62,8 +68,19 @@ class ProfileLogic extends GetxController {
         page.value = 1;
       }
     });
+    ever(categoryId, (value) {
+      if (page.value == 1) {
+        getProduct();
+      } else {
+        page.value = 1;
+      }
+    });
   }
+  @override
+  void onClose() {
 
+    super.onClose();
+  }
   @override
   void onReady() {
     // TODO: implement onReady
@@ -81,7 +98,7 @@ class ProfileLogic extends GetxController {
 
     mainController.query('''
     query MyProducts {
-      myProducts(first: 35, page: ${page} ,search:"${search.value ?? ''}") {
+      myProducts(first: 35, page: ${page} ,search:"${search.value ?? ''}" ,${categoryId.value>-1?'categoryId:${categoryId.value}' : ''}) {
          paginatorInfo {
             hasMorePages
          }
@@ -131,19 +148,34 @@ class ProfileLogic extends GetxController {
                 level
             }
             category {
+            id
               name
             }
             sub1 {
+            id
                 name
             }
         }
       }
+      
+      ${page.value==1? '''categoryBySeller(sellerId:${mainController.authUser.value?.id}) {id name}''' : ''}
     }
   
     ''');
     try {
       dio.Response? res = await mainController.fetchData();
+      Logger().e(mainController.query.value);
 
+      if (res?.data?['data']?['categoryBySeller'] != null) {
+        categories.clear();
+        categories.add(CategoryModel(
+            id: -1,
+            name: 'كل المنتجات',
+        ));
+        for (var item in res?.data['data']['categoryBySeller']) {
+          categories.add(CategoryModel.fromJson(item));
+        }
+      }
       if (res?.data?['data']?['myProducts'] != null) {
         hasMorePage(
             res?.data['data']?['myProducts']['paginatorInfo']['hasMorePages']);

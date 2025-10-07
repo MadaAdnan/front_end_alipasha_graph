@@ -20,6 +20,7 @@ const String Edit_PRODUCT_PAGE = '/edit_product';
 const String Edit_JOB_PAGE = '/edit_job';
 const String Edit_TENDER_PAGE = '/edit_tender';
 const String Edit_SERVICE_PAGE = '/edit_service';
+const String STATISTICS_PAGE = '/statistics_page';
 
 
 const String PROFILE_PAGE = '/profile_page';
@@ -30,6 +31,7 @@ const String FOLLOWERS_PAGE = '/followers_page';
 const String FOLLOWING_PAGE = '/following_page';
 const String MY_ORDER_SHIPPING_PAGE = '/my_order_shipping_page';
 const String CREATE_COMMUNITY_PAGE = '/create_community_page';
+const String MY_ADVICE_PAGE  = '/my_advice_page';
 
 // Other Page
 

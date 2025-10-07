@@ -1,5 +1,6 @@
 import 'package:ali_pasha_graph/models/social_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
+import 'package:logger/logger.dart';
 
 class SettingModel {
   SocialModel? social;

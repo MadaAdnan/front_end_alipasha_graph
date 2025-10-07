@@ -180,9 +180,9 @@ extension FormatNumber on String {
   String toFormatNumberK() {
     int number = int.tryParse(this) ?? 0;
     if (number >= 1000000) {
-      return (number / 1000000).toStringAsFixed(1) + ' M';
+      return (number / 1000000).toStringAsFixed(1) + 'M';
     } else if (number >= 1000) {
-      return (number / 1000).toStringAsFixed(1) + ' K';
+      return (number / 1000).toStringAsFixed(1) + 'K';
     } else {
       return this.toString();
     }
@@ -219,6 +219,37 @@ extension ProductActiveEnum on String {
 
       default:
         return this;
+    }
+  }
+
+  String active2ArabicProduct() {
+    switch (this) {
+      case "active":
+        return "مفعل";
+
+      case "pending":
+        return "قيد المراجعة";
+
+      case "block":
+        return "محظور";
+
+      default:
+        return this;
+    }
+  }
+  Color active2ColoProduct() {
+    switch (this) {
+      case "active":
+        return Colors.green;
+
+      case "pending":
+        return Colors.orange;
+
+      case "block":
+        return Colors.red;
+
+      default:
+        return Colors.transparent;
     }
   }
 

@@ -69,6 +69,7 @@ import 'package:ali_pasha_graph/pages/maintenance/view.dart';
 
 import 'package:ali_pasha_graph/pages/menu/binding.dart';
 import 'package:ali_pasha_graph/pages/menu/view.dart';
+import 'package:ali_pasha_graph/pages/my_advice/binding.dart';
 import 'package:ali_pasha_graph/pages/my_invoice/binding.dart';
 import 'package:ali_pasha_graph/pages/my_invoice/view.dart';
 import 'package:ali_pasha_graph/pages/new_details/binding.dart';
@@ -91,6 +92,8 @@ import 'package:ali_pasha_graph/pages/privacy/binding.dart';
 import 'package:ali_pasha_graph/pages/privacy/view.dart';
 import 'package:ali_pasha_graph/pages/product/binding.dart';
 import 'package:ali_pasha_graph/pages/product/view.dart';
+import 'package:ali_pasha_graph/pages/products/View2.dart';
+import 'package:ali_pasha_graph/pages/profile/View2.dart';
 import 'package:ali_pasha_graph/pages/profile/binding.dart';
 import 'package:ali_pasha_graph/pages/profile/view.dart';
 import 'package:ali_pasha_graph/pages/register/binding.dart';
@@ -111,6 +114,7 @@ import 'package:ali_pasha_graph/pages/services/binding.dart';
 import 'package:ali_pasha_graph/pages/services/view.dart';
 import 'package:ali_pasha_graph/pages/shipping/binding.dart';
 import 'package:ali_pasha_graph/pages/shipping/view.dart';
+
 import 'package:ali_pasha_graph/pages/tenders/binding.dart';
 import 'package:ali_pasha_graph/pages/tenders/view.dart';
 import 'package:ali_pasha_graph/pages/test/binding.dart';
@@ -138,6 +142,7 @@ import '../pages/forget_password/binding.dart';
 import '../pages/forget_password/view.dart';
 import '../pages/invoices/binding.dart';
 import '../pages/invoices/view.dart';
+import '../pages/my_advice/view.dart';
 import '../pages/news/binding.dart';
 import '../pages/news/view.dart';
 import '../pages/products/binding.dart';
@@ -341,8 +346,10 @@ class AppPages {
           CompleteProfileMiddleware()
         ],
         name: PROFILE_PAGE,
-        page: () => ProfilePage(),
+        page: () => ProfilePage2(),
         binding: ProfileBinding()),
+
+
     GetPage(
         middlewares: [
           IsLoggedIn(),
@@ -416,6 +423,16 @@ class AppPages {
       binding: CreateCommunityBinding(),
     ),
     GetPage(
+      middlewares: [
+        IsLoggedIn(),
+        VerifyEmailMiddleware(),
+        CompleteProfileMiddleware()
+      ],
+      name: MY_ADVICE_PAGE,
+      page: () => MyAdvicePage(),
+      binding: MyAdviceBinding(),
+    ),
+    GetPage(
       name: JOBS_PAGE,
       page: () => JobsPage(),
       binding: JobsBinding(),
@@ -446,7 +463,7 @@ class AppPages {
     ),
     GetPage(
       name: PRODUCTS_PAGE,
-      page: () => ProductsPage(),
+      page: () => ProductsPage2(),
       binding: ProductsBinding(),
     ),
     GetPage(

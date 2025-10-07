@@ -82,6 +82,8 @@ class PlanModel {
     data['id'] = id;
     data['name'] = name;
     data['info'] = info;
+    data['duration'] = duration;
+    data['type'] = type;
     data['pivot'] = pivot?.toJson();
 
     return data;

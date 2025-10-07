@@ -60,8 +60,8 @@ class PlanPage extends StatelessWidget {
                               color: GrayDarkColor, shape: BoxShape.circle),
                           child: CircleAvatar(
                             backgroundColor: WhiteColor,
-                            minRadius: 0.05.sw,
-                            maxRadius: 0.07.sw,
+                            minRadius: 0.03.sw,
+                            maxRadius: 0.04.sw,
                             child: Container(
                               width: 0.15.sw,
                               height: 0.13.sw,

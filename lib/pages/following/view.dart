@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../../Global/main_controller.dart';
 import '../../helpers/colors.dart';
@@ -23,7 +24,7 @@ class FollowingPage extends StatelessWidget {
       body: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollInfo) {
           if (scrollInfo.metrics.pixels >=
-              scrollInfo.metrics.maxScrollExtent * 0.80 &&
+                  scrollInfo.metrics.maxScrollExtent * 0.80 &&
               !mainController.loading.value &&
               logic.hasMorePage.value) {
             logic.nextPage();
@@ -40,7 +41,7 @@ class FollowingPage extends StatelessWidget {
           return true;
         },
         child: Obx(() {
-          if (logic.loading.value) {
+          if (logic.loading.value && logic.page.value == 1) {
             return Center(
               child: Container(
                 width: 0.3.sw,
@@ -55,7 +56,8 @@ class FollowingPage extends StatelessWidget {
                 height: 0.06.sh,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                    border: Border.all(color: PrimaryColor), color: PrimaryColor),
+                    border: Border.all(color: PrimaryColor),
+                    color: PrimaryColor),
                 child: Text(
                   'يتابعني',
                   style: H3WhiteTextStyle,
@@ -68,18 +70,26 @@ class FollowingPage extends StatelessWidget {
                     horizontal: 0.01.sw,
                   ),
                   children: [
-                    if (logic.users.length > 0 && logic.loading.value==false)
+                    if (logic.users.length > 0 )
                       ...List.generate(
                           logic.users.length,
-                              (index) =>
+                          (index) =>
                               _buildSellerCard2(seller: logic.users[index]))
+                    else if (logic.loading.value == true &&
+                        logic.users.length > 0 && logic.page.value>1)
+                      Center(
+                        child: Container(
+                          width: 0.06.sw,
+                          child: ProgressLoading(),
+                        ),
+                      )
                     else
                       Container(
                         width: 1.sw,
                         height: 0.06.sh,
                         alignment: Alignment.center,
-                        decoration:
-                        BoxDecoration(border: Border.all(color: PrimaryColor)),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: PrimaryColor)),
                         child: Text(
                           'لا يوجد لديك متابعين',
                           style: H4RedTextStyle,
@@ -94,103 +104,106 @@ class FollowingPage extends StatelessWidget {
       ),
     );
   }
-_buildSellerCard2({required UserModel seller}){
-  return Container(
-    width: 1.sw,
-    padding: EdgeInsets.symmetric(vertical: 0.01.sw, horizontal: 0.01.sw),
-    margin: EdgeInsets.symmetric(vertical: 0.01.sw),
-    decoration: BoxDecoration(
-        border: Border.all(color: GrayLightColor),
-        borderRadius: BorderRadius.circular(15.r),
-        color: WhiteColor),
-    child: Row(
-      children: [
-        Container(
-          width: 0.2.sw,
-          height: 0.2.sw,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: NetworkImage('${seller.image}'),
-                  fit: BoxFit.fitHeight),
-              borderRadius: BorderRadius.circular(15.r)),
-        ),
-        Expanded(
 
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(child:  Container(
-                padding: EdgeInsets.symmetric(
-                    horizontal: 0.01.sw),
-                alignment: Alignment.topRight,
-                child:Column(mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    InkWell(
-                      /* onTap: (){
+  _buildSellerCard2({required UserModel seller}) {
+    return Container(
+      width: 1.sw,
+      padding: EdgeInsets.symmetric(vertical: 0.01.sw, horizontal: 0.01.sw),
+      margin: EdgeInsets.symmetric(vertical: 0.01.sw),
+      decoration: BoxDecoration(
+          border: Border.all(color: GrayLightColor),
+          borderRadius: BorderRadius.circular(15.r),
+          color: WhiteColor),
+      child: Row(
+        children: [
+          Container(
+            width: 0.2.sw,
+            height: 0.2.sw,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: NetworkImage('${seller.image}'),
+                    fit: BoxFit.fitHeight),
+                borderRadius: BorderRadius.circular(15.r)),
+          ),
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 0.01.sw),
+                    alignment: Alignment.topRight,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        InkWell(
+                          /* onTap: (){
                         Get.toNamed(PRODUCTS_PAGE,arguments: seller);
                       },*/
-                      child: Text(
-                        "${seller.seller_name?.length != 0 ? seller.seller_name : seller.name}",
-                        style: H3BlackTextStyle,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                          child: Text(
+                            "${seller.seller_name?.length != 0 ? seller.seller_name : seller.name}",
+                            style: H3BlackTextStyle,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        Text(
+                          "${seller.address}",
+                          style: H5RegularDark,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
                     ),
-                    Text(
-                      "${seller.address}",
-                      style: H5RegularDark,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ) ,
-              ), ),
-
-              Transform.translate(offset: Offset(0, -0.02.sh),child:  Container(
-                padding: EdgeInsets.symmetric(
-                    horizontal: 0.001.sw),
-                alignment: Alignment.topRight,
-                child: PopupMenuButton<String>(
-                  color: WhiteColor,
-                  onSelected: (value){
-                    if(value=='1'){
-                      logic.unFollowing(seller.id!);
-                    }
-                  },
-                  itemBuilder: (context) => [
-                    PopupMenuItem<String>(
-                      value: '1',
-                      child: Row(
-                        children: [
-                          Icon(
-                            FontAwesomeIcons.heartCrack,
-                            color: PrimaryColor,
-                            size: 0.05.sw,
-                          ),
-                          SizedBox(
-                            width: 0.03.sw,
-                          ),
-                          Text(
-                            "حذف من قائمة المتابعين",
-                            style: H3RegularDark,
-                          ),
-                          SizedBox(
-                            width: 0.005.sw,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),),
+                Transform.translate(
+                  offset: Offset(0, -0.02.sh),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 0.001.sw),
+                    alignment: Alignment.topRight,
+                    child: PopupMenuButton<String>(
+                      color: WhiteColor,
+                      onSelected: (value) {
+                        if (value == '1') {
+                          logic.unFollowing(seller.id!);
+                        }
+                      },
+                      itemBuilder: (context) => [
+                        PopupMenuItem<String>(
+                          value: '1',
+                          child: Row(
+                            children: [
+                              Icon(
+                                FontAwesomeIcons.heartCrack,
+                                color: PrimaryColor,
+                                size: 0.05.sw,
+                              ),
+                              SizedBox(
+                                width: 0.03.sw,
+                              ),
+                              Text(
+                                "حذف من قائمة المتابعين",
+                                style: H3RegularDark,
+                              ),
+                              SizedBox(
+                                width: 0.005.sw,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
 
-            ],
-          ),
-        )
-      ],
-    ),
-  );
-}
   Widget _buildSellerCard({required UserModel seller}) {
     RxBool loading = RxBool(false);
     return Container(
@@ -244,32 +257,30 @@ _buildSellerCard2({required UserModel seller}){
                     alignment: Alignment.bottomLeft,
                     child: InkWell(
                       onTap: () async {
-                       Get.defaultDialog(
-                         backgroundColor: WhiteColor,
-                         title: 'هل أنت متأكد من عملية الحذف',
-                         titleStyle: H3RegularDark,
-                         textConfirm: 'متابعة',
-                         textCancel: 'إلغاء',
-                         content: Container(
-                           child: Obx(() {
-                             if(loading.value)
-                               return ProgressLoading();
-                             return Text( 'أنت على وشك حذف المستخدم من قائمة المتابعين',style: H4RedTextStyle,);
-                           }),
-                         ),
-
-                         onCancel: (){
-
-                         },
-                         onConfirm: ()async{
-                           loading.value=true;
-                           try {
-                             await logic.unFollowing(seller.id!);
-                           } catch (e) {}
-                           loading.value=false;
-                           Get.back();
-                         }
-                       );
+                        Get.defaultDialog(
+                            backgroundColor: WhiteColor,
+                            title: 'هل أنت متأكد من عملية الحذف',
+                            titleStyle: H3RegularDark,
+                            textConfirm: 'متابعة',
+                            textCancel: 'إلغاء',
+                            content: Container(
+                              child: Obx(() {
+                                if (loading.value) return ProgressLoading();
+                                return Text(
+                                  'أنت على وشك حذف المستخدم من قائمة المتابعين',
+                                  style: H4RedTextStyle,
+                                );
+                              }),
+                            ),
+                            onCancel: () {},
+                            onConfirm: () async {
+                              loading.value = true;
+                              try {
+                                await logic.unFollowing(seller.id!);
+                              } catch (e) {}
+                              loading.value = false;
+                              Get.back();
+                            });
                       },
                       child: Container(
                         width: 0.3.sw,
@@ -280,7 +291,6 @@ _buildSellerCard2({required UserModel seller}){
                         ),
                         padding: EdgeInsets.symmetric(
                             vertical: 0.015.sw, horizontal: 0.02.sw),
-
                         alignment: Alignment.center,
                         child: Text(
                           "حذف من قائمة المتابعين",
@@ -298,6 +308,4 @@ _buildSellerCard2({required UserModel seller}){
       ),
     );
   }
-
-
 }

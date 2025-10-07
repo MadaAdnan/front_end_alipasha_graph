@@ -10,7 +10,7 @@ class UserModel {
   String? seller_name;
   String? email;
   String? phone;
-  String? sphone;
+
   String? address;
   String? image;
   String? logo;
@@ -50,6 +50,8 @@ class UserModel {
   SocialModel? social;
   int? invoices_count;
   int? invoicesSeller_count;
+  int? special_product_count;
+  int? advices_count;
   UserModel({
     this.name,
     this.id,
@@ -94,7 +96,8 @@ class UserModel {
     this.area,
     this.full_phone,
     this.phone_code,
-
+this.advices_count,
+    this.special_product_count,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> data) {
@@ -138,6 +141,12 @@ class UserModel {
       total_views: int.tryParse("${data['total_views']}") ?? 0,
       unread_notifications_count:
           int.tryParse("${data['unread_notifications_count']}") ?? 0,
+
+      special_product_count:
+      int.tryParse("${data['special_product_count']}") ?? 0,
+
+      advices_count:
+      int.tryParse("${data['advices_count']}") ?? 0,
       info: "${data['info'] ?? ''}",
       full_phone: "${data['full_phone'] ?? ''}",
       phone_code: "${data['phone_code'] ?? ''}",
@@ -213,7 +222,9 @@ class UserModel {
       "invoices_count":invoices_count,
       "invoices_seller_count":invoicesSeller_count,
       "trues":trust,
-      'is_available_create':isAvailableCreate
+      'is_available_create':isAvailableCreate,
+      "advices_count":advices_count,
+      "special_product_count":special_product_count
     };
     return data;
   }

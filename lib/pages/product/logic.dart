@@ -40,7 +40,7 @@ class ProductLogic extends GetxController {
         getProduct();
       }
     });
-    Logger().e("ON INIT ${productId.value}");
+
   }
 
 

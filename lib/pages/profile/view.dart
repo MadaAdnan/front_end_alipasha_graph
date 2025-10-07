@@ -137,10 +137,6 @@ class ProfilePage extends StatelessWidget {
                                 Share.share(
                                     'https://v3.ali-pasha.com/profile?id=${mainController.authUser.value?.id}');
                                 break;
-                              case '2':
-                                Get.toNamed(PRODUCTS_PAGE,
-                                    arguments: mainController.authUser.value);
-                                break;
                             }
                           },
                           offset: Offset(0, 0.05.sh),

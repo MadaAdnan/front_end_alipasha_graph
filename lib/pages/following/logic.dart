@@ -21,7 +21,7 @@ class FollowingLogic extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    mainController.logger.e('ERROR ERROR');
+
     ever(page, (value) {
       getMyFollowing();
     });

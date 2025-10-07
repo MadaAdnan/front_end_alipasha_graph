@@ -20,10 +20,10 @@ class ProductsLogic extends GetxController {
   RxnInt sellerId = RxnInt(null);
   Rxn<UserModel> seller = Rxn<UserModel>(null);
   RxList<ProductModel> products = RxList<ProductModel>([]);
-  RxList<CategoryModel> categories = RxList<CategoryModel>([]);
+  RxList<CategoryModel> categories = RxList<CategoryModel>([CategoryModel(id: -1,  name: 'الكل')]);
   RxList<AdviceModel> advices = RxList<AdviceModel>([]);
   RxString search = RxString('');
-  RxnInt categoryId = RxnInt(null);
+  RxnInt categoryId = RxnInt(-1);
 
   void nextPage() {
     if (hasMorePage.value) {
@@ -52,6 +52,7 @@ class ProductsLogic extends GetxController {
         getProducts();
       }
     });
+
   }
 
   @override
@@ -62,15 +63,16 @@ class ProductsLogic extends GetxController {
   }
 
   getProducts() async {
-    if (seller.value ==null) {
+    if (page.value ==1) {
       loading.value = true;
     } else {
       loadingProducts.value = true;
     }
+
     sellerId.value=Get.arguments?.id??int.tryParse("${Get.parameters['id']}") ?? null;
     mainController.query.value = '''
    query Products {
-    products(search: "${search.value}", sub1_id:${categoryId.value},user_id: ${sellerId.value}, first: 35, page: ${page.value}) {
+    products(search: "${search.value}", ${categoryId.value! > 0 ? 'sub1_id:${categoryId.value}' : ''},user_id: ${sellerId.value}, first: 35, page: ${page.value}) {
         paginatorInfo {
             hasMorePages
         }
@@ -159,7 +161,7 @@ class ProductsLogic extends GetxController {
             res?.data?['data']?['products']?['paginatorInfo']['hasMorePages'];
 
       }
-      //mainController.logger.w(products.length);
+
       if (res?.data?['data']?['products']?['data'] != null) {
         if (page.value == 1) {
           products.clear();
@@ -174,6 +176,7 @@ class ProductsLogic extends GetxController {
 
       if (res?.data?['data']?['categoryBySeller'] != null) {
         categories.clear();
+        categories.add(CategoryModel(id: -1,  name: 'الكل'));
         for (var item in res?.data?['data']?['categoryBySeller']) {
           categories.add(CategoryModel.fromJson(item));
         }

@@ -35,7 +35,8 @@ const AUTH_USER = '''
               following_count
               invoices_count
               invoices_seller_count
-         
+         special_product_count
+advices_count
               info
               following_count
               total_balance
@@ -55,9 +56,14 @@ const AUTH_USER = '''
            
               plans{
                 id
+                name
                 ads_count
+                special_count
+                duration
+                type
                 pivot{
                  expired_date
+                 subscription_date
                 }
               }
             
@@ -91,6 +97,8 @@ const AUTH_FIELDS = '''
               open_time
               close_time
               total_views
+              special_product_count
+advices_count
               is_available_create
               is_active
               communities{
@@ -137,9 +145,14 @@ const AUTH_FIELDS = '''
            
               plans{
                 id
+                name
+                 duration
+                type
                 ads_count
+                special_count
                 pivot{
                   expired_date
+                  subscription_date
                 }
             }
             

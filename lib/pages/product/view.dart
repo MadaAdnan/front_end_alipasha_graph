@@ -416,6 +416,7 @@ class ProductPage extends StatelessWidget {
                                 StringBuffer message = StringBuffer();
                                 message.writeln(
                                     "${mainController.settings.value.footerOrder}");
+                                Logger().e("${mainController.settings.value.footerOrder}");
                                 message.write("\n");
                                 message
                                     .write("السلام عليكم ورحمة الله وبركاته ");
@@ -433,7 +434,7 @@ class ProductPage extends StatelessWidget {
                                 message.write("\n");
 
                                 await mainController.clickWhatsApp(productId: logic.product.value!.id!);
-
+Logger().e(message);
                                 openUrl(
                                     url:
                                         "https://wa.me/${logic.product.value?.user?.full_phone}?text=${Uri.encodeComponent('${message!.toString()}')}");

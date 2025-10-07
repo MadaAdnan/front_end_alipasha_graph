@@ -5,6 +5,7 @@ import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/components.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:ali_pasha_graph/models/city_model.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cherry_toast/cherry_toast.dart';
 
@@ -45,8 +46,8 @@ class ShippingPage extends StatelessWidget {
                     child: Row(
                       children: [
                         Container(
-                          width: 0.11.sw,
-                          height: 0.11.sw,
+                          width: 0.1.sw,
+                          height: 0.1.sw,
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               border:
@@ -57,12 +58,14 @@ class ShippingPage extends StatelessWidget {
                         ),
                         Obx(() {
                           return Container(
-                            padding: EdgeInsets.symmetric(horizontal: 0.01.sw),
+                            padding: EdgeInsets.symmetric(horizontal: 0.001.sw),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 RichText(
+                                  maxLines: 3,
+                                  overflow: TextOverflow.visible,
                                   text: TextSpan(children: [
                                     TextSpan(
                                       text:
@@ -79,7 +82,7 @@ class ShippingPage extends StatelessWidget {
                                 SizedBox(
                                   height: 0.002.sh,
                                 ),
-                                Text(
+                                AutoSizeText(
                                   " ${mainController.authUser.value?.address} ",
                                   style: H5GrayTextStyle,
                                 ),
@@ -98,17 +101,19 @@ class ShippingPage extends StatelessWidget {
                     ),
                   );
                 }),
-                Obx(() {
-                  return Container(
-                    child: RichText(
-                        text: TextSpan(children: [
-                      TextSpan(text: 'الرصيد الحالي : ', style: H4RegularDark),
-                      TextSpan(
-                          text: '${logic.totalBalance.value} \$',
-                          style: H3RedTextStyle)
-                    ])),
-                  );
-                })
+                Flexible(
+                  child: Obx(() {
+                    return Container(
+                      child: RichText(
+                          text: TextSpan(children: [
+                        TextSpan(text: 'الرصيد الحالي : ', style: H5RegularDark),
+                        TextSpan(
+                            text: '${logic.totalBalance.value} \$',
+                            style: H4RedTextStyle)
+                      ])),
+                    );
+                  }),
+                )
               ],
             ),
           ),
