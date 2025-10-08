@@ -713,13 +713,14 @@ class MainController extends GetxController {
 
   Future<void> pickImage(
       {required ImageSource imagSource,
-      required Function(XFile? file, int? fileSize) onChange}) async {
+      required Function(XFile? file, int? fileSize) onChange,
+      CropAspectRatio? aspectRatio}) async {
     try {
       XFile? selected = await ImagePicker().pickImage(source: imagSource);
 
       if (selected != null) {
         try {
-          XFile? response = await cropImage(selected);
+          XFile? response = await cropImage(selected, ratio: aspectRatio);
 
           if (response != null) {
             try {
@@ -747,21 +748,22 @@ class MainController extends GetxController {
       CroppedFile? cropped = await ImageCropper().cropImage(
         compressFormat: ImageCompressFormat.png,
         sourcePath: file.path,
-        maxWidth: 500,
-        maxHeight: 500,
+        maxWidth: 400,
+        maxHeight: 400,
         compressQuality: 80,
-        aspectRatio: ratio ?? const CropAspectRatio(ratioX: 1, ratioY: 1),
+        aspectRatio:
+            ratio != null ? ratio : CropAspectRatio(ratioX: 1, ratioY: 1),
         uiSettings: [
           AndroidUiSettings(
-            toolbarTitle: 'قص الصورة',
-            cropStyle: CropStyle.rectangle,
-            activeControlsWidgetColor: PrimaryColor,
-            backgroundColor: Colors.grey.withOpacity(0.4),
-            toolbarColor: PrimaryColor,
-            toolbarWidgetColor: Colors.white,
-            initAspectRatio: CropAspectRatioPreset.square,
-            lockAspectRatio: true,
-          ),
+              toolbarTitle: 'قص الصورة',
+              cropStyle: CropStyle.rectangle,
+              activeControlsWidgetColor: PrimaryColor,
+              backgroundColor: Colors.grey.withOpacity(0.4),
+              toolbarColor: PrimaryColor,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.square,
+              lockAspectRatio: true,
+              hideBottomControls: false),
           IOSUiSettings(
             minimumAspectRatio: 1.0,
           ),
@@ -1121,13 +1123,13 @@ class MainController extends GetxController {
         loading.value = false;
         return true;
       }
-
-    }  catch (e) {
+    } catch (e) {
       logger.e(e);
     }
     loading.value = false;
     return false;
   }
+
   Future<void> unFollowers(int sellerId) async {
     try {
       query.value = '''
@@ -1141,12 +1143,12 @@ class MainController extends GetxController {
       // mainController.logger.e(res?.data);
       if (res?.data?['data']?['followAccount'] != null) {
         setUserJson(json: res?.data?['data']?['followAccount']);
-
       }
-    }  catch (e) {
-   logger.e(e);
+    } catch (e) {
+      logger.e(e);
     }
   }
+
   Future<int?> deleteProduct({required int productId}) async {
     loading.value = true;
 
@@ -1192,6 +1194,4 @@ class MainController extends GetxController {
       logger.e(e);
     }
   }
-
-
 }

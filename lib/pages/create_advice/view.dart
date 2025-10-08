@@ -7,9 +7,12 @@ import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_builder_image_picker/form_builder_image_picker.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:logger/logger.dart';
 
 import 'logic.dart';
@@ -75,7 +78,7 @@ class CreateAdvicePage extends StatelessWidget {
                   height: 0.04.sh,
                 ),
                 FormBuilderDropdown(
-                  isExpanded: false,
+                  isExpanded: true,
                   style: H3RegularDark,
                   decoration: InputDecoration(
                       label: Text(
@@ -90,6 +93,7 @@ class CreateAdvicePage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(30.r),
                           borderSide: BorderSide(color: GrayLightColor))),
                   name: 'category',
+                  menuWidth: 0.8.sw,
                   items: mainController.categories
                       .where((el) =>
                   el.type == 'product' || el.type == 'restaurant')
@@ -104,12 +108,15 @@ class CreateAdvicePage extends StatelessWidget {
                 SizedBox(
                   height: 0.04.sh,
                 ),
-                Obx(() {
+                /*  Obx(() {
+
                   return FormBuilderImagePicker(
-                    initialValue: [logic.image.value],
+                    initialValue:[logic.image.value],
+
                     name: 'image',
                     maxImages: 1,
                     fit: BoxFit.cover,
+                    previewAutoSizeWidth: true,
                     maxHeight: 300,
                     maxWidth: 600,
                     validator: FormBuilderValidators.compose([
@@ -129,9 +136,131 @@ class CreateAdvicePage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(30.r),
                           borderSide: BorderSide(color: GrayLightColor)),
                     ),
-                    onChanged: (values) => logic.image.value = values?.first,
+                    onChanged: (values)async {
+
+                      if(values!=null){
+                        XFile? imageCroppedImage = values.first;
+                        imageCroppedImage=await logic.mainController.cropImage(values.first,ratio: CropAspectRatio(ratioX: 2, ratioY: 1));
+                        logic.image.value = imageCroppedImage;
+logic.imagesList.clear();
+logic.imagesList.add(imageCroppedImage);
+logic.image.refresh();
+                      }
+
+
+                    },
+                  );
+                }),*/
+                //////////////////////
+                Obx(() {
+                  return Visibility(
+                    visible: logic.image.value == null,
+                    child: InkWell(
+                      onTap: () {
+                        Get.defaultDialog(
+                            title: 'إختر مكان الصورة',
+                            titleStyle: H3BlackTextStyle,
+                            titlePadding:
+                            EdgeInsets.symmetric(vertical: 0.02.sh),
+                            content: Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    logic.mainController.pickImage(
+                                      imagSource: ImageSource.gallery,
+                                      onChange: (file, fileSize) {
+                                        logic.image.value = file!;
+                                      },
+                                    );
+                                    Get.back();
+                                  },
+                                  child: Container(
+                                    child: Column(
+                                      children: [
+                                        Icon(FontAwesomeIcons.images),
+                                        Text(
+                                          'المعرض',
+                                          style: H3GrayTextStyle,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    logic.mainController.pickImage(
+                                        imagSource: ImageSource.camera,
+                                        aspectRatio: CropAspectRatio(ratioX: 3, ratioY: 1),
+                                        onChange: (file, fileSize) {
+                                          logic.image.value = file!;
+                                        });
+                                    Get.back();
+                                  },
+                                  child: Container(
+                                    child: Column(
+                                      children: [
+                                        Icon(FontAwesomeIcons.camera),
+                                        Text(
+                                          'الكاميرا',
+                                          style: H3GrayTextStyle,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ));
+                      },
+                      child: Container(
+                        width: 1.sw,
+                        height: 0.08.sh,
+                        padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: GrayLightColor),
+                          borderRadius: BorderRadius.circular(15.r),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Icon(FontAwesomeIcons.image),
+                            40.horizontalSpace,
+                            RichText(
+                              text: TextSpan(children: [
+                                TextSpan(
+                                    text: 'حدد صورة ',
+                                    style: H4GrayTextStyle),
+                                TextSpan(text: '*', style: H3RedTextStyle),
+                              ]),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   );
                 }),
+                Obx((){
+                  return Visibility(child: Stack(
+                    children: [
+                      Container(
+                        width: 1.sw,
+                        height: 0.33.sw,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: FileImage(File("${logic.image.value?.path}")),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      IconButton(onPressed: (){
+                        logic.image.value=null;
+                      }, icon: Icon(FontAwesomeIcons.trash,color: PrimaryColor,))
+                    ],
+                  ),visible: logic.image.value!=null,);
+                }),
+                //////////////////////
                 SizedBox(
                   height: 0.04.sh,
                 ),

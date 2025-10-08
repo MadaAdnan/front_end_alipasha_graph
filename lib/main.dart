@@ -34,12 +34,14 @@ void main() async {
   final sub = appLinks.uriLinkStream.listen((uri) {
  //  print('URI LINK IS : $uri');
   });
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.white, // لون الشريط
-  ));
+  
   await GetStorage.init('ali-pasha');
   Get.put(MainController(), permanent: true);
   await initializeDateFormatting('ar');
+
+
+
+
   runApp( MyApp());
 }
 
@@ -79,12 +81,16 @@ GlobalKey<NavigatorState> navigatorKey=GlobalKey<NavigatorState>();
   void initState() {
     // TODO: implement initState
     super.initState();
+    // يجعل شريط الحالة (Status Bar) شفاف
+
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setupMessages(context, navigatorKey.currentState!);
     });
   }
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
       child: ScreenUtilInit(
         designSize: Size(1080, 2225),

@@ -98,7 +98,7 @@ class MyAdvicePage extends StatelessWidget {
             ),
             Obx(() {
               return Padding(
-                padding: EdgeInsetsGeometry.symmetric(horizontal: 0.04.sw),
+                padding: EdgeInsetsGeometry.symmetric(horizontal: 0.001.sw),
                 child: mainController.authUser.value!.plans!
                             .where((el) => el.duration != 'free')
                             .length ==
@@ -122,22 +122,32 @@ class MyAdvicePage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Icon(
-            FontAwesomeIcons.plus,
-            color: Colors.grey,
-            size: 120.r,
-            weight: 0.5,
-          ),
-          SizedBox(
-            height: 0.02.sh,
-          ),
-          Text(
-            'لست مشترك بأي خطة مدفوعة \n إشترك بخطة إعلانات ممولة لفتح مميزات \n إضافية رائعة',
-            style: H2GrayOpacityTextStyle.copyWith(fontWeight: FontWeight.w300),
-            overflow: TextOverflow.visible,
-            maxLines: 3,
-            softWrap: true,
-            textAlign: TextAlign.center,
+          InkWell(
+            onTap: () {
+              Get.toNamed(PLAN_PAGE);
+            },
+            child: Column(
+              children: [
+                Icon(
+                  FontAwesomeIcons.plus,
+                  color: Colors.grey,
+                  size: 120.r,
+                  weight: 0.5,
+                ),
+                SizedBox(
+                  height: 0.02.sh,
+                ),
+                Text(
+                  'لست مشترك بأي خطة مدفوعة \n إشترك بخطة إعلانات ممولة لفتح مميزات \n إضافية رائعة',
+                  style: H2GrayOpacityTextStyle.copyWith(
+                      fontWeight: FontWeight.w300),
+                  overflow: TextOverflow.visible,
+                  maxLines: 3,
+                  softWrap: true,
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
           ),
           SizedBox(
             height: 0.1.sh,
@@ -199,7 +209,6 @@ class MyAdvicePage extends StatelessWidget {
   }
 
   planssubscribe() {
-    Logger().e("SP:${logic.myAdvices.length}");
     return Container(
       padding: EdgeInsets.only(top: 0.05.sh),
       child: Column(
@@ -215,391 +224,458 @@ class MyAdvicePage extends StatelessWidget {
                   EdgeInsets.symmetric(horizontal: 0.001.sw, vertical: 0.01.sh),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20.r),
-                color: Colors.grey.withOpacity(0.1),
+                color: Colors.white,
               ),
               margin: EdgeInsets.only(top: 0.01.sh),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+              child: ExpansionTile(
+                tilePadding: EdgeInsets.symmetric(vertical: 0.01.sh, horizontal: 0.01.sw),
+                shape: RoundedRectangleBorder(side: BorderSide(color: Colors.grey.shade300)),
+                title:  Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 0.05.sw, vertical: 0.02.sh),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Flexible(
-                            child: AutoSizeText(
-                              "${plan.name}:",
-                              minFontSize: 10,
-                              maxLines: 1,
-                              maxFontSize: 40,
-                              style: H3BlackTextStyle.copyWith(
-                                  fontWeight: FontWeight.w900,
-                                  color: Colors.black),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          Flexible(
-                            child: AutoSizeText(
-                              minFontSize: 10,
-                              maxLines: 1,
-                              maxFontSize: 40,
-                              textAlign: TextAlign.center,
-                              "منذ ${plan.pivot?.subscription_date}",
-                              style: H3BlackTextStyle.copyWith(
-                                  fontWeight: FontWeight.w100),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          Flexible(
-                            child: AutoSizeText(
-                              minFontSize: 10,
-                              maxLines: 1,
-                              maxFontSize: 40,
-                              textAlign: TextAlign.center,
-                              "حتى ${plan.pivot?.expired_date}",
-                              style: H3BlackTextStyle.copyWith(
-                                  fontWeight: FontWeight.w100),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
+                    Flexible(
+                      child: AutoSizeText(
+                        "${plan.name}:",
+                        minFontSize: 10,
+                        maxLines: 1,
+                        maxFontSize: 40,
+                        style: H3BlackTextStyle.copyWith(
+                            fontWeight: FontWeight.w900,
+                            color: Colors.black),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    if (plan.special_count != 0 && logic.myProducts.length == 0)
-                      Container(
-                          width: 1.sw,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 0.05.sw, vertical: 0.02.sh),
-                          child: InkWell(
-                              onTap: () {
-                                Get.offNamed(CREATE_ADVICE_PAGE);
-                              },
-                              child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '+',
-                                      style: TextStyle(
-                                          fontSize: 200.sp,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.grey),
-                                    ),
-                                    Text(
-                                      "انقر لإضافة إعلان",
-                                      style: H3RegularDark.copyWith(
-                                          fontWeight: FontWeight.w100),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ])))
-                    else if ((plan.special_count != 0 &&
-                            logic.myProducts.length > 0) ||
-                        plan.ads_count != 0 && logic.myAdvices.length > 0)
-                      Obx(() {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ...List.generate(
-                                    logic.myProducts.length,
-                                    (index) => Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                    Flexible(
+                      child: AutoSizeText(
+                        minFontSize: 10,
+                        maxLines: 1,
+                        maxFontSize: 40,
+                        textAlign: TextAlign.center,
+                        "منذ ${plan.pivot?.subscription_date}",
+                        style: H3BlackTextStyle.copyWith(
+                            fontWeight: FontWeight.w100),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    Flexible(
+                      child: AutoSizeText(
+                        minFontSize: 10,
+                        maxLines: 1,
+                        maxFontSize: 40,
+                        textAlign: TextAlign.center,
+                        "حتى ${plan.pivot?.expired_date}",
+                        style: H3BlackTextStyle.copyWith(
+                            fontWeight: FontWeight.w100),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+                children: [
+                  if (plan.special_count! > 0 &&  plan.special_count! >logic.myProducts.length )
+                    Container(
+                        width: 1.sw,
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 0.05.sw, vertical: 0.02.sh),
+                        child: InkWell(
+                            onTap: () {
+                              alertSpecial();
+                            },
+                            child: Column(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    '+',
+                                    style: TextStyle(
+                                        fontSize: 200.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey),
+                                  ),
+                                  Text(
+                                    "انقر لإضافة منتج مميز",
+                                    style: H3RegularDark.copyWith(
+                                        fontWeight: FontWeight.w100),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ]))),
+                  if ((plan.special_count != 0 &&
+                      logic.myProducts.length > 0))
+                    Obx(() {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ...List.generate(
+                                  logic.myProducts.length,
+                                      (index) => Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        width: 0.35.sw,
+                                        height: 0.25.sw,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                          BorderRadius.circular(20.r),
+                                          image: DecorationImage(
+                                            image: NetworkImage(
+                                                "${logic.myProducts[index].image}"),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(width: 0.01.sw),
+                                      Flexible(
+                                        child: Column(
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                          CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            Container(
-                                              width: 0.35.sw,
-                                              height: 0.25.sw,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(20.r),
-                                                image: DecorationImage(
-                                                  image: NetworkImage(
-                                                      "${logic.myProducts[index].image}"),
-                                                  fit: BoxFit.cover,
+                                            AutoSizeText(
+                                              "${logic.myProducts[index].name}",
+                                              minFontSize: 10,
+                                              maxLines: 1,
+                                              maxFontSize: 40,
+                                              textAlign: TextAlign.center,
+                                              style: H3BlackTextStyle
+                                                  .copyWith(
+                                                  fontWeight:
+                                                  FontWeight
+                                                      .w100),
+                                              overflow:
+                                              TextOverflow.ellipsis,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Icon(
+                                                  FontAwesomeIcons.eye,
+                                                  size: 30.sp,
+                                                ),
+                                                SizedBox(
+                                                  width: 0.005.sw,
+                                                ),
+                                                Text(
+                                                  "${logic.myProducts[index].views_count}",
+                                                  maxLines: 1,
+                                                  textAlign:
+                                                  TextAlign.center,
+                                                  style: H5BlackTextStyle
+                                                      .copyWith(
+                                                      color: Colors
+                                                          .black,
+                                                      fontWeight:
+                                                      FontWeight
+                                                          .w100),
+                                                  overflow: TextOverflow
+                                                      .ellipsis,
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Obx(() {
+                                        return SizedBox(
+                                          width: 0.12.sw,
+                                          child: Switch(
+                                              value: logic
+                                                  .myProducts[index]
+                                                  .level ==
+                                                  'special',
+                                              onChanged: (value) {
+                                                if (value == true) {
+                                                  logic.addToSpecial(
+                                                      id: logic
+                                                          .myProducts[
+                                                      index]
+                                                          .id!,
+                                                      level: 'special');
+                                                } else {
+                                                  logic.addToSpecial(
+                                                      id: logic
+                                                          .myProducts[
+                                                      index]
+                                                          .id!,
+                                                      level: 'normal');
+                                                }
+                                              }),
+                                        );
+                                      })
+                                    ],
+                                  )),
+                              if (plan.special_count! > 0)
+                                RichText(
+                                    text: TextSpan(children: [
+                                      TextSpan(
+                                          text: "قمت بإضافة",
+                                          style: H5RegularDark),
+                                      TextSpan(
+                                          text: "(${logic.myProducts.length})",
+                                          style: H5RedTextStyle),
+                                      TextSpan(
+                                          text: "منتج مميز من ",
+                                          style: H5RegularDark),
+                                      TextSpan(
+                                          text: "(${plan.special_count})",
+                                          style: H5RedTextStyle),
+                                    ])),
+                              SizedBox(
+                                height: 0.02.sh,
+                              ),
+                            ]),
+                      );
+                    }),
+                  if (plan.ads_count! > 0 &&  plan.ads_count! > logic.myAdvices.length)
+                    Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 0.05.sw, vertical: 0.02.sh),
+                        child: InkWell(
+                            onTap: () {
+                              Get.offNamed(CREATE_ADVICE_PAGE);
+                            },
+                            child: Column(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    '+',
+                                    style: TextStyle(
+                                        fontSize: 200.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey,
+                                        height: 0.001.sh),
+                                  ),
+                                  SizedBox(height: 0.001.sh),
+                                  Text(
+                                    "انقر لإضافة إعلان جديد",
+                                    style: H3RegularDark.copyWith(
+                                        fontWeight: FontWeight.w100,
+                                        height: 0.001.sh),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ]))),
+                  if (plan.ads_count! > 0 && logic.myAdvices.length > 0)
+                    Obx(() {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 0.02.sh,
+                              ),
+                              ...List.generate(
+                                  logic.myAdvices.length,
+                                      (index) => Card(
+                                    color: Colors.white,
+                                    elevation: 1,
+                                    child: Padding(
+                                      padding:  EdgeInsets.only(left: 0.02.sw),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Container(
+                                                width: 0.35.sw,
+                                                height: 0.25.sw,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                  BorderRadius.circular(
+                                                      20.r),
+                                                  image: DecorationImage(
+                                                    image: NetworkImage(
+                                                        "${logic.myAdvices[index].image}"),
+                                                    fit: BoxFit.cover,
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            SizedBox(width: 0.01.sw),
-                                            Flexible(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                mainAxisSize: MainAxisSize.min,
+                                              SizedBox(width: 0.01.sw),
+                                              Column(
                                                 children: [
-                                                  AutoSizeText(
-                                                    "${logic.myProducts[index].name}",
-                                                    minFontSize: 10,
-                                                    maxLines: 1,
-                                                    maxFontSize: 40,
-                                                    textAlign: TextAlign.center,
-                                                    style: H3BlackTextStyle
-                                                        .copyWith(
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w100),
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
+                                                  Icon(
+                                                    FontAwesomeIcons.eye,
+                                                    size: 30.sp,
                                                   ),
-                                                  Row(
-                                                    children: [
-                                                      Icon(
-                                                        FontAwesomeIcons.eye,
-                                                        size: 30.sp,
-                                                      ),
-                                                      SizedBox(
-                                                        width: 0.005.sw,
-                                                      ),
-                                                      Text(
-                                                        "${logic.myProducts[index].views_count}",
-                                                        maxLines: 1,
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style: H5BlackTextStyle
-                                                            .copyWith(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w100),
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                      ),
-                                                    ],
+                                                  SizedBox(
+                                                    width: 0.005.sw,
+                                                  ),
+                                                  Text(
+                                                    "${logic.myAdvices[index].views_count}",
+                                                    maxLines: 1,
+                                                    textAlign: TextAlign.center,
+                                                    style: H5BlackTextStyle
+                                                        .copyWith(
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .w100),
+                                                    overflow:
+                                                    TextOverflow.ellipsis,
                                                   ),
                                                 ],
                                               ),
-                                            ),
-                                            SizedBox(
-                                              width: 0.12.sw,
-                                              child: MaterialButton(
-                                                onPressed: () {
-                                                  print("HELLO");
-                                                  Get.toNamed(Edit_PRODUCT_PAGE,
-                                                      arguments: logic
-                                                          .myProducts[index]
-                                                          .id);
-                                                },
-                                                child: Icon(
-                                                  FontAwesomeIcons.pen,
-                                                  size: 40.sp,
-                                                ),
-                                                color: PrimaryColor,
-                                                textColor: Colors.white,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          20.r),
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        )),
-                                if (plan.special_count! > 0)
-                                  RichText(
-                                      text: TextSpan(children: [
-                                    TextSpan(
-                                        text: "قمت بإضافة",
-                                        style: H5RegularDark),
-                                    TextSpan(
-                                        text: "(${logic.myProducts.length})",
-                                        style: H5RedTextStyle),
-                                    TextSpan(
-                                        text: "منتج مميز من ",
-                                        style: H5RegularDark),
-                                    TextSpan(
-                                        text: "(${plan.special_count})",
-                                        style: H5RedTextStyle),
-                                  ])),
-                                SizedBox(
-                                  height: 0.02.sh,
-                                ),
-                                ...List.generate(
-                                    logic.myAdvices.length,
-                                    (index) => Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              width: 0.35.sw,
-                                              height: 0.25.sw,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(20.r),
-                                                image: DecorationImage(
-                                                  image: NetworkImage(
-                                                      "${logic.myAdvices[index].image}"),
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(width: 0.01.sw),
-                                            SizedBox(
-                                              width: 0.12.sw,
-                                              child: MaterialButton(
-                                                onPressed: () {
-                                                  Get.dialog(AlertDialog(
-                                                    backgroundColor:
-                                                        Colors.white,
-                                                    title: Text("حذف"),
-                                                    content: Column(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      children: [
-                                                        Text(
-                                                            "هل انت متأكد من حذف هذا الاعلان ؟"),
-                                                        SizedBox(
-                                                          height: 0.02.sh,
-                                                        ),
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceEvenly,
-                                                          children: [
-                                                            MaterialButton(
-                                                                color:
-                                                                    Colors.grey,
-                                                                onPressed: () {
-                                                                  Get.back();
-                                                                },
-                                                                child: Text(
-                                                                  "لا",
-                                                                  style:
-                                                                      H3RegularDark,
-                                                                )),
-                                                            MaterialButton(
-                                                                color:
-                                                                    PrimaryColor,
-                                                                onPressed: () {
-                                                                  logic.deletAdvice(
-                                                                      adviceId: logic
-                                                                          .myAdvices[
-                                                                              index]
-                                                                          .id!);
-                                                                  Get.back();
-                                                                },
-                                                                child: Text(
-                                                                  "نعم",
-                                                                  style:
-                                                                      H3WhiteTextStyle,
-                                                                )),
-                                                          ],
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ));
-                                                },
-                                                child: Icon(
-                                                  FontAwesomeIcons.trash,
-                                                  size: 40.sp,
-                                                ),
-                                                color: PrimaryColor,
-                                                textColor: Colors.white,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          20.r),
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        )),
-                                if (plan.ads_count! > 0)
-                                  RichText(
-                                      text: TextSpan(children: [
-                                    TextSpan(
-                                        text: "قمت بإضافة",
-                                        style: H5RegularDark),
-                                    TextSpan(
-                                        text: "(${logic.myAdvices.length})",
-                                        style: H5RedTextStyle),
-                                    TextSpan(
-                                        text: "إعلان من ",
-                                        style: H5RegularDark),
-                                    TextSpan(
-                                        text: "(${plan.ads_count})",
-                                        style: H5RedTextStyle),
-                                  ])),
-                                if (plan.ads_count! > 0 &&
-                                    plan.ads_count! > logic.myAdvices.length)
-                                  SizedBox(
-                                    width: 1.sw,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text(
-                                          "قم بإضافة إعلان",
-                                          style: H4RegularDark.copyWith(
-                                              height: 0.0001.sh),
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            print('ADVICS');
-                                            Get.toNamed(CREATE_ADVICE_PAGE);
-                                          },
-                                          child: Text(
-                                            "+",
-                                            style: H1GrayTextStyle.copyWith(
-                                                fontSize: 200.sp,
-                                                height: 0.001.sh,
-                                                fontWeight: FontWeight.w900),
+                                            ],
                                           ),
-                                        ),
-                                      ],
+                                          SizedBox(
+                                            width: 0.14.sw,
+                                            child: MaterialButton(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                  BorderRadius.circular(
+                                                      20.r)),
+                                              color: PrimaryColor,
+                                              onPressed: () {
+                                                Get.dialog(AlertDialog(
+                                                  title: Text(
+                                                    "حذف",
+                                                    style: H5BlackTextStyle
+                                                        .copyWith(
+                                                        color:
+                                                        Colors.black),
+                                                  ),
+                                                  content: Column(
+                                                    mainAxisSize: MainAxisSize.min,
+                                                    children: [
+                                                      Text(
+                                                        "هل أنت متأكد من حذف هذا الإعلان ؟",
+                                                        style: H3BlackTextStyle
+                                                            .copyWith(
+                                                            color:
+                                                            Colors.black),
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                        children: [
+                                                          MaterialButton(onPressed: (){
+                                                            logic.deletAdvice(adviceId: logic.myAdvices[index].id!);
+                                                          },child: Text('نعم',style: H3WhiteTextStyle,),color: PrimaryColor,),
+                                                          MaterialButton(onPressed: (){
+                                                            Get.back();
+                                                          },child: Text('إغلاق',style: H3WhiteTextStyle,),color: Colors.grey,)
+                                                        ],
+                                                      )
+                                                    ],
+                                                  ),
+                                                ));
+                                              },
+                                              child: Icon(
+                                                FontAwesomeIcons.trash,
+                                                color: Colors.white,
+                                                size: 50.sp,
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
                                     ),
-                                  )
-                              ]),
-                        );
-                      })
-                    else if (plan.ads_count! > 0 && logic.myAdvices.length == 0)
-                      Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 0.05.sw, vertical: 0.02.sh),
-                          child: InkWell(
-                              onTap: () {
-                                Get.offNamed(CREATE_ADVICE_PAGE);
-                              },
-                              child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '+',
-                                      style: TextStyle(
-                                          fontSize: 200.sp,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.grey,height: 0.001.sh),
-                                    ),
-                                    SizedBox(height: 0.001.sh),
-                                    Text(
-                                      "انقر لإضافة إعلان",
-                                      style: H3RegularDark.copyWith(
-                                          fontWeight: FontWeight.w100,height: 0.001.sh),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ])))
-                  ]),
+                                  )),
+                              if (plan.ads_count! > 0)
+                                RichText(
+                                    text: TextSpan(children: [
+                                      TextSpan(
+                                          text: "قمت بإضافة",
+                                          style: H5RegularDark),
+                                      TextSpan(
+                                          text: "(${logic.myAdvices.length})",
+                                          style: H5RedTextStyle),
+                                      TextSpan(
+                                          text: "إعلان من ",
+                                          style: H5RegularDark),
+                                      TextSpan(
+                                          text: "(${plan.ads_count})",
+                                          style: H5RedTextStyle),
+                                    ])),
+
+                            ]),
+                      );
+                    }),
+                ],
+              ),
             );
           })
         ],
       ),
     );
+  }
+
+  alertSpecial() {
+    Get.dialog(AlertDialog(
+      contentPadding: EdgeInsets.symmetric(horizontal: 0),
+      insetPadding: EdgeInsets.symmetric(horizontal: 0.03.sw),
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadiusGeometry.circular(40.r)),
+      title: Text("تمييز المنتجات"),
+      content: Container(
+        padding: EdgeInsets.symmetric(horizontal: 0.05.sw),
+        width: 1.sw,
+        height: 0.4.sh,
+        child: Obx(() {
+          if (logic.products.length > 0) {
+            return ListView.builder(
+                padding: EdgeInsets.symmetric(vertical: 0.01.sh, horizontal: 0),
+                itemCount: logic.products.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    color: Colors.grey.withOpacity(0.2),
+                    elevation: 0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: 0.2.sw,
+                          height: 0.2.sw,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadiusGeometry.circular(20.r),
+                              image: DecorationImage(
+                                  image: NetworkImage(
+                                      "${logic.products[index].image}"),
+                                  fit: BoxFit.cover)),
+                        ),
+                        Flexible(
+                          child: AutoSizeText(
+                            "${logic.products[index].name}",
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        Switch(
+                            value: logic.products[index].level == 'special',
+                            onChanged: (value) {
+                              if (value == true) {
+                                logic.addToSpecial(
+                                    id: logic.products[index].id!,
+                                    level: 'special');
+                              } else {
+                                logic.addToSpecial(
+                                    id: logic.products[index].id!,
+                                    level: 'normal');
+                              }
+                            })
+                      ],
+                    ),
+                  );
+                });
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        }),
+      ),
+    ));
   }
 }

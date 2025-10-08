@@ -15,13 +15,15 @@ class CreateAdviceLogic extends GetxController {
   Rxn<CategoryModel> category = Rxn(null);
 
   Rxn<XFile> image = Rxn(null);
-
+RxList<dynamic?> imagesList=RxList([]);
   MainController mainController = Get.find<MainController>();
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    imagesList.add([image.value] );
+
   }
 
   saveAdvice() async {
