@@ -171,9 +171,11 @@ logic.image.refresh();
                                   onTap: () {
                                     logic.mainController.pickImage(
                                       imagSource: ImageSource.gallery,
+                                      aspectRatio: CropAspectRatio(ratioX: 2, ratioY: 1),
                                       onChange: (file, fileSize) {
                                         logic.image.value = file!;
                                       },
+
                                     );
                                     Get.back();
                                   },
@@ -193,11 +195,11 @@ logic.image.refresh();
                                   onTap: () {
                                     logic.mainController.pickImage(
                                         imagSource: ImageSource.camera,
-                                        aspectRatio: CropAspectRatio(ratioX: 3, ratioY: 1),
+                                        aspectRatio: CropAspectRatio(ratioX: 2, ratioY: 1),
                                         onChange: (file, fileSize) {
                                           logic.image.value = file!;
                                         });
-                                    Get.back();
+
                                   },
                                   child: Container(
                                     child: Column(

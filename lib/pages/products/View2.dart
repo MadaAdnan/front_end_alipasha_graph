@@ -121,7 +121,7 @@ class ProductsPage2 extends StatelessWidget {
                                                             .value
                                                             ?.social
                                                             ?.instagram
-                                                            ?.isURL ==
+                                                        ?.startsWith("https://") ==
                                                         true) {
                                                       openUrl(
                                                           url:
@@ -135,8 +135,8 @@ class ProductsPage2 extends StatelessWidget {
                                                                 .value
                                                                 ?.social
                                                                 ?.instagram
-                                                                ?.isURL ==
-                                                            true
+                                                        ?.startsWith("https://") ==
+                                                        true
                                                         ? color.value
                                                         : Colors.grey,
                                                   ),
@@ -151,7 +151,7 @@ class ProductsPage2 extends StatelessWidget {
                                                             .value
                                                             ?.social
                                                             ?.face
-                                                            ?.isURL ==
+                                                        ?.startsWith("https://") ==
                                                         true) {
                                                       openUrl(
                                                           url:
@@ -165,8 +165,8 @@ class ProductsPage2 extends StatelessWidget {
                                                                 .value
                                                                 ?.social
                                                                 ?.face
-                                                                ?.isURL ==
-                                                            true
+                                                        ?.startsWith("https://") ==
+                                                        true
                                                         ? color.value
                                                         : Colors.grey,
                                                   ),
@@ -181,7 +181,7 @@ class ProductsPage2 extends StatelessWidget {
                                                             .value
                                                             ?.social
                                                             ?.linkedin
-                                                            ?.isURL ==
+                                                        ?.startsWith("https://") ==
                                                         true) {
                                                       openUrl(
                                                           url:
@@ -195,8 +195,8 @@ class ProductsPage2 extends StatelessWidget {
                                                                 .value
                                                                 ?.social
                                                                 ?.linkedin
-                                                                ?.isURL ==
-                                                            true
+                                                        ?.startsWith("https://") ==
+                                                        true
                                                         ? color.value
                                                         : Colors.grey,
                                                   ),
@@ -211,7 +211,7 @@ class ProductsPage2 extends StatelessWidget {
                                                             .value
                                                             ?.social
                                                             ?.tiktok
-                                                            ?.isURL ==
+                                                        ?.startsWith("https://") ==
                                                         true) {
                                                       openUrl(
                                                           url:
@@ -225,8 +225,8 @@ class ProductsPage2 extends StatelessWidget {
                                                                 .value
                                                                 ?.social
                                                                 ?.tiktok
-                                                                ?.isURL ==
-                                                            true
+                                                        ?.startsWith("https://") ==
+                                                        true
                                                         ? color.value
                                                         : Colors.grey,
                                                   ),
@@ -236,16 +236,17 @@ class ProductsPage2 extends StatelessWidget {
                                                 ),
                                                 InkWell(
                                                   onTap: () {
+
                                                     if (controller
                                                             .seller
                                                             .value
-                                                            ?.social
-                                                            ?.phone
+
+                                                            ?.full_phone
                                                             ?.length !=
                                                         0) {
                                                       openUrl(
                                                           url:
-                                                              "https://wa.me/${controller.seller.value?.social?.phone}");
+                                                              "https://wa.me/${controller.seller.value?.full_phone}");
                                                     }
                                                   },
                                                   child: Icon(
@@ -253,8 +254,8 @@ class ProductsPage2 extends StatelessWidget {
                                                     color: controller
                                                                 .seller
                                                                 .value
-                                                                ?.social
-                                                                ?.phone
+
+                                                                ?.full_phone
                                                                 ?.length !=
                                                             0
                                                         ? color.value
@@ -271,7 +272,7 @@ class ProductsPage2 extends StatelessWidget {
                                                             .value
                                                             ?.social
                                                             ?.twitter
-                                                            ?.isURL ==
+                                                        ?.startsWith("https://") ==
                                                         true) {
                                                       openUrl(
                                                           url:
@@ -285,8 +286,8 @@ class ProductsPage2 extends StatelessWidget {
                                                                 .value
                                                                 ?.social
                                                                 ?.twitter
-                                                                ?.isURL ==
-                                                            true
+                                                        ?.startsWith("https://") ==
+                                                        true
                                                         ? color.value
                                                         : Colors.grey,
                                                   ),
@@ -603,6 +604,7 @@ class ProductsPage2 extends StatelessWidget {
                                                                           MaterialButton(
                                                                         onPressed:
                                                                             () {
+
                                                                           openUrl(
                                                                               url: "https://wa.me/${controller.seller.value!.full_phone}");
                                                                         },

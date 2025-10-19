@@ -48,3 +48,22 @@
 -keep class * implements android.os.Parcelable {
     public static final android.os.Parcelable$Creator *;
 }
+
+# Flutter
+-keep class io.flutter.app.** { *; }
+-keep class io.flutter.plugin.** { *; }
+-keep class io.flutter.util.** { *; }
+-keep class io.flutter.view.** { *; }
+-keep class io.flutter.** { *; }
+-dontwarn io.flutter.embedding.**
+
+# ImageCropper (من الكود السابق)
+-keep class com.yalantis.ucrop.** { *; }
+-dontwarn com.yalantis.ucrop.**
+
+# Keep models, adapters, controllers...
+-keep class * implements android.os.Parcelable { *; }
+-keepclassmembers class * implements java.io.Serializable { *; }
+
+# تجنب التحذيرات العامة
+-dontwarn **

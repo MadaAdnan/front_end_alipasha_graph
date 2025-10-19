@@ -273,7 +273,7 @@ class MyAdvicePage extends StatelessWidget {
                   ],
                 ),
                 children: [
-                  if (plan.special_count! > 0 &&  plan.special_count! >logic.myProducts.length )
+                  if (plan.special_count! > 0 &&  plan.special_count! > logic.myProducts.length )
                     Container(
                         width: 1.sw,
                         padding: EdgeInsets.symmetric(
@@ -620,7 +620,7 @@ class MyAdvicePage extends StatelessWidget {
       backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadiusGeometry.circular(40.r)),
-      title: Text("تمييز المنتجات"),
+      title: Center(child: Text("تمييز المنتجات")),
       content: Container(
         padding: EdgeInsets.symmetric(horizontal: 0.05.sw),
         width: 1.sw,
@@ -671,8 +671,24 @@ class MyAdvicePage extends StatelessWidget {
                     ),
                   );
                 });
-          } else {
+          } else if(logic.loadingDialog.value){
             return Center(child: CircularProgressIndicator());
+          }else{
+            return InkWell(
+              onTap: (){
+                Get.back();
+                Get.toNamed(CREATE_PRODUCT_PAGE);
+
+              },
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                Text("لم تقم بإضافة أي منتج أنقر للإضافة"),
+                Text('+',style: TextStyle(fontSize: 150.sp,color: Colors.grey,fontWeight: FontWeight.bold),)
+              ]),
+            );
           }
         }),
       ),

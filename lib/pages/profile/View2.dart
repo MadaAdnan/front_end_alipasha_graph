@@ -79,7 +79,7 @@ class ProfilePage2 extends StatelessWidget {
                                                       .value
                                                       ?.social
                                                       ?.instagram
-                                                      ?.isURL ==
+                                                  ?.startsWith("https://") ==
                                                   true) {
                                                 openUrl(
                                                     url:
@@ -105,7 +105,7 @@ class ProfilePage2 extends StatelessWidget {
                                           InkWell(
                                             onTap: () {
                                               if (mainController.authUser.value
-                                                      ?.social?.face?.isURL ==
+                                                      ?.social?.face?.startsWith("https://") ==
                                                   true) {
                                                 openUrl(
                                                     url:
@@ -119,8 +119,8 @@ class ProfilePage2 extends StatelessWidget {
                                                           .value
                                                           ?.social
                                                           ?.face
-                                                          ?.isURL ==
-                                                      true
+                                                  ?.startsWith("https://") ==
+                                                  true
                                                   ? color
                                                   : Colors.grey,
                                             ),
@@ -129,13 +129,13 @@ class ProfilePage2 extends StatelessWidget {
                                             height: 0.02.sh,
                                           ),
                                           InkWell(
-                                            onTap: () {
+                                            onTap: ()async {
                                               if (mainController
                                                       .authUser
                                                       .value
                                                       ?.social
                                                       ?.linkedin
-                                                      ?.isURL ==
+                                                      ?.startsWith("https://") ==
                                                   true) {
                                                 openUrl(
                                                     url:
@@ -149,7 +149,7 @@ class ProfilePage2 extends StatelessWidget {
                                                           .value
                                                           ?.social
                                                           ?.linkedin
-                                                          ?.isURL ==
+                                                          ?.startsWith("https://") ==
                                                       true
                                                   ? color
                                                   : Colors.grey,
@@ -161,7 +161,7 @@ class ProfilePage2 extends StatelessWidget {
                                           InkWell(
                                             onTap: () {
                                               if (mainController.authUser.value
-                                                      ?.social?.tiktok?.isURL ==
+                                                      ?.social?.tiktok?.startsWith("https://") ==
                                                   true) {
                                                 openUrl(
                                                     url:
@@ -175,8 +175,8 @@ class ProfilePage2 extends StatelessWidget {
                                                           .value
                                                           ?.social
                                                           ?.tiktok
-                                                          ?.isURL ==
-                                                      true
+                                                  ?.startsWith("https://") ==
+                                                  true
                                                   ? color
                                                   : Colors.grey,
                                             ),
@@ -187,11 +187,11 @@ class ProfilePage2 extends StatelessWidget {
                                           InkWell(
                                             onTap: () {
                                               if (mainController.authUser.value
-                                                      ?.social?.phone?.length !=
+                                                      ?.full_phone?.length !=
                                                   0) {
                                                 openUrl(
                                                     url:
-                                                        "https://wa.me/${mainController.authUser.value?.social?.phone}");
+                                                        "https://wa.me/${mainController.authUser.value?.full_phone}");
                                               }
                                             },
                                             child: Icon(
@@ -199,8 +199,8 @@ class ProfilePage2 extends StatelessWidget {
                                               color: mainController
                                                           .authUser
                                                           .value
-                                                          ?.social
-                                                          ?.phone
+
+                                                          ?.full_phone
                                                           ?.length !=
                                                       0
                                                   ? color
@@ -217,7 +217,7 @@ class ProfilePage2 extends StatelessWidget {
                                                       .value
                                                       ?.social
                                                       ?.twitter
-                                                      ?.isURL ==
+                                                  ?.startsWith("https://") ==
                                                   true) {
                                                 openUrl(
                                                     url:
@@ -231,8 +231,8 @@ class ProfilePage2 extends StatelessWidget {
                                                           .value
                                                           ?.social
                                                           ?.twitter
-                                                          ?.isURL ==
-                                                      true
+                                                  ?.startsWith("https://") ==
+                                                  true
                                                   ? color
                                                   : Colors.grey,
                                             ),

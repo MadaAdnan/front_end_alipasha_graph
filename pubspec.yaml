@@ -22,7 +22,7 @@ dependencies:
   get_storage: ^2.1.1
   dio_cache_interceptor: ^4.0.3
   image_picker: ^1.2.0
-  image_cropper: ^9.1.0
+  image_cropper: ^11.0.0
 
   select2dot1: ^2.0.9
   location: ^8.0.1

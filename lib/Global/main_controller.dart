@@ -715,6 +715,7 @@ class MainController extends GetxController {
       {required ImageSource imagSource,
       required Function(XFile? file, int? fileSize) onChange,
       CropAspectRatio? aspectRatio}) async {
+
     try {
       XFile? selected = await ImagePicker().pickImage(source: imagSource);
 
@@ -744,6 +745,9 @@ class MainController extends GetxController {
   }
 
   Future<XFile?> cropImage(XFile file, {CropAspectRatio? ratio}) async {
+
+
+
     try {
       CroppedFile? cropped = await ImageCropper().cropImage(
         compressFormat: ImageCompressFormat.png,
@@ -751,8 +755,8 @@ class MainController extends GetxController {
         maxWidth: 400,
         maxHeight: 400,
         compressQuality: 80,
-        aspectRatio:
-            ratio != null ? ratio : CropAspectRatio(ratioX: 1, ratioY: 1),
+        aspectRatio:ratio??
+            CropAspectRatio(ratioX: 1, ratioY: 1),
         uiSettings: [
           AndroidUiSettings(
               toolbarTitle: 'قص الصورة',
@@ -761,7 +765,8 @@ class MainController extends GetxController {
               backgroundColor: Colors.grey.withOpacity(0.4),
               toolbarColor: PrimaryColor,
               toolbarWidgetColor: Colors.white,
-              initAspectRatio: CropAspectRatioPreset.square,
+              initAspectRatio:  CropAspectRatioPreset.original,
+
               lockAspectRatio: true,
               hideBottomControls: false),
           IOSUiSettings(

@@ -13,6 +13,7 @@ import '../../models/slider_model.dart';
 
 class MyAdviceLogic extends GetxController {
   RxBool loading = RxBool(false);
+  RxBool loadingDialog = RxBool(false);
   MainController mainController = Get.find<MainController>();
 
   RxList<SliderModel> sliders = RxList<SliderModel>();
@@ -126,6 +127,7 @@ class MyAdviceLogic extends GetxController {
   }
 
   getMyProducts() async {
+    loadingDialog.value = true;
     mainController.query.value = '''
   query MyProducts {
     myProducts(first:1000,page:1) {
@@ -142,7 +144,7 @@ class MyAdviceLogic extends GetxController {
   ''';
     try {
       dio.Response? res = await mainController.fetchData();
-      Logger().e(res?.data);
+
       if (res != null) {
         if (res.data['data']['myProducts'] != null) {
           for (var item in res.data['data']['myProducts']['data']) {
@@ -151,6 +153,7 @@ class MyAdviceLogic extends GetxController {
         }
       }
     } catch (e) {}
+    loadingDialog.value = false;
   }
 
   addToSpecial({required int id, required String level}) async {

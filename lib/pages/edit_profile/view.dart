@@ -275,9 +275,8 @@ class EditProfilePage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Container(
-                          width: 0.29.sw,
-                          height: 0.06.sh,
+                        Flexible(
+                         
                           child: FormBuilderDropdown<String>(
                               decoration: InputDecoration(
                                   border: OutlineInputBorder(
