@@ -310,7 +310,7 @@ RxBool is_like=RxBool(false);
 
                 InkWell(
                   onTap: () {
-                    Share.share("https://ali-pasha.com/products/${post.id}");
+                    Share.share("https://web.ali-pasha.com/news/${post.id}");
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,

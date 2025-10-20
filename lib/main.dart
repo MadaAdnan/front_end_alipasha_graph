@@ -3,6 +3,7 @@ import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/routes/route_pages.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:app_links/app_links.dart';
+import 'package:clarity_flutter/clarity_flutter.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -24,6 +25,10 @@ void main() async {
   if(Firebase.apps.isEmpty){
      await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   }
+  final config = ClarityConfig(
+    projectId: "ts1qh85xuj", // Replace with your Clarity project ID
+    logLevel: LogLevel.Info, // Optional: verbose logging
+  );
 
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   final appLinks = AppLinks(); // AppLinks is singleton
@@ -42,7 +47,10 @@ void main() async {
 
 
 
-  runApp( MyApp());
+  runApp( ClarityWidget(
+    app:  MyApp(),
+    clarityConfig: config,
+  ),);
 }
 
 class MyApp extends StatefulWidget {

@@ -1,6 +1,6 @@
 name: ali_pasha_graph
 description: "Ali-pasha2"
-version: 3.2.5+94
+version: 3.2.6+95
 environment:
   sdk: '>=3.4.3 <4.0.0'
 dependencies:
@@ -72,6 +72,7 @@ dependencies:
   syncfusion_flutter_pdfviewer: ^31.1.19
   intl_phone_field: ^3.2.0
   form_builder_phone_field: ^3.0.0
+  clarity_flutter: ^1.4.3
 #  flutter_sound: ^9.6.0
 #  audio_session: ^0.1.20
 

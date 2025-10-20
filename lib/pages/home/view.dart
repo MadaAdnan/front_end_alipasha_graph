@@ -230,23 +230,17 @@ class HomePage extends StatelessWidget {
                             ),
                             Container(
                               color: WhiteColor,
-                              height: 0.103.sh,
+                              height: 0.115.sh,
                               padding: EdgeInsets.symmetric(vertical: 0.002.sh),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                              child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                semanticChildCount: 12,
                                 children: [
                                   if (mainController.categories.length == 0)
                                     ...List.generate(
                                         4, (index) => _buildSection()),
                                   ...List.generate(
                                       mainController.categories
-                                                  .where((el) =>
-                                                      el.type == 'product')
-                                                  .length >
-                                              4
-                                          ? 4
-                                          : mainController.categories
                                               .where(
                                                   (el) => el.type == 'product')
                                               .length,

@@ -344,7 +344,12 @@ class JobCard extends StatelessWidget {
                 ),
                 MaterialButton(
                   onPressed: () {
-                    Share.share("https://ali-pasha.com/products/${post?.id}");
+                    if(post?.type=='tender'){
+                      Share.share("https://web.ali-pasha.com/tenders/${post?.id}");
+                    }else{
+                      Share.share("https://web.ali-pasha.com/jobs/${post?.id}");
+                    }
+
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,

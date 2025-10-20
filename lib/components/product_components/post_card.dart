@@ -545,7 +545,7 @@ class PostCard extends StatelessWidget {
                 SizedBox(width: 0.07.sw,),
                 InkWell(
                   onTap: () {
-                    Share.share("https://ali-pasha.com/products/${post.id}");
+                    Share.share("https://web.ali-pasha.com/posts/${post.id}");
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 0.02.sw),

@@ -32,8 +32,8 @@ class SectionHomeCard extends StatelessWidget {
           children: [
             Container(
               padding: EdgeInsets.all(0.01.sw),
-              height: 0.150.sw,
-              width: 0.150.sw,
+              height: 0.175.sw,
+              width: 0.175.sw,
               decoration: BoxDecoration(
                 color:"${section?.color}".toColor(),
                 borderRadius: BorderRadius.circular(20.r),
