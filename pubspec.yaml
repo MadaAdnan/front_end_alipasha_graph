@@ -73,6 +73,9 @@ dependencies:
   intl_phone_field: ^3.2.0
   form_builder_phone_field: ^3.0.0
   clarity_flutter: ^1.4.3
+  tutorial_coach_mark: ^1.3.3
+  facebook_app_events: ^0.20.1
+
 #  flutter_sound: ^9.6.0
 #  audio_session: ^0.1.20
 

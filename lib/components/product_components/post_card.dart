@@ -435,6 +435,8 @@ class PostCard extends StatelessWidget {
                       if(isAuth() ){
                        await like();
                        is_like.value=false;
+                      }else{
+                        Get.toNamed(LOGIN_PAGE);
                       }
                     },
                     child:Container(
@@ -486,8 +488,13 @@ class PostCard extends StatelessWidget {
                 SizedBox(width: 0.07.sw,),
                 InkWell(
                   onTap: () {
-                    Get.toNamed(COMMENTS_PAGE,
-                        parameters: {"id": "${post.id}"});
+                    if(isAuth()){
+                      Get.toNamed(COMMENTS_PAGE,
+                          parameters: {"id": "${post.id}"});
+                    }else{
+                      Get.toNamed(LOGIN_PAGE);
+                    }
+
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 0.02.sw),

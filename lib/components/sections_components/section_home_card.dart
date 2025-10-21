@@ -8,13 +8,14 @@ import 'package:get/get.dart';
 import '../../helpers/style.dart';
 
 class SectionHomeCard extends StatelessWidget {
-  const SectionHomeCard({super.key, this.section});
+  const SectionHomeCard({super.key, this.section,this.sectionKey});
 
   final CategoryModel? section;
-
+final GlobalKey? sectionKey;
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      key: sectionKey,
       onTap: () {
         Get.toNamed(SECTION_PAGE, arguments: section?.id);
       },

@@ -7,13 +7,14 @@ import 'package:get/get.dart';
 import '../../helpers/colors.dart';
 
 class SellerHomePageCard extends StatelessWidget {
-  const SellerHomePageCard({super.key, this.seller});
+  const SellerHomePageCard({super.key, this.seller,this.sellerKey});
 
   final UserModel? seller;
-
+final GlobalKey? sellerKey;
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      key: sellerKey,
       onTap: () {
 
         Get.toNamed(PRODUCTS_PAGE, arguments: seller);

@@ -13,11 +13,19 @@ import '../../routes/routes_url.dart';
 
 class HomeAppBarComponent extends StatelessWidget
     implements PreferredSizeWidget {
-  HomeAppBarComponent({Key? key, this.search, this.selected}) : super(key: key);
+  HomeAppBarComponent({Key? key, this.search, this.selected,this.communityKey,this.jobKey,this.tenderKey,this.homeKey,this.profileKey,this.serviceKey,this.sectionKey}) : super(key: key);
 
   MainController mainController = Get.find<MainController>();
   Function()? search;
   final String? selected;
+  final GlobalKey? jobKey;
+  final GlobalKey? tenderKey;
+  final GlobalKey? communityKey;
+  final GlobalKey? profileKey;
+  final GlobalKey? homeKey;
+  final GlobalKey? serviceKey;
+  final GlobalKey? sectionKey;
+
 
   @override
   Widget build(BuildContext context) {
@@ -107,10 +115,12 @@ class HomeAppBarComponent extends StatelessWidget
                         : null,
                   ),
                   child: IconButton(
+                    key: homeKey,
                     onPressed: () {
                       Get.toNamed(HOME_PAGE);
                     },
                     icon: Icon(
+
                       FontAwesomeIcons.home,
                       size: 0.06.sw,
                       color: Get.currentRoute == HOME_PAGE ? PrimaryColor : null,
@@ -131,6 +141,7 @@ class HomeAppBarComponent extends StatelessWidget
                         : null,
                   ),
                   child: IconButton(
+                    key: sectionKey,
                     onPressed: () {
                       Get.toNamed(SECTIONS_PAGE);
                     },
@@ -156,6 +167,7 @@ class HomeAppBarComponent extends StatelessWidget
                         : null,
                   ),
                   child: IconButton(
+                    key: serviceKey,
                     onPressed: () {
                       Get.toNamed(SERVICES_PAGE);
                     },
@@ -182,6 +194,7 @@ class HomeAppBarComponent extends StatelessWidget
                         : null,
                   ),
                   child: IconButton(
+                    key: jobKey,
                     onPressed: () {
                       Get.toNamed(JOBS_PAGE);
                     },
@@ -192,7 +205,7 @@ class HomeAppBarComponent extends StatelessWidget
                     ),
                   ),
                 ),
-                Container(
+              /*  Container(
                   width: 0.1.sw,
                   decoration: BoxDecoration(
                     border: Get.currentRoute == TENDERS_PAGE
@@ -206,6 +219,7 @@ class HomeAppBarComponent extends StatelessWidget
                         : null,
                   ),
                   child: IconButton(
+                    key: tenderKey,
                     onPressed: () {
                       Get.toNamed(TENDERS_PAGE);
                     },
@@ -214,7 +228,7 @@ class HomeAppBarComponent extends StatelessWidget
                         color:
                             Get.currentRoute == TENDERS_PAGE ? PrimaryColor : null),
                   ),
-                ),
+                ),*/
                 Container(
                   width: 0.1.sw,
                   decoration: BoxDecoration(
@@ -231,6 +245,7 @@ class HomeAppBarComponent extends StatelessWidget
                   child: Obx(() {
                     return mainController.communityNotification.value ==0
                         ? IconButton(
+                      key: communityKey,
                             onPressed: () {
                               Get.toNamed(COMMUNITIES_PAGE);
                             },
@@ -243,6 +258,7 @@ class HomeAppBarComponent extends StatelessWidget
                         : Badge.count(
                             count: mainController.communityNotification.value,
                             child: IconButton(
+                              key: communityKey,
                               onPressed: () {
                                 Get.toNamed(COMMUNITIES_PAGE);
                               },
@@ -269,6 +285,7 @@ class HomeAppBarComponent extends StatelessWidget
                         : null,
                   ),
                   child: IconButton(
+                    key: profileKey,
                     onPressed: () {
                       Get.toNamed(PROFILE_PAGE);
                     },

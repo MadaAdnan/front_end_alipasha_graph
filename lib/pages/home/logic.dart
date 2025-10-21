@@ -8,9 +8,11 @@ import 'package:ali_pasha_graph/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:logger/logger.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import '../../models/product_model.dart';
 
@@ -24,10 +26,28 @@ class HomeLogic extends GetxController {
 
   RxInt page = RxInt(1);
 
+  /// Global Key For Coach Mark
+  GlobalKey loginKey = GlobalKey();
+  GlobalKey catigoriesKey = GlobalKey();
+  GlobalKey specialSellerKey = GlobalKey();
+  GlobalKey jobKey = GlobalKey();
+  GlobalKey homeKey = GlobalKey();
+  GlobalKey serviceKey = GlobalKey();
+  GlobalKey sectionKey = GlobalKey();
+  GlobalKey tenderKey = GlobalKey();
+  GlobalKey createProductKey = GlobalKey();
+  GlobalKey whatsThink = GlobalKey();
+  GlobalKey communityKey = GlobalKey();
+  GlobalKey profileKey = GlobalKey();
+  GlobalKey sellerKey = GlobalKey();
+  GlobalKey moreCategoriesKey = GlobalKey();
+  late List<TargetFocus> targetFoucos;
+  Rxn<TutorialCoachMark> tutorialCoachMark = Rxn(null);
 
   @override
   void onInit() {
     super.onInit();
+    initTarget();
 
     getDataFromStorage();
     ever(
@@ -38,10 +58,447 @@ class HomeLogic extends GetxController {
     );
   }
 
+  initTarget() {
+    targetFoucos = [
+      TargetFocus(
+        identify: "home",
+        keyTarget: homeKey,
+        contents: [
+          TargetContent(
+            align: ContentAlign.left,
+            child: Container(
+              child: Column(
+                children: [
+                  Text(
+                    "🏠 الرئيسية \nشاهد منشورات مقترحة تناسب اهتماماتك، وتفاعل أو اطلب المنتج مباشرة من البائع.",
+                    style: H3WhiteTextStyle,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      tutorialCoachMark.value!.next();
+                    },
+                    child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 0.04.sh),
+                        padding: EdgeInsets.symmetric(horizontal: 0.04.sw,vertical: 0.001.sh),
+
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.arrow_back_ios,color: Colors.white,
+                            ),
+                            Text('التالي',style: H3WhiteTextStyle,),
+
+                          ],
+                        )),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      TargetFocus(
+        identify: "section",
+        keyTarget: sectionKey,
+        contents: [
+          TargetContent(
+            align: ContentAlign.left,
+            child: Container(
+              child: Column(
+                children: [
+                  Text(
+                    "🛍 التصنيفات \nتصفّح منتجات التجار حسب التصنيف أو المدينة بسهولة.",
+                    style: H3WhiteTextStyle,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      tutorialCoachMark.value!.next();
+                    },
+                    child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 0.04.sh),
+                        padding: EdgeInsets.symmetric(horizontal: 0.04.sw,vertical: 0.001.sh),
+
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.arrow_back_ios,color: Colors.white,
+                            ),
+                            Text('التالي',style: H3WhiteTextStyle,),
+
+                          ],
+                        )),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      TargetFocus(
+        identify: "service",
+        keyTarget: serviceKey,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            child: Container(
+              child: Column(
+                children: [
+                  Text(
+                    "🧰 الخدمات \nاستعرض الدليل المهني مثل: نجّار، حدّاد، مهندس، وغيرهم.",
+                    style: H3WhiteTextStyle,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      tutorialCoachMark.value!.next();
+                    },
+                    child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 0.04.sh),
+                        padding: EdgeInsets.symmetric(horizontal: 0.04.sw,vertical: 0.001.sh),
+
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.arrow_back_ios,color: Colors.white,
+                            ),
+                            Text('التالي',style: H3WhiteTextStyle,),
+
+                          ],
+                        )),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      TargetFocus(
+        identify: "job",
+        keyTarget: jobKey,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            child: Center(
+              child: Column(
+                children: [
+                  Text(
+                    "💼 الوظائف \nتصفّح الوظائف المتاحة أو أضف إعلانك للبحث عن موظف.",
+                    style: H3WhiteTextStyle,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      tutorialCoachMark.value!.next();
+                    },
+                    child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 0.04.sh),
+                        padding: EdgeInsets.symmetric(horizontal: 0.04.sw,vertical: 0.001.sh),
+
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.arrow_back_ios,color: Colors.white,
+                            ),
+                            Text('التالي',style: H3WhiteTextStyle,),
+
+                          ],
+                        )),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    /*  TargetFocus(
+        identify: "tender",
+        keyTarget: tenderKey,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            child: Container(
+              child: Text(
+                "المناقصات",
+                 style: H3WhiteTextStyle,
+              ),
+            ),
+          ),
+        ],
+      ),*/
+      TargetFocus(
+        identify: "community",
+        keyTarget: communityKey,
+        contents: [
+          TargetContent(
+            align: ContentAlign.right,
+            child: Container(
+              child: Column(
+                children: [
+                  Text(
+                    "💬 الدردشة\nتواصل مع المستخدمين أو انضم إلى المجموعات.",
+                    style: H3WhiteTextStyle,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      tutorialCoachMark.value!.next();
+                    },
+                    child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 0.04.sh),
+                        padding: EdgeInsets.symmetric(horizontal: 0.04.sw,vertical: 0.001.sh),
+
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.arrow_back_ios,color: Colors.white,
+                            ),
+                            Text('التالي',style: H3WhiteTextStyle,),
+
+                          ],
+                        )),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      TargetFocus(
+        identify: "profile2",
+        keyTarget: profileKey,
+        contents: [
+          TargetContent(
+            align: ContentAlign.right,
+            child: Container(
+              child: Column(
+                children: [
+                  Text(
+                    "👤 الملف الشخصي \nأدر ملفك الشخصي، وتابع منشوراتك وحملاتك التسويقية.",
+                    style: H3WhiteTextStyle,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      tutorialCoachMark.value!.next();
+                    },
+                    child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 0.04.sh),
+                        padding: EdgeInsets.symmetric(horizontal: 0.04.sw,vertical: 0.001.sh),
+
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.arrow_back_ios,color: Colors.white,
+                            ),
+                            Text('التالي',style: H3WhiteTextStyle,),
+
+                          ],
+                        )),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+     /* TargetFocus(
+        identify: "profile",
+        keyTarget: loginKey,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            child: Container(
+              child: Text(
+                "👤 الملف الشخصي \nأدر ملفك الشخصي، وتابع منشوراتك وحملاتك التسويقية.",
+                style: H3WhiteTextStyle,
+              ),
+            ),
+          ),
+        ],
+      ),*/
+      TargetFocus(
+        shape: ShapeLightFocus.RRect,
+        identify: "what",
+        keyTarget: whatsThink,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            child: Container(
+              child: Column(
+                children: [
+                  Text(
+                    "➕ نشر جديد\nانشر منتجًا أو وظيفة أو خدمة بخطوات بسيطة تصل لآلاف المستخدمين.",
+                    style: H3WhiteTextStyle,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      tutorialCoachMark.value!.next();
+                    },
+                    child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 0.04.sh),
+                        padding: EdgeInsets.symmetric(horizontal: 0.04.sw,vertical: 0.001.sh),
+
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.arrow_back_ios,color: Colors.white,
+                            ),
+                            Text('التالي',style: H3WhiteTextStyle,),
+
+                          ],
+                        )),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      /*TargetFocus(
+        shape: ShapeLightFocus.RRect,
+        identify: "categories",
+        keyTarget: catigoriesKey,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            child: Container(
+              child: Text(
+                "🛍 التصنيفات\nتصفّح منتجات التجار حسب التصنيف أو المدينة بسهولة.",
+                style: H3WhiteTextStyle,
+              ),
+            ),
+          ),
+        ],
+      ),*/
+      TargetFocus(
+        shape: ShapeLightFocus.RRect,
+        identify: "more-categories",
+        keyTarget: moreCategoriesKey,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            child: Container(
+              child: Column(
+                children: [
+                  Text(
+                    "📂 التصنيفات (التمرير)\nاسحب لليمين لعرض جميع التصنيفات.",
+                    style: H3WhiteTextStyle,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      tutorialCoachMark.value!.next();
+                    },
+                    child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 0.04.sh),
+                        padding: EdgeInsets.symmetric(horizontal: 0.04.sw,vertical: 0.001.sh),
+
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.arrow_back_ios,color: Colors.white,
+                            ),
+                            Text('التالي',style: H3WhiteTextStyle,),
+
+                          ],
+                        )),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+     /* TargetFocus(
+        shape: ShapeLightFocus.RRect,
+        identify: "seller",
+        keyTarget: sellerKey,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            child: Container(
+              child: Text(
+                "متجر مميز",
+                style: H3WhiteTextStyle,
+              ),
+            ),
+          ),
+        ],
+      ),*/
+      TargetFocus(
+        identify: "createProduct",
+        keyTarget: createProductKey,
+        contents: [
+          TargetContent(
+            align: ContentAlign.left,
+            child: Container(
+              child: Column(
+                children: [
+                  Text(
+                    "➕ نشر جديد\nانشر منتجًا أو وظيفة أو خدمة بخطوات بسيطة تصل لآلاف المستخدمين.",
+                    style: H3WhiteTextStyle,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      tutorialCoachMark.value!.next();
+                    },
+                    child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 0.04.sh),
+                        padding: EdgeInsets.symmetric(horizontal: 0.04.sw,vertical: 0.001.sh),
+
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.arrow_back_ios,color: Colors.white,
+                            ),
+                            Text('التالي',style: H3WhiteTextStyle,),
+
+                          ],
+                        )),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    ];
+  }
+
+  RxBool startTut = RxBool(false);
+
+  startTutorialMode(BuildContext context) {
+    bool isStart = mainController.storage.hasData('startTut')  ;
+    if (!isStart) {
+      mainController.storage.write('startTut', true);
+      Future.delayed(const Duration(seconds: 5), () {
+        if (startTut.value == false) {
+          tutorialCoachMark.value = TutorialCoachMark(
+            targets: targetFoucos,
+
+            skipWidget: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  "تخطي",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+                Icon(
+                  Icons.arrow_forward_ios,color: Colors.white,
+                )
+              ]
+            ),
+
+          )..show(context: context);
+          startTut.value = true;
+        }
+      });
+    }
+  }
+
   @override
   void onReady() {
     // TODO: implement onReady
     super.onReady();
+
     getProduct();
   }
 
@@ -50,9 +507,7 @@ class HomeLogic extends GetxController {
     // getProduct();
   }
 
-  showDialogPrivacy() {
-
-  }
+  showDialogPrivacy() {}
 
   getProduct() async {
     loading.value = true;

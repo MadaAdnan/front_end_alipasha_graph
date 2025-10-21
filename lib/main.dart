@@ -4,6 +4,7 @@ import 'package:ali_pasha_graph/routes/route_pages.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:app_links/app_links.dart';
 import 'package:clarity_flutter/clarity_flutter.dart';
+import 'package:facebook_app_events/facebook_app_events.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -17,7 +18,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import 'firebase_options.dart';
-
+final facebookAppEvents = FacebookAppEvents();
 
 /// https://www.figma.com/design/px6a4uJqQMFINZtOZtSPDP/ali-pasha-home?node-id=0-1&t=VcJBc4HEx3FehtIf-1
 void main() async {
@@ -30,7 +31,10 @@ void main() async {
     logLevel: LogLevel.Info, // Optional: verbose logging
   );
 
+  await facebookAppEvents.logEvent(name: 'fb_mobile_activate_app');
+
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
   final appLinks = AppLinks(); // AppLinks is singleton
   OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
   OneSignal.initialize("af3a71bd-8c94-4d51-a39e-a9c9c84e0228");

@@ -21,35 +21,79 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import 'package:shimmer/shimmer.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import '../../helpers/components.dart';
 import 'logic.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final mainController = Get.find<MainController>();
+
   final logic = Get.find<HomeLogic>();
+
   final ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollControllerCategories = ScrollController();
+
   bool exit = false;
+
   GlobalKey<FormState> _form = GlobalKey<FormState>();
+
   RxnString privacy=RxnString('');
+
   int i = 0;
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Future.delayed(const Duration(seconds: 2));
+      if (_scrollControllerCategories.hasClients) {
+        await _scrollControllerCategories.animateTo(
+          50,
+          duration: const Duration(milliseconds: 400),
+          curve: Curves.easeOut,
+        );
+        await _scrollControllerCategories.animateTo(
+          0,
+          duration: const Duration(milliseconds: 400),
+          curve: Curves.easeIn,
+        );
+        await _scrollControllerCategories.animateTo(
+          50,
+          duration: const Duration(milliseconds: 400),
+          curve: Curves.easeIn,
+        );
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
 
-    // logic.showDialogPrivacy();
+  logic.startTutorialMode(context);
+
+
     exit = false;
     return WillPopScope(
         child: Scaffold(
           floatingActionButton: Obx(() {
+
             return Container(
+
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   InkWell(
+                    key: logic.createProductKey,
                     onTap: () {
                       Get.toNamed(CREATE_PRODUCT_PAGE);
                     },
@@ -134,7 +178,7 @@ class HomePage extends StatelessWidget {
             },
             child: Column(
               children: [
-                HomeAppBarComponent(),
+                HomeAppBarComponent(tenderKey: logic.tenderKey,jobKey: logic.jobKey,communityKey: logic.communityKey,homeKey: logic.homeKey,profileKey: logic.profileKey,sectionKey: logic.sectionKey,serviceKey: logic.serviceKey,),
                 Expanded(child: Container(
                   child: Obx(() {
                     return RefreshIndicator(
@@ -142,6 +186,7 @@ class HomePage extends StatelessWidget {
                           controller: _scrollController,
                           children: [
                             InkWell(
+
                               onTap: () {
                                 Get.toNamed(PROFILE_PAGE);
                               },
@@ -173,6 +218,7 @@ class HomePage extends StatelessWidget {
                                               shape: BoxShape.circle),
                                           child: Obx(() {
                                             return Container(
+                                              key: logic.loginKey,
                                               width: 0.1.sw,
                                               height: 0.1.sw,
                                               decoration: BoxDecoration(
@@ -194,6 +240,7 @@ class HomePage extends StatelessWidget {
                                     10.horizontalSpace,
                                     Expanded(
                                       child: InkWell(
+                                        key: logic.whatsThink,
                                         onTap: () {
                                           Get.toNamed(CREATE_PRODUCT_PAGE);
                                         },
@@ -233,18 +280,20 @@ class HomePage extends StatelessWidget {
                               height: 0.115.sh,
                               padding: EdgeInsets.symmetric(vertical: 0.002.sh),
                               child: ListView(
+                                key: logic.moreCategoriesKey,
                                 scrollDirection: Axis.horizontal,
-                                semanticChildCount: 12,
+controller: _scrollControllerCategories,
                                 children: [
                                   if (mainController.categories.length == 0)
                                     ...List.generate(
                                         4, (index) => _buildSection()),
                                   ...List.generate(
                                       mainController.categories
-                                              .where(
-                                                  (el) => el.type == 'product')
-                                              .length,
-                                      (index) => SectionHomeCard(
+                                          .where(
+                                              (el) => el.type == 'product')
+                                          .length,
+                                          (index) => SectionHomeCard(
+                                          sectionKey: index==0?logic.catigoriesKey:null,
                                           section: mainController.categories
                                               .where(
                                                   (el) => el.type == 'product')
@@ -256,6 +305,7 @@ class HomePage extends StatelessWidget {
                                 ],
                               ),
                             ),
+
                             // seller
                             Container(
                               height: 0.157.sh,
@@ -266,6 +316,7 @@ class HomePage extends StatelessWidget {
                                 semanticChildCount: 4,
                                 scrollDirection: Axis.horizontal,
                                 children: [
+                                  _buildAddStore(),
                                   if (logic.sellers.length == 0&& logic.loading.value)
                                     ...List.generate(6, (i) {
                                       return _buildSeller();
@@ -274,10 +325,11 @@ class HomePage extends StatelessWidget {
                                     ...List.generate(logic.sellers.length,
                                         (index) {
                                       return SellerHomePageCard(
+
                                         seller: logic.sellers[index],
                                       );
                                     }),
-                                  _buildAddStore(),
+
                                 ],
                               ),
                             ),
@@ -506,8 +558,14 @@ class HomePage extends StatelessWidget {
 
   _buildAddStore() {
     return InkWell(
+      key: logic.sellerKey,
       onTap: () {
-        openUrl(url: "https://wa.me/${mainController.settings.value.social?.phone}?text=طلب متجر مميز");
+        if(isAuth()){
+          openUrl(url: "https://wa.me/${mainController.settings.value.social?.phone}?text=طلب متجر مميز");
+        }else{
+          Get.toNamed(LOGIN_PAGE);
+        }
+
       },
       child: Container(
         width: 0.27.sw,
@@ -538,6 +596,8 @@ class HomePage extends StatelessWidget {
                   openUrl(
                       url:
                           "https://wa.me/${mainController.settings.value.social?.phone}?text=${Uri.encodeComponent('${message!.toString()}')}");
+                }else{
+                  Get.toNamed(LOGIN_PAGE);
                 }
               },
               child: Container(
