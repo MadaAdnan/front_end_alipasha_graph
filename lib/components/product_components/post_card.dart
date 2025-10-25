@@ -624,6 +624,7 @@ if(!is_like.value){
 addLike(product_id:"${post.id}"){
     id
             name
+            weight
             expert
             type
             is_discount
@@ -631,6 +632,7 @@ addLike(product_id:"${post.id}"){
             is_available
             price
             views_count
+            comments_count
             discount
             end_date
             type
@@ -644,21 +646,43 @@ addLike(product_id:"${post.id}"){
               id
               name
               id_color
-              seller_name
+              phone
               full_phone
+              seller_name
               image
               logo
               is_verified
+              city{
+                id
+                  name
+                is_delivery
+                code_city
+                level  
+              }
+              area{
+               id
+               name
+                is_delivery
+                code_city
+                level
+               
+              }
             }
           
             city {
-                name
+            id
+            name
+               
             }
             start_date
               sub1 {
                 name
             }
             category {
+                name
+            }
+            colors {
+                code
                 name
             }
 }

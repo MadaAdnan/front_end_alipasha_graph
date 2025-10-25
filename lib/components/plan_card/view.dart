@@ -151,6 +151,10 @@ class PlanCardComponent extends StatelessWidget {
                 InkWell(
                   onTap: () {
                     if(index==-1){
+                      double? price=plan.price;
+                      if(plan.is_discount==true){
+                        price=plan.discount;
+                      }
                       Get.dialog(AlertDialog(
                         content: Container(
                           child: Column(
@@ -169,7 +173,7 @@ class PlanCardComponent extends StatelessWidget {
                               Container(
                                 alignment: Alignment.center,
                                 child: Text(
-                                  "سيتم خصم مبلغ  ${plan.price} \$ من رصيدك ",
+                                  "سيتم خصم مبلغ  ${price} \$ من رصيدك ",
                                   style: H2OrangeTextStyle,
                                 ),
                               )

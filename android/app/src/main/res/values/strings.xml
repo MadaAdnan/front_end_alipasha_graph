@@ -2,4 +2,8 @@
 <resources>
     <string name="default_web_client_id">48907040413-p6dvonl397mh6n63bvmk52j1bl5jrtul.apps.googleusercontent.com</string>
     <string name="facebook_app_id">1537244201037715</string>
+<!--    <string name="facebook_client_token">d6514686e26b43c1ee3b792cdb27ed5a</string>-->
+    <string name="facebook_client_token">EAAaWCX8jd9ABP91iJDh6fz07lAcbxwRUkXBaW1mZC9Wslhlg6YSUO139oyhR0YnvFZAgxQa6PATfONbZCzZAPG33QDvDZAAjYKPaOg8az0GcvLZCPga0bGjPy84ZBsHGye55ibZB9OUjrfZAXPOGFeEbLNo4CvFd7q5FKHXZCbIsTpgpwZBt7S1ksFMdsTdZAJRqUMHn6U8wgtKAUNAhohnAUVgNI3FlMZB1FXIRQI8gQTG24ez0UCjgbAm7k</string>
+    <string name="fb_login_protocol_scheme">fb1537244201037715</string>
+    <string name="app_name">ali pasha</string>
 </resources>

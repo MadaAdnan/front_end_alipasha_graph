@@ -46,6 +46,7 @@ import '../helpers/colors.dart';
 import '../helpers/deep_link.dart';
 import '../helpers/dio_network_manager.dart';
 import '../helpers/pusher_service.dart';
+import '../main.dart';
 import '../models/city_model.dart';
 
 class MainController extends GetxController {
@@ -69,7 +70,7 @@ class MainController extends GetxController {
   RxList<SliderModel> sliders = RxList<SliderModel>([]);
   RxList<CountryModel> countries = RxList<CountryModel>([]);
   RxList<PricingModel> pricing = RxList([]);
-  String versionAPK = "3.2.6";
+  String versionAPK = "3.2.9";
   RxInt communityNotification = RxInt(0);
   RxBool startApp = RxBool(true); //for fill data from storage
   Rx<SettingModel> settings =
@@ -85,6 +86,7 @@ class MainController extends GetxController {
   void onInit() {
     super.onInit();
     DeepLinksService.init();
+
     checkStatusApp().then(
         (value) => value != true ? Get.offAndToNamed(MAINTENANCE_PAGE) : null);
 
@@ -298,6 +300,7 @@ class MainController extends GetxController {
   }
 
   getUserFromStorage() async {
+
     if (token.value != null && token.value!.length > 30) {
       await getMe();
     }
@@ -440,6 +443,7 @@ class MainController extends GetxController {
             sub_phone
         }
         footer_order
+        active_points
         url_for_download{
         play
         up_down
@@ -784,6 +788,18 @@ class MainController extends GetxController {
   }
 
   Future<void> addToCart({required ProductModel product}) async {
+    try {
+      metaSdk.logEvent(name: 'ali-pasha',parameters: {
+        "id": "${product.id}",
+        'name':  "${product.name}",
+        "type": "addToCart",
+        "currency": "USD",
+        "price":product.price,
+      });
+      Logger().w("✅ تم إرسال حدث AddToCart بنجاح");
+    } catch (e) {
+      Logger().e("RTYRT❌ خطأ في إرسال الحدث: $e");
+    }
     if (authUser.value?.is_active != true) {
       showToast(
           type: 'error', text: 'حسابكم محظور الرجاء التواصل مع الدعم الفني');

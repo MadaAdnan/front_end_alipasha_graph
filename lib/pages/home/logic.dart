@@ -543,17 +543,16 @@ class HomeLogic extends GetxController {
               image
               logo
               is_verified
-               city{
+              city{
                 id
                   name
                 is_delivery
                 code_city
-                level
-                
+                level  
               }
               area{
                id
-                  name
+               name
                 is_delivery
                 code_city
                 level

@@ -27,7 +27,7 @@ class GoogleAuth {
   static Future<Map<String, String>?> signIn() async {
 
     try {
-    _googleSignIn.initialize();
+   await _googleSignIn.initialize();
       final GoogleSignInAccount googleUser = await _googleSignIn.authenticate();
       if (googleUser == null) return null;
 

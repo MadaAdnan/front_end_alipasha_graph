@@ -171,7 +171,7 @@ class JobCard extends StatelessWidget {
                 10.verticalSpace,
                 SizedBox(
                   width: 1.sw,
-                  height: 0.048.sh,
+                  height: 0.046.sh,
                   child: Text(
                     "${post?.expert}",
                     overflow: TextOverflow.ellipsis,

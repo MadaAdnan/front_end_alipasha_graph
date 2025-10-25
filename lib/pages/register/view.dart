@@ -262,10 +262,10 @@ class RegisterPage extends StatelessWidget {
                                             children: [
                                               Text(
                                                 "${country.code} ",
-                                                style: H4BlackTextStyle,
+                                                style: H5BlackTextStyle,
                                               ),
                                               Container(
-                                                width: 0.1.sw,
+                                                width: 0.08.sw,
                                                 height: 0.05.sw,
                                                 decoration: BoxDecoration(
                                                     image: DecorationImage(
@@ -495,7 +495,13 @@ class RegisterPage extends StatelessWidget {
                           )),
                       25.verticalSpace,
                       InkWell(
-                        onTap: _getAffeliateCode,
+                        onTap:(){
+                          if(mainController.settings.value?.active_points==true){
+                            _getAffeliateCode();
+                          }else{
+                            logic.registerGoogel();
+                          }
+                        },
                         child: Container(
                           width: 1.sw,
                           height: 0.12.sw,

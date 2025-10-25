@@ -52,19 +52,16 @@ class ProductLogic extends GetxController {
     // تحديث productId من الـ arguments أو من الـ parameters
     productId.value = Get.arguments ?? int.tryParse("${Get.parameters['id']}");
 
-    Logger().e("ON READY ${productId.value}");
+
   }
   @override
   void onClose() {
     productId.value =null; // أو null حسب حالتك
-    Logger().e("ON CLOSE ${productId.value}");
+
     super.onClose();
   }
   Future<void> getProduct() async {
-    if (Get.previousRoute == '/notification_page') {
-      Get.toNamed(COMMENTS_PAGE, parameters: {"id": "${productId.value}"});
-      return;
-    }
+
     loading.value = true;
     products.clear();
 
@@ -209,10 +206,13 @@ class ProductLogic extends GetxController {
           products.add(ProductModel.fromJson(item));
         }
       }
-    } on CustomException catch (e) {
-      mainController.logger.e(e.message);
+    }  catch (e) {
+      mainController.logger.e(e);
     }
-
+    if (Get.previousRoute == '/notification_page') {
+      Get.toNamed(COMMENTS_PAGE, parameters: {"id": "${productId.value}"});
+      return;
+    }
     loading.value = false;
   }
 
@@ -222,71 +222,62 @@ class ProductLogic extends GetxController {
     mutation AddLike{
 addLike(product_id:"${product.value!.id}"){
           id
-          is_like
-          is_rate
-          vote_avg
-          weight
-           name
-            info
-            tags
+            name
+            weight
+            expert
+            type
             is_discount
             is_delivery
-            level
-            phone
-            email
-            address
-            url
-            longitude
-            latitude
+            is_available
             price
-            discount
-            start_date
-            end_date
-            code
-            type
             views_count
-            turkey_price {
-                price
-                discount
-            } 
-             syr_price {
-                price
-                discount
-            }
+            comments_count
+            discount
+            end_date
+            type
+            is_like
+            likes_count
+            level
             image
             video
-            images
-            docs
             created_at
             user {
               id
-              seller_name
-              full_phone
               name
-              image
+              id_color
               phone
+              full_phone
+              seller_name
+              image
+              logo
               is_verified
               city{
                 id
                   name
                 is_delivery
                 code_city
-                level
-              
+                level  
               }
-               area{
-                id
-                name
+              area{
+               id
+               name
                 is_delivery
                 code_city
                 level
                
               }
             }
-            category {
+          
+            city {
+            id
+            name
+               
+            }
+            start_date
+              sub1 {
                 name
             }
-            sub1 {
+            category {
                 name
             }
             colors {

@@ -1,5 +1,6 @@
 import 'package:ali_pasha_graph/components/seller_name_component.dart';
 import 'package:ali_pasha_graph/pages/comment/components/another_message.dart';
+import 'package:ali_pasha_graph/pages/comment/components/my_message.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -53,6 +54,7 @@ class CommentPage extends StatelessWidget {
                   color: WhiteColor,
                   child: SingleChildScrollView(
                     controller: logic.scrollController,
+                    padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
                     child: Obx(() {
                       if (logic.loading.value) {
                         return Container(
@@ -72,8 +74,8 @@ class CommentPage extends StatelessWidget {
                             (index) {
                               if (logic.comments[index].user?.id ==
                                   mainController.authUser.value?.id) {
-                                return myMessage(context,
-                                    message: logic.comments[index]);
+                                return MyMessage(message: logic.comments[index], logic: logic);
+
                               }
                               return AnotherMessage(
                                 message: logic.comments[index],
@@ -292,126 +294,5 @@ class CommentPage extends StatelessWidget {
     );
   }
 
-  Widget anotherMessage(context, {required CommentModel message}) {
-    return SizedBox(
-      width: 0.75.sw,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Row(
-                children: [
-                  Text(
-                    "${message.user?.seller_name!.length != 0 ? message.user?.seller_name : message.user?.name}",
-                    style: H5OrangeTextStyle.copyWith(color: Colors.brown),
-                  ),
-                  SizedBox(width: 0.01.sw,),
-                  if (message.user?.is_verified == true)
-                    Container(
-                      width: 0.04.sw,
-                      height: 0.04.sw,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: Svg('assets/images/svg/verified.svg'))),
-                    )
-                ],
-              ),
-              Container(
-                child: Container(
-                  width: 0.09.sw,
-                  height: 0.09.sw,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: CachedNetworkImageProvider(
-                              "${message.user?.image}"),
-                          fit: BoxFit.cover),
-                      shape: BoxShape.circle),
-                ),
-              ),
-            ],
-          ),
-          Container(
-            width: 0.7.sw,
-            constraints: BoxConstraints(minWidth: 0.00001.sw),
-            padding:
-                EdgeInsets.symmetric(vertical: 0.01.sh, horizontal: 0.02.sw),
-            margin: EdgeInsets.only(top: 0.005.sh),
-            decoration: BoxDecoration(
-                color: GrayLightColor,
-                borderRadius: BorderRadius.circular(15.r)),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  constraints:
-                      BoxConstraints(minWidth: 0.001.sw, maxWidth: 0.7.sw),
-                  child: RichText(
-                    softWrap: true,
-                    text: TextSpan(children: [
-                      ..."${message.comment}".split(' ').map((el) {
-                        if (mainController.isURL("$el")) {
-                          return TextSpan(
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () async => await openUrl(url: '$el'),
-                            text: ' $el ',
-                            style: H4RedTextStyle,
-                          );
-                        } else {
-                          return TextSpan(text: ' $el ', style: H4RegularDark);
-                        }
-                      })
-                    ]),
-                  ),
-                ),
-                Container(
-                  transformAlignment: Alignment.bottomLeft,
-                  alignment: Alignment.bottomLeft,
-                  child: Container(
-                    transformAlignment: Alignment.bottomLeft,
-                    alignment: Alignment.bottomLeft,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "${message.createdAt}",
-                          style: H4GrayTextStyle,
-                        ),
-                        GestureDetector(
-                          child: Text(
-                            'رد',
-                            style: H3RegularDark,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                if (message.user?.id == mainController.authUser.value?.id ||
-                    logic.product.value?.user?.id ==
-                        mainController.authUser.value?.id)
-                  GestureDetector(
-                    onTap: () {
-                      logic.deletComment(commentId: message.id!);
-                    },
-                    child: Container(
-                      width: 0.7.sw,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'حذف',
-                        style: H3RedTextStyle,
-                      ),
-                    ),
-                  )
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+
 }

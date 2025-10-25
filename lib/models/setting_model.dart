@@ -15,6 +15,7 @@ class SettingModel {
   String? delivery_service;
   String? msg_delivery;
   bool? auto_update_exchange;
+  bool? active_points;
   String? dollar_value;
   String? less_amount_point_pull;
   String? about;
@@ -64,6 +65,7 @@ class SettingModel {
     this.shamCash,
     this.wallet,
     this.footerOrder,
+    this.active_points,
   });
 
   factory SettingModel.fromJson(Map<String, dynamic> data) {
@@ -88,6 +90,7 @@ class SettingModel {
       footerOrder: "${data['footer_order'] ?? ''}",
       about: "${data['about'] ?? ''}",
       active_advice: bool.tryParse("${data['active_advice'] ?? ''}") ?? false,
+      active_points: bool.tryParse("${data['active_points'] ?? ''}") ?? false,
       active_live: bool.tryParse("${data['active_live'] ?? ''}") ?? false,
       auto_update_exchange:
           bool.tryParse("${data['auto_update_exchange'] ?? ''}") ?? false,

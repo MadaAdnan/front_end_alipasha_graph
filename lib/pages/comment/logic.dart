@@ -57,6 +57,7 @@ class CommentLogic extends GetxController {
     createComment(product_id: ${productId.value}, comment: "${ comment.value.text}") {
         id
         comment
+        comment_id
         product_id
         created_at
         
@@ -79,7 +80,7 @@ Logger().d(res?.data);
             .add(CommentModel.fromJson(res?.data?['data']?['createComment']));
         comment.clear();
       }
-    } on CustomException catch (e) {}
+    } catch (e) {}
     loadingComment.value = false;
   }
 
@@ -111,24 +112,30 @@ Logger().d(res?.data);
                     id
                     comment
                     created_at
+                    comment_id
                     comments{
-          user {
-            name
-            seller_name
-            image
-            is_verified
-            full_phone
-          }
-          comment
-          created_at
-        }
-                    user {
-                    id
-                    seller_name
-                    full_phone
+                      id
+                      comment
+                      comment_id
+                      created_at
+                      user {
+                        id
                         name
-                        is_verified
+                        seller_name
                         image
+                        is_verified
+                        full_phone
+                      }
+           
+                    }
+                    user {
+                      id
+                      seller_name
+                      full_phone
+                      name
+                      is_verified
+                      image
+                      image
                     }
                 }
             }
@@ -155,7 +162,7 @@ Logger().d(res?.data);
       }
 
 
-    } on CustomException catch (e) {}
+    }  catch (e) {}
     loading.value = false;
   }
 
@@ -174,11 +181,21 @@ Logger().d(res?.data);
       if (res?.data?['data']?['deleteComment'] != null) {
         mainController.showToast(text: 'تم حذف التعليق بنجاح');
         int index = comments.indexWhere((el) => el.id == commentId);
-        mainController.logger.e("INDEX: $index");
+
         if (index != -1) {
 
           comments.removeAt(index);
+        }else{
+          for (var comment in comments) {
+            int replyIndex = comment.comments!.indexWhere((r) => r.id == commentId);
+            if (replyIndex != -1) {
+              comment.comments!.removeAt(replyIndex);
+
+            }
+          }
         }
+
+
       }
 
       if(res?.data?['errors']?[0]?['message']!=null){

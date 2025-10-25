@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/components/fields_components/input_component.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
@@ -18,7 +19,7 @@ class LoginPage extends StatelessWidget {
   final logic = Get.find<LoginLogic>();
   RxBool secure = RxBool(true);
   GlobalKey<FormState> _form = GlobalKey<FormState>();
-
+MainController mainController=Get.find<MainController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -148,7 +149,12 @@ class LoginPage extends StatelessWidget {
                         25.verticalSpace,
                         InkWell(
                           onTap: () async {
-                            _getAffeliateCode();
+                            if(mainController.settings.value?.active_points==true){
+                              _getAffeliateCode();
+                            }else{
+                              logic.registerGoogel();
+                            }
+
                           },
                           child: Container(
                             width: 0.9.sw,
@@ -263,7 +269,9 @@ class LoginPage extends StatelessWidget {
             SizedBox(width: 0.1.sw,),
             InkWell(
               onTap: () {
+
                 logic.registerGoogel();
+
               },
               child: Container(
                 alignment: Alignment.center,
