@@ -372,135 +372,357 @@ class _HomePageState extends State<HomePage> {
                                             AdviceComponent(
                                               advice: mainController.advices[i],
                                             ),
-                                          if(index==0 && isAuth())
+                                          if (index == 0 &&
+                                              isAuth() &&
+                                              logic.near.length > 0)
                                             Column(
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
-                                                Text('قريبة منك',style: H2BlackTextStyle,),
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 8.0),
+                                                  child: Text(
+                                                    'قريبة منك',
+                                                    style: H2BlackTextStyle
+                                                        .copyWith(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                  ),
+                                                ),
                                                 Container(
-                                                  padding: EdgeInsetsGeometry.symmetric(vertical: 2),
-                                                  color:Colors.white,
-                                                  child: SingleChildScrollView(
-                                                    scrollDirection: Axis.horizontal,
-                                                    child: Row(
-                                                      children: [
-                                                        ...List.generate(logic.near!.length, (i)=>Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: 0.01.sw),child: _ProductCard(product: logic.near![i]),)),
-                                                      ],
+                                                  height: 0.51.sh,
+                                                  padding: EdgeInsetsGeometry
+                                                      .symmetric(vertical: 2),
+                                                  color: Colors.white,
+                                                  child: ListView.builder(
+                                                    shrinkWrap: true,
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    physics:
+                                                        ClampingScrollPhysics(),
+                                                    itemCount:
+                                                        logic.near.length,
+                                                    itemBuilder: (context, i) =>
+                                                        Padding(
+                                                      padding:
+                                                          EdgeInsetsGeometry
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      0.01.sw),
+                                                      child: _ProductCard(
+                                                          product:
+                                                              logic.near![i]),
                                                     ),
                                                   ),
                                                 ),
-
                                               ],
                                             ),
-                                          if(index==1)
+                                          if (index == 7 &&
+                                              logic.latest.length > 0)
                                             Column(
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
-                                                Text('وصل حديثاً',style: H2BlackTextStyle,),
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 8.0),
+                                                  child: Text(
+                                                    'وصل حديثاً',
+                                                    style: H2BlackTextStyle
+                                                        .copyWith(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                  ),
+                                                ),
                                                 Container(
-                                                  padding: EdgeInsetsGeometry.symmetric(vertical: 2),
-                                                  color:Colors.white,
-                                                  child: SingleChildScrollView(
-                                                    scrollDirection: Axis.horizontal,
-                                                    child: Row(
-                                                      children: [
-                                                        ...List.generate(logic.latest!.length, (i)=>Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: 0.01.sw),child: _ProductCard(product: logic.latest![i]),)),
-                                                      ],
+                                                  height: 0.51.sh,
+                                                  padding: EdgeInsetsGeometry
+                                                      .symmetric(vertical: 2),
+                                                  color: Colors.white,
+                                                  child: ListView.builder(
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    shrinkWrap: true,
+                                                    physics:
+                                                        ClampingScrollPhysics(),
+                                                    itemCount:
+                                                        logic.latest.length,
+                                                    itemBuilder: (context, i) =>
+                                                        Padding(
+                                                      padding:
+                                                          EdgeInsetsGeometry
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      0.01.sw),
+                                                      child: _ProductCard(
+                                                          product:
+                                                              logic.latest![i]),
                                                     ),
                                                   ),
                                                 ),
-
                                               ],
                                             ),
-                                          if(index==2)
+                                          if (index == 14 &&
+                                              logic.videos.length > 0)
                                             Column(
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
-                                                Text('شاهدها بالفيديو',style: H2BlackTextStyle,),
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 8.0),
+                                                  child: Text(
+                                                    'شاهدها بالفيديو',
+                                                    style: H2BlackTextStyle
+                                                        .copyWith(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                  ),
+                                                ),
                                                 Container(
-                                                  padding: EdgeInsetsGeometry.symmetric(vertical: 2),
-                                                  color:Colors.white,
-                                                  child: SingleChildScrollView(
-                                                    scrollDirection: Axis.horizontal,
-                                                    child: Row(
-                                                      children: [
-                                                        ...List.generate(logic.videos!.length, (i)=>Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: 0.01.sw),child: _ProductCard(product: logic.videos![i]),)),
-                                                      ],
+                                                  height: 0.51.sh,
+                                                  padding: EdgeInsetsGeometry
+                                                      .symmetric(vertical: 2),
+                                                  color: Colors.white,
+                                                  child: ListView.builder(
+                                                    shrinkWrap: true,
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    physics:
+                                                        ClampingScrollPhysics(),
+                                                    itemCount:
+                                                        logic.videos.length,
+                                                    itemBuilder: (context, i) =>
+                                                        Padding(
+                                                      padding:
+                                                          EdgeInsetsGeometry
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      0.01.sw),
+                                                      child: _ProductCard(
+                                                          product:
+                                                              logic.videos![i],video: true),
                                                     ),
                                                   ),
                                                 ),
-
                                               ],
                                             ),
-                                          if(index==3)
+                                          if (index == 21 &&
+                                              logic.nearSellers.length > 0)
                                             Column(
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
-                                                Text('تجار قريبون',style: H2BlackTextStyle,),
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 8.0),
+                                                  child: Text(
+                                                    'تجار قريبون',
+                                                    style: H2BlackTextStyle
+                                                        .copyWith(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                  ),
+                                                ),
                                                 Container(
-                                                  padding: EdgeInsetsGeometry.symmetric(vertical: 2),
-                                                  color:Colors.grey,
-                                                  child: SingleChildScrollView(
-                                                    scrollDirection: Axis.horizontal,
-                                                    child: Row(
-                                                      children: [
-                                                        ...List.generate(logic.nearSellers!.length, (i)=>Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: 0.01.sw),child: _SellerCard(seller: logic.nearSellers![i]),)),
-                                                      ],
+                                                  height: 0.3.sh,
+                                                  padding: EdgeInsetsGeometry
+                                                      .symmetric(vertical: 2),
+                                                  color: Colors.white,
+                                                  child: ListView.builder(
+                                                    shrinkWrap: true,
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    physics:
+                                                        ClampingScrollPhysics(),
+                                                    itemCount: logic
+                                                        .nearSellers.length,
+                                                    itemBuilder: (context, i) =>
+                                                        Padding(
+                                                      padding:
+                                                          EdgeInsetsGeometry
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      0.01.sw),
+                                                      child: _SellerCard(
+                                                          seller: logic
+                                                              .nearSellers[i]),
                                                     ),
                                                   ),
                                                 ),
-
                                               ],
                                             ),
-                                          if(index==4)
+                                          if (index == 28 &&
+                                              logic.activity.length > 0)
                                             Column(
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
-                                                Text('مميز',style: H2BlackTextStyle,),
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 8.0),
+                                                  child: Text(
+                                                    'الأكثر تفاعلاً',
+                                                    style: H2BlackTextStyle
+                                                        .copyWith(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                  ),
+                                                ),
                                                 Container(
-                                                  padding: EdgeInsetsGeometry.symmetric(vertical: 2),
-                                                  color:Colors.white,
-                                                  child: SingleChildScrollView(
-                                                    scrollDirection: Axis.horizontal,
-                                                    child: Row(
-                                                      children: [
-                                                        ...List.generate(logic.activity!.length, (i)=>Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: 0.01.sw),child: _ProductCard(product: logic.activity![i]),)),
-                                                      ],
+                                                  height: 0.51.sh,
+                                                  padding: EdgeInsetsGeometry
+                                                      .symmetric(vertical: 2),
+                                                  color: Colors.white,
+                                                  child: ListView.builder(
+                                                    shrinkWrap: true,
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    physics:
+                                                        ClampingScrollPhysics(),
+                                                    itemCount:
+                                                        logic.activity.length,
+                                                    itemBuilder: (context, i) =>
+                                                        Padding(
+                                                      padding:
+                                                          EdgeInsetsGeometry
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      0.01.sw),
+                                                      child: _ProductCard(
+                                                          product: logic
+                                                              .activity![i]),
                                                     ),
                                                   ),
                                                 ),
-
                                               ],
                                             ),
-                                          if(index==5)
+                                          if (index == 35 &&
+                                              logic.specials.length > 0)
                                             Column(
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
-                                                Text('مميز',style: H2BlackTextStyle,),
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 8.0),
+                                                  child: Text(
+                                                    'مختارات علي باشا',
+                                                    style: H2BlackTextStyle
+                                                        .copyWith(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                  ),
+                                                ),
                                                 Container(
-                                                  padding: EdgeInsetsGeometry.symmetric(vertical: 2),
-                                                  color:Colors.white,
-                                                  child: SingleChildScrollView(
-                                                    scrollDirection: Axis.horizontal,
-                                                    child: Row(
-                                                      children: [
-                                                        ...List.generate(logic.specials!.length, (i)=>Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: 0.01.sw),child: _ProductCard(product: logic.latest![i]),)),
-                                                      ],
+                                                  height: 0.51.sh,
+                                                  padding: EdgeInsetsGeometry
+                                                      .symmetric(vertical: 2),
+                                                  color: Colors.white,
+                                                  child: ListView.builder(
+                                                    shrinkWrap: true,
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    physics:
+                                                        ClampingScrollPhysics(),
+                                                    itemCount:
+                                                        logic.specials.length,
+                                                    itemBuilder: (context, i) =>
+                                                        Padding(
+                                                      padding:
+                                                          EdgeInsetsGeometry
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      0.01.sw),
+                                                      child: _ProductCard(
+                                                          product: logic
+                                                              .specials![i]),
                                                     ),
                                                   ),
                                                 ),
-
                                               ],
                                             ),
-
-
-
+                                          if (index == 42 &&
+                                              logic.activitySeller.length > 0)
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 8.0),
+                                                  child: Text(
+                                                    'أنشط المتاجر',
+                                                    style: H2BlackTextStyle
+                                                        .copyWith(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                  ),
+                                                ),
+                                                Container(
+                                                  height: 0.3.sh,
+                                                  padding: EdgeInsetsGeometry
+                                                      .symmetric(vertical: 2),
+                                                  color: Colors.white,
+                                                  child: ListView.builder(
+                                                    shrinkWrap: true,
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    physics:
+                                                        ClampingScrollPhysics(),
+                                                    itemCount: logic
+                                                        .activitySeller.length,
+                                                    itemBuilder: (context, i) =>
+                                                        Padding(
+                                                      padding:
+                                                          EdgeInsetsGeometry
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      0.01.sw),
+                                                      child: _SellerCard(
+                                                          seller: logic
+                                                              .activitySeller[i]),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                         ],
                                       );
                                   }
@@ -564,7 +786,8 @@ class _HomePageState extends State<HomePage> {
           return Future.value(false);
         });
   }
-  _ProductCard({required ProductModel product}) {
+
+  _ProductCard({required ProductModel product, bool video = false}) {
     return Container(
       height: 0.5.sh,
       width: 0.65.sw,
@@ -588,53 +811,85 @@ class _HomePageState extends State<HomePage> {
               topLeft: Radius.circular(16),
               topRight: Radius.circular(16),
             ),
-            child: InkWell(
-              onTap: () {
-                Get.toNamed(PRODUCT_PAGE, arguments: product.id);
-              },
-              child: Stack(
-                children: [
-                  Builder(
-                    builder: (context) {
+            child: video == true && product.video!.length > 3
+                ? Positioned(
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: Container(
+                      alignment: Alignment.center,
+                      width: 1.sw,
 
-                      return SizedBox(
-                        width:0.7.sw,
-
-                        child: AspectRatio(
-                          aspectRatio: 1,
-                          child: Image.network(
-                            "${product.image}",
-                            fit: BoxFit.cover,
+                      color: Colors.black.withOpacity(0.3),
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: 0.18.sw,
+                        height: 0.18.sw,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: RadialGradient(colors: [
+                              WhiteColor.withOpacity(0.5),
+                              WhiteColor.withOpacity(0.2),
+                              WhiteColor.withOpacity(0.2),
+                              GrayLightColor.withOpacity(0.6)
+                            ])),
+                        child: IconButton(
+                            onPressed: () {
+                              Get.toNamed(VIDEO_PLAYER_POST_PAGE,
+                                  arguments: "${product.video}");
+                            },
+                            icon: Icon(
+                              FontAwesomeIcons.play,
+                              size: 0.08.sw,
+                              color: WhiteColor,
+                            )),
+                      ),
+                                        ),
+                    ))
+                : InkWell(
+                    onTap: () {
+                      Get.toNamed(PRODUCT_PAGE, arguments: product.id);
+                    },
+                    child: Stack(
+                      children: [
+                        Builder(builder: (context) {
+                          return SizedBox(
+                            width: 0.7.sw,
+                            child: AspectRatio(
+                              aspectRatio: 1,
+                              child: Image.network(
+                                "${product.image}",
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          );
+                        }),
+                        Positioned(
+                          left: 8,
+                          top: 8,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 6, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: Colors.black54,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(Icons.visibility,
+                                    color: Colors.white, size: 14),
+                                SizedBox(width: 4),
+                                Text(
+                                  "${product.views_count}".toFormatNumberK(),
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 12),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      );
-                    }
-                  ),
-                  Positioned(
-                    left: 8,
-                    top: 8,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 6, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: Colors.black54,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(Icons.visibility, color: Colors.white, size: 14),
-                          SizedBox(width: 4),
-                          Text(
-                            "${product.views_count}".toFormatNumberK(),
-                            style: TextStyle(color: Colors.white, fontSize: 12),
-                          ),
-                        ],
-                      ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-            ),
           ),
 
           Padding(
@@ -799,6 +1054,7 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
   Widget _viewMoreButton(
       {required Color color, required String title, String? img}) {
     return InkWell(
@@ -972,43 +1228,111 @@ class _HomePageState extends State<HomePage> {
 
   Widget? _SellerCard({required UserModel seller}) {
     return Container(
-      child: Column(
-        children: [
-          Container(
+      alignment: Alignment.center,
+      width: 0.6.sw,
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: Card(
+          color: Colors.white,
+          child: Padding(
             padding:
-            EdgeInsets.all(0.01.sw),
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  colors: [
-                    PrimaryColor,
-                    PrimaryColor
-                        .withOpacity(0.7),
-                  ],
-                  begin:
-                  Alignment.topCenter,
-                  end: Alignment
-                      .bottomCenter,
-                )),
-            child: CircleAvatar(
-              radius: 40,
-              backgroundImage:
-              CachedNetworkImageProvider(
-                  "${seller.image}"),
+                EdgeInsets.symmetric(vertical: 0.01.sh, horizontal: 0.01.sw),
+            child: Stack(
+              children: [
+                Positioned(
+                    top: 0.01.sh,
+                    left: 0.01.sw,
+                    child: Obx(() {
+                      return InkWell(
+                          onTap: () {
+                            if (mainController.authUser.value!.followers!
+                                        .indexWhere((el) =>
+                                            el.seller?.id == seller?.id) ==
+                                    -1 &&
+                                seller.id != null) {
+                              logic.follow(sellerId: seller.id!);
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadiusGeometry.circular(30.r),
+                              color: mainController.authUser.value!.followers!
+                                          .indexWhere((el) =>
+                                              el.seller?.id == seller?.id) >
+                                      -1
+                                  ? PrimaryColor
+                                  : Colors.grey,
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 0.02.sw, vertical: 0.004.sh),
+                            child: Icon(
+                              FontAwesomeIcons.solidHeart,
+                              color: Colors.white,
+                            ),
+                          ));
+                    })),
+                InkWell(
+                    onTap: () {
+                      Get.toNamed(PRODUCTS_PAGE,
+                          arguments: seller,
+                          parameters: {"id": "${seller.id}"});
+                    },
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 0.01.sw, vertical: 0.03.sh),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: LinearGradient(
+                                colors: [
+                                  PrimaryColor,
+                                  PrimaryColor.withOpacity(0.7),
+                                ],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                              )),
+                          child: CircleAvatar(
+                            radius: 40,
+                            backgroundImage:
+                                CachedNetworkImageProvider("${seller.image}"),
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            AutoSizeText(
+                              "${seller.seller_name ?? seller.name}",
+                              overflow: TextOverflow.ellipsis,
+                              style: H2BlackTextStyle.copyWith(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w900),
+                              textAlign: TextAlign.center,
+                            ),
+                            if (seller.is_verified == true)
+                              Icon(
+                                Icons.verified,
+                                color: Colors.blue,
+                              ),
+                          ],
+                        ),
+                        SizedBox(
+                            width: 1.sw,
+                            child: AutoSizeText(
+                              "${seller.address}",
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                            ))
+                      ],
+                    )),
+              ],
             ),
           ),
-          Row(
-            children: [
-              Expanded(child: Text("${seller.seller_name??seller.name}",overflow: TextOverflow.ellipsis,)),
-              if (seller.is_verified ==
-                  true)
-                Icon(
-                  Icons.verified,
-                  color: Colors.blue,
-                ),
-            ],
-          )
-        ],
+        ),
       ),
     );
   }

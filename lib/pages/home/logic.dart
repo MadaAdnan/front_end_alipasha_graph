@@ -23,6 +23,7 @@ class HomeLogic extends GetxController {
   RxList<ProductModel> products = RxList([]);
   RxBool hasMorePage = RxBool(false);
   RxBool loading = RxBool(false);
+
   RxList<UserModel> sellers = RxList<UserModel>([]);
   RxList<UserModel> nearSellers = RxList<UserModel>([]);
   RxList<UserModel> activitySeller = RxList<UserModel>([]);
@@ -630,13 +631,13 @@ class HomeLogic extends GetxController {
         } ''';
     mainController.query('''
     query Products {
-      SpecialProduct(first:3, page: ${page.value}) {
+      SpecialProduct(first:6, page: ${page.value}) {
           $dataString
       }
-      HobbiesProduct(first:12, page: ${page.value}) {
+      HobbiesProduct(first:24, page: ${page.value}) {
           $dataString
       }
-       LatestProduct(first:15, page: ${page.value}) {
+       LatestProduct(first:30, page: ${page.value}) {
           $dataString
       }
    
@@ -839,6 +840,7 @@ videos $dataProduct
 activity $dataProduct
 specials $dataProduct
       nearSellers $dataUser
+      activitySellers $dataUser
       
 }
     ''');
@@ -907,5 +909,32 @@ specials $dataProduct
     for (var item in listSeller) {
       sellers.add(UserModel.fromJson(item));
     }
+  }
+
+  follow({required int sellerId}) async {
+
+      try {
+        mainController.query.value = '''
+      mutation FollowAccount {
+    followAccount(id: "${sellerId}") {
+       $AUTH_FIELDS
+    }
+}
+      ''';
+        dio.Response? res = await mainController.fetchData();
+        //  mainController.logger.e(res?.data);
+        if (res?.data?['data']?['followAccount'] != null) {
+          mainController.setUserJson(
+              json: res?.data?['data']?['followAccount']);
+        }
+        if (res?.data?['errors']?[0]?['message'] != null) {
+          mainController.showToast(
+              text: '${res?.data['errors'][0]['message']}', type: 'error');
+        }
+      } catch (e) {
+        mainController.logger.e(e);
+      }
+
+
   }
 }
