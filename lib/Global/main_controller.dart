@@ -789,6 +789,7 @@ class MainController extends GetxController {
 
   Future<void> addToCart({required ProductModel product}) async {
     try {
+
       metaSdk.logEvent(name: 'ali-pasha',parameters: {
         "id": "${product.id}",
         'name':  "${product.name}",
@@ -798,7 +799,7 @@ class MainController extends GetxController {
       });
       Logger().w("✅ تم إرسال حدث AddToCart بنجاح");
     } catch (e) {
-      Logger().e("RTYRT❌ خطأ في إرسال الحدث: $e");
+      Logger().e("❌ خطأ في إرسال الحدث: $e");
     }
     if (authUser.value?.is_active != true) {
       showToast(

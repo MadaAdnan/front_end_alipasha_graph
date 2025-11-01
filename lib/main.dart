@@ -4,7 +4,7 @@ import 'package:ali_pasha_graph/routes/route_pages.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:app_links/app_links.dart';
 import 'package:clarity_flutter/clarity_flutter.dart';
-import 'package:facebook_app_events/facebook_app_events.dart';
+
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -15,12 +15,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:logger/logger.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:flutter_meta_sdk/flutter_meta_sdk.dart';
 import 'firebase_options.dart';
 
-final facebookAppEvents = FacebookAppEvents();
+
 final metaSdk = FlutterMetaSdk();
 /// https://www.figma.com/design/px6a4uJqQMFINZtOZtSPDP/ali-pasha-home?node-id=0-1&t=VcJBc4HEx3FehtIf-1
 void main() async {
@@ -104,6 +103,7 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> _initFacebookSDK() async {
     try {
+      metaSdk.activateApp();
       metaSdk.setAdvertiserTracking(enabled: true);
 
 

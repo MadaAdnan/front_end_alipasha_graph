@@ -1,5 +1,6 @@
 import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
+import 'package:ali_pasha_graph/helpers/queries.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 
 import 'package:ali_pasha_graph/models/category_model.dart';
@@ -23,7 +24,13 @@ class HomeLogic extends GetxController {
   RxBool hasMorePage = RxBool(false);
   RxBool loading = RxBool(false);
   RxList<UserModel> sellers = RxList<UserModel>([]);
-
+  RxList<UserModel> nearSellers = RxList<UserModel>([]);
+  RxList<UserModel> activitySeller = RxList<UserModel>([]);
+  RxList<ProductModel> latest = RxList<ProductModel>([]);
+  RxList<ProductModel> near = RxList<ProductModel>([]);
+  RxList<ProductModel> videos = RxList<ProductModel>([]);
+  RxList<ProductModel> activity = RxList<ProductModel>([]);
+  RxList<ProductModel> specials = RxList<ProductModel>([]);
   RxInt page = RxInt(1);
 
   /// Global Key For Coach Mark
@@ -43,13 +50,34 @@ class HomeLogic extends GetxController {
   GlobalKey moreCategoriesKey = GlobalKey();
   late List<TargetFocus> targetFoucos;
   Rxn<TutorialCoachMark> tutorialCoachMark = Rxn(null);
+  final ScrollController scrollControllerCategories = ScrollController();
 
   @override
   void onInit() {
     super.onInit();
     initTarget();
-
+    Future.delayed(Duration.zero, () async {
+      await Future.delayed(const Duration(seconds: 4));
+      if (scrollControllerCategories.hasClients) {
+        await scrollControllerCategories.animateTo(
+          50,
+          duration: const Duration(milliseconds: 400),
+          curve: Curves.easeOut,
+        );
+        await scrollControllerCategories.animateTo(
+          0,
+          duration: const Duration(milliseconds: 400),
+          curve: Curves.easeIn,
+        );
+        await scrollControllerCategories.animateTo(
+          50,
+          duration: const Duration(milliseconds: 400),
+          curve: Curves.easeIn,
+        );
+      }
+    });
     getDataFromStorage();
+    getSliderGroup();
     ever(
       page,
       (value) {
@@ -79,15 +107,18 @@ class HomeLogic extends GetxController {
                     },
                     child: Container(
                         margin: EdgeInsets.symmetric(vertical: 0.04.sh),
-                        padding: EdgeInsets.symmetric(horizontal: 0.04.sw,vertical: 0.001.sh),
-
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 0.04.sw, vertical: 0.001.sh),
                         child: Row(
                           children: [
                             Icon(
-                              Icons.arrow_back_ios,color: Colors.white,
+                              Icons.arrow_back_ios,
+                              color: Colors.white,
                             ),
-                            Text('التالي',style: H3WhiteTextStyle,),
-
+                            Text(
+                              'التالي',
+                              style: H3WhiteTextStyle,
+                            ),
                           ],
                         )),
                   )
@@ -116,15 +147,18 @@ class HomeLogic extends GetxController {
                     },
                     child: Container(
                         margin: EdgeInsets.symmetric(vertical: 0.04.sh),
-                        padding: EdgeInsets.symmetric(horizontal: 0.04.sw,vertical: 0.001.sh),
-
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 0.04.sw, vertical: 0.001.sh),
                         child: Row(
                           children: [
                             Icon(
-                              Icons.arrow_back_ios,color: Colors.white,
+                              Icons.arrow_back_ios,
+                              color: Colors.white,
                             ),
-                            Text('التالي',style: H3WhiteTextStyle,),
-
+                            Text(
+                              'التالي',
+                              style: H3WhiteTextStyle,
+                            ),
                           ],
                         )),
                   )
@@ -153,15 +187,18 @@ class HomeLogic extends GetxController {
                     },
                     child: Container(
                         margin: EdgeInsets.symmetric(vertical: 0.04.sh),
-                        padding: EdgeInsets.symmetric(horizontal: 0.04.sw,vertical: 0.001.sh),
-
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 0.04.sw, vertical: 0.001.sh),
                         child: Row(
                           children: [
                             Icon(
-                              Icons.arrow_back_ios,color: Colors.white,
+                              Icons.arrow_back_ios,
+                              color: Colors.white,
                             ),
-                            Text('التالي',style: H3WhiteTextStyle,),
-
+                            Text(
+                              'التالي',
+                              style: H3WhiteTextStyle,
+                            ),
                           ],
                         )),
                   )
@@ -190,15 +227,18 @@ class HomeLogic extends GetxController {
                     },
                     child: Container(
                         margin: EdgeInsets.symmetric(vertical: 0.04.sh),
-                        padding: EdgeInsets.symmetric(horizontal: 0.04.sw,vertical: 0.001.sh),
-
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 0.04.sw, vertical: 0.001.sh),
                         child: Row(
                           children: [
                             Icon(
-                              Icons.arrow_back_ios,color: Colors.white,
+                              Icons.arrow_back_ios,
+                              color: Colors.white,
                             ),
-                            Text('التالي',style: H3WhiteTextStyle,),
-
+                            Text(
+                              'التالي',
+                              style: H3WhiteTextStyle,
+                            ),
                           ],
                         )),
                   )
@@ -208,7 +248,7 @@ class HomeLogic extends GetxController {
           ),
         ],
       ),
-    /*  TargetFocus(
+      /*  TargetFocus(
         identify: "tender",
         keyTarget: tenderKey,
         contents: [
@@ -242,15 +282,18 @@ class HomeLogic extends GetxController {
                     },
                     child: Container(
                         margin: EdgeInsets.symmetric(vertical: 0.04.sh),
-                        padding: EdgeInsets.symmetric(horizontal: 0.04.sw,vertical: 0.001.sh),
-
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 0.04.sw, vertical: 0.001.sh),
                         child: Row(
                           children: [
                             Icon(
-                              Icons.arrow_back_ios,color: Colors.white,
+                              Icons.arrow_back_ios,
+                              color: Colors.white,
                             ),
-                            Text('التالي',style: H3WhiteTextStyle,),
-
+                            Text(
+                              'التالي',
+                              style: H3WhiteTextStyle,
+                            ),
                           ],
                         )),
                   )
@@ -279,15 +322,18 @@ class HomeLogic extends GetxController {
                     },
                     child: Container(
                         margin: EdgeInsets.symmetric(vertical: 0.04.sh),
-                        padding: EdgeInsets.symmetric(horizontal: 0.04.sw,vertical: 0.001.sh),
-
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 0.04.sw, vertical: 0.001.sh),
                         child: Row(
                           children: [
                             Icon(
-                              Icons.arrow_back_ios,color: Colors.white,
+                              Icons.arrow_back_ios,
+                              color: Colors.white,
                             ),
-                            Text('التالي',style: H3WhiteTextStyle,),
-
+                            Text(
+                              'التالي',
+                              style: H3WhiteTextStyle,
+                            ),
                           ],
                         )),
                   )
@@ -297,7 +343,7 @@ class HomeLogic extends GetxController {
           ),
         ],
       ),
-     /* TargetFocus(
+      /* TargetFocus(
         identify: "profile",
         keyTarget: loginKey,
         contents: [
@@ -332,15 +378,18 @@ class HomeLogic extends GetxController {
                     },
                     child: Container(
                         margin: EdgeInsets.symmetric(vertical: 0.04.sh),
-                        padding: EdgeInsets.symmetric(horizontal: 0.04.sw,vertical: 0.001.sh),
-
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 0.04.sw, vertical: 0.001.sh),
                         child: Row(
                           children: [
                             Icon(
-                              Icons.arrow_back_ios,color: Colors.white,
+                              Icons.arrow_back_ios,
+                              color: Colors.white,
                             ),
-                            Text('التالي',style: H3WhiteTextStyle,),
-
+                            Text(
+                              'التالي',
+                              style: H3WhiteTextStyle,
+                            ),
                           ],
                         )),
                   )
@@ -386,15 +435,18 @@ class HomeLogic extends GetxController {
                     },
                     child: Container(
                         margin: EdgeInsets.symmetric(vertical: 0.04.sh),
-                        padding: EdgeInsets.symmetric(horizontal: 0.04.sw,vertical: 0.001.sh),
-
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 0.04.sw, vertical: 0.001.sh),
                         child: Row(
                           children: [
                             Icon(
-                              Icons.arrow_back_ios,color: Colors.white,
+                              Icons.arrow_back_ios,
+                              color: Colors.white,
                             ),
-                            Text('التالي',style: H3WhiteTextStyle,),
-
+                            Text(
+                              'التالي',
+                              style: H3WhiteTextStyle,
+                            ),
                           ],
                         )),
                   )
@@ -404,7 +456,7 @@ class HomeLogic extends GetxController {
           ),
         ],
       ),
-     /* TargetFocus(
+      /* TargetFocus(
         shape: ShapeLightFocus.RRect,
         identify: "seller",
         keyTarget: sellerKey,
@@ -439,15 +491,18 @@ class HomeLogic extends GetxController {
                     },
                     child: Container(
                         margin: EdgeInsets.symmetric(vertical: 0.04.sh),
-                        padding: EdgeInsets.symmetric(horizontal: 0.04.sw,vertical: 0.001.sh),
-
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 0.04.sw, vertical: 0.001.sh),
                         child: Row(
                           children: [
                             Icon(
-                              Icons.arrow_back_ios,color: Colors.white,
+                              Icons.arrow_back_ios,
+                              color: Colors.white,
                             ),
-                            Text('التالي',style: H3WhiteTextStyle,),
-
+                            Text(
+                              'التالي',
+                              style: H3WhiteTextStyle,
+                            ),
                           ],
                         )),
                   )
@@ -463,30 +518,27 @@ class HomeLogic extends GetxController {
   RxBool startTut = RxBool(false);
 
   startTutorialMode(BuildContext context) {
-    bool isStart = mainController.storage.hasData('startTut')  ;
+    bool isStart = mainController.storage.hasData('startTut');
     if (!isStart) {
       mainController.storage.write('startTut', true);
       Future.delayed(const Duration(seconds: 5), () {
         if (startTut.value == false) {
           tutorialCoachMark.value = TutorialCoachMark(
             targets: targetFoucos,
-
-            skipWidget: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  "تخطي",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
+            skipWidget:
+                Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+              Text(
+                "تخطي",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
                 ),
-                Icon(
-                  Icons.arrow_forward_ios,color: Colors.white,
-                )
-              ]
-            ),
-
+              ),
+              Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.white,
+              )
+            ]),
           )..show(context: context);
           startTut.value = true;
         }
@@ -717,6 +769,123 @@ class HomeLogic extends GetxController {
         mainController.storage
             .write('specialSeller', res?.data?['data']?['specialSeller']);
       }
+    } catch (e) {
+      mainController.logger.w('ERRORPRO');
+      mainController.logger.w('$e');
+    }
+
+    loading.value = false;
+  }
+
+  getSliderGroup() async {
+    loading.value = true;
+
+    String dataProduct = '''{
+            id
+            name
+            weight
+            expert
+            type
+            is_discount
+            is_delivery
+            is_available
+            price
+            views_count
+            comments_count
+            discount
+            end_date
+            type
+            is_like
+            likes_count
+            level
+            image
+            video
+            created_at
+            user {
+              id
+              name
+           
+              phone
+            
+              seller_name
+              image
+              logo
+              is_verified
+            
+           
+            }
+            city{
+            name
+            }
+            category{
+            name
+            }
+          
+        }
+        ''';
+    String dataUser=''' {
+     id
+              name
+              is_verified
+              image
+              seller_name
+              address
+    }''';
+    mainController.query('''
+    query Latest {
+     latest $dataProduct
+near $dataProduct
+videos $dataProduct
+activity $dataProduct
+specials $dataProduct
+      nearSellers $dataUser
+      
+}
+    ''');
+
+    try {
+      dio.Response? res = await mainController.fetchData();
+      loading.value = false;
+      Logger().e(res?.data);
+      if (res?.data?['data']?['latest'] != null) {
+        for (var item in res?.data?['data']?['latest']) {
+          latest.add(ProductModel.fromJson(item));
+        }
+      }
+
+      if (res?.data?['data']?['near'] != null) {
+        for (var item in res?.data?['data']?['near']) {
+          near.add(ProductModel.fromJson(item));
+        }
+      }
+
+      if (res?.data?['data']?['videos'] != null) {
+        for (var item in res?.data?['data']?['videos']) {
+          videos.add(ProductModel.fromJson(item));
+        }
+      }
+      if (res?.data?['data']?['activity'] != null) {
+        for (var item in res?.data?['data']?['activity']) {
+          activity.add(ProductModel.fromJson(item));
+        }
+      }
+      if (res?.data?['data']?['specials'] != null) {
+        for (var item in res?.data?['data']?['specials']) {
+          specials.add(ProductModel.fromJson(item));
+        }
+      }
+
+      if (res?.data?['data']?['nearSellers'] != null) {
+        for (var item in res?.data?['data']?['nearSellers']) {
+          nearSellers.add(UserModel.fromJson(item));
+        }
+      }
+      if (res?.data?['data']?['activitySellers'] != null) {
+        for (var item in res?.data?['data']?['activitySellers']) {
+          activitySeller.add(UserModel.fromJson(item));
+        }
+      }
+
     } catch (e) {
       mainController.logger.w('ERRORPRO');
       mainController.logger.w('$e');

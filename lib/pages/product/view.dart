@@ -21,6 +21,7 @@ import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:logger/logger.dart';
 import 'package:toast/toast.dart';
 
@@ -234,7 +235,60 @@ class ProductPage extends StatelessWidget {
                                   type: 'success');
 
                               break;
+                            case '4':
+                              if (logic.productId.value != null) {
+                                Get.dialog(AlertDialog(
+                                  title: Text(
+                                    "تحذير",
+                                    style: H3RegularDark,
+                                  ),
+                                  content: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        "هل أنت متأكد من حذف المنتج؟\n لن تستطيع التراجع",
+                                        style: H3RedTextStyle,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          MaterialButton(
+                                            onPressed: () async {
+                                              int? delete = await mainController
+                                                  .deleteProduct(
+                                                      productId: logic
+                                                          .productId.value!);
+                                              if (delete != null &&
+                                                  delete > 0) {
+                                                mainController.showToast(
+                                                    text: "تم حذف منتجك بنجاح",
+                                                    type: 'success');
+                                                Get.offAllNamed(HOME_PAGE);
+                                              }
+                                            },
+                                            child: Text(
+                                              "حذف",
+                                              style: H3WhiteTextStyle,
+                                            ),
+                                            color: PrimaryColor,
+                                          ),
+                                          MaterialButton(
+                                            onPressed: () {
+                                              Get.back();
+                                            },
+                                            child: Text("إلغاء",
+                                                style: H3WhiteTextStyle),
+                                            color: Colors.grey,
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ));
+                              }
 
+                              break;
                             default:
                               print('default');
                           }
@@ -297,6 +351,28 @@ class ProductPage extends StatelessWidget {
                               ],
                             ),
                           ),
+                          if (logic.product.value?.user?.id != null &&
+                              logic.product.value?.user?.id ==
+                                  mainController.authUser.value?.id)
+                            PopupMenuItem<String>(
+                              value: '4',
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    FontAwesomeIcons.trash,
+                                    color: GrayDarkColor,
+                                    size: 0.04.sw,
+                                  ),
+                                  SizedBox(
+                                    width: 0.02.sw,
+                                  ),
+                                  Text(
+                                    "حذف المنشور",
+                                    style: H3RegularDark,
+                                  ),
+                                ],
+                              ),
+                            ),
                         ],
                       ),
                     ],
@@ -360,11 +436,12 @@ class ProductPage extends StatelessWidget {
                             width: 0.03.sw,
                           ),
                           InkWell(
-                            onTap: ()async {
-
-                            await  mainController.addToCart(
+                            onTap: () async {
+                              await mainController.addToCart(
                                   product: logic.product.value!);
-                            mainController.showToast(type: 'success',text: 'تم إضافة المنتج إلى السلة');
+                              mainController.showToast(
+                                  type: 'success',
+                                  text: 'تم إضافة المنتج إلى السلة');
                             },
                             child: Container(
                               width: 0.35.sw,
@@ -404,19 +481,21 @@ class ProductPage extends StatelessWidget {
                                     type: "error");
                                 return;
                               }
-                              if(mainController.authUser.value?.is_active!=true){
+                              if (mainController.authUser.value?.is_active !=
+                                  true) {
                                 mainController.showToast(
                                     type: 'error',
                                     text:
-                                    'حسابكم محظور الرجاء التواصل مع الدعم الفني');
-                                return ;
+                                        'حسابكم محظور الرجاء التواصل مع الدعم الفني');
+                                return;
                               }
                               if (!mainController
                                   .createCommunityLodaing.value) {
                                 StringBuffer message = StringBuffer();
                                 message.writeln(
                                     "${mainController.settings.value.footerOrder}");
-                                Logger().e("${mainController.settings.value.footerOrder}");
+                                Logger().e(
+                                    "${mainController.settings.value.footerOrder}");
                                 message.write("\n");
                                 message
                                     .write("السلام عليكم ورحمة الله وبركاته ");
@@ -433,8 +512,9 @@ class ProductPage extends StatelessWidget {
                                     "سعر الوحدة : ${logic.product.value?.is_discount == true ? logic.product.value?.discount : logic.product.value?.price}");
                                 message.write("\n");
 
-                                await mainController.clickWhatsApp(productId: logic.product.value!.id!);
-Logger().e(message);
+                                await mainController.clickWhatsApp(
+                                    productId: logic.product.value!.id!);
+                                Logger().e(message);
                                 openUrl(
                                     url:
                                         "https://wa.me/${logic.product.value?.user?.full_phone}?text=${Uri.encodeComponent('${message!.toString()}')}");
@@ -802,7 +882,8 @@ Logger().e(message);
                                       ),
                                       AutoSizeText(
                                         " ل.س",
-                                        style: H7GrayOpacityTextStyle.copyWith(fontSize: 20.sp),
+                                        style: H7GrayOpacityTextStyle.copyWith(
+                                            fontSize: 20.sp),
                                       ),
                                       AutoSizeText(
                                         "${logic.product.value?.syrPrice?.discount?.toStringAsFixed(0)}",
@@ -810,7 +891,8 @@ Logger().e(message);
                                       ),
                                       AutoSizeText(
                                         " ل.س",
-                                        style: H6RedTextStyle.copyWith(fontSize: 20.sp),
+                                        style: H6RedTextStyle.copyWith(
+                                            fontSize: 20.sp),
                                       ),
                                     ],
                                   ),
@@ -999,17 +1081,18 @@ Logger().e(message);
                         logic.product.value!.colors!.length > 0)
                       Expanded(
                           child: Container(
-
-                            width: 1.sw,
-                            height: 0.12.sw,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              children: [
-                                ...List.generate(
-                                    logic.product.value?.colors?.length ?? 0,
-                                        (index) => Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                        width: 1.sw,
+                        height: 0.12.sw,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: [
+                            ...List.generate(
+                                logic.product.value?.colors?.length ?? 0,
+                                (index) => Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
                                         Text(
                                           "${logic.product.value?.colors![index].name}",
@@ -1021,15 +1104,14 @@ Logger().e(message);
                                           decoration: BoxDecoration(
                                               shape: BoxShape.circle,
                                               color:
-                                              "${logic.product.value?.colors![index].code}"
-                                                  .toColor()),
+                                                  "${logic.product.value?.colors![index].code}"
+                                                      .toColor()),
                                         ),
-
                                       ],
                                     ))
-                              ],
-                            ),
-                          )),
+                          ],
+                        ),
+                      )),
                   ],
                 ),
               ),
