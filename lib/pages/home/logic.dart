@@ -560,7 +560,7 @@ class HomeLogic extends GetxController {
     // getProduct();
   }
 
-  showDialogPrivacy() {}
+
 
   getProduct() async {
     loading.value = true;

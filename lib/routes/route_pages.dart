@@ -140,6 +140,7 @@ import '../pages/following/binding.dart';
 import '../pages/following/view.dart';
 import '../pages/forget_password/binding.dart';
 import '../pages/forget_password/view.dart';
+import '../pages/home/view2.dart';
 import '../pages/invoices/binding.dart';
 import '../pages/invoices/view.dart';
 import '../pages/my_advice/view.dart';
