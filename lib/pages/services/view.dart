@@ -28,6 +28,8 @@ class ServicesPage extends StatelessWidget {
     exit = false;
     return WillPopScope(
       child: Scaffold(
+        floatingActionButton: _buildFloatingActions(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
         backgroundColor: WhiteColor,
         body: NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification scrollInfo) {
@@ -35,543 +37,532 @@ class ServicesPage extends StatelessWidget {
           },
           child: Column(
             children: [
-              AppBarComponent2(selected: 'service',),
+              AppBarComponent2(
+                selected: 'service',
+              ),
               Expanded(
                   child: Container(
-                    child: ListView(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 0.02.sw,
-                        vertical: 0.01.sh,
-                      ),
-                      controller: scrollController,
-                      children: [
-
-                        Obx(() {
-                          if (logic.sliders.length > 0) {
-                            return SliderComponent(items: logic.sliders);
-                          }
-                          return Container();
-                        }),
-                        15.verticalSpace,
-                        Obx(() {
-                          if (logic.loading.value) {
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Shimmer.fromColors(
-                                    baseColor: GrayDarkColor,
-                                    highlightColor: GrayLightColor,
-                                    child: Container(
-                                      width: 0.31.sw,
-                                      height: 0.31.sw,
-                                      color: PrimaryColor,
-                                    )),
-                                Shimmer.fromColors(
-                                    baseColor: GrayDarkColor,
-                                    highlightColor: GrayLightColor,
-                                    child: Container(
-                                      width: 0.31.sw,
-                                      height: 0.31.sw,
-                                      color: PrimaryColor,
-                                    )),
-                                Shimmer.fromColors(
-                                    baseColor: GrayDarkColor,
-                                    highlightColor: GrayLightColor,
-                                    child: Container(
-                                      width: 0.31.sw,
-                                      height: 0.31.sw,
-                                      color: PrimaryColor,
-                                    )),
-                              ],
-                            );
-                          }
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                width: 0.26.sw,
-                                height: 0.25.sw,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 0.008.sw, vertical: 0.002.sh),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15.r),
-                                  color: GrayWhiteColor,
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-
-                                    // Dollar
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 0.07.sw,
-                                      height: 0.07.sw,
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: WhiteColor,
-                                      ),
-                                      child: Text(
-                                        '\$',
-                                        style: H2RedTextStyle.copyWith(
-                                            color: Colors.black,
-                                            fontSize: 55.sp),
-                                      ),
-                                    ),
-                                    15.verticalSpace,
-                                    RichText(text: TextSpan(children: [
-                                      TextSpan(text: 'مبيع ',
-                                        style: H3RegularDark,),
-                                      TextSpan(
-                                        text: ' ${logic.dollar.value?.idlib?.usd
-                                            ?.sale} \$',
-                                        style: H3BlackTextStyle.copyWith(
-                                            color: Colors.black),)
-                                    ])),
-                                    15.verticalSpace,
-                                    RichText(text: TextSpan(children: [
-                                      TextSpan(text: 'شـراء ',
-                                        style: H3RegularDark,),
-                                      TextSpan(
-                                        text: ' ${logic.dollar.value?.idlib?.usd
-                                            ?.bay} \$',
-                                        style: H3BlackTextStyle.copyWith(
-                                            color: Colors.black),)
-                                    ])),
-
-
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                width: 0.26.sw,
-                                height: 0.25.sw,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 0.008.sw, vertical: 0.002.sh),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15.r),
-                                  color: GrayWhiteColor,
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 0.07.sw,
-                                      height: 0.07.sw,
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: WhiteColor,
-                                      ),
-                                      child: Icon(
-                                        FontAwesomeIcons.gem,
-                                        size: 0.06.sw,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    15.verticalSpace,
-                                    RichText(text: TextSpan(children: [
-                                      TextSpan(text: 'ذهـب  ',
-                                        style: H3RegularDark,),
-                                      TextSpan(text: '${double.tryParse(
-                                          "${logic.gold.value?.idlib?.gold21
-                                              ?.bay}")} \$',
-                                          style: H3BlackTextStyle.copyWith(
-                                              color: Colors.black))
-                                    ]),),
-                                    15.verticalSpace,
-                                    RichText(text: TextSpan(children: [
-                                      TextSpan(text: 'فضـة  ',
-                                        style: H3RegularDark,),
-                                      TextSpan(text: '${double.tryParse(
-                                          "${logic.gold.value?.idlib?.sliver
-                                              ?.bay}")} \$',
-                                          style: H3BlackTextStyle.copyWith(
-                                              color: Colors.black))
-                                    ]),),
-
-
-                                  ],
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  Get.toNamed(WEATHER_PAGE);
-                                },
+                child: ListView(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 0.02.sw,
+                    vertical: 0.01.sh,
+                  ),
+                  controller: scrollController,
+                  children: [
+                    Obx(() {
+                      if (logic.sliders.length > 0) {
+                        return SliderComponent(items: logic.sliders);
+                      }
+                      return Container();
+                    }),
+                    15.verticalSpace,
+                    Obx(() {
+                      if (logic.loading.value) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Shimmer.fromColors(
+                                baseColor: GrayDarkColor,
+                                highlightColor: GrayLightColor,
                                 child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 0.008.sw, vertical: 0.002.sh),
-                                  width: 0.4.sw,
-                                  height: 0.25.sw,
-                                  decoration: BoxDecoration(
-                                    color: GrayWhiteColor,
-                                    borderRadius: BorderRadius.circular(15.r),
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Expanded(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: [
-                                            Container(
-                                              width: 0.1.sw,
-                                              height: 0.1.sw,
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                image: DecorationImage(
-                                                  image: CachedNetworkImageProvider(
-                                                    '${logic.idlibWeather.first
-                                                        .icon}',
-                                                  ),
-
-                                                  fit: BoxFit.fitWidth,
-                                                ),
-                                              ),
-                                            ),
-                                            Column(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      '${'${logic.idlibWeather
-                                                          .first.text}'
-                                                          .weatherType()} ',
-                                                      style: H4RegularDark,
-                                                    ),
-                                                    Text(
-                                                      '${logic.idlibWeather
-                                                          .first.temp_c}'
-                                                          .weatherType(),
-                                                      style: H2BlackTextStyle
-                                                          .copyWith(
-                                                          color: Colors.black),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      'سرعة الرياح : ',
-                                                      style: H6RegularDark,
-                                                    ),
-                                                    Text(
-                                                      '${logic.idlibWeather
-                                                          .first
-                                                          .wind} كم /  سا',
-                                                      style: H6BlackTextStyle
-                                                          .copyWith(
-                                                          color: Colors.black),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                          children: [
-                                            Transform.translate(
-                                              offset: Offset(-0.02.sw, 0),
-                                              child: Text(
-                                                'إدلب',
-                                                style: H2RegularDark,
-                                              ),),
-                                            Transform.translate(
-                                              offset: Offset(-0.025.sw, 0),
-                                              child: Container(
-                                                alignment: Alignment.center,
-                                                padding: EdgeInsets.symmetric(
-                                                    vertical: 0.007.sw,
-                                                    horizontal: 0.02.sw),
-                                                decoration: BoxDecoration(
-                                                    color: GrayLightColor,
-                                                    borderRadius:
-                                                    BorderRadius.circular(
-                                                        30.r)),
-                                                child: Text(
-                                                  'عرض المزيد',
-                                                  style: H4RegularDark.copyWith(
-                                                    color: DarkColor,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              )
-                            ],
-                          );
-                        }),
-                        15.verticalSpace,
-                        Container(
-                          width: 1.sw,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  Get.toNamed(PRAYER_PAGE);
-                                },
+                                  width: 0.31.sw,
+                                  height: 0.31.sw,
+                                  color: PrimaryColor,
+                                )),
+                            Shimmer.fromColors(
+                                baseColor: GrayDarkColor,
+                                highlightColor: GrayLightColor,
                                 child: Container(
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 0.01.sw, vertical: 0.03.sw),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15.r),
-                                    color: GrayWhiteColor,
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment
-                                        .spaceEvenly,
-                                    crossAxisAlignment: CrossAxisAlignment
-                                        .center,
-                                    children: [
-                                      const Icon(
-                                        FontAwesomeIcons.mosque,
-                                        color: DarkColor,
-                                      ),
-                                      Text(
-                                        'مواقيت الصلاة',
-                                        style: H5BlackTextStyle,
-                                        textAlign: TextAlign.center,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  Get.toNamed(GOLD_PAGE, arguments: 2);
-                                },
+                                  width: 0.31.sw,
+                                  height: 0.31.sw,
+                                  color: PrimaryColor,
+                                )),
+                            Shimmer.fromColors(
+                                baseColor: GrayDarkColor,
+                                highlightColor: GrayLightColor,
                                 child: Container(
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 0.02.sw, vertical: 0.03.sw),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15.r),
-                                    color: GrayWhiteColor,
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment
-                                        .spaceEvenly,
-                                    crossAxisAlignment: CrossAxisAlignment
-                                        .center,
-                                    children: [
-                                      const Icon(
-                                        FontAwesomeIcons.oilWell,
-                                        color: DarkColor,
-                                      ),
-                                      Text(
-                                        'أسعار المحروقات',
-                                        style: H5BlackTextStyle,
-                                        textAlign: TextAlign.center,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  Get.toNamed(SELLERS_PAGE);
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 0.02.sw, vertical: 0.03.sw),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15.r),
-                                    color: GrayWhiteColor,
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment
-                                        .spaceEvenly,
-                                    crossAxisAlignment: CrossAxisAlignment
-                                        .center,
-                                    children: [
-                                      const Icon(
-                                        FontAwesomeIcons.truck,
-                                        color: DarkColor,
-                                      ),
-                                      Text(
-                                        'تجار الجملة',
-                                        style: H5BlackTextStyle,
-                                        textAlign: TextAlign.center,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              InkWell(
+                                  width: 0.31.sw,
+                                  height: 0.31.sw,
+                                  color: PrimaryColor,
+                                )),
+                          ],
+                        );
+                      }
+                      return Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 0.005.sw),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 31,
+                              child: InkWell(
                                 onTap: () {
                                   Get.toNamed(GOLD_PAGE, arguments: 1);
                                 },
                                 child: Container(
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 0.02.sw, vertical: 0.03.sw),
+                                  height: 0.35.sw,
+                                  padding: EdgeInsets.all(0.02.sw),
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15.r),
+                                    borderRadius: BorderRadius.circular(16.r),
                                     color: GrayWhiteColor,
+                                    border: Border.all(
+                                        color: GrayLightColor, width: 1),
                                   ),
                                   child: Column(
-                                    mainAxisAlignment: MainAxisAlignment
-                                        .spaceEvenly,
-                                    crossAxisAlignment: CrossAxisAlignment
-                                        .center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
-                                      const Icon(
-                                        FontAwesomeIcons.dollarSign,
-                                        color: DarkColor,
+                                      Container(
+                                        alignment: Alignment.center,
+                                        width: 0.11.sw,
+                                        height: 0.11.sw,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.green.shade50,
+                                        ),
+                                        child: Text(
+                                          '\$',
+                                          style: H1BlackTextStyle.copyWith(
+                                              color: Colors.green.shade700,
+                                              fontSize: 0.07.sw),
+                                        ),
                                       ),
-                                      Text(
-                                        'أسعار العملات',
-                                        style: H5BlackTextStyle,
-                                        textAlign: TextAlign.center,
-                                      )
+                                      Column(
+                                        children: [
+                                          Text(
+                                            'مبيع',
+                                            style: H5RegularDark.copyWith(
+                                                fontSize: 0.028.sw),
+                                          ),
+                                          SizedBox(height: 0.002.sh),
+                                          Text(
+                                            '${logic.dollar.value?.idlib?.usd?.sale} \$',
+                                            style: H3BlackTextStyle.copyWith(
+                                                color: Colors.black,
+                                                fontSize: 0.032.sw),
+                                          ),
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          Text(
+                                            'شراء',
+                                            style: H5RegularDark.copyWith(
+                                                fontSize: 0.028.sw),
+                                          ),
+                                          SizedBox(height: 0.002.sh),
+                                          Text(
+                                            '${logic.dollar.value?.idlib?.usd?.bay} \$',
+                                            style: H3BlackTextStyle.copyWith(
+                                                color: Colors.black,
+                                                fontSize: 0.032.sw),
+                                          ),
+                                        ],
+                                      ),
                                     ],
                                   ),
                                 ),
                               ),
-                              InkWell(
+                            ),
+                            SizedBox(width: 0.015.sw),
+                            Expanded(
+                              flex: 31,
+                              child: InkWell(
                                 onTap: () {
                                   Get.toNamed(GOLD_PAGE, arguments: 0);
                                 },
                                 child: Container(
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 0.02.sw, vertical: 0.03.sw),
+                                  height: 0.35.sw,
+                                  padding: EdgeInsets.all(0.02.sw),
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15.r),
+                                    borderRadius: BorderRadius.circular(16.r),
                                     color: GrayWhiteColor,
+                                    border: Border.all(
+                                        color: GrayLightColor, width: 1),
                                   ),
                                   child: Column(
-                                    mainAxisAlignment: MainAxisAlignment
-                                        .spaceEvenly,
-                                    crossAxisAlignment: CrossAxisAlignment
-                                        .center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
-                                      const Icon(
-                                        FontAwesomeIcons.gem,
-                                        color: DarkColor,
+                                      Container(
+                                        alignment: Alignment.center,
+                                        width: 0.11.sw,
+                                        height: 0.11.sw,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.amber.shade50,
+                                        ),
+                                        child: Icon(
+                                          FontAwesomeIcons.gem,
+                                          size: 0.06.sw,
+                                          color: Colors.amber.shade700,
+                                        ),
                                       ),
-                                      Text(
-                                        'أسعار المعادن',
-                                        style: H5BlackTextStyle,
-                                        textAlign: TextAlign.center,
-                                      )
+                                      Column(
+                                        children: [
+                                          Text(
+                                            'ذهب',
+                                            style: H5RegularDark.copyWith(
+                                                fontSize: 0.028.sw),
+                                          ),
+                                          SizedBox(height: 0.002.sh),
+                                          Text(
+                                            '${double.tryParse("${logic.gold.value?.idlib?.gold21?.bay}")} \$',
+                                            style: H3BlackTextStyle.copyWith(
+                                                color: Colors.black,
+                                                fontSize: 0.032.sw),
+                                          ),
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          Text(
+                                            'فضة',
+                                            style: H5RegularDark.copyWith(
+                                                fontSize: 0.028.sw),
+                                          ),
+                                          SizedBox(height: 0.002.sh),
+                                          Text(
+                                            '${double.tryParse("${logic.gold.value?.idlib?.sliver?.bay}")} \$',
+                                            style: H3BlackTextStyle.copyWith(
+                                                color: Colors.black,
+                                                fontSize: 0.032.sw),
+                                          ),
+                                        ],
+                                      ),
                                     ],
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                        15.verticalSpace,
-                        Obx(() {
-                          return Column(
-                            children: [
-
-                              ...List.generate(
-                                logic.categories.length,
-                                    (index) =>
-                                    Column(children: [
-                                      InkWell(
-                                        onTap: () {
-                                          Logger().f(
-                                              logic.categories[index].toJson());
-                                          Get.toNamed(SERVICE_PAGE,
-                                              arguments: logic
-                                                  .categories[index]);
-                                        },
-                                        child: Container(
-
-                                          padding:
-                                          EdgeInsets.symmetric(
-                                              horizontal: 0.02.sw,
-                                              vertical: 0.007.sh),
-                                          width: 1.sw,
-                                          decoration: const BoxDecoration(
-                                            border: Border(
-                                              bottom: BorderSide(
-                                                  color: GrayLightColor),
+                            ),
+                            SizedBox(width: 0.015.sw),
+                            Expanded(
+                              flex: 33,
+                              child: InkWell(
+                                onTap: () {
+                                  Get.toNamed(WEATHER_PAGE);
+                                },
+                                child: Container(
+                                  height: 0.35.sw,
+                                  padding: EdgeInsets.all(0.02.sw),
+                                  decoration: BoxDecoration(
+                                    color: GrayWhiteColor,
+                                    borderRadius: BorderRadius.circular(16.r),
+                                    border: Border.all(
+                                        color: GrayLightColor, width: 1),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Container(
+                                        width: 0.11.sw,
+                                        height: 0.11.sw,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.blue.shade50,
+                                          image: DecorationImage(
+                                            image: CachedNetworkImageProvider(
+                                              '${logic.idlibWeather.first.icon}',
                                             ),
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment
-                                                    .start,
-                                                children: [
-                                                  Container(
-                                                    width: 0.08.sw,
-                                                    height: 0.08.sw,
-                                                    alignment: Alignment.center,
-
-                                                    decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      color: GrayWhiteColor,
-                                                    ),
-                                                    child: Text(
-                                                      "${logic.categories[index]
-                                                          .name?.substring(
-                                                          0, 1)}",
-                                                      style: H3BlackTextStyle
-                                                          .copyWith(
-                                                          color: Colors.black),
-                                                    ),
-                                                  ),
-                                                  10.horizontalSpace,
-                                                  Container(
-                                                    alignment: Alignment.center,
-                                                    child: Text(
-                                                      "${logic.categories[index]
-                                                          .name}",
-                                                      style: H2RegularDark,
-                                                      overflow: TextOverflow
-                                                          .ellipsis,
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                              Badge.count(
-                                                  count: int.tryParse('${logic
-                                                      .categories[index]
-                                                      .products2Count}') ?? 0)
-
-                                            ],
+                                            fit: BoxFit.cover,
                                           ),
                                         ),
                                       ),
-                                      15.verticalSpace,
-                                    ],),
-                              )
-                            ],
-                          );
-                        })
+                                      Column(
+                                        children: [
+                                          Text(
+                                            '${'${logic.idlibWeather.first.text}'.weatherType()}',
+                                            style: H5RegularDark.copyWith(
+                                                fontSize: 0.028.sw),
+                                            textAlign: TextAlign.center,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          SizedBox(height: 0.002.sh),
+                                          Text(
+                                            '${logic.idlibWeather.first.temp_c}°',
+                                            style: H2BlackTextStyle.copyWith(
+                                                color: Colors.black,
+                                                fontSize: 0.045.sw),
+                                          ),
+                                        ],
+                                      ),
+                                      Text(
+                                        'إدلب',
+                                        style: H4BlackTextStyle.copyWith(
+                                            fontSize: 0.032.sw),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    }),
+                    15.verticalSpace,
+                    Wrap(
+                      spacing: 0.02.sw,
+                      runSpacing: 0.02.sw,
+                      alignment: WrapAlignment.spaceEvenly,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Get.toNamed(PRAYER_PAGE);
+                          },
+                          child: Container(
+                            width: 0.22.sw,
+                            height: 0.22.sw,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16.r),
+                              color: GrayWhiteColor,
+                              border:
+                                  Border.all(color: GrayLightColor, width: 1),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 0.1.sw,
+                                  height: 0.1.sw,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.purple.shade50,
+                                  ),
+                                  child: Icon(
+                                    FontAwesomeIcons.mosque,
+                                    color: Colors.purple.shade700,
+                                    size: 0.05.sw,
+                                  ),
+                                ),
+                                SizedBox(height: 0.01.sh),
+                                Text(
+                                  'مواقيت\nالصلاة',
+                                  style: H5BlackTextStyle.copyWith(
+                                      fontSize: 0.03.sw),
+                                  textAlign: TextAlign.center,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Get.toNamed(GOLD_PAGE, arguments: 2);
+                          },
+                          child: Container(
+                            width: 0.22.sw,
+                            height: 0.22.sw,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16.r),
+                              color: GrayWhiteColor,
+                              border:
+                                  Border.all(color: GrayLightColor, width: 1),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 0.1.sw,
+                                  height: 0.1.sw,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.orange.shade50,
+                                  ),
+                                  child: Icon(
+                                    FontAwesomeIcons.oilWell,
+                                    color: Colors.orange.shade700,
+                                    size: 0.05.sw,
+                                  ),
+                                ),
+                                SizedBox(height: 0.01.sh),
+                                Text(
+                                  'أسعار\nالمحروقات',
+                                  style: H5BlackTextStyle.copyWith(
+                                      fontSize: 0.03.sw),
+                                  textAlign: TextAlign.center,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Get.toNamed(GOLD_PAGE, arguments: 1);
+                          },
+                          child: Container(
+                            width: 0.22.sw,
+                            height: 0.22.sw,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16.r),
+                              color: GrayWhiteColor,
+                              border:
+                                  Border.all(color: GrayLightColor, width: 1),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 0.1.sw,
+                                  height: 0.1.sw,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.green.shade50,
+                                  ),
+                                  child: Icon(
+                                    FontAwesomeIcons.dollarSign,
+                                    color: Colors.green.shade700,
+                                    size: 0.05.sw,
+                                  ),
+                                ),
+                                SizedBox(height: 0.01.sh),
+                                Text(
+                                  'أسعار\nالعملات',
+                                  style: H5BlackTextStyle.copyWith(
+                                      fontSize: 0.03.sw),
+                                  textAlign: TextAlign.center,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Get.toNamed(GOLD_PAGE, arguments: 0);
+                          },
+                          child: Container(
+                            width: 0.22.sw,
+                            height: 0.22.sw,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16.r),
+                              color: GrayWhiteColor,
+                              border:
+                                  Border.all(color: GrayLightColor, width: 1),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 0.1.sw,
+                                  height: 0.1.sw,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.amber.shade50,
+                                  ),
+                                  child: Icon(
+                                    FontAwesomeIcons.gem,
+                                    color: Colors.amber.shade700,
+                                    size: 0.05.sw,
+                                  ),
+                                ),
+                                SizedBox(height: 0.01.sh),
+                                Text(
+                                  'أسعار\nالمعادن',
+                                  style: H5BlackTextStyle.copyWith(
+                                      fontSize: 0.03.sw),
+                                  textAlign: TextAlign.center,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
                       ],
                     ),
-                  ))
+                    15.verticalSpace,
+                    Obx(() {
+                      return Column(
+                        children: [
+                          ...List.generate(
+                            logic.categories.length,
+                            (index) => Column(
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    Logger()
+                                        .f(logic.categories[index].toJson());
+                                    Get.toNamed(SERVICE_PAGE,
+                                        arguments: logic.categories[index]);
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 0.04.sw,
+                                        vertical: 0.015.sh),
+                                    width: 1.sw,
+                                    decoration: const BoxDecoration(
+                                      border: Border(
+                                        bottom: BorderSide(
+                                            color: GrayLightColor, width: 1),
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Expanded(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                width: 0.1.sw,
+                                                height: 0.1.sw,
+                                                alignment: Alignment.center,
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: GrayWhiteColor,
+                                                ),
+                                                child: Text(
+                                                  "${logic.categories[index].name?.substring(0, 1)}",
+                                                  style:
+                                                      H2BlackTextStyle.copyWith(
+                                                          color: Colors.black),
+                                                ),
+                                              ),
+                                              SizedBox(width: 0.03.sw),
+                                              Expanded(
+                                                child: Text(
+                                                  "${logic.categories[index].name}",
+                                                  style: H2RegularDark,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(width: 0.02.sw),
+                                        Badge.count(
+                                            count: int.tryParse(
+                                                    '${logic.categories[index].products2Count}') ??
+                                                0),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                15.verticalSpace,
+                              ],
+                            ),
+                          )
+                        ],
+                      );
+                    })
+                  ],
+                ),
+              ))
             ],
           ),
         ),
@@ -580,12 +571,57 @@ class ServicesPage extends StatelessWidget {
         if (exit == true) {
           Get.offNamed(HOME_PAGE);
         } else {
-          scrollController.animateTo(
-              0, duration: Duration(microseconds: 100), curve: Curves.linear);
+          scrollController.animateTo(0,
+              duration: Duration(microseconds: 100), curve: Curves.linear);
           exit = true;
         }
         return Future.value(false);
       },
+    );
+  }
+
+  Widget _buildFloatingActions() {
+    return Obx(() {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          _buildCreateProductButton(),
+          SizedBox(height: 0.01.sh),
+          if (mainController.carts.isNotEmpty) _buildCartButton(),
+          SizedBox(height: 0.02.sh),
+        ],
+      );
+    });
+  }
+
+  Widget _buildCreateProductButton() {
+    return FloatingActionButton(
+      key: mainController.createProductKey,
+      onPressed: () => Get.toNamed(CREATE_SERVICE_PAGE),
+      backgroundColor: PrimaryColor.withOpacity(0.7),
+      mini: true,
+      child: const Icon(FontAwesomeIcons.plus, color: WhiteColor),
+    );
+  }
+
+  Widget _buildCartButton() {
+    return Stack(
+      children: [
+        FloatingActionButton(
+          onPressed: () => Get.toNamed(CART_SELLER),
+          backgroundColor: PrimaryColor.withOpacity(0.7),
+          mini: true,
+          child: const Icon(FontAwesomeIcons.cartShopping, color: WhiteColor),
+        ),
+        Positioned(
+          top: 0,
+          right: 0,
+          child: Badge.count(
+            count: mainController.carts.length,
+            backgroundColor: PrimaryColor,
+          ),
+        ),
+      ],
     );
   }
 }

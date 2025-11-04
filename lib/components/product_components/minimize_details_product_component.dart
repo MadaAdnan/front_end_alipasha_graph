@@ -14,7 +14,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
-
 import '../../routes/routes_url.dart';
 import '../seller_name_component.dart';
 
@@ -141,23 +140,25 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         AutoSizeText(
-                          "${post.name?.length != 0 ? post.name : post
-                              .expert} ",
+                          "${post.name?.length != 0 ? post.name : post.expert} ",
                           style: H3BlackTextStyle.copyWith(
                               fontWeight: FontWeight.bold),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
-
-                        SizedBox(height: 0.005.sh,),
+                        SizedBox(
+                          height: 0.005.sh,
+                        ),
                         Flexible(
                             child: Text(
-                              '${post.expert?.replaceAll("\n", " ")}',
-                              style: H4GrayTextStyle,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                            )),
-                        SizedBox(height: 0.005.sh,),
+                          '${post.expert?.replaceAll("\n", " ")}',
+                          style: H4GrayTextStyle,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        )),
+                        SizedBox(
+                          height: 0.005.sh,
+                        ),
                         Container(
                           width: 1.sw,
                           height: 0.04.sh,
@@ -169,20 +170,21 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                                 child: Transform.translate(
                                   offset: Offset(0, -0.01.sh),
                                   child: SellerNameComponent(
-
                                       textStyle: H5RegularDark,
                                       color: TitleColor,
                                       seller: post.user,
-                                      isVerified: post.user?.is_verified ==
-                                          true),),
+                                      isVerified:
+                                          post.user?.is_verified == true),
+                                ),
                               ),
-                              SizedBox(height: 0.01.sh,),
-                              if(post.active ==
+                              SizedBox(
+                                height: 0.01.sh,
+                              ),
+                              if (post.active ==
                                   'active' /* && mainController.authUser.value?.id != post.user?.id*/)
                                 Transform.translate(
                                   offset: Offset(0, -0.01.sh),
                                   child: GestureDetector(
-
                                     onTap: () {
                                       mainController.addToCart(product: post);
                                     },
@@ -190,7 +192,6 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                                       padding: EdgeInsets.symmetric(
                                           horizontal: 0.02.sw,
                                           vertical: 0.002.sh),
-
                                       child: Icon(
                                         FontAwesomeIcons.cartShopping,
                                         size: 0.05.sw,
@@ -198,68 +199,91 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                              if(mainController.authUser.value?.id ==
+                              if (mainController.authUser.value?.id ==
                                   post.user?.id)
                                 Transform.translate(
                                   offset: Offset(0, -0.01.sh),
-                                  child: IconButton(onPressed: () {
-                                    Get.dialog(AlertDialog(
-                                      content: Container(
-                                        height: 0.15.sh,
-                                        child: Obx(() {
-                                          if (loading.value) {
-                                            return Container(
-                                              alignment: Alignment.center,
-                                              child: ProgressLoading(
-                                                width: 0.1.sw,),);
-                                          }
-                                          return Container(child: Text(
-                                            'هل أنت متأكد من حذف المنشور ؟',
-                                            style: H2RedTextBoldStyle,),);
-                                        }),
-                                      ),
-                                      actions: [
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .spaceBetween,
-                                          children: [
-                                            MaterialButton(onPressed: () {
-                                              Get.back();
-                                            },
-                                              child: Text(
-                                                'إلغاء', style: H3RegularDark,),
-                                              color: GrayDarkColor,),
-                                            SizedBox(width: 0.02.sw,),
-                                            MaterialButton(onPressed: () async {
-                                              loading.value = true;
-                                              int? productId = await mainController
-                                                  .deleteProduct(
-                                                  productId: post.id!);
-                                              if (productId != null) {
-                                                ProfileLogic profile = Get.find<
-                                                    ProfileLogic>();
-                                                int index = profile.products
-                                                    .indexWhere((el) =>
-                                                el.id == productId);
-                                                if (index > -1) {
-                                                  profile.products.removeAt(
-                                                      index);
-                                                }
+                                  child: IconButton(
+                                      onPressed: () {
+                                        Get.dialog(AlertDialog(
+                                          content: Container(
+                                            height: 0.15.sh,
+                                            child: Obx(() {
+                                              if (loading.value) {
+                                                return Container(
+                                                  alignment: Alignment.center,
+                                                  child: ProgressLoading(
+                                                    width: 0.1.sw,
+                                                  ),
+                                                );
                                               }
-                                              loading.value = false;
-                                              Get.back();
-                                            },
-                                              child: Text('إستمرار',
-                                                style: H3WhiteTextStyle,),
-                                              color: PrimaryColor,),
+                                              return Container(
+                                                child: Text(
+                                                  'هل أنت متأكد من حذف المنشور ؟',
+                                                  style: H2RedTextBoldStyle,
+                                                ),
+                                              );
+                                            }),
+                                          ),
+                                          actions: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                MaterialButton(
+                                                  onPressed: () {
+                                                    Get.back();
+                                                  },
+                                                  child: Text(
+                                                    'إلغاء',
+                                                    style: H3RegularDark,
+                                                  ),
+                                                  color: GrayDarkColor,
+                                                ),
+                                                SizedBox(
+                                                  width: 0.02.sw,
+                                                ),
+                                                MaterialButton(
+                                                  onPressed: () async {
+                                                    loading.value = true;
+                                                    int? productId =
+                                                        await mainController
+                                                            .deleteProduct(
+                                                                productId:
+                                                                    post.id!);
+                                                    if (productId != null) {
+                                                      ProfileLogic profile = Get
+                                                          .find<ProfileLogic>();
+                                                      int index = profile
+                                                          .products
+                                                          .indexWhere((el) =>
+                                                              el.id ==
+                                                              productId);
+                                                      if (index > -1) {
+                                                        profile.products
+                                                            .removeAt(index);
+                                                      }
+                                                    }
+                                                    loading.value = false;
+                                                    Get.back();
+                                                  },
+                                                  child: Text(
+                                                    'إستمرار',
+                                                    style: H3WhiteTextStyle,
+                                                  ),
+                                                  color: PrimaryColor,
+                                                ),
+                                              ],
+                                            )
                                           ],
-                                        )
-                                      ],
-                                    ));
-                                  },
+                                        ));
+                                      },
                                       icon: Icon(
-                                        FontAwesomeIcons.trash, size: 0.04.sw,
-                                        color: PrimaryColor,)),
+                                        FontAwesomeIcons.trash,
+                                        size: 0.04.sw,
+                                        color: PrimaryColor,
+                                      )),
                                 )
                             ],
                           ),
@@ -274,8 +298,8 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                                   text: ' ${post.price} \$ ',
                                   style: post.is_discount == true
                                       ? H5GrayTextStyle.copyWith(
-                                      decoration:
-                                      TextDecoration.lineThrough)
+                                          decoration:
+                                              TextDecoration.lineThrough)
                                       : H4RedTextStyle,
                                 ),
                                 if (post.is_discount == true)
@@ -286,14 +310,12 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                             ),
                           ),
                         ),
-
                         Container(
                           height: 0.06.sw,
-
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                             /* if(post.is_delivery == true)
+                              /* if(post.is_delivery == true)
                                 SizedBox(width: 0.14.sw, child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -318,67 +340,68 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                               /*SizedBox(width: 0.002.sw
                                 ,),*/
                               // Icon Eye
-                              SizedBox(width: 0.14.sw, child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    FontAwesomeIcons.eye,
-                                    color: DarkColor,
-                                    size: 0.035.sw,
-                                  ),
-                                  SizedBox(
-                                    width: 0.08.sw,
-                                    child: Text(
-                                      "${post.views_count}".toFormatNumberK(),
-                                      style: H6BlackTextStyle,
-                                      overflow: TextOverflow.ellipsis,
+                              SizedBox(
+                                width: 0.14.sw,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      FontAwesomeIcons.eye,
+                                      color: DarkColor,
+                                      size: 0.035.sw,
                                     ),
-                                  ),
-
-                                ],
-                              ),)
-                              ,
-                              SizedBox(width: 0.14.sw, child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    FontAwesomeIcons.locationDot,
-                                    color: DarkColor,
-                                    size: 0.035.sw,
-                                  ),
-                                  SizedBox(
-                                    width: 0.09.sw,
-                                    child: Text(
-                                      "${post.city?.name
-                                          ?.split(' ')
-                                          .last}",
-                                      style: H6BlackTextStyle,
-                                      overflow: TextOverflow.ellipsis,
+                                    SizedBox(
+                                      width: 0.08.sw,
+                                      child: Text(
+                                        "${post.views_count}".toFormatNumberK(),
+                                        style: H6BlackTextStyle,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
-                                  ),
-
-                                ],
-                              ),)
-                              ,
-                              SizedBox(width: 0.14.sw, child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    FontAwesomeIcons.calendar,
-                                    color: DarkColor,
-                                    size: 0.035.sw,
-                                  ),
-                                  SizedBox(
-                                    width: 0.09.sw,
-                                    child: Text(
-                                      "${post.created_at}",
-                                      style: H6BlackTextStyle,
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                width: 0.14.sw,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      FontAwesomeIcons.locationDot,
+                                      color: DarkColor,
+                                      size: 0.035.sw,
                                     ),
-                                  ),
-
-                                ],
-                              ),)
-                              ,
+                                    SizedBox(
+                                      width: 0.09.sw,
+                                      child: Text(
+                                        "${post.city?.name?.split(' ').last}",
+                                        style: H6BlackTextStyle,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                width: 0.14.sw,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      FontAwesomeIcons.calendar,
+                                      color: DarkColor,
+                                      size: 0.035.sw,
+                                    ),
+                                    SizedBox(
+                                      width: 0.09.sw,
+                                      child: Text(
+                                        "${post.created_at}",
+                                        style: H6BlackTextStyle,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         )
@@ -421,10 +444,7 @@ class MinimizeDetailsJobComponent extends StatelessWidget {
         InkWell(
           onTap: onClick,
           child: Container(
-
             width: 1.sw,
-
-
             decoration: BoxDecoration(
               color: GrayWhiteColor,
               borderRadius: BorderRadius.circular(30.r),
@@ -442,7 +462,7 @@ class MinimizeDetailsJobComponent extends StatelessWidget {
                           bottomRight: Radius.circular(30.r)),
                       image: DecorationImage(
                           image:
-                          CachedNetworkImageProvider("${post.user?.image}"),
+                              CachedNetworkImageProvider("${post.user?.image}"),
                           fit: BoxFit.cover)),
                   child: Stack(
                     alignment: Alignment.topCenter,
@@ -465,7 +485,8 @@ class MinimizeDetailsJobComponent extends StatelessWidget {
                                 )),
                           ),
                         ),
-                      if(post.type == 'job' && post.active != 'block' &&
+                      if (post.type == 'job' &&
+                          post.active != 'block' &&
                           post.active != 'pending')
                         Container(
                           alignment: Alignment.center,
@@ -481,7 +502,8 @@ class MinimizeDetailsJobComponent extends StatelessWidget {
                             style: H5WhiteTextStyle,
                           ),
                         ),
-                      if(post.type == 'search_job' && post.active != 'block' &&
+                      if (post.type == 'search_job' &&
+                          post.active != 'block' &&
                           post.active != 'pending')
                         Container(
                           alignment: Alignment.center,
@@ -497,7 +519,6 @@ class MinimizeDetailsJobComponent extends StatelessWidget {
                             style: H5WhiteTextStyle,
                           ),
                         ),
-
                       if (post.active == 'pending')
                         Container(
                           alignment: Alignment.center,
@@ -561,59 +582,60 @@ class MinimizeDetailsJobComponent extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(width: 0.02.sw,),
+                SizedBox(
+                  width: 0.02.sw,
+                ),
                 Expanded(
                     child: Container(
-                      height: 0.3.sw,
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 0.01.sw, vertical: 0.002.sh),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                  height: 0.3.sw,
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 0.01.sw, vertical: 0.002.sh),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AutoSizeText(
+                        "${post.name!.length > 5 ? post.name : post.expert} ",
+                        style: H2BlackTextStyle.copyWith(
+                            fontWeight: FontWeight.bold),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      SizedBox(
+                        height: 0.002.sh,
+                      ),
+                      RichText(
+                          maxLines: 1,
+                          text: TextSpan(children: [
+                            TextSpan(
+                                text: '${post.city?.name ?? ''}',
+                                style: H5GrayTextStyle),
+                            if (post.category?.name != null)
+                              TextSpan(
+                                  text: ' - ${post.category?.name}',
+                                  style: H5GrayTextStyle),
+                            if (post.sub1?.name != null)
+                              TextSpan(
+                                  text: ' - ${post.sub1?.name}',
+                                  style: H5GrayTextStyle),
+                          ])),
+                      Row(
                         children: [
-                          AutoSizeText(
-                            "${post.name!.length > 5 ? post.name : post
-                                .expert} ",
-                            style: H2BlackTextStyle.copyWith(
-                                fontWeight: FontWeight.bold),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          SizedBox(
-                            height: 0.002.sh,
-                          ),
-                          RichText(
-                            maxLines: 1,
-                              text: TextSpan(children: [
-                                TextSpan(
-                                    text: '${post.city?.name ?? ''}',
-                                    style: H5GrayTextStyle),
-                                if (post.category?.name != null)
-                                  TextSpan(
-                                      text: ' - ${post.category?.name}',
-                                      style: H5GrayTextStyle),
-                                if (post.sub1?.name != null)
-                                  TextSpan(
-                                      text: ' - ${post.sub1?.name}',
-                                      style: H5GrayTextStyle),
-                              ])),
-                          Row(
-                            children: [
-                              Expanded(
-                                  child: Container(
-                                    child: SellerNameComponent(
-                                        onTap: onClick,
-                                        text: 'منشور بواسطة:',
-                                        textStyle: H5RegularDark,
-                                        color: TitleColor,
-                                        seller: post.user,
-                                        isVerified: post.user?.is_verified ==
-                                            true),
-                                  )),
-                              if(mainController.authUser.value?.id == post.user
-                                  ?.id)
-                                IconButton(onPressed: () {
+                          Expanded(
+                              child: Container(
+                            child: SellerNameComponent(
+                                onTap: onClick,
+                                text: 'منشور بواسطة:',
+                                textStyle: H5RegularDark,
+                                color: TitleColor,
+                                seller: post.user,
+                                isVerified: post.user?.is_verified == true),
+                          )),
+                          if (mainController.authUser.value?.id ==
+                              post.user?.id)
+                            IconButton(
+                                onPressed: () {
                                   Get.dialog(AlertDialog(
                                     content: Container(
                                       height: 0.13.sh,
@@ -622,141 +644,157 @@ class MinimizeDetailsJobComponent extends StatelessWidget {
                                           return Container(
                                             alignment: Alignment.center,
                                             child: ProgressLoading(
-                                              width: 0.1.sw,),);
+                                              width: 0.1.sw,
+                                            ),
+                                          );
                                         }
-                                        return Container(child: Text(
-                                          'هل أنت متأكد من حذف المنشور ؟',
-                                          style: H4RedTextStyle,),);
+                                        return Container(
+                                          child: Text(
+                                            'هل أنت متأكد من حذف المنشور ؟',
+                                            style: H4RedTextStyle,
+                                          ),
+                                        );
                                       }),
                                     ),
                                     actions: [
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment
-                                            .spaceBetween,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                          MaterialButton(onPressed: () {
-                                            Get.back();
-                                          },
+                                          MaterialButton(
+                                            onPressed: () {
+                                              Get.back();
+                                            },
                                             child: Text(
-                                              'إلغاء', style: H4RegularDark,),
-                                            color: GrayDarkColor,),
-                                          SizedBox(width: 0.02.sw,),
-                                          MaterialButton(onPressed: () async {
-                                            loading.value = true;
-                                            int? productId = await mainController
-                                                .deleteProduct(
-                                                productId: post.id!);
-                                            if (productId != null) {
-                                              ProfileLogic profile = Get.find<
-                                                  ProfileLogic>();
-                                              int index = profile.products
-                                                  .indexWhere((el) =>
-                                              el.id == productId);
-                                              if (index > -1) {
-                                                profile.products.removeAt(
-                                                    index);
+                                              'إلغاء',
+                                              style: H4RegularDark,
+                                            ),
+                                            color: GrayDarkColor,
+                                          ),
+                                          SizedBox(
+                                            width: 0.02.sw,
+                                          ),
+                                          MaterialButton(
+                                            onPressed: () async {
+                                              loading.value = true;
+                                              int? productId =
+                                                  await mainController
+                                                      .deleteProduct(
+                                                          productId: post.id!);
+                                              if (productId != null) {
+                                                ProfileLogic profile =
+                                                    Get.find<ProfileLogic>();
+                                                int index = profile.products
+                                                    .indexWhere((el) =>
+                                                        el.id == productId);
+                                                if (index > -1) {
+                                                  profile.products
+                                                      .removeAt(index);
+                                                }
                                               }
-                                            }
-                                            loading.value = false;
-                                            Get.back();
-                                          },
-                                            child: Text('إستمرار',
-                                              style: H4WhiteTextStyle,),
-                                            color: PrimaryColor,),
+                                              loading.value = false;
+                                              Get.back();
+                                            },
+                                            child: Text(
+                                              'إستمرار',
+                                              style: H4WhiteTextStyle,
+                                            ),
+                                            color: PrimaryColor,
+                                          ),
                                         ],
                                       )
                                     ],
                                   ));
                                 },
-                                    icon: Icon(
-                                      FontAwesomeIcons.trash, size: 0.04.sw,
-                                      color: PrimaryColor,))
-
-                            ],
-                          ),
-                          Expanded(
-                            child: RichText(
-                              textDirection: TextDirection.rtl,
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: '',
-                                    style: post.is_discount == true
-                                        ? H5GrayTextStyle.copyWith(
-                                        decoration: TextDecoration.lineThrough)
-                                        : H5RedTextStyle,
-                                  ),
-                                  if (post.is_discount == true)
-                                    TextSpan(
-                                        text: ' ${post.discount} \$ ',
-                                        style: H5RedTextStyle),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              height: 0.05.sw,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment
-                                    .spaceBetween,
-                                children: [
-                                  // Icon Eye
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        FontAwesomeIcons.eye,
-                                        color: DarkColor,
-                                        size: 0.04.sw,
-                                      ),
-                                      SizedBox(
-                                        width: 0.007.sw,
-                                      ),
-                                      Text(
-                                        "${post.views_count}",
-                                        style: H6BlackTextStyle,
-                                      )
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        FontAwesomeIcons.calendar,
-                                        color: DarkColor,
-                                        size: 0.04.sw,
-                                      ),
-                                      SizedBox(
-                                        width: 0.007.sw,
-                                      ),
-                                      Text(
-                                        "${post.start_date ?? ''}",
-                                        style: H6BlackTextStyle,
-                                      )
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        FontAwesomeIcons.calendar,
-                                        color: DarkColor,
-                                        size: 0.04.sw,
-                                      ),
-                                      SizedBox(
-                                        width: 0.007.sw,
-                                      ),
-                                      Text(
-                                        "${post.end_date ?? ''}",
-                                        style: H6BlackTextStyle,
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          )
+                                icon: Icon(
+                                  FontAwesomeIcons.trash,
+                                  size: 0.04.sw,
+                                  color: PrimaryColor,
+                                ))
                         ],
                       ),
-                    ))
+                      Expanded(
+                        child: RichText(
+                          textDirection: TextDirection.rtl,
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: '',
+                                style: post.is_discount == true
+                                    ? H5GrayTextStyle.copyWith(
+                                        decoration: TextDecoration.lineThrough)
+                                    : H5RedTextStyle,
+                              ),
+                              if (post.is_discount == true)
+                                TextSpan(
+                                    text: ' ${post.discount} \$ ',
+                                    style: H5RedTextStyle),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          height: 0.05.sw,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              // Icon Eye
+                              Row(
+                                children: [
+                                  Icon(
+                                    FontAwesomeIcons.eye,
+                                    color: DarkColor,
+                                    size: 0.04.sw,
+                                  ),
+                                  SizedBox(
+                                    width: 0.007.sw,
+                                  ),
+                                  Text(
+                                    "${post.views_count}",
+                                    style: H6BlackTextStyle,
+                                  )
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Icon(
+                                    FontAwesomeIcons.calendar,
+                                    color: DarkColor,
+                                    size: 0.04.sw,
+                                  ),
+                                  SizedBox(
+                                    width: 0.007.sw,
+                                  ),
+                                  Text(
+                                    "${post.start_date ?? ''}",
+                                    style: H6BlackTextStyle,
+                                  )
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Icon(
+                                    FontAwesomeIcons.calendar,
+                                    color: DarkColor,
+                                    size: 0.04.sw,
+                                  ),
+                                  SizedBox(
+                                    width: 0.007.sw,
+                                  ),
+                                  Text(
+                                    "${post.end_date ?? ''}",
+                                    style: H6BlackTextStyle,
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ))
               ],
             ),
           ),
@@ -768,12 +806,13 @@ class MinimizeDetailsJobComponent extends StatelessWidget {
 }
 
 class MinimizeDetailsServiceComponent extends StatelessWidget {
-  MinimizeDetailsServiceComponent({super.key,
-    required this.post,
-    this.onClick,
-    this.cartLoading = false,
-    this.TitleColor,
-    this.canEdit});
+  MinimizeDetailsServiceComponent(
+      {super.key,
+      required this.post,
+      this.onClick,
+      this.cartLoading = false,
+      this.TitleColor,
+      this.canEdit});
 
   final Color? TitleColor;
   final ProductModel post;
@@ -802,15 +841,43 @@ class MinimizeDetailsServiceComponent extends StatelessWidget {
                   width: 0.3.sw,
                   height: 0.3.sw,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(30.r),
-                          bottomRight: Radius.circular(30.r)),
-                      image: DecorationImage(
-                          image: CachedNetworkImageProvider("${post.image}",),
-                          fit: BoxFit.cover)),
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(30.r),
+                        bottomRight: Radius.circular(30.r)),
+                    color: post.image == null ||
+                            post.image!.isEmpty ||
+                            post.image!.contains('noimage') ||
+                            post.image!.contains('no_image') ||
+                            post.image!.contains('no-image')
+                        ? GrayWhiteColor
+                        : null,
+                    image: post.image != null &&
+                            post.image!.isNotEmpty &&
+                            !post.image!.contains('noimage') &&
+                            !post.image!.contains('no_image') &&
+                            !post.image!.contains('no-image')
+                        ? DecorationImage(
+                            image: CachedNetworkImageProvider(
+                              "${post.image}",
+                            ),
+                            fit: BoxFit.cover)
+                        : null,
+                  ),
                   child: Stack(
                     alignment: Alignment.topCenter,
                     children: [
+                      if (post.image == null ||
+                          post.image!.isEmpty ||
+                          post.image!.contains('noimage') ||
+                          post.image!.contains('no_image') ||
+                          post.image!.contains('no-image'))
+                        Center(
+                          child: Text(
+                            "${post.name?.substring(0, 1) ?? ''}",
+                            style: H1BlackTextStyle.copyWith(
+                                fontSize: 0.1.sw, color: Colors.black),
+                          ),
+                        ),
                       if (canEdit == true)
                         Positioned(
                           top: 0.05.sh,
@@ -878,109 +945,126 @@ class MinimizeDetailsServiceComponent extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                    child: Container(
-                      height: 0.3.sw,
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 0.01.sw, vertical: 0.002.sh),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment
-                                    .spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  AutoSizeText(
-                                    "${post.name} ${post.expert} ",
-                                    style: H3BlackTextStyle.copyWith(
-                                        fontWeight: FontWeight.bold),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  SizedBox(
-                                    height: 0.002.sh,
-                                  ),
-                                  RichText(
-                                      text: TextSpan(children: [
+                  child: Container(
+                    height: 0.3.sw,
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 0.03.sw, vertical: 0.015.sh),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "${post.name} ${post.expert} ",
+                                style: H3BlackTextStyle.copyWith(
+                                    fontWeight: FontWeight.bold),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              SizedBox(height: 0.005.sh),
+                              Flexible(
+                                child: RichText(
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                          text: '${post.city?.name ?? ''}',
+                                          style: H5GrayTextStyle),
+                                      if (post.category?.name != null)
                                         TextSpan(
-                                            text: '${post.city?.name ?? ''}',
+                                            text: ' - ${post.category?.name}',
                                             style: H5GrayTextStyle),
-                                        if (post.category?.name != null)
-                                          TextSpan(
-                                              text: ' - ${post.category?.name}',
-                                              style: H5GrayTextStyle),
-                                        if (post.sub1?.name != null)
-                                          TextSpan(
-                                              text: ' - ${post.sub1?.name}',
-                                              style: H5GrayTextStyle),
-                                      ])),
-                                  if (post.user != null)
-                                    Container(
-                                      child: RichText(text: TextSpan(children: [
-                                        TextSpan(text: 'العنوان : ',
+                                      if (post.sub1?.name != null)
+                                        TextSpan(
+                                            text: ' - ${post.sub1?.name}',
+                                            style: H5GrayTextStyle),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 0.005.sh),
+                              if (post.user != null)
+                                Flexible(
+                                  child: RichText(
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                            text: 'العنوان: ',
                                             style: H5RegularDark),
-                                        TextSpan(text: ' ${post.address}',
+                                        TextSpan(
+                                            text: '${post.address}',
                                             style: H5RegularDark),
-                                      ]),),),
-                                  if (post.user == null)
-                                    Container(
-                                      padding: EdgeInsets.only(
-                                          bottom: 0.004.sh),
-                                      child: Text(
-                                        "${post.user?.seller_name??''}",
-                                        style: H5RegularDark,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
+                                      ],
                                     ),
-                                ],
-                              )),
-                          Container(
-                            height: 0.06.sw,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                // Icon Eye
-                                Row(
-                                  children: [
-                                    Icon(
-                                      FontAwesomeIcons.eye,
-                                      color: DarkColor,
-                                      size: 0.04.sw,
-                                    ),
-                                    SizedBox(
-                                      width: 0.007.sw,
-                                    ),
-                                    Text(
+                                  ),
+                                ),
+                              if (post.user == null)
+                                Flexible(
+                                  child: Text(
+                                    "${post.user?.seller_name ?? ''}",
+                                    style: H5RegularDark,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Flexible(
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    FontAwesomeIcons.eye,
+                                    color: DarkColor,
+                                    size: 0.035.sw,
+                                  ),
+                                  SizedBox(width: 0.01.sw),
+                                  Flexible(
+                                    child: Text(
                                       "${post.views_count}",
                                       style: H6BlackTextStyle,
-                                    )
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      FontAwesomeIcons.calendar,
-                                      color: DarkColor,
-                                      size: 0.04.sw,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                    SizedBox(
-                                      width: 0.007.sw,
-                                    ),
-                                    Text(
-                                      "${post.updated_at ?? ''}",
-                                      style: H5BlackTextStyle,
-                                    )
-                                  ],
-                                ),
-                              ],
+                                  ),
+                                ],
+                              ),
                             ),
-                          )
-                        ],
-                      ),
-                    ))
+                            SizedBox(width: 0.02.sw),
+                            Flexible(
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    FontAwesomeIcons.calendar,
+                                    color: DarkColor,
+                                    size: 0.035.sw,
+                                  ),
+                                  SizedBox(width: 0.01.sw),
+                                  Flexible(
+                                    child: Text(
+                                      "${post.updated_at ?? ''}",
+                                      style: H6BlackTextStyle,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                )
               ],
             ),
           ),
@@ -1033,7 +1117,7 @@ class MinimizeDetailsTenderComponent extends StatelessWidget {
                           bottomRight: Radius.circular(30.r)),
                       image: DecorationImage(
                           image:
-                          CachedNetworkImageProvider("${post.user?.image}"),
+                              CachedNetworkImageProvider("${post.user?.image}"),
                           fit: BoxFit.fitHeight)),
                   child: Stack(
                     alignment: Alignment.topCenter,
@@ -1141,11 +1225,11 @@ class MinimizeDetailsTenderComponent extends StatelessWidget {
                             ),
                             Flexible(
                                 child: Text(
-                                  "(${post.type?.toCategoryTypeLabel()})",
-                                  style: H5RegularDark.copyWith(
-                                      color: SecondaryColor),
-                                  overflow: TextOverflow.ellipsis,
-                                ))
+                              "(${post.type?.toCategoryTypeLabel()})",
+                              style:
+                                  H5RegularDark.copyWith(color: SecondaryColor),
+                              overflow: TextOverflow.ellipsis,
+                            ))
                           ],
                         ),
                         AutoSizeText(
@@ -1166,7 +1250,8 @@ class MinimizeDetailsTenderComponent extends StatelessWidget {
                                   text: '',
                                   style: post.is_discount == true
                                       ? H4GrayTextStyle.copyWith(
-                                      decoration: TextDecoration.lineThrough)
+                                          decoration:
+                                              TextDecoration.lineThrough)
                                       : H4RedTextStyle,
                                 ),
                                 if (post.is_discount == true)
@@ -1220,7 +1305,8 @@ class MinimizeDetailsTenderComponent extends StatelessWidget {
                         )
                       ],
                     ),
-                  ),)
+                  ),
+                )
               ],
             ),
           ),

@@ -8,10 +8,10 @@ import 'logic.dart';
 
 class GoldPage extends StatelessWidget {
   GoldPage({Key? key}) : super(key: key);
-  RxInt index = RxInt(Get.arguments??0);
+  RxInt index = RxInt(Get.arguments ?? 0);
   final logic = Get.find<GoldLogic>();
   PageController pageController = PageController(
-    initialPage: Get.arguments??0,
+    initialPage: Get.arguments ?? 0,
     viewportFraction: 1,
   );
   List<Widget> pages = [];
@@ -56,9 +56,11 @@ class GoldPage extends StatelessWidget {
                         ...List.generate(
                             pages.length,
                             (i) => Container(
-                                  margin: EdgeInsets.symmetric(horizontal: 5.w,),
-                              width: 0.03.sw,
-                              height: 0.03.sw,
+                                  margin: EdgeInsets.symmetric(
+                                    horizontal: 5.w,
+                                  ),
+                                  width: 0.03.sw,
+                                  height: 0.03.sw,
                                   decoration: BoxDecoration(
                                       color: i == index.value
                                           ? PrimaryColor
@@ -145,18 +147,8 @@ class GoldPage extends StatelessWidget {
                         left: Radius.circular(15.r),
                         right: Radius.circular(15.r))),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Column(
-                      children: [
-                        Obx(() {
-                          return Text(
-                            '${logic.setting.value?.createdAt ?? ''}',
-                            style: H2GrayTextStyle,
-                          );
-                        })
-                      ],
-                    ),
                     Column(
                       children: [
                         Text(
@@ -432,18 +424,8 @@ class GoldPage extends StatelessWidget {
                         left: Radius.circular(15.r),
                         right: Radius.circular(15.r))),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Column(
-                      children: [
-                        Obx(() {
-                          return Text(
-                            '${logic.setting.value?.createdAt ?? ''}',
-                            style: H2GrayTextStyle,
-                          );
-                        })
-                      ],
-                    ),
                     Column(
                       children: [
                         Text(
@@ -724,18 +706,8 @@ class GoldPage extends StatelessWidget {
                         left: Radius.circular(15.r),
                         right: Radius.circular(15.r))),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Column(
-                      children: [
-                        Obx(() {
-                          return Text(
-                            '${logic.setting.value?.createdAt ?? ''}',
-                            style: H2GrayTextStyle,
-                          );
-                        })
-                      ],
-                    ),
                     Column(
                       children: [
                         Text(
@@ -969,16 +941,6 @@ class GoldPage extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Column(
-                      children: [
-                        Obx(() {
-                          return Text(
-                            '${logic.setting.value?.createdAt ?? ''}',
-                            style: H2GrayTextStyle,
-                          );
-                        })
-                      ],
-                    ),
                     Column(
                       children: [
                         Text(
@@ -1215,18 +1177,8 @@ class GoldPage extends StatelessWidget {
                         left: Radius.circular(15.r),
                         right: Radius.circular(15.r))),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Column(
-                      children: [
-                        Obx(() {
-                          return Text(
-                            '${logic.setting.value?.createdAt ?? ''}',
-                            style: H2GrayTextStyle,
-                          );
-                        })
-                      ],
-                    ),
                     Column(
                       children: [
                         Text(
@@ -1374,18 +1326,8 @@ class GoldPage extends StatelessWidget {
                         left: Radius.circular(15.r),
                         right: Radius.circular(15.r))),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Column(
-                      children: [
-                        Obx(() {
-                          return Text(
-                            '${logic.setting.value?.createdAt ?? ''}',
-                            style: H2GrayTextStyle,
-                          );
-                        })
-                      ],
-                    ),
                     Column(
                       children: [
                         Text(
@@ -1455,7 +1397,7 @@ class GoldPage extends StatelessWidget {
                   children: [
                     ...List.generate(
                       logic.setting.value?.material_izaz?.length ?? 0,
-                      (index) =>Column(
+                      (index) => Column(
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,

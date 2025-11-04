@@ -5,6 +5,7 @@ import 'package:ali_pasha_graph/helpers/components.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:html_viewer_elite/html_viewer_elite.dart';
 
@@ -33,12 +34,14 @@ class ServiceDetailsPage extends StatelessWidget {
         }),
       ),
       body: Obx(() {
-        if(logic.loading.value){
+        if (logic.loading.value) {
           return Container(
             alignment: Alignment.center,
             width: 1.sw,
             height: 1.sh,
-            child: ProgressLoading(width: 0.2.sw,),
+            child: ProgressLoading(
+              width: 0.2.sw,
+            ),
           );
         }
         return SingleChildScrollView(
@@ -61,8 +64,8 @@ class ServiceDetailsPage extends StatelessWidget {
                           text: "${logic.serviceModel.value?.city?.name}",
                           style: H4GrayTextStyle),
                       TextSpan(
-                          text: " - ${logic.serviceModel.value?.category
-                              ?.name}",
+                          text:
+                              " - ${logic.serviceModel.value?.category?.name}",
                           style: H4GrayTextStyle),
                       TextSpan(
                           text: " - ${logic.serviceModel.value?.sub1?.name}",
@@ -71,34 +74,90 @@ class ServiceDetailsPage extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 0.05.sh,),
+              SizedBox(
+                height: 0.05.sh,
+              ),
               Container(
                 padding: EdgeInsets.all(0.02.sw),
                 decoration: BoxDecoration(
                   color: GrayWhiteColor,
                   borderRadius: BorderRadius.circular(30.r),
-                  
                 ),
                 alignment: Alignment.center,
-                child: Html(
-                  data: "${logic.serviceModel.value?.info} ${logic
-                      .serviceModel.value?.url!=''?"${logic
-                      .serviceModel.value?.url}":""}"
-                      " ${logic
-                      .serviceModel.value?.email!='' ? "<br/><br/> <a href='${logic
-                      .serviceModel.value?.email}'>البريد الإلكتروني</a>":''}"
-                      "${ logic
-                      .serviceModel.value?.phone!=''?"<br/><br/> <a href='https://wa.me/${logic
-                      .serviceModel.value?.phone}'>الهاتف</a>":''}",
-                  style: {
-                    "*": Style.fromTextStyle(H3BlackTextStyle),
-                    "a": Style.fromTextStyle(H4RedTextStyle)
-                  },
-                  onAnchorTap: (url, context, attributes, element) =>
-                      openUrl(url: "$url"),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Html(
+                      data:
+                          "${logic.serviceModel.value?.info} ${logic.serviceModel.value?.url != '' ? "${logic.serviceModel.value?.url}" : ""}",
+                      style: {
+                        "*": Style.fromTextStyle(H3BlackTextStyle),
+                        "a": Style.fromTextStyle(H4RedTextStyle)
+                      },
+                      onAnchorTap: (url, context, attributes, element) =>
+                          openUrl(url: "$url"),
+                    ),
+                    if (logic.serviceModel.value?.email != null &&
+                        logic.serviceModel.value?.email != '')
+                      Padding(
+                        padding: EdgeInsets.only(top: 0.02.sh),
+                        child: InkWell(
+                          onTap: () {
+                            openUrl(
+                                url:
+                                    'mailto:${logic.serviceModel.value?.email}');
+                          },
+                          child: Row(
+                            children: [
+                              Icon(
+                                FontAwesomeIcons.envelope,
+                                color: Colors.red,
+                                size: 0.05.sw,
+                              ),
+                              SizedBox(width: 0.02.sw),
+                              Expanded(
+                                child: Text(
+                                  '${logic.serviceModel.value?.email}',
+                                  style: H3BlackTextStyle,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    if (logic.serviceModel.value?.phone != null &&
+                        logic.serviceModel.value?.phone != '')
+                      Padding(
+                        padding: EdgeInsets.only(top: 0.02.sh),
+                        child: InkWell(
+                          onTap: () {
+                            openUrl(
+                                url:
+                                    'https://wa.me/${logic.serviceModel.value?.phone}');
+                          },
+                          child: Row(
+                            children: [
+                              Icon(
+                                FontAwesomeIcons.whatsapp,
+                                color: Colors.green,
+                                size: 0.05.sw,
+                              ),
+                              SizedBox(width: 0.02.sw),
+                              Expanded(
+                                child: Text(
+                                  '${logic.serviceModel.value?.phone}',
+                                  style: H3BlackTextStyle,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
               ),
-
             ],
           ),
         );

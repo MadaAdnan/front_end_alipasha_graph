@@ -30,7 +30,6 @@ import '../../helpers/components.dart';
 import '../../models/product_model.dart';
 import 'logic.dart';
 
-
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -56,7 +55,7 @@ class _HomePageState extends State<HomePage> {
   void _setupScrollListener() {
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
-          _scrollController.position.maxScrollExtent * 0.80 &&
+              _scrollController.position.maxScrollExtent * 0.80 &&
           !mainController.loading.value &&
           logic.hasMorePage.value) {
         logic.nextPage();
@@ -83,9 +82,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: WhiteColor,
         body: Column(
           children: [
-            HomeAppBarComponent(
-
-            ),
+            HomeAppBarComponent(),
             Expanded(
               child: RefreshIndicator(
                 onRefresh: _onRefresh,
@@ -216,7 +213,7 @@ class _HomePageState extends State<HomePage> {
                   image: DecorationImage(
                     image: mainController.authUser.value?.image != null
                         ? CachedNetworkImageProvider(
-                        '${mainController.authUser.value?.image}')
+                            '${mainController.authUser.value?.image}')
                         : getUserImage(),
                     fit: BoxFit.cover,
                   ),
@@ -239,10 +236,10 @@ class _HomePageState extends State<HomePage> {
           decoration: BoxDecoration(
             color: WhiteColor,
             borderRadius: BorderRadius.circular(50.w),
-            boxShadow: [
-              BoxShadow(color: GrayDarkColor, blurRadius: 3),
-              BoxShadow(color: GrayDarkColor.withOpacity(0.4), blurRadius: 3),
-            ],
+            border: Border.all(
+              color: GrayLightColor,
+              width: 1.0,
+            ),
           ),
           child: Text(
             'ماذا تفكر أن تنشر ...',
@@ -264,15 +261,25 @@ class _HomePageState extends State<HomePage> {
           key: mainController.moreCategoriesKey,
           scrollDirection: Axis.horizontal,
           controller: logic.scrollControllerCategories,
-          itemCount: mainController.categories.isEmpty ? 4 : mainController.categories.where((el) => el.type == 'product').length + 1,
+          itemCount: mainController.categories.isEmpty
+              ? 4
+              : mainController.categories
+                      .where((el) => el.type == 'product')
+                      .length +
+                  1,
           itemBuilder: (context, index) {
             if (mainController.categories.isEmpty) {
               return _buildSectionShimmer();
             } else {
-              if (index < mainController.categories.where((el) => el.type == 'product').length) {
+              if (index <
+                  mainController.categories
+                      .where((el) => el.type == 'product')
+                      .length) {
                 return SectionHomeCard(
                   sectionKey: index == 0 ? mainController.catigoriesKey : null,
-                  section: mainController.categories.where((el) => el.type == 'product').toList()[index],
+                  section: mainController.categories
+                      .where((el) => el.type == 'product')
+                      .toList()[index],
                 );
               } else {
                 return _buildViewMoreButton();
@@ -285,9 +292,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   List<Widget> _buildCategoryCards() {
-    final productCategories = mainController.categories
-        .where((el) => el.type == 'product')
-        .toList();
+    final productCategories =
+        mainController.categories.where((el) => el.type == 'product').toList();
 
     return List.generate(productCategories.length, (index) {
       return SectionHomeCard(
@@ -313,13 +319,15 @@ class _HomePageState extends State<HomePage> {
       return Container(
         height: 0.157.sh,
         color: WhiteColor,
-        child: ListView.builder( // ← استبدال ListView بـ ListView.builder
+        child: ListView.builder(
+          // ← استبدال ListView بـ ListView.builder
           cacheExtent: 500,
           padding: EdgeInsets.symmetric(vertical: 10.h),
           scrollDirection: Axis.horizontal,
-          itemCount: logic.sellers.isEmpty && logic.loading.value ? 6 : logic.sellers.length + 1,
+          itemCount: logic.sellers.isEmpty && logic.loading.value
+              ? 6
+              : logic.sellers.length + 1,
           itemBuilder: (context, index) {
-
             if (sellers.isEmpty && isLoading) {
               return _buildSellerShimmer();
             }
@@ -347,7 +355,6 @@ class _HomePageState extends State<HomePage> {
         decoration: BoxDecoration(
           color: GrayLightColor,
           borderRadius: BorderRadius.circular(15.r),
-
         ),
         child: Stack(
           children: [
@@ -392,7 +399,7 @@ class _HomePageState extends State<HomePage> {
   List<Widget> _buildProductList() {
     return List.generate(
       logic.products.length + (logic.loading.value ? 1 : 0),
-          (index) {
+      (index) {
         if (index < logic.products.length) {
           return _buildProductItem(index);
         }
@@ -531,13 +538,12 @@ class _HomePageState extends State<HomePage> {
             scrollDirection: Axis.horizontal,
             physics: const ClampingScrollPhysics(),
             itemCount: isSeller ? sellers!.length : products!.length,
-            itemBuilder: (context, i) =>
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 0.01.sw),
-                  child: isSeller
-                      ? SellerCard(seller: sellers![i], logic: logic)
-                      : _ProductCard(product: products![i], video: isVideo),
-                ),
+            itemBuilder: (context, i) => Padding(
+              padding: EdgeInsets.symmetric(horizontal: 0.01.sw),
+              child: isSeller
+                  ? SellerCard(seller: sellers![i], logic: logic)
+                  : _ProductCard(product: products![i], video: isVideo),
+            ),
           ),
         ),
       ],
@@ -630,12 +636,10 @@ class _HomePageState extends State<HomePage> {
     if (isAuth()) {
       final user = mainController.authUser.value;
       final message =
-          "ID:${user?.id} - اسم المتجر : ${user
-          ?.seller_name} - نوع الطلب إضافة متجر مميز";
+          "ID:${user?.id} - اسم المتجر : ${user?.seller_name} - نوع الطلب إضافة متجر مميز";
       openUrl(
         url:
-        "https://wa.me/${mainController.settings.value.social?.phone}?text=${Uri
-            .encodeComponent(message)}",
+            "https://wa.me/${mainController.settings.value.social?.phone}?text=${Uri.encodeComponent(message)}",
       );
     } else {
       Get.toNamed(LOGIN_PAGE);
@@ -709,15 +713,12 @@ class _ProductCard extends StatelessWidget {
       height: 0.5.sh,
       width: 0.65.sw,
       decoration: BoxDecoration(
-        color: Colors.grey.withOpacity(0.01),
+        color: WhiteColor,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            blurRadius: 3,
-            offset: const Offset(0, 3),
-          ),
-        ],
+        border: Border.all(
+          color: GrayLightColor,
+          width: 1.0,
+        ),
       ),
       child: RepaintBoundary(
         child: Column(
@@ -761,7 +762,6 @@ class _ProductCard extends StatelessWidget {
                   image: DecorationImage(
                     image: CachedNetworkImageProvider("${product.image}"),
                     fit: BoxFit.cover,
-
                   ),
                 ),
               ),
@@ -782,8 +782,8 @@ class _ProductCard extends StatelessWidget {
                 ),
                 child: IconButton(
                   onPressed: () {
-                    Get.toNamed(
-                        VIDEO_PLAYER_POST_PAGE, arguments: "${product.video}");
+                    Get.toNamed(VIDEO_PLAYER_POST_PAGE,
+                        arguments: "${product.video}");
                   },
                   icon: Icon(
                     FontAwesomeIcons.play,
@@ -879,8 +879,8 @@ class _ProductCard extends StatelessWidget {
           ),
           Row(
             children: [
-              Icon(
-                  FontAwesomeIcons.locationDot, color: Colors.grey, size: 30.r),
+              Icon(FontAwesomeIcons.locationDot,
+                  color: Colors.grey, size: 30.r),
               Text("${product.city?.name}",
                   style: const TextStyle(fontSize: 11, color: Colors.grey)),
             ],
@@ -1070,8 +1070,8 @@ class _ViewMoreButton extends StatelessWidget {
                 ),
               ),
             ),
-            Text(title, overflow: TextOverflow.ellipsis,
-                style: H4BlackTextStyle),
+            Text(title,
+                overflow: TextOverflow.ellipsis, style: H4BlackTextStyle),
           ],
         ),
       ),
@@ -1098,13 +1098,10 @@ class _ViewMoreButton extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(8),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black12,
-                blurRadius: 4,
-                offset: Offset(0, 2),
-              ),
-            ],
+            border: Border.all(
+              color: GrayLightColor,
+              width: 1.0,
+            ),
           ),
           child: Padding(
             padding:
@@ -1225,11 +1222,7 @@ class _ViewMoreButton extends StatelessWidget {
 }*/
 
 class SellerCard extends StatelessWidget {
-  SellerCard({
-    super.key,
-    required this.seller,
-    required this.logic
-  });
+  SellerCard({super.key, required this.seller, required this.logic});
 
   final UserModel seller;
   final dynamic logic;
@@ -1254,14 +1247,12 @@ class SellerCard extends StatelessWidget {
                 decoration: _buildCardDecoration(),
                 child: Padding(
                   padding: EdgeInsets.symmetric(
-                      vertical: 0.01.sh,
-                      horizontal: 0.01.sw
-                  ),
+                      vertical: 0.01.sh, horizontal: 0.01.sw),
                   child: Stack(
                     children: [
                       // المحتوى الرئيسي
                       _buildMainContent(),
-      
+
                       // زر المتابعة
                       _buildFollowButton(),
                     ],
@@ -1289,13 +1280,10 @@ class SellerCard extends StatelessWidget {
     return BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.circular(8),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black12,
-          blurRadius: 4,
-          offset: const Offset(0, 2),
-        ),
-      ],
+      border: Border.all(
+        color: GrayLightColor,
+        width: 1.0,
+      ),
     );
   }
 
@@ -1321,10 +1309,7 @@ class SellerCard extends StatelessWidget {
   // دالة بناء صورة البائع
   Widget _buildSellerImage() {
     return Container(
-      padding: EdgeInsets.symmetric(
-          horizontal: 0.01.sw,
-          vertical: 0.03.sh
-      ),
+      padding: EdgeInsets.symmetric(horizontal: 0.01.sw, vertical: 0.03.sh),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         gradient: LinearGradient(
@@ -1338,9 +1323,7 @@ class SellerCard extends StatelessWidget {
       ),
       child: CircleAvatar(
         radius: 40,
-        backgroundImage: CachedNetworkImageProvider(
-            "${seller.image}"
-        ),
+        backgroundImage: CachedNetworkImageProvider("${seller.image}"),
       ),
     );
   }
@@ -1405,25 +1388,16 @@ class SellerCard extends StatelessWidget {
           onTap: () {
             if (!isFollowing && seller.id != null) {
               isFollowers.value = true;
-               logic.follow(sellerId: seller.id!);
+              logic.follow(sellerId: seller.id!);
             }
           },
           behavior: HitTestBehavior.opaque,
           child: Container(
-            padding: EdgeInsets.symmetric(
-                horizontal: 10.w,
-                vertical: 10.w
-            ),
+            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15.r),
-              color: isFollowing||isFollowers.value ? PrimaryColor : Colors.grey,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 2,
-                  offset: const Offset(0, 1),
-                ),
-              ],
+              color:
+                  isFollowing || isFollowers.value ? PrimaryColor : Colors.grey,
             ),
             child: Center(
               child: Icon(
@@ -1443,8 +1417,7 @@ class SellerCard extends StatelessWidget {
     final authUser = mainController.authUser.value;
     if (authUser == null) return false;
 
-    return authUser.followers?.any((el) => el.seller?.id == seller.id) ==
-        true ;
+    return authUser.followers?.any((el) => el.seller?.id == seller.id) == true;
   }
 
   // دالة معالجة الضغط على زر المتابعة

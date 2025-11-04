@@ -19,18 +19,19 @@ class ServicePage extends StatelessWidget {
   ServicePage({Key? key}) : super(key: key);
 
   final logic = Get.find<ServiceLogic>();
-MainController mainController=Get.find<MainController>();
-ScrollController _scrollController=ScrollController();
+  MainController mainController = Get.find<MainController>();
+  ScrollController _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollInfo) {
           if (scrollInfo.metrics.pixels >=
-              scrollInfo.metrics.maxScrollExtent * 0.80 &&
+                  scrollInfo.metrics.maxScrollExtent * 0.80 &&
               !logic.loading.value &&
-              logic.hasMorePage.value && scrollInfo.context ==_scrollController.position.context.notificationContext) {
-
+              logic.hasMorePage.value &&
+              scrollInfo.context ==
+                  _scrollController.position.context.notificationContext) {
             logic.nextPage();
           }
 
@@ -52,121 +53,151 @@ ScrollController _scrollController=ScrollController();
             ),
             Container(
               width: 1.sw,
-              height: 0.114.sh,
+              padding:
+                  EdgeInsets.symmetric(horizontal: 0.04.sw, vertical: 0.01.sh),
+              decoration: BoxDecoration(
+                color: WhiteColor,
+                border: Border(
+                  bottom: BorderSide(color: GrayLightColor, width: 1),
+                ),
+              ),
               child: Obx(() {
-                return ListView(
-                  padding: EdgeInsets.symmetric(vertical: 0.01.sh,horizontal: 0.02.sw),
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    if(logic.loading.value && logic.page.value==1)
-                      ...List.generate(5, (index) =>
-                          Shimmer(gradient: LinearGradient(colors: [GrayLightColor,GrayWhiteColor,GrayLightColor,]), child:  Container(
-                            margin: EdgeInsets.symmetric(horizontal: 0.02.sw),
-                            width: 0.15.sw,
-                            height: 0.15.sw,
+                return PopupMenuButton<dynamic>(
+                  offset: Offset(0, 0.05.sh),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 0.04.sw, vertical: 0.015.sh),
+                    decoration: BoxDecoration(
+                      color: WhiteColor,
+                      borderRadius: BorderRadius.circular(8.r),
+                      border: Border.all(color: GrayLightColor, width: 1),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          logic.selectedCity.value == null
+                              ? 'كل المدن'
+                              : '${logic.selectedCity.value?.name}',
+                          style: H3RegularDark,
+                        ),
+                        Icon(Icons.arrow_drop_down, color: DarkColor),
+                      ],
+                    ),
+                  ),
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                      value: null,
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 0.08.sw,
+                            height: 0.08.sw,
+                            margin: EdgeInsets.only(left: 0.02.sw),
+                            alignment: Alignment.center,
                             decoration: BoxDecoration(
-                                border: Border.all(color: GrayLightColor,width: 2),
-                                shape: BoxShape.circle,
-                                color:GrayWhiteColor,
-
+                              shape: BoxShape.circle,
+                              color: GrayWhiteColor,
                             ),
-                          )),
+                            child: Text(
+                              'ك',
+                              style: H3BlackTextStyle.copyWith(
+                                  color: Colors.black),
+                            ),
+                          ),
+                          Text('كل المدن', style: H3RegularDark),
+                        ],
                       ),
-
-                    if(logic.cities.length!=0 )
-                      InkWell(
-                        borderRadius: BorderRadius.circular(100.r),
-                        onTap: (){
-                          logic.selectedCity.value=null;
-                        },
-                        child:  Column(
+                    ),
+                    ...List.generate(
+                      logic.cities.length,
+                      (index) => PopupMenuItem(
+                        value: logic.cities[index],
+                        child: Row(
                           children: [
                             Container(
-                              margin: EdgeInsets.symmetric(horizontal: 0.02.sw),
-                              width: 0.15.sw,
-                              height: 0.15.sw,
+                              width: 0.08.sw,
+                              height: 0.08.sw,
+                              margin: EdgeInsets.only(left: 0.02.sw),
+                              alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                  border: Border.all(color:logic.selectedCity.value==null ?PrimaryColor: GrayLightColor,width: 2),
-                                  shape: BoxShape.circle,
-                                  color: Colors.red,
-                                  image: DecorationImage(image: AssetImage("assets/images/png/_logo.png"))
+                                shape: BoxShape.circle,
+                                color: GrayWhiteColor,
+                              ),
+                              child: Text(
+                                "${logic.cities[index].name?.substring(0, 1)}",
+                                style: H3BlackTextStyle.copyWith(
+                                    color: Colors.black),
                               ),
                             ),
-                            Text('الكل',style: H4RegularDark,)
+                            Text('${logic.cities[index].name}',
+                                style: H3RegularDark),
                           ],
                         ),
                       ),
-                    if(logic.cities.length!=0 )
-
-                    ...List.generate(logic.cities.length, (index) =>
-                       InkWell(
-                         borderRadius: BorderRadius.circular(100.r),
-                         onTap: (){
-                           logic.selectedCity.value=logic.cities[index];
-                         },
-                         child:  Column(
-                           children: [
-                             Container(
-                               margin: EdgeInsets.symmetric(horizontal: 0.02.sw),
-                               width: 0.15.sw,
-                               height: 0.15.sw,
-                               decoration: BoxDecoration(
-                                   border: Border.all(color:logic.selectedCity.value?.id==logic.cities[index].id?PrimaryColor: GrayLightColor,width: 2),
-                                   shape: BoxShape.circle,
-                                   color: Colors.red,
-                                   image: DecorationImage(image: CachedNetworkImageProvider("${logic.cities[index].image}"),fit: BoxFit.cover)
-                               ),
-                             ),
-                             Text('${logic.cities[index].name}',style: H4RegularDark,)
-                           ],
-                         ),
-                       ))
+                    ),
                   ],
+                  onSelected: (value) {
+                    logic.selectedCity.value = value;
+                  },
                 );
               }),
             ),
-            Divider(),
             Expanded(
               child: Obx(
-                    () {
+                () {
                   return ListView(
                     key: Key('list1'),
                     controller: _scrollController,
                     padding: EdgeInsets.symmetric(
                         vertical: 0.005.sh, horizontal: 0.02.sw),
                     children: [
-                      if (logic.loading.value && logic.page.value==1)
-                      ...List.generate(4, (index)=>MinimizeDetailsProductComponentLoading()),
-
-
+                      if (logic.loading.value && logic.page.value == 1)
+                        ...List.generate(
+                            4,
+                            (index) =>
+                                MinimizeDetailsProductComponentLoading()),
                       ...List.generate(logic.products.length, (index) {
                         return MinimizeDetailsServiceComponent(
                           post: logic.products[index],
                           TitleColor: DarkColor,
                           onClick: () {
-                            if(logic.products[index].url!=null && logic.products[index].url!.startsWith('http') && !logic.products[index].url!.endsWith('pdf') ){
+                            if (logic.products[index].url != null &&
+                                logic.products[index].url!.startsWith('http') &&
+                                !logic.products[index].url!.endsWith('pdf')) {
                               openUrl(url: "${logic.products[index].url}");
-
-                            }else if(logic.products[index].url!=null && logic.products[index].url!.startsWith('http') && logic.products[index].url!.endsWith('pdf')){
-                             // openUrl(url: "${logic.products[index].url}");
+                            } else if (logic.products[index].url != null &&
+                                logic.products[index].url!.startsWith('http') &&
+                                logic.products[index].url!.endsWith('pdf')) {
+                              // openUrl(url: "${logic.products[index].url}");
                               Get.toNamed(PDF_PAGE,
                                   arguments: logic.products[index].url);
-
-                            }else{
+                            } else {
                               Get.toNamed(SERVICE_DETAILS,
-                                  arguments: logic.products[index].id,parameters: {"id":"${logic.products[index].id}"});
+                                  arguments: logic.products[index].id,
+                                  parameters: {
+                                    "id": "${logic.products[index].id}"
+                                  });
                             }
-
                           },
                         );
                       }),
-                      if(logic.loading.value && logic.page.value>1)
+                      if (logic.loading.value && logic.page.value > 1)
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Flexible(child: Container(height: 0.06.sh,child: ProgressLoading())),
-                            Flexible(child: Text('جاري جلب المزيد',style: H4GrayTextStyle,))
+                            Flexible(
+                                child: Container(
+                                    height: 0.06.sh, child: ProgressLoading())),
+                            Flexible(
+                                child: Text(
+                              'جاري جلب المزيد',
+                              style: H4GrayTextStyle,
+                            ))
                           ],
                         ),
                     ],
