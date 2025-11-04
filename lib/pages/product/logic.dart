@@ -221,63 +221,76 @@ class ProductLogic extends GetxController {
     mainController.query.value = '''
     mutation AddLike{
 addLike(product_id:"${product.value!.id}"){
-          id
-            name
-            weight
-            expert
-            type
+         id
+          is_rate
+          is_like
+          vote_avg
+          weight
+           name
+            info
+            tags
             is_discount
             is_delivery
-            is_available
-            price
-            views_count
-            comments_count
-            discount
-            end_date
-            type
-            is_like
-            likes_count
             level
+            phone
+            email
+            address
+            url
+            longitude
+            latitude
+            price
+              turkey_price {
+                price
+                discount
+            } 
+             syr_price {
+                price
+                discount
+            }
+            discount
+            start_date
+            end_date
+            code
+            type
+            views_count
+          
             image
             video
+            images
+            docs
             created_at
             user {
-              id
-              name
-              id_color
-              phone
-              full_phone
-              seller_name
-              image
-              logo
-              is_verified
-              city{
+            id
+                seller_name
+                name
+                image
+                phone
+                full_phone
+                is_verified
+                city{
                 id
                   name
                 is_delivery
                 code_city
-                level  
+                level
+              
               }
-              area{
-               id
-               name
+               area{
+                id
+                  name
                 is_delivery
                 code_city
                 level
                
               }
             }
-          
             city {
-            id
-            name
-               
-            }
-            start_date
-              sub1 {
                 name
             }
             category {
+                name
+            }
+            sub1 {
                 name
             }
             colors {

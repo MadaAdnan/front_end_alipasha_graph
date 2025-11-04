@@ -177,7 +177,7 @@ RxBool is_like=RxBool(false);
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Text(
-                              'مميز',
+                              'ممول',
                               style: H4WhiteTextStyle,
                             ),
                             10.horizontalSpace,

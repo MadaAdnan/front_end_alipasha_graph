@@ -291,7 +291,7 @@ class SearchPage extends StatelessWidget {
                             decoration: BoxDecoration(
                                 color: DarkColor.withOpacity(0.6)),
                             child: Text(
-                              'مميز',
+                              'ممول',
                               style: H4OrangeTextStyle,
                             ),
                           ),

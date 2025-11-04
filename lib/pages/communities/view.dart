@@ -140,7 +140,7 @@ class CommunitiesPage extends StatelessWidget {
         },
         child: Column(
           children: [
-            HomeAppBarComponent(
+            AppBarComponent2(
               search: () {
                 Get.defaultDialog(
                     title: 'ابحث عن محادثة',

@@ -60,7 +60,7 @@ class AdviceTab extends StatelessWidget {
           10.verticalSpace,
           if (logic.myProducts.length > 0)
             Text(
-              'المنتجات المميزة',
+              'المنتجات الممولة',
               style: H4GrayTextStyle,
             ),
           15.verticalSpace,

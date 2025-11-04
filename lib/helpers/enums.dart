@@ -86,7 +86,7 @@ extension CategoryTypeEnum on String {
       case "news":
         return "جديد";
       case "special":
-        return "مميز";
+        return "ممول";
       case "normal":
         return "عادي";
       default:

@@ -26,7 +26,7 @@ bool exit=false;
 
         body: Column(
           children: [
-            HomeAppBarComponent(),
+            AppBarComponent2(),
             Obx(() {
               if (logic.loading.value && logic.categories.length==0) {
                 return Expanded(child: Container(

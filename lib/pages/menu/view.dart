@@ -102,7 +102,7 @@ class MenuPage extends StatelessWidget {
 
                   badgeContent: Obx(() {
                     return Text(
-                      '${mainController.authUser.value?.unread_notifications_count??0}',
+                      '${mainController.authUser.value?.unread_notifications_count.value}',
                       style: H4WhiteTextStyle,
                     );
                   }),

@@ -35,7 +35,7 @@ class ServicesPage extends StatelessWidget {
           },
           child: Column(
             children: [
-              HomeAppBarComponent(selected: 'service',),
+              AppBarComponent2(selected: 'service',),
               Expanded(
                   child: Container(
                     child: ListView(
@@ -334,7 +334,7 @@ class ServicesPage extends StatelessWidget {
                                 child: Container(
                                   alignment: Alignment.center,
                                   padding: EdgeInsets.symmetric(
-                                      horizontal: 0.02.sw, vertical: 0.03.sw),
+                                      horizontal: 0.01.sw, vertical: 0.03.sw),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(15.r),
                                     color: GrayWhiteColor,

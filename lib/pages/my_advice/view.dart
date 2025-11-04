@@ -295,7 +295,7 @@ class MyAdvicePage extends StatelessWidget {
                                         color: Colors.grey),
                                   ),
                                   Text(
-                                    "انقر لإضافة منتج مميز",
+                                    "انقر لإضافة منتج ممول",
                                     style: H3RegularDark.copyWith(
                                         fontWeight: FontWeight.w100),
                                     overflow: TextOverflow.ellipsis,
@@ -422,7 +422,7 @@ class MyAdvicePage extends StatelessWidget {
                                           text: "(${logic.myProducts.length})",
                                           style: H5RedTextStyle),
                                       TextSpan(
-                                          text: "منتج مميز من ",
+                                          text: "منتج ممول من ",
                                           style: H5RegularDark),
                                       TextSpan(
                                           text: "(${plan.special_count})",

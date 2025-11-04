@@ -35,20 +35,7 @@ class HomeLogic extends GetxController {
   RxInt page = RxInt(1);
 
   /// Global Key For Coach Mark
-  GlobalKey loginKey = GlobalKey();
-  GlobalKey catigoriesKey = GlobalKey();
-  GlobalKey specialSellerKey = GlobalKey();
-  GlobalKey jobKey = GlobalKey();
-  GlobalKey homeKey = GlobalKey();
-  GlobalKey serviceKey = GlobalKey();
-  GlobalKey sectionKey = GlobalKey();
-  GlobalKey tenderKey = GlobalKey();
-  GlobalKey createProductKey = GlobalKey();
-  GlobalKey whatsThink = GlobalKey();
-  GlobalKey communityKey = GlobalKey();
-  GlobalKey profileKey = GlobalKey();
-  GlobalKey sellerKey = GlobalKey();
-  GlobalKey moreCategoriesKey = GlobalKey();
+
   late List<TargetFocus> targetFoucos;
   Rxn<TutorialCoachMark> tutorialCoachMark = Rxn(null);
   final ScrollController scrollControllerCategories = ScrollController();
@@ -91,7 +78,7 @@ class HomeLogic extends GetxController {
     targetFoucos = [
       TargetFocus(
         identify: "home",
-        keyTarget: homeKey,
+        keyTarget: mainController.homeKey,
         contents: [
           TargetContent(
             align: ContentAlign.left,
@@ -131,7 +118,7 @@ class HomeLogic extends GetxController {
       ),
       TargetFocus(
         identify: "section",
-        keyTarget: sectionKey,
+        keyTarget: mainController.sectionKey,
         contents: [
           TargetContent(
             align: ContentAlign.left,
@@ -171,7 +158,7 @@ class HomeLogic extends GetxController {
       ),
       TargetFocus(
         identify: "service",
-        keyTarget: serviceKey,
+        keyTarget: mainController.serviceKey,
         contents: [
           TargetContent(
             align: ContentAlign.bottom,
@@ -210,6 +197,46 @@ class HomeLogic extends GetxController {
         ],
       ),
       TargetFocus(
+        identify: "notifications",
+        keyTarget: mainController.notificationKey,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            child: Container(
+              child: Column(
+                children: [
+                  Text(
+                    "🔔 الإشعارات \nتصفّح آخر التنبيهات حول العروض، الطلبات، والرسائل الجديدة فور صدورها.",
+                    style: H3WhiteTextStyle,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      tutorialCoachMark.value!.next();
+                    },
+                    child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 0.04.sh),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 0.04.sw, vertical: 0.001.sh),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.arrow_back_ios,
+                              color: Colors.white,
+                            ),
+                            Text(
+                              'التالي',
+                              style: H3WhiteTextStyle,
+                            ),
+                          ],
+                        )),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+     /* TargetFocus(
         identify: "job",
         keyTarget: jobKey,
         contents: [
@@ -248,7 +275,7 @@ class HomeLogic extends GetxController {
             ),
           ),
         ],
-      ),
+      ),*/
       /*  TargetFocus(
         identify: "tender",
         keyTarget: tenderKey,
@@ -266,7 +293,7 @@ class HomeLogic extends GetxController {
       ),*/
       TargetFocus(
         identify: "community",
-        keyTarget: communityKey,
+        keyTarget: mainController.communityKey,
         contents: [
           TargetContent(
             align: ContentAlign.right,
@@ -306,7 +333,7 @@ class HomeLogic extends GetxController {
       ),
       TargetFocus(
         identify: "profile2",
-        keyTarget: profileKey,
+        keyTarget: mainController.profileKey,
         contents: [
           TargetContent(
             align: ContentAlign.right,
@@ -362,7 +389,7 @@ class HomeLogic extends GetxController {
       TargetFocus(
         shape: ShapeLightFocus.RRect,
         identify: "what",
-        keyTarget: whatsThink,
+        keyTarget:mainController. whatsThink,
         contents: [
           TargetContent(
             align: ContentAlign.bottom,
@@ -419,7 +446,7 @@ class HomeLogic extends GetxController {
       TargetFocus(
         shape: ShapeLightFocus.RRect,
         identify: "more-categories",
-        keyTarget: moreCategoriesKey,
+        keyTarget: mainController.moreCategoriesKey,
         contents: [
           TargetContent(
             align: ContentAlign.bottom,
@@ -475,7 +502,7 @@ class HomeLogic extends GetxController {
       ),*/
       TargetFocus(
         identify: "createProduct",
-        keyTarget: createProductKey,
+        keyTarget: mainController.createProductKey,
         contents: [
           TargetContent(
             align: ContentAlign.left,
@@ -552,7 +579,7 @@ class HomeLogic extends GetxController {
     // TODO: implement onReady
     super.onReady();
 
-    getProduct();
+
   }
 
   nextPage() {
@@ -848,7 +875,8 @@ specials $dataProduct
     try {
       dio.Response? res = await mainController.fetchData();
       loading.value = false;
-      Logger().e(res?.data);
+      // Logger().e("GROP SLIDER");
+      // Logger().e(res?.data);
       if (res?.data?['data']?['latest'] != null) {
         for (var item in res?.data?['data']?['latest']) {
           latest.add(ProductModel.fromJson(item));
@@ -892,7 +920,7 @@ specials $dataProduct
       mainController.logger.w('ERRORPRO');
       mainController.logger.w('$e');
     }
-
+    await getProduct();
     loading.value = false;
   }
 

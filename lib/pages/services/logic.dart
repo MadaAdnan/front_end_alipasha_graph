@@ -179,7 +179,7 @@ class ServicesLogic extends GetxController {
     try {
       dio.Response resIdlib =
           await connect.get('?key=$setting_weather&q=Idlib&days=3');
-      mainController.logger.e(resIdlib.data);
+     // mainController.logger.e(resIdlib.data);
       if (resIdlib.data['forecast']['forecastday'] != null) {
         for (var item in resIdlib.data['forecast']['forecastday']) {
           WeatherModel weatherModel = WeatherModel.fromJson(item);

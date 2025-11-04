@@ -33,20 +33,20 @@ class PusherService {
  final   pusherClient = PusherClient(options: options);
     final logger = Logger();
     pusherClient.onConnected((data) {
-      logger.w(data);
+     // logger.w(data);
     });
     pusherClient.onConnectionEstablished((data) {
-      logger.w("Connection established - socket-id: ${pusherClient.socketId}");
+     // logger.w("Connection established - socket-id: ${pusherClient.socketId}");
       // يمكنك استخدام Logger لطباعة الرسالة
     });
     pusherClient.onConnectionError((error) {
-      logger.w("Connection error - $error");
+    //  logger.w("Connection error - $error");
     });
     pusherClient.onError((error) {
-      logger.w("Error - $error");
+     // logger.w("Error - $error");
     });
     pusherClient.onDisconnected((data) {
-      logger.w("Disconnected - $data");
+     // logger.w("Disconnected - $data");
     });
     pusherClient.connect();
 

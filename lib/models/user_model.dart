@@ -3,6 +3,7 @@ import 'package:ali_pasha_graph/models/community_model.dart';
 import 'package:ali_pasha_graph/models/plan_model.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
 import 'package:ali_pasha_graph/models/social_model.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
 class UserModel {
   int? id;
@@ -45,7 +46,7 @@ class UserModel {
   List<DataImageModel>? gallery;
   bool? can_create_group;
   bool? can_create_channel;
-  int? unread_notifications_count;
+  RxInt unread_notifications_count;
   List<CommunityModel>? communities;
   SocialModel? social;
   int? invoices_count;
@@ -88,7 +89,7 @@ class UserModel {
     this.gallery,
     this.can_create_channel,
     this.can_create_group,
-    this.unread_notifications_count,
+    required this.unread_notifications_count,
     this.communities,
     this.invoices_count,
     this.invoicesSeller_count,
@@ -140,7 +141,7 @@ this.advices_count,
       followingCount: int.tryParse("${data['following_count']}") ?? 0,
       total_views: int.tryParse("${data['total_views']}") ?? 0,
       unread_notifications_count:
-          int.tryParse("${data['unread_notifications_count']}") ?? 0,
+          RxInt(int.tryParse("${data['unread_notifications_count']}") ?? 0),
 
       special_product_count:
       int.tryParse("${data['special_product_count']}") ?? 0,

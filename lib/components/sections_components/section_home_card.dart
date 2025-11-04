@@ -1,6 +1,7 @@
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/models/category_model.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -43,7 +44,7 @@ final GlobalKey? sectionKey;
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20.r),
                     image: DecorationImage(
-                        image: NetworkImage("${section?.img}"),fit: BoxFit.contain)),
+                        image: CachedNetworkImageProvider("${section?.img}"),fit: BoxFit.contain)),
               ),
             ),
             Text(

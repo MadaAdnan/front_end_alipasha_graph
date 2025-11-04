@@ -158,7 +158,7 @@ class EditProductPage extends StatelessWidget {
                                 child: Column(
                                   children: [
                                     Text(
-                                      'منتج مميز',
+                                      'منتج ممول',
                                       style: H4BlackTextStyle,
                                     ),
                                     Switch(

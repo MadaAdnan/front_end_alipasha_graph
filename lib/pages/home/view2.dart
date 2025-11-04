@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage2> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   InkWell(
-                    key: logic.createProductKey,
+                    key: mainController.createProductKey,
                     onTap: () {
                       Get.toNamed(CREATE_PRODUCT_PAGE);
                     },
@@ -177,13 +177,6 @@ class _HomePageState extends State<HomePage2> {
             child: Column(
               children: [
                 HomeAppBarComponent(
-                  tenderKey: logic.tenderKey,
-                  jobKey: logic.jobKey,
-                  communityKey: logic.communityKey,
-                  homeKey: logic.homeKey,
-                  profileKey: logic.profileKey,
-                  sectionKey: logic.sectionKey,
-                  serviceKey: logic.serviceKey,
                 ),
                 Expanded(child: Container(
                   child: Obx(() {
@@ -235,7 +228,7 @@ class _HomePageState extends State<HomePage2> {
                                       ),
                                       child: Obx(() {
                                         return Container(
-                                          key: logic.loginKey,
+                                          key: mainController.loginKey,
                                           width: 0.12.sw,
                                           height: 0.12.sw,
                                           decoration: BoxDecoration(
@@ -258,7 +251,7 @@ class _HomePageState extends State<HomePage2> {
                                     12.horizontalSpace,
                                     Expanded(
                                       child: InkWell(
-                                        key: logic.whatsThink,
+                                        key: mainController.whatsThink,
                                         onTap: () {
                                           Get.toNamed(CREATE_PRODUCT_PAGE);
                                         },
@@ -289,7 +282,7 @@ class _HomePageState extends State<HomePage2> {
                               padding: EdgeInsets.symmetric(vertical: 0.01.sh),
                               margin: EdgeInsets.only(bottom: 0.01.sh),
                               child: ListView(
-                                key: logic.moreCategoriesKey,
+                                key: mainController.moreCategoriesKey,
                                 scrollDirection: Axis.horizontal,
                                 controller: logic.scrollControllerCategories,
                                 padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
@@ -303,7 +296,7 @@ class _HomePageState extends State<HomePage2> {
                                           .length,
                                       (index) => SectionHomeCard(
                                           sectionKey: index == 0
-                                              ? logic.catigoriesKey
+                                              ? mainController.catigoriesKey
                                               : null,
                                           section: mainController.categories
                                               .where(
@@ -760,7 +753,7 @@ class _HomePageState extends State<HomePage2> {
                                                           ),
                                                           SizedBox(width: 10),
                                                           Text(
-                                                            'مميز',
+                                                            'ممول',
                                                             style: H2BlackTextStyle.copyWith(
                                                               fontWeight: FontWeight.bold,
                                                             ),
@@ -1374,7 +1367,7 @@ class _HomePageState extends State<HomePage2> {
 
   _buildAddStore() {
     return InkWell(
-      key: logic.sellerKey,
+      key: mainController.sellerKey,
       onTap: () {
         if (isAuth()) {
           String message =

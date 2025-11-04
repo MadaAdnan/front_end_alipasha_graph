@@ -1,5 +1,6 @@
 import 'package:ali_pasha_graph/models/user_model.dart';
 import 'package:ali_pasha_graph/routes/routes_url.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -26,9 +27,9 @@ final GlobalKey? sellerKey;
             color: GrayLightColor,
             borderRadius: BorderRadius.circular(15.r),
             image: DecorationImage(
-                image: NetworkImage('${seller?.customImg}'),
+                image: CachedNetworkImageProvider('${seller?.customImg}'),
                 fit: BoxFit.fill,
-                opacity: 0.7)),
+                opacity: 0.9)),
         child: Container(
           padding: EdgeInsets.only(top: 20.h, right: 20.w),
           alignment: Alignment.topRight,
@@ -47,7 +48,7 @@ final GlobalKey? sellerKey;
                   color: GrayLightColor,
                   borderRadius: BorderRadius.circular(150.r),
                   image:
-                      DecorationImage(image: NetworkImage('${seller?.image}'),fit: BoxFit.cover)),
+                      DecorationImage(image: CachedNetworkImageProvider('${seller?.image}'),fit: BoxFit.cover)),
             ),
           ),
         ),

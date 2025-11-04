@@ -287,7 +287,7 @@ class PostCard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Text(
-                              'مميز',
+                              'ممول',
                               style: H4WhiteTextStyle,
                             ),
                             10.horizontalSpace,
@@ -428,7 +428,7 @@ class PostCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 //Like
-                SizedBox(width: 0.03.sw,),
+                SizedBox(width: 0.02.sw,),
                 Obx(() {
                   return InkWell(
                     onTap: ()async {
@@ -461,7 +461,7 @@ class PostCard extends StatelessWidget {
                     ),
                   );
                 }),
-                SizedBox(width: 0.07.sw,),
+                SizedBox(width: 0.06.sw,),
                 InkWell(
                   onTap: () {},
                   child: Container(
@@ -485,7 +485,7 @@ class PostCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(width: 0.07.sw,),
+                SizedBox(width: 0.06.sw,),
                 InkWell(
                   onTap: () {
                     if(isAuth()){
@@ -517,38 +517,7 @@ class PostCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                if (false)
-                  InkWell(
-                    onTap: () async {
-                      loadingCommunity.value = true;
-                      await mainController.createCommunity(
-                          sellerId: post.user!.id!);
-                      loadingCommunity.value = false;
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Icon(
-                          FontAwesomeIcons.comments,
-                          size: 0.05.sw,
-                        ),
-                        SizedBox(
-                          width: 0.004.sw,
-                        ),
-                        Obx(() {
-                          return loadingCommunity.value
-                              ? const Center(
-                            child: CircularProgressIndicator(),
-                          )
-                              : Text(
-                            'محادثة',
-                            style: H4BlackTextStyle,
-                          );
-                        })
-                      ],
-                    ),
-                  ),
+
                 SizedBox(width: 0.07.sw,),
                 InkWell(
                   onTap: () {

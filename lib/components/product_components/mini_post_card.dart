@@ -84,7 +84,7 @@ class MiniPostCard extends StatelessWidget {
                               size: 0.03.sw,
                             ),
                             Text(
-                              " مميز ",
+                              "ممول",
                               style: H4OrangeTextStyle,
                             ),
                           ],
@@ -401,7 +401,7 @@ width: 0.67.sw,
                         decoration:
                             BoxDecoration(color: DarkColor.withOpacity(0.6)),
                         child: Text(
-                          'مميز',
+                          'ممول',
                           style: H4OrangeTextStyle,
                         ),
                       ),

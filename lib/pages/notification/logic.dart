@@ -54,6 +54,7 @@ class NotificationLogic extends GetxController {
     try {
       var res = await mainController.fetchData();
       if (res?.data?['data']?['notifications']?['data'] != null) {
+        mainController.authUser.value?.unread_notifications_count.value=0;
         for (var item in res?.data?['data']?['notifications']?['data']) {
           notifications.add(NotificationModel.fromJson(item));
         }

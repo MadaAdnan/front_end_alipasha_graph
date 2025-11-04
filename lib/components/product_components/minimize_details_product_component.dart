@@ -124,7 +124,7 @@ class MinimizeDetailsProductComponent extends StatelessWidget {
                                   bottomRight: Radius.circular(20.r),
                                   bottomLeft: Radius.circular(20.r))),
                           child: Text(
-                            'مميز',
+                            'ممول',
                             style: H5WhiteTextStyle,
                           ),
                         )
@@ -554,7 +554,7 @@ class MinimizeDetailsJobComponent extends StatelessWidget {
                                   bottomRight: Radius.circular(20.r),
                                   bottomLeft: Radius.circular(20.r))),
                           child: Text(
-                            'مميز',
+                            'ممول',
                             style: H5WhiteTextStyle,
                           ),
                         )
@@ -870,7 +870,7 @@ class MinimizeDetailsServiceComponent extends StatelessWidget {
                                   bottomRight: Radius.circular(20.r),
                                   bottomLeft: Radius.circular(20.r))),
                           child: Text(
-                            'مميز',
+                            'ممول',
                             style: H5WhiteTextStyle,
                           ),
                         )
@@ -1097,7 +1097,7 @@ class MinimizeDetailsTenderComponent extends StatelessWidget {
                                   bottomRight: Radius.circular(20.r),
                                   bottomLeft: Radius.circular(20.r))),
                           child: Text(
-                            'مميز',
+                            'ممول',
                             style: H5WhiteTextStyle,
                           ),
                         )
