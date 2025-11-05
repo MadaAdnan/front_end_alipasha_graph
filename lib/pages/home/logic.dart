@@ -832,15 +832,11 @@ class HomeLogic extends GetxController {
             user {
               id
               name
-           
-              phone
-            
+           full_phone
               seller_name
               image
               logo
               is_verified
-            
-           
             }
             city{
             name

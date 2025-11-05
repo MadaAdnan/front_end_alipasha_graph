@@ -55,7 +55,7 @@ class _HomePageState extends State<HomePage> {
   void _setupScrollListener() {
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
-              _scrollController.position.maxScrollExtent * 0.80 &&
+          _scrollController.position.maxScrollExtent * 0.80 &&
           !mainController.loading.value &&
           logic.hasMorePage.value) {
         logic.nextPage();
@@ -149,17 +149,18 @@ class _HomePageState extends State<HomePage> {
   Widget _buildContent() {
     return NotificationListener<ScrollNotification>(
       onNotification: _handleScrollNotification,
-      child: ListView(
-        cacheExtent: 500,
+      child: CustomScrollView(
+        cacheExtent: 300,
         controller: _scrollController,
         physics: const AlwaysScrollableScrollPhysics(),
-        children: [
-          _buildUserHeader(),
-          _buildCategoriesSection(),
-          _buildSellersSection(),
-          const Divider(color: GrayDarkColor, height: 1),
-          _buildProductsSection(),
-          _buildNoMoreResults(),
+        slivers: [
+          SliverToBoxAdapter(child: _buildUserHeader()),
+          SliverToBoxAdapter(child: _buildCategoriesSection()),
+          SliverToBoxAdapter(child: _buildSellersSection()),
+          const SliverToBoxAdapter(
+              child: Divider(color: GrayDarkColor, height: 1)),
+          _buildProductsSliverList(),
+          SliverToBoxAdapter(child: _buildNoMoreResults()),
         ],
       ),
     );
@@ -213,7 +214,7 @@ class _HomePageState extends State<HomePage> {
                   image: DecorationImage(
                     image: mainController.authUser.value?.image != null
                         ? CachedNetworkImageProvider(
-                            '${mainController.authUser.value?.image}')
+                        '${mainController.authUser.value?.image}')
                         : getUserImage(),
                     fit: BoxFit.cover,
                   ),
@@ -257,16 +258,18 @@ class _HomePageState extends State<HomePage> {
       padding: EdgeInsets.symmetric(vertical: 0.002.sh),
       child: Obx(() {
         return ListView.builder(
-          cacheExtent: 500,
+          cacheExtent: 200,
           key: mainController.moreCategoriesKey,
           scrollDirection: Axis.horizontal,
           controller: logic.scrollControllerCategories,
+          addAutomaticKeepAlives: false,
+          addRepaintBoundaries: true,
           itemCount: mainController.categories.isEmpty
               ? 4
               : mainController.categories
-                      .where((el) => el.type == 'product')
-                      .length +
-                  1,
+              .where((el) => el.type == 'product')
+              .length +
+              1,
           itemBuilder: (context, index) {
             if (mainController.categories.isEmpty) {
               return _buildSectionShimmer();
@@ -293,7 +296,7 @@ class _HomePageState extends State<HomePage> {
 
   List<Widget> _buildCategoryCards() {
     final productCategories =
-        mainController.categories.where((el) => el.type == 'product').toList();
+    mainController.categories.where((el) => el.type == 'product').toList();
 
     return List.generate(productCategories.length, (index) {
       return SectionHomeCard(
@@ -321,9 +324,11 @@ class _HomePageState extends State<HomePage> {
         color: WhiteColor,
         child: ListView.builder(
           // ← استبدال ListView بـ ListView.builder
-          cacheExtent: 500,
+          cacheExtent: 200,
           padding: EdgeInsets.symmetric(vertical: 10.h),
           scrollDirection: Axis.horizontal,
+          addAutomaticKeepAlives: false,
+          addRepaintBoundaries: true,
           itemCount: logic.sellers.isEmpty && logic.loading.value
               ? 6
               : logic.sellers.length + 1,
@@ -384,6 +389,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  // الدالة القديمة - محفوظة للتوافق
   Widget _buildProductsSection() {
     return Obx(() {
       return Column(
@@ -396,10 +402,44 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  // الدالة الجديدة المحسّنة - تستخدم SliverList بدلاً من Column
+  Widget _buildProductsSliverList() {
+    return Obx(() {
+      // إذا كانت البيانات تُحمّل لأول مرة، عرض شيمر
+      if (logic.loading.value && logic.products.isEmpty) {
+        return SliverList(
+          delegate: SliverChildBuilderDelegate(
+                (context, index) => PostCardLoading(),
+            childCount: 4,
+          ),
+        );
+      }
+
+      // عرض المنتجات باستخدام SliverList.builder للأداء الأفضل
+      return SliverList(
+        delegate: SliverChildBuilderDelegate(
+              (context, index) {
+            if (index < logic.products.length) {
+              return _buildProductItem(index);
+            }
+            // عرض مؤشر التحميل في النهاية
+            if (logic.loading.value) {
+              return _buildLoadingIndicator();
+            }
+            return const SizedBox.shrink();
+          },
+          childCount: logic.products.length + (logic.loading.value ? 1 : 0),
+          addAutomaticKeepAlives: false,
+          addRepaintBoundaries: true,
+        ),
+      );
+    });
+  }
+
   List<Widget> _buildProductList() {
     return List.generate(
       logic.products.length + (logic.loading.value ? 1 : 0),
-      (index) {
+          (index) {
         if (index < logic.products.length) {
           return _buildProductItem(index);
         }
@@ -534,9 +574,11 @@ class _HomePageState extends State<HomePage> {
           height: isSeller ? 0.3.sh : 0.51.sh,
           color: Colors.white,
           child: ListView.builder(
-            cacheExtent: 500,
+            cacheExtent: 200,
             scrollDirection: Axis.horizontal,
             physics: const ClampingScrollPhysics(),
+            addAutomaticKeepAlives: false,
+            addRepaintBoundaries: true,
             itemCount: isSeller ? sellers!.length : products!.length,
             itemBuilder: (context, i) => Padding(
               padding: EdgeInsets.symmetric(horizontal: 0.01.sw),
@@ -639,7 +681,7 @@ class _HomePageState extends State<HomePage> {
           "ID:${user?.id} - اسم المتجر : ${user?.seller_name} - نوع الطلب إضافة متجر مميز";
       openUrl(
         url:
-            "https://wa.me/${mainController.settings.value.social?.phone}?text=${Uri.encodeComponent(message)}",
+        "https://wa.me/${mainController.settings.value.social?.phone}?text=${Uri.encodeComponent(message)}",
       );
     } else {
       Get.toNamed(LOGIN_PAGE);
@@ -1079,147 +1121,7 @@ class _ViewMoreButton extends StatelessWidget {
   }
 }
 
-/*class SellerCard extends StatelessWidget {
-  SellerCard({super.key, required this.seller, required this.logic});
 
-  final UserModel seller;
-  RxBool isFollowers = RxBool(false);
-  final logic;
-  MainController mainController = Get.find<MainController>();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      width: 0.6.sw,
-      child: AspectRatio(
-        aspectRatio: 1,
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: GrayLightColor,
-              width: 1.0,
-            ),
-          ),
-          child: Padding(
-            padding:
-                EdgeInsets.symmetric(vertical: 0.01.sh, horizontal: 0.01.sw),
-            child: Stack(
-              children: [
-                // 👇 ضع InkWell هنا داخل طبقة خلفية فقط
-                Positioned.fill(
-                  child: InkWell(
-                    onTap: () {
-                      Get.toNamed(PRODUCTS_PAGE,
-                          arguments: seller,
-                          parameters: {"id": "${seller.id}"});
-                    },
-                  ),
-                ),
-
-                // 👇 المحتوى الرئيسي فوق الـ InkWell
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 0.01.sw, vertical: 0.03.sh),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: LinearGradient(
-                          colors: [
-                            PrimaryColor,
-                            PrimaryColor.withOpacity(0.7),
-                          ],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                        ),
-                      ),
-                      child: CircleAvatar(
-                        radius: 40,
-                        backgroundImage:
-                            CachedNetworkImageProvider("${seller.image}"),
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          child: AutoSizeText(
-                            "${seller.seller_name ?? seller.name}",
-                            overflow: TextOverflow.ellipsis,
-                            style: H2BlackTextStyle.copyWith(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w900),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        if (seller.is_verified == true)
-                          Icon(
-                            Icons.verified,
-                            color: Colors.blue,
-                          ),
-                      ],
-                    ),
-                    SizedBox(
-                      width: 1.sw,
-                      child: AutoSizeText(
-                        "${seller.address}",
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
-                        maxLines: 1,
-                      ),
-                    ),
-                  ],
-                ),
-
-                // 👇 زر المتابعة (القلب)
-                Positioned(
-                  top: 0.01.sh,
-                  left: 0.01.sw,
-                  child: Obx(() {
-                    bool isFollowing = mainController.authUser.value!.followers!
-                                .indexWhere(
-                                    (el) => el.seller?.id == seller?.id) >
-                            -1 ||
-                        isFollowers.value == true;
-                    return InkWell(
-                      onTap: () {
-                        if (!isFollowing && seller.id != null) {
-                          isFollowers.value = true;
-                          logic.follow(sellerId: seller.id!);
-                        }
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 10.w, vertical: 10.w),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15.r),
-                          color: isFollowing ? PrimaryColor : Colors.grey,
-                        ),
-                        child: Center(
-                          child: Icon(
-                            FontAwesomeIcons.solidHeart,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    );
-                  }),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}*/
 
 class SellerCard extends StatelessWidget {
   SellerCard({super.key, required this.seller, required this.logic});
@@ -1397,7 +1299,7 @@ class SellerCard extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15.r),
               color:
-                  isFollowing || isFollowers.value ? PrimaryColor : Colors.grey,
+              isFollowing || isFollowers.value ? PrimaryColor : Colors.grey,
             ),
             child: Center(
               child: Icon(
