@@ -30,7 +30,7 @@ class UserModel {
   String? info;
   String? customImg;
   String? level;
- bool? isAvailableCreate;
+  bool? isAvailableCreate;
   List<ProductModel>? products;
   List<FollowerModel>? followers;
   List<PlanModel>? plans;
@@ -97,7 +97,7 @@ class UserModel {
     this.area,
     this.full_phone,
     this.phone_code,
-this.advices_count,
+    this.advices_count,
     this.special_product_count,
   });
 
@@ -133,32 +133,45 @@ this.advices_count,
       }
     }
 
+    // بناء full_phone إذا كان فارغاً
+    String fullPhone = "${data['full_phone'] ?? ''}";
+    String phoneCode = "${data['phone_code'] ?? ''}";
+    String phone = "${data['phone'] ?? ''}";
+
+    // إذا كان full_phone فارغاً ولكن phone_code و phone موجودان، قم ببنائه
+    if (fullPhone.isEmpty && phoneCode.isNotEmpty && phone.isNotEmpty) {
+      fullPhone = phoneCode + phone;
+    }
+    // إذا كان full_phone فارغاً ولكن phone موجود فقط، استخدم phone مباشرة
+    else if (fullPhone.isEmpty && phone.isNotEmpty) {
+      fullPhone = phone;
+    }
 
     return UserModel(
       id: int.tryParse("${data['id']}"),
-      invoices_count: int.tryParse("${data['invoices_count']}")??0,
-      invoicesSeller_count: int.tryParse("${data['invoices_seller_count']}")??0,
+      invoices_count: int.tryParse("${data['invoices_count']}") ?? 0,
+      invoicesSeller_count:
+      int.tryParse("${data['invoices_seller_count']}") ?? 0,
       followingCount: int.tryParse("${data['following_count']}") ?? 0,
       total_views: int.tryParse("${data['total_views']}") ?? 0,
-      unread_notifications_count:
-          RxInt(int.tryParse("${data['unread_notifications_count']}") ?? 0),
-
+      unread_notifications_count: RxInt(
+        int.tryParse("${data['unread_notifications_count']}") ?? 0,
+      ),
       special_product_count:
       int.tryParse("${data['special_product_count']}") ?? 0,
-
-      advices_count:
-      int.tryParse("${data['advices_count']}") ?? 0,
+      advices_count: int.tryParse("${data['advices_count']}") ?? 0,
       info: "${data['info'] ?? ''}",
-      full_phone: "${data['full_phone'] ?? ''}",
-      phone_code: "${data['phone_code'] ?? ''}",
+      full_phone: fullPhone,
+      phone_code: phoneCode,
       affiliate: "${data['affiliate'] ?? ''}",
       is_special: bool.tryParse("${data['is_special']}") ?? false,
-      isAvailableCreate: bool.tryParse("${data['is_available_create']}") ?? false,
+      isAvailableCreate:
+      bool.tryParse("${data['is_available_create']}") ?? false,
       trust: bool.tryParse("${data['trust']}") ?? false,
       is_verified: bool.tryParse("${data['is_verified']}") ?? false,
       can_create_group: bool.tryParse("${data['can_create_group']}") ?? false,
       can_create_channel:
-          bool.tryParse("${data['can_create_channel']}") ?? false,
+      bool.tryParse("${data['can_create_channel']}") ?? false,
       is_restaurant: bool.tryParse("${data['is_restaurant']}") ?? false,
       is_delivery: bool.tryParse("${data['is_delivery']}") ?? false,
       is_active: bool.tryParse("${data['is_active']}") ?? false,
@@ -180,8 +193,9 @@ this.advices_count,
       email_verified_at: "${data['email_verified_at'] ?? ''}",
       city: data['city'] != null ? CityModel.fromJson(data['city']) : null,
       area: data['area'] != null ? CityModel.fromJson(data['area']) : null,
-      social:
-          data['social'] != null ? SocialModel.fromJson(data['social']) : null,
+      social: data['social'] != null
+          ? SocialModel.fromJson(data['social'])
+          : null,
       products: listProducts.toList(),
       plans: listPlans.toList(),
       followers: listFollowers.toList(),
@@ -198,6 +212,8 @@ this.advices_count,
       'email': email,
       'email_verified_at': email_verified_at,
       'phone': phone,
+      'full_phone': full_phone,
+      'phone_code': phone_code,
       'address': address,
       'image': image,
       'logo': logo,
@@ -220,12 +236,12 @@ this.advices_count,
       'level': level,
       'followers': followers?.map((el) => el.tojson()).toList() ?? [],
       "following_count": followingCount,
-      "invoices_count":invoices_count,
-      "invoices_seller_count":invoicesSeller_count,
-      "trues":trust,
-      'is_available_create':isAvailableCreate,
-      "advices_count":advices_count,
-      "special_product_count":special_product_count
+      "invoices_count": invoices_count,
+      "invoices_seller_count": invoicesSeller_count,
+      "trues": trust,
+      'is_available_create': isAvailableCreate,
+      "advices_count": advices_count,
+      "special_product_count": special_product_count,
     };
     return data;
   }
@@ -239,15 +255,17 @@ class FollowerModel {
 
   factory FollowerModel.fromJson(Map<String, dynamic> data) {
     return FollowerModel(
-        user: data['user'] != null ? UserModel.fromJson(data['user']) : null,
-        seller:
-            data['seller'] != null ? UserModel.fromJson(data['seller']) : null);
+      user: data['user'] != null ? UserModel.fromJson(data['user']) : null,
+      seller: data['seller'] != null
+          ? UserModel.fromJson(data['seller'])
+          : null,
+    );
   }
 
   tojson() {
     Map<String, dynamic> data = {
       "user": user?.toJson(),
-      "seller": seller?.toJson()
+      "seller": seller?.toJson(),
     };
     return data;
   }

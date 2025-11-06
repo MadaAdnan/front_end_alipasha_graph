@@ -26,178 +26,175 @@ class CartItemPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: WhiteColor,
-      appBar: AppBar(
-        title: Text('سلة المشتريات'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: Text('سلة المشتريات'), centerTitle: true),
       body: Column(
         children: [
           Expanded(
-            child: Obx(
-              () {
-                return Container(
-                  color: WhiteColor,
-                  child: ListView(
-                    padding: EdgeInsets.symmetric(vertical: 0.01.sh),
-                    children: [
-                      ...List.generate(
-                        logic.carts.length,
-                        (index) {
-                          var price =
-                              (logic.carts[index].product?.is_discount == true
-                                      ? logic.carts[index].product?.discount
-                                      : logic.carts[index].product?.price) ??
-                                  0;
-                          return Container(
-                            height: 0.3.sw,
-                            width: 1.sw,
-                            margin: EdgeInsets.only(bottom: 0.01.sh),
-                            decoration: const BoxDecoration(
-                                color: WhiteColor,
-                                border: Border(
-                                    bottom: BorderSide(
-                                  color: GrayLightColor,
-                                ))),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 0.3.sw,
-                                  height: 0.3.sw,
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: CachedNetworkImageProvider(
-                                              "${logic.carts[index].product?.image}"),
-                                          fit: BoxFit.cover)),
+            child: Obx(() {
+              return Container(
+                color: WhiteColor,
+                child: ListView(
+                  padding: EdgeInsets.symmetric(vertical: 0.01.sh),
+                  children: [
+                    ...List.generate(logic.carts.length, (index) {
+                      var price =
+                          (logic.carts[index].product?.is_discount == true
+                              ? logic.carts[index].product?.discount
+                              : logic.carts[index].product?.price) ??
+                              0;
+                      return Container(
+                        height: 0.3.sw,
+                        width: 1.sw,
+                        margin: EdgeInsets.only(bottom: 0.01.sh),
+                        decoration: const BoxDecoration(
+                          color: WhiteColor,
+                          border: Border(
+                            bottom: BorderSide(color: GrayLightColor),
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 0.3.sw,
+                              height: 0.3.sw,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: CachedNetworkImageProvider(
+                                    "${logic.carts[index].product?.image}",
+                                  ),
+                                  fit: BoxFit.cover,
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 0.002.sw, vertical: 0.001.sh),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 0.002.sw,
+                                vertical: 0.001.sh,
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          SizedBox(
-                                            width: 0.6.sw,
-                                            child: AutoSizeText(
-                                              "${logic.carts[index].product?.name}",
-                                              style: H3BlackTextStyle,
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                            ),
-                                          ),
-                                          InkWell(
-                                            onTap: () async {
-                                              mainController.deleteFromCart(
-                                                  product: logic
-                                                      .carts[index].product!);
-                                              await mainController
-                                                  .refreshCart();
-                                              logic.getCart();
-                                            },
-                                            child: const Icon(
-                                              FontAwesomeIcons.x,
-                                              color: PrimaryColor,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                      Expanded(
-                                          child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          SizedBox(
-                                            width: 0.45.sw,
-                                            child: AutoSizeText(
-                                              "${logic.carts[index].product?.expert?.trim()}",
-                                              style: H4RegularDark,
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 2,
-                                              softWrap: true,
-                                              wrapWords: true,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 0.037.sw,
-                                          ),
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              SizedBox(
-                                                child: InkWell(
-                                                  onTap: () async {
-                                                    await mainController
-                                                        .increaseQty(
-                                                            productId: logic
-                                                                .carts[index]
-                                                                .product!
-                                                                .id!);
-                                                    logic.getCart();
-                                                  },
-                                                  child: const Icon(
-                                                      FontAwesomeIcons
-                                                          .circlePlus),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: 0.01.sw,
-                                              ),
-                                              SizedBox(
-                                                  height: 0.02.sh,
-                                                  child: Text(
-                                                    '${logic.carts[index].qty}',
-                                                    style: H3BlackTextStyle,
-                                                  )),
-                                              SizedBox(
-                                                width: 0.01.sw,
-                                              ),
-                                              SizedBox(
-                                                child: InkWell(
-                                                  onTap: () async {
-                                                    print(
-                                                        "ID:${logic.carts[index].product!.id!}");
-                                                    await mainController
-                                                        .decreaseQty(
-                                                            productId: logic
-                                                                .carts[index]
-                                                                .product!
-                                                                .id!);
-                                                    logic.getCart();
-                                                  },
-                                                  child: const Icon(
-                                                      FontAwesomeIcons
-                                                          .circleMinus),
-                                                ),
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      )),
                                       SizedBox(
-                                        width: 0.67.sw,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                        width: 0.6.sw,
+                                        child: AutoSizeText(
+                                          "${logic.carts[index].product?.name}",
+                                          style: H3BlackTextStyle,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                        ),
+                                      ),
+                                      InkWell(
+                                        onTap: () async {
+                                          mainController.deleteFromCart(
+                                            product:
+                                            logic.carts[index].product!,
+                                          );
+                                          await mainController.refreshCart();
+                                          logic.getCart();
+                                        },
+                                        child: const Icon(
+                                          FontAwesomeIcons.x,
+                                          color: PrimaryColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Expanded(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        SizedBox(
+                                          width: 0.45.sw,
+                                          child: AutoSizeText(
+                                            "${logic.carts[index].product?.expert?.trim()}",
+                                            style: H4RegularDark,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 2,
+                                            softWrap: true,
+                                            wrapWords: true,
+                                          ),
+                                        ),
+                                        SizedBox(width: 0.037.sw),
+                                        Row(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                           children: [
-                                            if (price > 0)
-                                              AutoSizeText(
-                                                "$price \$",
+                                            SizedBox(
+                                              child: InkWell(
+                                                onTap: () async {
+                                                  await mainController
+                                                      .increaseQty(
+                                                    productId: logic
+                                                        .carts[index]
+                                                        .product!
+                                                        .id!,
+                                                  );
+                                                  logic.getCart();
+                                                },
+                                                child: const Icon(
+                                                  FontAwesomeIcons.circlePlus,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(width: 0.01.sw),
+                                            SizedBox(
+                                              height: 0.02.sh,
+                                              child: Text(
+                                                '${logic.carts[index].qty}',
                                                 style: H3BlackTextStyle,
-                                                overflow: TextOverflow.ellipsis,
                                               ),
-                                            if (price == 0)
-                                              Text(
-                                                "السعر غير معروف",
-                                                style: H4RedTextStyle,
-                                                overflow: TextOverflow.ellipsis,
+                                            ),
+                                            SizedBox(width: 0.01.sw),
+                                            SizedBox(
+                                              child: InkWell(
+                                                onTap: () async {
+                                                  print(
+                                                    "ID:${logic.carts[index].product!.id!}",
+                                                  );
+                                                  await mainController
+                                                      .decreaseQty(
+                                                    productId: logic
+                                                        .carts[index]
+                                                        .product!
+                                                        .id!,
+                                                  );
+                                                  logic.getCart();
+                                                },
+                                                child: const Icon(
+                                                  FontAwesomeIcons.circleMinus,
+                                                ),
                                               ),
-                                            /*if (logic.carts[index].product
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 0.67.sw,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        if (price > 0)
+                                          AutoSizeText(
+                                            "$price \$",
+                                            style: H3BlackTextStyle,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        if (price == 0)
+                                          Text(
+                                            "السعر غير معروف",
+                                            style: H4RedTextStyle,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        /*if (logic.carts[index].product
                                                 ?.is_delivery ==
                                                 true)
                                               Container(
@@ -243,142 +240,134 @@ class CartItemPage extends StatelessWidget {
                                                   ],
                                                 ),
                                               ),*/
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          );
-                        },
-                      )
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
-          Obx(
-            () {
-              if (mainController.authUser.value?.city == null ||
-                  mainController.authUser.value?.area == null) {
-                return Container(
-                  padding: EdgeInsets.symmetric(
-                    vertical: 0.01.sh,
-                    horizontal: 0.1.sw,
-                  ),
-                  decoration: BoxDecoration(
-                    color: PrimaryColor,
-                  ),
-                  child: GestureDetector(
-                    onTap: () {
-                      Get.toNamed(Edit_PROFILE_PAGE);
-                    },
-                    child: Text(
-                      "يرجى تحديد المحافظة والمنطقة قبل ان تتمكن من طلب الشحن إضغط للذهاب إلى الملف الشخصي",
-                      style: H4WhiteTextStyle,
-                    ),
-                  ),
-                );
-              }
-              return Visibility(
-                visible: logic.carts.length > 0,
-                child: Container(
-                  width: 1.sw,
-                  color: WhiteColor,
-                  padding: EdgeInsets.only(
-                    top: 0.01.sh,
-                    bottom: 0.02.sh,
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 1.sw,
-                        padding: EdgeInsets.symmetric(
-                            vertical: 0.015.sh, horizontal: 0.04.sw),
-                        decoration: BoxDecoration(
-                            color: WhiteColor,
-                            border: Border(
-                                bottom: BorderSide(
-                                    color: GrayLightColor, width: 1))),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'عنوان الشحن : ${logic.address.value}',
-                                    style: H4RegularDark,
-                                  ),
-                                  SizedBox(height: 0.005.sh),
-                                  Text(
-                                    'رقم الهاتف : ${logic.phone.value}',
-                                    style: H4RegularDark,
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
-                            if (mainController.authUser.value != null)
-                              InkWell(
-                                onTap: changeAddress,
-                                child: const Icon(FontAwesomeIcons.solidEdit),
-                              ),
                           ],
                         ),
+                      );
+                    }),
+                  ],
+                ),
+              );
+            }),
+          ),
+          Obx(() {
+            if (mainController.authUser.value?.city == null ||
+                mainController.authUser.value?.area == null) {
+              return Container(
+                padding: EdgeInsets.symmetric(
+                  vertical: 0.01.sh,
+                  horizontal: 0.1.sw,
+                ),
+                decoration: BoxDecoration(color: PrimaryColor),
+                child: GestureDetector(
+                  onTap: () {
+                    Get.toNamed(Edit_PROFILE_PAGE);
+                  },
+                  child: Text(
+                    "يرجى تحديد المحافظة والمنطقة قبل ان تتمكن من طلب الشحن إضغط للذهاب إلى الملف الشخصي",
+                    style: H4WhiteTextStyle,
+                  ),
+                ),
+              );
+            }
+            return Visibility(
+              visible: logic.carts.length > 0,
+              child: Container(
+                width: 1.sw,
+                color: WhiteColor,
+                padding: EdgeInsets.only(top: 0.01.sh, bottom: 0.02.sh),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 1.sw,
+                      padding: EdgeInsets.symmetric(
+                        vertical: 0.015.sh,
+                        horizontal: 0.04.sw,
                       ),
-                      Container(
-                        width: 1.sw,
-                        padding: EdgeInsets.symmetric(
-                            vertical: 0.015.sh, horizontal: 0.04.sw),
+                      decoration: BoxDecoration(
                         color: WhiteColor,
-                        child: Builder(builder: (context) {
+                        border: Border(
+                          bottom: BorderSide(color: GrayLightColor, width: 1),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'عنوان الشحن : ${logic.address.value}',
+                                  style: H4RegularDark,
+                                ),
+                                SizedBox(height: 0.005.sh),
+                                Text(
+                                  'رقم الهاتف : ${logic.phone.value}',
+                                  style: H4RegularDark,
+                                ),
+                              ],
+                            ),
+                          ),
+                          if (mainController.authUser.value != null)
+                            InkWell(
+                              onTap: changeAddress,
+                              child: const Icon(FontAwesomeIcons.solidEdit),
+                            ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: 1.sw,
+                      padding: EdgeInsets.symmetric(
+                        vertical: 0.015.sh,
+                        horizontal: 0.04.sw,
+                      ),
+                      color: WhiteColor,
+                      child: Builder(
+                        builder: (context) {
                           if (logic.isAvailable.value) {
                             return Column(
                               children: [
                                 Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  MainAxisAlignment.spaceBetween,
                                   children: [
+                                    Text('الإجمالي', style: H3RegularDark),
                                     Text(
-                                      'الإجمالي',
-                                      style: H3RegularDark,
+                                      "${logic.total.value.toStringAsFixed(2)} \$",
+                                      style: H2BlackTextStyle.copyWith(
+                                        fontWeight: FontWeight.w900,
+                                        color: Colors.black,
+                                      ),
                                     ),
-                                    Text(
-                                        "${logic.total.value.toStringAsFixed(2)} \$",
-                                        style: H2BlackTextStyle.copyWith(
-                                            fontWeight: FontWeight.w900,
-                                            color: Colors.black)),
                                   ],
                                 ),
-                                SizedBox(
-                                  height: 0.01.sh,
-                                ),
+                                SizedBox(height: 0.01.sh),
                                 Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  MainAxisAlignment.spaceBetween,
                                   children: [
+                                    Text('المجموع العام', style: H3RegularDark),
                                     Text(
-                                      'المجموع العام',
-                                      style: H3RegularDark,
+                                      "${(logic.total.value).toStringAsFixed(2)} \$",
+                                      style: H2BlackTextStyle.copyWith(
+                                        fontWeight: FontWeight.w900,
+                                        color: Colors.black,
+                                      ),
                                     ),
-                                    Text(
-                                        "${(logic.total.value).toStringAsFixed(2)} \$",
-                                        style: H2BlackTextStyle.copyWith(
-                                            fontWeight: FontWeight.w900,
-                                            color: Colors.black)),
                                   ],
                                 ),
-                                SizedBox(
-                                  height: 0.02.sh,
-                                ),
+                                SizedBox(height: 0.02.sh),
                                 Visibility(
                                   child: ProgressLoading(
                                     width: 0.1.sw,
@@ -391,65 +380,80 @@ class CartItemPage extends StatelessWidget {
                                   child: Obx(() {
                                     return Visibility(
                                       visible:
-                                          mainController.authUser.value?.id !=
-                                              null,
+                                      mainController.authUser.value?.id !=
+                                          null,
                                       child: InkWell(
                                         onTap: () async {
                                           if (mainController
-                                                  .authUser.value?.is_active !=
+                                              .authUser
+                                              .value
+                                              ?.is_active !=
                                               true) {
                                             mainController.showToast(
-                                                type: 'error',
-                                                text:
-                                                    'حسابكم محظور الرجاء التواصل مع الدعم الفني');
+                                              type: 'error',
+                                              text:
+                                              'حسابكم محظور الرجاء التواصل مع الدعم الفني',
+                                            );
                                             return;
                                           }
                                           if (mainController.loading.value) {
                                             mainController.showToast(
-                                                text:
-                                                    'جاري تحويلك إلى المحادثة');
+                                              text: 'جاري تحويلك إلى المحادثة',
+                                            );
                                             return;
                                           }
                                           StringBuffer message = StringBuffer();
                                           message.write(
-                                              "السلام عليكم ورحمة الله وبركاته ");
+                                            "السلام عليكم ورحمة الله وبركاته ",
+                                          );
                                           message.write("\n");
                                           message.write(
-                                              "📦 طلب جديد من تطبيق علي باشا:");
+                                            "📦 طلب جديد من تطبيق علي باشا:",
+                                          );
                                           message.write("\n");
                                           if (logic.carts != null &&
                                               logic.carts.isNotEmpty) {
                                             await logic.createOrder();
 
                                             message.writeln(
-                                                "${mainController.settings.value.footerOrder}");
+                                              "${mainController.settings.value.footerOrder}",
+                                            );
                                             for (var item in logic.carts) {
                                               message.write(
-                                                  "معرف المنتج : ${item.product?.id}");
+                                                "معرف المنتج : ${item.product?.id}",
+                                              );
                                               message.write("\n");
                                               message.write(
-                                                  "المنتج : ${item.product?.name ?? item.product?.expert?.substring(0, 10)}");
+                                                "المنتج : ${item.product?.name ?? item.product?.expert?.substring(0, 10)}",
+                                              );
                                               message.write("\n");
                                               message.write(
-                                                  "الكمية : ${item.qty}");
+                                                "الكمية : ${item.qty}",
+                                              );
                                               message.write("\n");
                                               message.write(
-                                                  "سعر الوحدة : ${item.product?.is_discount == true ? item.product?.discount : item.product?.price}");
+                                                "سعر الوحدة : ${item.product?.is_discount == true ? item.product?.discount : item.product?.price}",
+                                              );
                                               message.write("\n");
                                               message.write(
-                                                  "-------------------------");
+                                                "-------------------------",
+                                              );
                                               message.write("\n");
                                             }
 
                                             // حساب المجموع باستخدام fold
-                                            double total = logic.carts.fold(0.0,
-                                                (previousValue, element) {
-                                              double elementPrice = element
-                                                          .product
-                                                          ?.is_discount ==
-                                                      true
+                                            double
+                                            total = logic.carts.fold(0.0, (
+                                                previousValue,
+                                                element,
+                                                ) {
+                                              double elementPrice =
+                                              element
+                                                  .product
+                                                  ?.is_discount ==
+                                                  true
                                                   ? element.product?.discount ??
-                                                      0
+                                                  0
                                                   : element.product?.price ?? 0;
                                               int elementQty = element.qty ?? 0;
                                               return previousValue +
@@ -464,12 +468,17 @@ class CartItemPage extends StatelessWidget {
                                           }
 
                                           message.writeln(
-                                              "\n========================");
+                                            "\n========================",
+                                          );
                                           message.writeln(
-                                              "العنوان : ${logic.address.value}");
+                                            "العنوان : ${logic.address.value}",
+                                          );
 
                                           String? phone = logic
-                                              .cart.value?.seller?.full_phone;
+                                              .cart
+                                              .value
+                                              ?.seller
+                                              ?.full_phone;
 
                                           String url =
                                               "https://wa.me/${phone}?text=${Uri.encodeComponent("${message.toString()}")}";
@@ -481,14 +490,16 @@ class CartItemPage extends StatelessWidget {
                                           width: 0.5.sw,
                                           height: 0.08.sw,
                                           decoration: BoxDecoration(
-                                              color: Colors.green,
-                                              borderRadius:
-                                                  BorderRadius.circular(30.r)),
+                                            color: Colors.green,
+                                            borderRadius: BorderRadius.circular(
+                                              30.r,
+                                            ),
+                                          ),
                                           child: Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                             crossAxisAlignment:
-                                                CrossAxisAlignment.center,
+                                            CrossAxisAlignment.center,
                                             children: [
                                               Icon(
                                                 FontAwesomeIcons.whatsapp,
@@ -516,9 +527,11 @@ class CartItemPage extends StatelessWidget {
                                       width: 0.6.sw,
                                       height: 0.08.sw,
                                       decoration: BoxDecoration(
-                                          color: PrimaryColor,
-                                          borderRadius:
-                                              BorderRadius.circular(150.r)),
+                                        color: PrimaryColor,
+                                        borderRadius: BorderRadius.circular(
+                                          150.r,
+                                        ),
+                                      ),
                                       child: Text(
                                         'تسجيل الدخول',
                                         style: H3WhiteTextStyle,
@@ -526,7 +539,7 @@ class CartItemPage extends StatelessWidget {
                                     ),
                                   ),
                                   visible: !logic.loading.value && !isAuth(),
-                                )
+                                ),
                               ],
                             );
                           } else {
@@ -547,11 +560,16 @@ class CartItemPage extends StatelessWidget {
                                       style: H4WhiteTextStyle,
                                     ),
                                     color: PrimaryColor,
-                                  )
+                                  ),
                                 ],
                               );
                             } else if (logic
-                                    .carts.first?.product?.user?.area?.code ==
+                                .carts
+                                .first
+                                ?.product
+                                ?.user
+                                ?.area
+                                ?.code ==
                                 null) {
                               return Column(
                                 children: [
@@ -571,111 +589,103 @@ class CartItemPage extends StatelessWidget {
                               ],
                             );
                           }
-                        }),
-                      )
-                    ],
-                  ),
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              );
-            },
-          ),
+              ),
+            );
+          }),
         ],
       ),
     );
   }
 
   changeAddress() {
-    Get.dialog(AlertDialog(
-      backgroundColor: WhiteColor,
-      content: Container(
-        width: 1.sw,
-        height: 0.3.sh,
-        child: ListView(
-          children: [
-            Container(
-              alignment: Alignment.center,
-              child: Text(
-                'تعديل عنوان ورقم هاتف الشحن',
-                style: H1RegularDark,
+    Get.dialog(
+      AlertDialog(
+        backgroundColor: WhiteColor,
+        content: Container(
+          width: 1.sw,
+          height: 0.3.sh,
+          child: ListView(
+            children: [
+              Container(
+                alignment: Alignment.center,
+                child: Text(
+                  'تعديل عنوان ورقم هاتف الشحن',
+                  style: H1RegularDark,
+                ),
               ),
-            ),
-            SizedBox(
-              height: 0.02.sh,
-            ),
-            TextField(
-              keyboardType: TextInputType.text,
-              controller: logic.addressController,
-              style: H3RegularDark,
-              decoration: InputDecoration(
-                  label: Text(
-                    'عنوان الشحن ',
-                    style: H3RegularDark,
-                  ),
+              SizedBox(height: 0.02.sh),
+              TextField(
+                keyboardType: TextInputType.text,
+                controller: logic.addressController,
+                style: H3RegularDark,
+                decoration: InputDecoration(
+                  label: Text('عنوان الشحن ', style: H3RegularDark),
                   border: OutlineInputBorder(
-                      borderSide: BorderSide(color: GrayLightColor))),
-            ),
-            SizedBox(
-              height: 0.02.sh,
-            ),
-            TextField(
-              keyboardType: TextInputType.phone,
-              controller: logic.phoneController,
-              style: H3RegularDark,
-              decoration: InputDecoration(
-                  label: Text(
-                    'رقم الهاتف',
-                    style: H3RegularDark,
+                    borderSide: BorderSide(color: GrayLightColor),
                   ),
+                ),
+              ),
+              SizedBox(height: 0.02.sh),
+              TextField(
+                keyboardType: TextInputType.phone,
+                controller: logic.phoneController,
+                style: H3RegularDark,
+                decoration: InputDecoration(
+                  label: Text('رقم الهاتف', style: H3RegularDark),
                   border: OutlineInputBorder(
-                      borderSide: BorderSide(color: GrayLightColor))),
-            ),
-          ],
+                    borderSide: BorderSide(color: GrayLightColor),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-      actions: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            InkWell(
-              onTap: () async {
-                logic.address.value = logic.addressController.text;
-                logic.phone.value = logic.phoneController.text;
-                Get.back();
-              },
-              child: Container(
-                width: 0.3.sw,
-                height: 0.1.sw,
-                decoration: BoxDecoration(
+        actions: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              InkWell(
+                onTap: () async {
+                  logic.address.value = logic.addressController.text;
+                  logic.phone.value = logic.phoneController.text;
+                  Get.back();
+                },
+                child: Container(
+                  width: 0.3.sw,
+                  height: 0.1.sw,
+                  decoration: BoxDecoration(
                     color: Colors.green,
-                    borderRadius: BorderRadius.circular(150.r)),
-                alignment: Alignment.center,
-                child: Text(
-                  'متابعة',
-                  style: H3WhiteTextStyle,
+                    borderRadius: BorderRadius.circular(150.r),
+                  ),
+                  alignment: Alignment.center,
+                  child: Text('متابعة', style: H3WhiteTextStyle),
                 ),
               ),
-            ),
-            InkWell(
-              onTap: () {
-                Get.back();
-              },
-              child: Container(
-                width: 0.3.sw,
-                height: 0.1.sw,
-                decoration: BoxDecoration(
+              InkWell(
+                onTap: () {
+                  Get.back();
+                },
+                child: Container(
+                  width: 0.3.sw,
+                  height: 0.1.sw,
+                  decoration: BoxDecoration(
                     color: PrimaryColor,
-                    borderRadius: BorderRadius.circular(150.r)),
-                alignment: Alignment.center,
-                child: Text(
-                  'إغلاق',
-                  style: H3WhiteTextStyle,
+                    borderRadius: BorderRadius.circular(150.r),
+                  ),
+                  alignment: Alignment.center,
+                  child: Text('إغلاق', style: H3WhiteTextStyle),
                 ),
               ),
-            )
-          ],
-        )
-      ],
-    ));
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }

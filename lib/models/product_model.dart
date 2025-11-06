@@ -2,7 +2,6 @@ import 'package:ali_pasha_graph/models/category_model.dart';
 import 'package:ali_pasha_graph/models/city_model.dart';
 import 'package:ali_pasha_graph/models/comment_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
-import 'package:logger/logger.dart';
 
 class ProductModel {
   int? id;
@@ -218,8 +217,7 @@ class ProductModel {
   }
 
   toJson() {
-    Logger().e('ERRORS :');
-    Logger().e(user?.toJson());
+
     return {
       'id':id,
       'video': video,

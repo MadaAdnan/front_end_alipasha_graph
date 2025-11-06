@@ -2,24 +2,21 @@ import 'package:ali_pasha_graph/models/product_model.dart';
 import 'package:ali_pasha_graph/models/user_model.dart';
 
 class CartModel {
- ProductModel? product;
-
+  ProductModel? product;
 
   int? qty;
   UserModel? seller;
 
-  CartModel(
-      {this.product,
-      this.seller,
-      this.qty = 0,});
+  CartModel({this.product, this.seller, this.qty = 0});
 
   CartModel.fromJson(Map<String, dynamic> data) {
-    product = data['product']!=null ?ProductModel.fromJson(data['product']) :null;
+    product = data['product'] != null
+        ? ProductModel.fromJson(data['product'])
+        : null;
 
     qty = data['qty'] ?? 1;
     seller = UserModel.fromJson(data['seller'] ?? data['user']);
   }
-
 
   addQty() {
     if (qty == null) {
@@ -43,8 +40,11 @@ class CartModel {
         "id": "${seller?.id}",
         "seller_name": "${seller?.seller_name}",
         "logo": "${seller?.logo}",
-        "city":seller?.city!=null? seller?.city!.toJson():null,
-      }
+        "full_phone": "${seller?.full_phone ?? ''}",
+        "phone": "${seller?.phone ?? ''}",
+        "phone_code": "${seller?.phone_code ?? ''}",
+        "city": seller?.city != null ? seller?.city!.toJson() : null,
+      },
     };
     return data;
   }
