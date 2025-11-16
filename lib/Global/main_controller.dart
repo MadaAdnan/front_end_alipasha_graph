@@ -533,9 +533,9 @@ getAdvices() async {
     dio.Response? res = await fetchData();
 
     if (res?.data?['data']?['me'] != null) {
-      Logger().w(res?.data?['data']?['me']);
+    //  Logger().w(res?.data?['data']?['me']);
       await setUserJson(json: res?.data?['data']['me']);
-      Logger().w(authUser.value?.unread_notifications_count.value);
+   //   Logger().w(authUser.value?.unread_notifications_count.value);
     }
     if (res?.data?['data']?['advices'] != null) {
       for (var item in res?.data?['data']['advices']) {
@@ -830,7 +830,12 @@ Future<XFile?> cropImage(XFile file, {CropAspectRatio? ratio}) async {
 }
 
 Future<void> addToCart({required ProductModel product}) async {
-  try {
+  if (authUser.value?.id == null) {
+    showToast(
+        type: 'error', text: 'يرجى تسجيل الدخول اولاً');
+    return;
+  }
+    try {
     metaSdk.logEvent(name: 'ali-pasha', parameters: {
       "id": "${product.id}",
       'name': "${product.name}",

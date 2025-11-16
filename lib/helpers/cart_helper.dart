@@ -150,7 +150,7 @@ class CartHelper {
 
     if (storage.hasData('cart')==true) {
       var data = await storage.read('cart');
-      Logger().f(data);
+    //  Logger().f(data);
       for (var item in data) {
         CartModel cartItem = CartModel.fromJson(item);
         if (cartItem.product?.id == product.id) {

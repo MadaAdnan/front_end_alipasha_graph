@@ -313,8 +313,8 @@ class AnotherMessage extends StatelessWidget {
 ''';
     try {
       dio.Response? res = await mainController.fetchData();
-      Logger().e("RESPONSE");
-      Logger().e(res?.data);
+  //    Logger().e("RESPONSE");
+    //  Logger().e(res?.data);
       if (res?.data?['data']?['createComment'] != null) {
         messageController.clear();
         replay.value = false;

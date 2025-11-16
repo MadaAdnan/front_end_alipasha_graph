@@ -74,7 +74,7 @@ class CommentLogic extends GetxController {
 ''';
     try {
       dio.Response? res = await mainController.fetchData();
-Logger().d(res?.data);
+//Logger().d(res?.data);
       if (res?.data?['data']?['createComment'] != null) {
         comments
             .add(CommentModel.fromJson(res?.data?['data']?['createComment']));

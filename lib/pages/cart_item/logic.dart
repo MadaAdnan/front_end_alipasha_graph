@@ -145,8 +145,8 @@ class CartItemLogic extends GetxController {
     try {
       calcShipping();
       var res = await mainController.fetchData();
-      Logger().e("NEW ORDER");
-      Logger().e(res?.data);
+     // Logger().e("NEW ORDER");
+      //Logger().e(res?.data);
       if (res?.data?['data']?['createNewInvoice'] != null) {
         mainController.showToast(text: 'الطلب بإنتظار المراجعة شكراً لك');
         for (var i in carts) {

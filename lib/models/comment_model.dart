@@ -14,7 +14,7 @@ RxList<CommentModel>? comments;
 
   factory CommentModel.fromJson(Map<String, dynamic> data) {
 
-      Logger().i(data);
+      //Logger().i(data);
 
     RxList<CommentModel> commentsList=RxList([]);
     if(data['comments']!=null){

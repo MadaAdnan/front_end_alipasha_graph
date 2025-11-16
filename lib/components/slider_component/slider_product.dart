@@ -22,8 +22,8 @@ class SliderProduct extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Logger().w('LENGTH PRO');
-    Logger().w(products!.length);
+  //  Logger().w('LENGTH PRO');
+ //   Logger().w(products!.length);
     return Container(
       height: 0.5.sh,
       child: Column(

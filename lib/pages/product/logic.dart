@@ -305,7 +305,7 @@ addLike(product_id:"${product.value!.id}"){
     ''';
     try {
       dio.Response? res = await mainController.fetchData();
-Logger().e(res?.data);
+//Logger().e(res?.data);
       if (res?.data?['data']?['addLike'] != null) {
         ProductModel prod =
             ProductModel.fromJson(res?.data?['data']?['addLike']);

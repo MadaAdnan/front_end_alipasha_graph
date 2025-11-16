@@ -149,7 +149,7 @@ class InvoicesLogic extends GetxController {
     ''';
     try{
       dio.Response? res = await mainController.fetchData();
-      Logger().f(res?.data);
+     // Logger().f(res?.data);
       if(res?.data?['data']?['changeStatusInvoice']!=null){
         int index=invoices.indexWhere((el)=>el.id==invoiceId);
         if(index>-1){

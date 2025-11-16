@@ -46,8 +46,8 @@ class BalanceLogic extends GetxController {
   ''';
 
     dio.Response? res = await mainController.fetchData();
-    Logger().e("BALANCER" );
-    Logger().e(res?.data?['data']?['balances']?['data'] );
+   // Logger().e("BALANCER" );
+    //Logger().e(res?.data?['data']?['balances']?['data'] );
     if (res?.data?['data']?['balances']?['data'] != null) {
       for (var item in res?.data['data']['balances']['data']) {
         balances.add(BalanceModel.fromJson(item));

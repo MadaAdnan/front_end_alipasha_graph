@@ -18,11 +18,11 @@ class CompleteProfileMiddleware extends GetMiddleware {
       UserModel user = UserModel.fromJson(box.read('user'));
       if((user.phone=='' || user.address==''|| user.city==null /*|| user.area==null*/)){
         messageBox(title: 'لم تكمل البيانات', message: 'من فضلك قم بتعبئة البيانات الخاصة بك',isError: true);
-Logger().e("DATA USER");
+/*Logger().e("DATA USER");
 Logger().e(user.phone);
 Logger().e(user.address);
 Logger().e(user.city?.name);
-Logger().e(user.area?.name);
+Logger().e(user.area?.name);*/
         return RouteSettings(name: Edit_PROFILE_PAGE);
       }
       // إذا كان المستخدم لديه توكن، توجهه إلى الصفحة الرئيسية

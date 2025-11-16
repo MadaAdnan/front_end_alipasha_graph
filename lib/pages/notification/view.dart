@@ -73,7 +73,7 @@ class NotificationPage extends StatelessWidget {
                                       String url = notify.data!.url!;
                                       var dataUrl =
                                       url.replaceFirst('//', '').split('/');
-                                      Logger().i(dataUrl);
+                                    //  Logger().i(dataUrl);
                                       //handelComment
                                       if (dataUrl.last.split('?')[0] ==
                                           'comments') {

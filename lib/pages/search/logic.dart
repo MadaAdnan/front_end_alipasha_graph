@@ -132,7 +132,7 @@ class SearchLogic extends GetxController {
       }
 
       dio.Response? res = await mainController.fetchData();
-Logger().d(res?.data);
+//Logger().d(res?.data);
       if (res?.data?['data']?['products'] != null) {
         hasMorePage.value = res?.data['data']['products']['paginatorInfo']
                 ['hasMorePages'] ??
@@ -145,7 +145,7 @@ Logger().d(res?.data);
       }
 
       if(res?.data?['data']?['searchSeller']!=null){
-        Logger().e(res?.data?['data']?['searchSeller']);
+        //Logger().e(res?.data?['data']?['searchSeller']);
         for(var item in res?.data?['data']?['searchSeller']){
           sellers.add(UserModel.fromJson(item));
         }

@@ -172,7 +172,7 @@ class MyAdviceLogic extends GetxController {
   ''';
     try {
       dio.Response? res = await mainController.fetchData();
-      Logger().e(res?.data);
+    //  Logger().e(res?.data);
       if (res != null) {
         if (res.data['data']['addSpecialProduct'] != null) {
           int index = products.indexWhere((el) =>
@@ -201,7 +201,7 @@ class MyAdviceLogic extends GetxController {
         }
       }
     } catch (e) {
-      Logger().e("Error $e");
+    //  Logger().e("Error $e");
     }
   }
 }

@@ -164,7 +164,7 @@ RxList<CategoryModel> categories = RxList<CategoryModel>([CategoryModel(
     ''');
     try {
       dio.Response? res = await mainController.fetchData();
-      Logger().e(mainController.query.value);
+      //Logger().e(mainController.query.value);
 
       if (res?.data?['data']?['categoryBySeller'] != null) {
         categories.clear();

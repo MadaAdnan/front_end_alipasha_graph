@@ -180,7 +180,7 @@ apllyFilters(){
 
     try {
       dio.Response? res = await mainController.fetchData();
-Logger().e(res?.data);
+//Logger().e(res?.data);
       if (res?.data?['data']?['products']['paginatorInfo'] != null) {
         hasMorePage.value =
             res?.data?['data']?['products']['paginatorInfo']['hasMorePages'];

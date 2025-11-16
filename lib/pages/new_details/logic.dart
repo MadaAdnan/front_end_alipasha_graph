@@ -23,7 +23,7 @@ class NewDetailsLogic extends GetxController {
     // TODO: implement onReady
     super.onReady();
     postId.value = int.tryParse("${Get.parameters['id']}");
-    Logger().d(postId.value);
+    //Logger().d(postId.value);
     getPost();
   }
 
