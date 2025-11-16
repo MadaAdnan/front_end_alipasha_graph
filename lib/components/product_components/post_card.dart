@@ -367,9 +367,7 @@ class PostCard extends StatelessWidget {
                           InkWell(
                             onTap: () async {
                               await mainController.addToCart(product: post);
-                              messageBox(
-                                  title: 'نجاح العملية',
-                                  message: 'تم الإضافة إلى السلة');
+
                             },
                             child: Container(
                               decoration: BoxDecoration(

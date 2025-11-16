@@ -439,9 +439,7 @@ class ProductPage extends StatelessWidget {
                             onTap: () async {
                               await mainController.addToCart(
                                   product: logic.product.value!);
-                              mainController.showToast(
-                                  type: 'success',
-                                  text: 'تم إضافة المنتج إلى السلة');
+
                             },
                             child: Container(
                               width: 0.35.sw,
@@ -518,7 +516,7 @@ class ProductPage extends StatelessWidget {
                                 openUrl(
                                     url:
                                         "https://wa.me/${logic.product.value?.user?.full_phone}?text=${Uri.encodeComponent('${message!.toString()}')}");
-                                /* HelperClass.connectWithSeller(
+                               /* HelperClass.connectWithSeller(
                                     phone:
                                     logic.product.value!.user!.phone!,
                                     sellerId:

@@ -1343,9 +1343,7 @@ class ProductsPage2 extends StatelessWidget {
                       switch (product.type) {
                         case "product":
                           mainController.addToCart(product: product);
-                          mainController.showToast(
-                              text: "تمت إضافة المنتج للعربة");
-                          break;
+
                       }
                     },
                     icon: const Icon(Icons.shopping_cart, color: Colors.white),

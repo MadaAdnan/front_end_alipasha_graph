@@ -1183,9 +1183,7 @@ class _HomePageState extends State<HomePage2> {
                     onPressed: () {
                       if (mainController.authUser.value?.id != null) {
                         mainController.addToCart(product: product);
-                        mainController.showToast(
-                            text: 'تمت إضافة المنتج إلى السلة',
-                            type: 'success');
+
                       } else {
                         mainController.showToast(
                             text: 'الرجاء تسجيل الدخول', type: 'error');

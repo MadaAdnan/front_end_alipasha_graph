@@ -1059,8 +1059,7 @@ class _ProductCard extends StatelessWidget {
   void _handleAddToCart() {
     if (mainController.authUser.value?.id != null) {
       mainController.addToCart(product: product);
-      mainController.showToast(
-          text: 'تمت إضافة المنتج إلى السلة', type: 'success');
+
     } else {
       mainController.showToast(text: 'الرجاء تسجيل الدخول', type: 'error');
     }

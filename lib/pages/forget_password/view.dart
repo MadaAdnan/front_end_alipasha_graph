@@ -151,7 +151,7 @@ class ForgetPasswordPage extends StatelessWidget {
                         return InkWell(
                           onTap: () {
                             if (_form.currentState!.validate()) {
-                              logic.requestChangePassword();
+                              logic.changePassword();
                             }
                           },
                           child: Container(

@@ -89,7 +89,7 @@ class MainController extends GetxController {
   RxList<SliderModel> sliders = RxList<SliderModel>([]);
   RxList<CountryModel> countries = RxList<CountryModel>([]);
   RxList<PricingModel> pricing = RxList([]);
-  String versionAPK = "3.3.1";
+  String versionAPK = "3.3.2";
   RxInt communityNotification = RxInt(0);
   RxBool startApp = RxBool(true); //for fill data from storage
   Rx<SettingModel> settings =
@@ -838,9 +838,9 @@ Future<void> addToCart({required ProductModel product}) async {
       "currency": "USD",
       "price": product.price,
     });
-    Logger().w("✅ تم إرسال حدث AddToCart بنجاح");
+
   } catch (e) {
-    Logger().e("❌ خطأ في إرسال الحدث: $e");
+
   }
   if (authUser.value?.is_active != true) {
     showToast(
@@ -851,7 +851,8 @@ Future<void> addToCart({required ProductModel product}) async {
   try {
     List<CartModel> cartsItem = await CartHelper.addToCart(product: product);
     carts(cartsItem);
-    //  messageBox(message: 'تم إضافة المنتج إلى السلة', title: 'نجاح العملية');
+    showToast(
+        type: 'success', text: 'تم إضافة المنتج إلى السلة');
   } catch (e) {}
   cartLoading.value = false;
 }
