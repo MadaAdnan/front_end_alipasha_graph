@@ -639,7 +639,7 @@ class ChannelPage extends StatelessWidget {
                           style: H2RedTextStyle,
                         );
                       } else {
-                        return TextSpan(text: ' $el ', style: H4RegularDark);
+                        return TextSpan(text: ' $el ', style: H2RegularDark);
                       }
                     })
                   ]),
@@ -817,7 +817,7 @@ class ChannelPage extends StatelessWidget {
                             style: H2RedTextStyle,
                           );
                         } else {
-                          return TextSpan(text: ' $el ', style: H4RegularDark);
+                          return TextSpan(text: ' $el ', style: H2RegularDark);
                         }
                       })
                     ]),

@@ -36,7 +36,7 @@ class ProfilePage2 extends StatelessWidget {
       body: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollInfo) {
           if (scrollInfo.metrics.pixels >=
-                  scrollInfo.metrics.maxScrollExtent * 0.80 &&
+              scrollInfo.metrics.maxScrollExtent * 0.80 &&
               !controller.loadingProduct.value &&
               controller.hasMorePage.value) {
             controller.nextPage();
@@ -69,228 +69,288 @@ class ProfilePage2 extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: mainController
-                                              .authUser.value?.is_verified ==
-                                          true
+                                      .authUser.value?.is_verified ==
+                                      true
                                       ? [
-                                          InkWell(
-                                            onTap: () {
-                                              if (mainController
-                                                      .authUser
-                                                      .value
-                                                      ?.social
-                                                      ?.instagram
-                                                  ?.startsWith("https://") ==
-                                                  true) {
-                                                openUrl(
-                                                    url:
-                                                        "${mainController.authUser.value?.social?.instagram}");
-                                              }
-                                            },
-                                            child: Icon(
-                                              FontAwesomeIcons.instagram,
-                                              color: mainController
-                                                          .authUser
-                                                          .value
-                                                          ?.social
-                                                          ?.instagram
-                                                          ?.isURL ==
-                                                      true
-                                                  ? color
-                                                  : Colors.grey,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 0.02.sh,
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              if (mainController.authUser.value
-                                                      ?.social?.face?.startsWith("https://") ==
-                                                  true) {
-                                                openUrl(
-                                                    url:
-                                                        "${mainController.authUser.value?.social?.face}");
-                                              }
-                                            },
-                                            child: Icon(
-                                              FontAwesomeIcons.facebook,
-                                              color: mainController
-                                                          .authUser
-                                                          .value
-                                                          ?.social
-                                                          ?.face
-                                                  ?.startsWith("https://") ==
-                                                  true
-                                                  ? color
-                                                  : Colors.grey,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 0.02.sh,
-                                          ),
-                                          InkWell(
-                                            onTap: ()async {
-                                              if (mainController
-                                                      .authUser
-                                                      .value
-                                                      ?.social
-                                                      ?.linkedin
-                                                      ?.startsWith("https://") ==
-                                                  true) {
-                                                openUrl(
-                                                    url:
-                                                        "${mainController.authUser.value?.social?.linkedin}");
-                                              }
-                                            },
-                                            child: Icon(
-                                              FontAwesomeIcons.linkedin,
-                                              color: mainController
-                                                          .authUser
-                                                          .value
-                                                          ?.social
-                                                          ?.linkedin
-                                                          ?.startsWith("https://") ==
-                                                      true
-                                                  ? color
-                                                  : Colors.grey,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 0.02.sh,
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              if (mainController.authUser.value
-                                                      ?.social?.tiktok?.startsWith("https://") ==
-                                                  true) {
-                                                openUrl(
-                                                    url:
-                                                        "${mainController.authUser.value?.social?.tiktok}");
-                                              }
-                                            },
-                                            child: Icon(
-                                              FontAwesomeIcons.tiktok,
-                                              color: mainController
-                                                          .authUser
-                                                          .value
-                                                          ?.social
-                                                          ?.tiktok
-                                                  ?.startsWith("https://") ==
-                                                  true
-                                                  ? color
-                                                  : Colors.grey,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 0.02.sh,
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              if (mainController.authUser.value
-                                                      ?.full_phone?.length !=
-                                                  0) {
-                                                openUrl(
-                                                    url:
-                                                        "https://wa.me/${mainController.authUser.value?.full_phone}");
-                                              }
-                                            },
-                                            child: Icon(
-                                              FontAwesomeIcons.whatsapp,
-                                              color: mainController
-                                                          .authUser
-                                                          .value
+                                    InkWell(
+                                      onTap: () {
+                                        if (mainController
+                                            .authUser
+                                            .value
+                                            ?.social
+                                            ?.instagram
+                                            ?.startsWith("https://") ==
+                                            true) {
+                                          openUrl(
+                                              url:
+                                              "${mainController.authUser.value
+                                                  ?.social?.instagram}");
+                                        }
+                                      },
+                                      child: Icon(
+                                        FontAwesomeIcons.instagram,
+                                        color: mainController
+                                            .authUser
+                                            .value
+                                            ?.social
+                                            ?.instagram
+                                            ?.isURL ==
+                                            true
+                                            ? color
+                                            : Colors.grey,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 0.02.sh,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        if (mainController.authUser.value
+                                            ?.social?.face?.startsWith(
+                                            "https://") ==
+                                            true) {
+                                          openUrl(
+                                              url:
+                                              "${mainController.authUser.value
+                                                  ?.social?.face}");
+                                        }
+                                      },
+                                      child: Icon(
+                                        FontAwesomeIcons.facebook,
+                                        color: mainController
+                                            .authUser
+                                            .value
+                                            ?.social
+                                            ?.face
+                                            ?.startsWith("https://") ==
+                                            true
+                                            ? color
+                                            : Colors.grey,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 0.02.sh,
+                                    ),
+                                    InkWell(
+                                      onTap: () async {
+                                        if (mainController
+                                            .authUser
+                                            .value
+                                            ?.social
+                                            ?.linkedin
+                                            ?.startsWith("https://") ==
+                                            true) {
+                                          openUrl(
+                                              url:
+                                              "${mainController.authUser.value
+                                                  ?.social?.linkedin}");
+                                        }
+                                      },
+                                      child: Icon(
+                                        FontAwesomeIcons.linkedin,
+                                        color: mainController
+                                            .authUser
+                                            .value
+                                            ?.social
+                                            ?.linkedin
+                                            ?.startsWith("https://") ==
+                                            true
+                                            ? color
+                                            : Colors.grey,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 0.02.sh,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        if (mainController.authUser.value
+                                            ?.social?.tiktok?.startsWith(
+                                            "https://") ==
+                                            true) {
+                                          openUrl(
+                                              url:
+                                              "${mainController.authUser.value
+                                                  ?.social?.tiktok}");
+                                        }
+                                      },
+                                      child: Icon(
+                                        FontAwesomeIcons.tiktok,
+                                        color: mainController
+                                            .authUser
+                                            .value
+                                            ?.social
+                                            ?.tiktok
+                                            ?.startsWith("https://") ==
+                                            true
+                                            ? color
+                                            : Colors.grey,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 0.02.sh,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        if (mainController.authUser.value
+                                            ?.full_phone?.length !=
+                                            0) {
+                                          openUrl(
+                                              url:
+                                              "https://wa.me/${mainController
+                                                  .authUser.value
+                                                  ?.full_phone}");
+                                        }
+                                      },
+                                      child: Icon(
+                                        FontAwesomeIcons.whatsapp,
+                                        color: mainController
+                                            .authUser
+                                            .value
 
-                                                          ?.full_phone
-                                                          ?.length !=
-                                                      0
-                                                  ? color
-                                                  : Colors.grey,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 0.02.sh,
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              if (mainController
-                                                      .authUser
-                                                      .value
-                                                      ?.social
-                                                      ?.twitter
-                                                  ?.startsWith("https://") ==
-                                                  true) {
-                                                openUrl(
-                                                    url:
-                                                        "${mainController.authUser.value?.social?.twitter}");
-                                              }
-                                            },
-                                            child: Icon(
-                                              FontAwesomeIcons.xTwitter,
-                                              color: mainController
-                                                          .authUser
-                                                          .value
-                                                          ?.social
-                                                          ?.twitter
-                                                  ?.startsWith("https://") ==
-                                                  true
-                                                  ? color
-                                                  : Colors.grey,
-                                            ),
-                                          ),
-                                        ]
+                                            ?.full_phone
+                                            ?.length !=
+                                            0
+                                            ? color
+                                            : Colors.grey,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 0.02.sh,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        if (mainController
+                                            .authUser
+                                            .value
+                                            ?.social
+                                            ?.twitter
+                                            ?.startsWith("https://") ==
+                                            true) {
+                                          openUrl(
+                                              url:
+                                              "${mainController.authUser.value
+                                                  ?.social?.twitter}");
+                                        }
+                                      },
+                                      child: Icon(
+                                        FontAwesomeIcons.xTwitter,
+                                        color: mainController
+                                            .authUser
+                                            .value
+                                            ?.social
+                                            ?.twitter
+                                            ?.startsWith("https://") ==
+                                            true
+                                            ? color
+                                            : Colors.grey,
+                                      ),
+                                    ),
+                                  ]
                                       : [],
                                 ),
                                 Expanded(
                                   child: Transform.translate(
                                     offset: mainController
-                                                .authUser.value?.is_verified ==
-                                            true
+                                        .authUser.value?.is_verified ==
+                                        true
                                         ? Offset(0.04.sw, 0)
                                         : Offset(0, 0),
                                     child: Column(
                                       children: [
-                                        Container(
-                                          padding: EdgeInsets.all(0.01.sw),
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              gradient: LinearGradient(
-                                                colors: [
-                                                  color,
-                                                  color.withOpacity(0.7),
-                                                ],
-                                                begin: Alignment.topCenter,
-                                                end: Alignment.bottomCenter,
-                                              )),
-                                          child: CircleAvatar(
-                                            radius: 40,
-                                            backgroundImage:
-                                                CachedNetworkImageProvider(
-                                                    "${mainController.authUser.value?.image}"),
-                                          ),
-                                        ),
+                                        InkWell(
+                                            onTap: () {
+                                              Get.toNamed(
+                                                  Edit_PROFILE_PAGE);
+                                            },
+                                            child: Stack(
+                                              clipBehavior: Clip.none,
+                                              alignment: Alignment.center,
+                                              children: [
+                                                // الدائرة الخلفية مع التدرج
+                                                Container(
+                                                  width: 85,
+                                                  height: 85,
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    gradient: LinearGradient(
+                                                      colors: [
+                                                        color,
+                                                        color.withOpacity(0.7),
+                                                      ],
+                                                      begin: Alignment
+                                                          .topCenter,
+                                                      end: Alignment
+                                                          .bottomCenter,
+                                                    ),
+                                                  ),
+                                                ),
+                                                CircleAvatar(
+                                                  radius: 40,
+                                                  backgroundImage: CachedNetworkImageProvider(
+                                                    "${mainController.authUser
+                                                        .value?.image}",
+                                                  ),
+                                                ),
+
+
+                                                // أيقونة القلم على يمين الصورة
+                                                Positioned(
+                                                  right: -13,
+                                                  bottom: 3,
+                                                  // على اليمين تمامًا
+                                                  child: Container(
+                                                    width: 35,
+                                                    height: 35,
+                                                    alignment: Alignment
+                                                        .center,
+                                                    margin: EdgeInsets.only(
+                                                        right: 5),
+                                                    // إبعاد بسيط عن الحافة إن رغبت
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: Colors.white,
+                                                      border: Border.all(
+                                                        color: color,
+                                                        width: 2,
+                                                      ),
+                                                    ),
+                                                    child: Icon(
+                                                      FontAwesomeIcons.pen,
+                                                      size: 20,
+                                                      // حجم مناسب داخل دائرة 35
+                                                      color: color,
+                                                    ),
+                                                  )
+                                                ),
+                                              ],
+                                            )),
                                         const SizedBox(height: 8),
                                         Padding(
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 0.03.sw),
                                           child: Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                             children: [
                                               Flexible(
                                                 child: Text(
-                                                    "${mainController.authUser.value?.seller_name ?? mainController.authUser.value?.name}",
+                                                    "${mainController.authUser
+                                                        .value?.seller_name ??
+                                                        mainController.authUser
+                                                            .value?.name}",
                                                     maxLines: 1,
                                                     style: H2BlackTextStyle
                                                         .copyWith(
                                                       fontWeight:
-                                                          FontWeight.w900,
+                                                      FontWeight.w900,
                                                       overflow:
-                                                          TextOverflow.ellipsis,
+                                                      TextOverflow.ellipsis,
                                                       color: color,
                                                     )),
                                               ),
                                               if (mainController.authUser.value
-                                                      ?.is_verified ==
+                                                  ?.is_verified ==
                                                   true)
                                                 Icon(
                                                   Icons.verified,
@@ -300,13 +360,14 @@ class ProfilePage2 extends StatelessWidget {
                                           ),
                                         ),
                                         if (mainController
-                                                .authUser.value?.info?.length !=
+                                            .authUser.value?.info?.length !=
                                             0)
                                           Padding(
                                             padding: EdgeInsets.symmetric(
                                                 horizontal: 0.03.sw),
                                             child: Text(
-                                              "${mainController.authUser.value?.info}",
+                                              "${mainController.authUser.value
+                                                  ?.info}",
                                               style: TextStyle(
                                                 color: Colors.grey,
                                                 overflow: TextOverflow.ellipsis,
@@ -319,7 +380,7 @@ class ProfilePage2 extends StatelessWidget {
                                               horizontal: 0.03.sw),
                                           child: Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                             children: [
                                               Icon(
                                                 FontAwesomeIcons.locationDot,
@@ -328,7 +389,8 @@ class ProfilePage2 extends StatelessWidget {
                                               ),
                                               Center(
                                                 child: AutoSizeText(
-                                                    "${mainController.authUser.value?.address}",
+                                                    "${mainController.authUser
+                                                        .value?.address}",
                                                     style: TextStyle(
                                                         color: color,
                                                         overflow: TextOverflow
@@ -340,20 +402,23 @@ class ProfilePage2 extends StatelessWidget {
                                         const SizedBox(height: 10),
                                         Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          MainAxisAlignment.center,
                                           children: [
                                             MaterialButton(
                                                 color: color,
                                                 shape: RoundedRectangleBorder(
                                                     borderRadius:
-                                                        BorderRadiusGeometry
-                                                            .circular(20.r)),
+                                                    BorderRadiusGeometry
+                                                        .circular(20.r)),
                                                 onPressed: () {
-                                                  Share.share('https://web.ali-pasha.com/profile?id=${mainController.authUser.value?.id}');
+                                                  Share.share(
+                                                      'https://web.ali-pasha.com/profile?id=${mainController
+                                                          .authUser.value
+                                                          ?.id}');
                                                 },
                                                 child: Row(
                                                   mainAxisAlignment:
-                                                      MainAxisAlignment.center,
+                                                  MainAxisAlignment.center,
                                                   children: [
                                                     const Text(
                                                       "مشاركة",
@@ -373,78 +438,88 @@ class ProfilePage2 extends StatelessWidget {
                                                 )),
                                             const SizedBox(width: 8),
                                             mainController.authUser.value
-                                                        ?.is_verified !=
-                                                    true
+                                                ?.is_verified !=
+                                                true
                                                 ? MaterialButton(
-                                                    color: color,
-                                                    shape: RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadiusGeometry
-                                                                .circular(
-                                                                    20.r)),
-                                                    onPressed: () {
-                                                      HelperClass
-                                                          .requestVerified(
-                                                              onConfirm: () {
+                                                color: color,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                    BorderRadiusGeometry
+                                                        .circular(
+                                                        20.r)),
+                                                onPressed: () {
+                                                  HelperClass
+                                                      .requestVerified(
+                                                      onConfirm: () {
                                                         if (isAuth()) {
                                                           String message =
-                                                              "ID:${mainController.authUser.value?.id} - اسم المتجر : ${mainController.authUser.value?.seller_name} - نوع الطلب توثيق الحساب";
+                                                              "ID:${mainController
+                                                              .authUser.value
+                                                              ?.id} - اسم المتجر : ${mainController
+                                                              .authUser.value
+                                                              ?.seller_name} - نوع الطلب توثيق الحساب";
                                                           openUrl(
                                                               url:
-                                                                  "https://wa.me/${mainController.settings.value.social?.phone}?text=${Uri.encodeComponent('${message!.toString()}')}");
+                                                              "https://wa.me/${mainController
+                                                                  .settings
+                                                                  .value.social
+                                                                  ?.phone}?text=${Uri
+                                                                  .encodeComponent(
+                                                                  '${message!
+                                                                      .toString()}')}");
                                                         }
                                                       });
-                                                    },
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        const Text(
-                                                          "توثيق الحساب",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white),
-                                                        ),
-                                                        SizedBox(
-                                                          width: 0.01.sw,
-                                                        ),
-                                                        Icon(
-                                                          Icons.verified,
-                                                          color: Colors.white,
-                                                          size: 40.r,
-                                                        ),
-                                                      ],
-                                                    ))
+                                                },
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .center,
+                                                  children: [
+                                                    const Text(
+                                                      "توثيق الحساب",
+                                                      style: TextStyle(
+                                                          color:
+                                                          Colors.white),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 0.01.sw,
+                                                    ),
+                                                    Icon(
+                                                      Icons.verified,
+                                                      color: Colors.white,
+                                                      size: 40.r,
+                                                    ),
+                                                  ],
+                                                ))
                                                 : MaterialButton(
-                                                    color: color,
-                                                    shape: RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadiusGeometry
-                                                                .circular(
-                                                                    20.r)),
-                                                    onPressed: () {},
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        const Text(
-                                                          "حسابك موثق",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white),
-                                                        ),
-                                                        SizedBox(
-                                                          width: 0.01.sw,
-                                                        ),
-                                                        Icon(
-                                                          Icons.verified,
-                                                          color: Colors.white,
-                                                          size: 40.r,
-                                                        ),
-                                                      ],
-                                                    )),
+                                                color: color,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                    BorderRadiusGeometry
+                                                        .circular(
+                                                        20.r)),
+                                                onPressed: () {},
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .center,
+                                                  children: [
+                                                    const Text(
+                                                      "حسابك موثق",
+                                                      style: TextStyle(
+                                                          color:
+                                                          Colors.white),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 0.01.sw,
+                                                    ),
+                                                    Icon(
+                                                      Icons.verified,
+                                                      color: Colors.white,
+                                                      size: 40.r,
+                                                    ),
+                                                  ],
+                                                )),
                                           ],
                                         ),
                                         SizedBox(height: 0.009.sh),
@@ -454,30 +529,32 @@ class ProfilePage2 extends StatelessWidget {
                                                 bottom: 0.009.sh),
                                             child: Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
+                                              MainAxisAlignment.spaceEvenly,
                                               children: [
                                                 SizedBox(width: 0.06.sw),
                                                 Column(
                                                   children: [
                                                     Text(
-                                                      "${mainController.authUser.value?.total_views ?? 0}"
+                                                      "${mainController.authUser
+                                                          .value?.total_views ??
+                                                          0}"
                                                           .toFormatNumberK(),
                                                       style: H1BlackTextStyle
                                                           .copyWith(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w900,
-                                                              color: color),
+                                                          fontWeight:
+                                                          FontWeight
+                                                              .w900,
+                                                          color: color),
                                                     ),
                                                     Text(
                                                       "مشاهدات",
                                                       style: H3BlackTextStyle
                                                           .copyWith(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              color: Colors
-                                                                  .black38),
+                                                          fontWeight:
+                                                          FontWeight
+                                                              .bold,
+                                                          color: Colors
+                                                              .black38),
                                                     ),
                                                   ],
                                                 ),
@@ -489,24 +566,27 @@ class ProfilePage2 extends StatelessWidget {
                                                   child: Column(
                                                     children: [
                                                       Text(
-                                                        "${mainController.authUser.value?.followingCount ?? 0}"
+                                                        "${mainController
+                                                            .authUser.value
+                                                            ?.followingCount ??
+                                                            0}"
                                                             .toFormatNumberK(),
                                                         style: H1BlackTextStyle
                                                             .copyWith(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w900,
-                                                                color: color),
+                                                            fontWeight:
+                                                            FontWeight
+                                                                .w900,
+                                                            color: color),
                                                       ),
                                                       Text(
                                                         "متابعين",
                                                         style: H3BlackTextStyle
                                                             .copyWith(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color: Colors
-                                                                    .black38),
+                                                            fontWeight:
+                                                            FontWeight
+                                                                .bold,
+                                                            color: Colors
+                                                                .black38),
                                                       ),
                                                     ],
                                                   ),
@@ -519,24 +599,27 @@ class ProfilePage2 extends StatelessWidget {
                                                   child: Column(
                                                     children: [
                                                       Text(
-                                                        "${mainController.authUser.value?.followers?.length ?? 0}"
+                                                        "${mainController
+                                                            .authUser.value
+                                                            ?.followers
+                                                            ?.length ?? 0}"
                                                             .toFormatNumberK(),
                                                         style: H1BlackTextStyle
                                                             .copyWith(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w900,
-                                                                color: color),
+                                                            fontWeight:
+                                                            FontWeight
+                                                                .w900,
+                                                            color: color),
                                                       ),
                                                       Text(
                                                         "أتابعه",
                                                         style: H3BlackTextStyle
                                                             .copyWith(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color: Colors
-                                                                    .black38),
+                                                            fontWeight:
+                                                            FontWeight
+                                                                .bold,
+                                                            color: Colors
+                                                                .black38),
                                                       ),
                                                     ],
                                                   ),
@@ -585,94 +668,101 @@ class ProfilePage2 extends StatelessWidget {
                                               backgroundColor: Colors.white,
                                               shape: RoundedRectangleBorder(
                                                   borderRadius:
-                                                      BorderRadiusGeometry
-                                                          .circular(20.r)),
+                                                  BorderRadiusGeometry
+                                                      .circular(20.r)),
                                               title: Center(
                                                   child: Text(
-                                                "الإحصائيات",
-                                                style: H2BlackTextStyle,
-                                              )),
+                                                    "الإحصائيات",
+                                                    style: H2BlackTextStyle,
+                                                  )),
                                               content: Container(
                                                 color: Colors.white,
                                                 width: 0.7.sw,
                                                 child: SingleChildScrollView(
                                                   child: Column(
                                                     mainAxisSize:
-                                                        MainAxisSize.min,
+                                                    MainAxisSize.min,
                                                     children: [
                                                       20.verticalSpace,
                                                       Row(
                                                         mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceEvenly,
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
                                                         children: [
                                                           _buildWidget(
                                                               title:
-                                                                  'رصيد النقاط',
+                                                              'رصيد النقاط',
                                                               count:
-                                                                  "${controller.myPoint.value}"),
+                                                              "${controller
+                                                                  .myPoint
+                                                                  .value}"),
                                                           _buildWidget(
                                                               onTab: () {
                                                                 Get.toNamed(
                                                                     BALANCES_PAGE);
                                                               },
                                                               title:
-                                                                  'الرصيد الحالي',
+                                                              'الرصيد الحالي',
                                                               count:
-                                                                  "${controller.myBalance}",
+                                                              "${controller
+                                                                  .myBalance}",
                                                               symbol: '\$'),
                                                         ],
                                                       ),
                                                       20.verticalSpace,
                                                       Row(
                                                         mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceEvenly,
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
                                                         children: [
                                                           _buildWidget(
                                                               title:
-                                                                  'عدد الإعلانات',
+                                                              'عدد الإعلانات',
                                                               count:
-                                                                  "${controller.adviceCount}"),
+                                                              "${controller
+                                                                  .adviceCount}"),
                                                           _buildWidget(
                                                               title:
-                                                                  'الشريط الإعلاني',
+                                                              'الشريط الإعلاني',
                                                               count:
-                                                                  "${controller.sliderCount}"),
+                                                              "${controller
+                                                                  .sliderCount}"),
                                                         ],
                                                       ),
                                                       20.verticalSpace,
                                                       Row(
                                                         mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceEvenly,
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
                                                         children: [
                                                           _buildWidget(
                                                               title:
-                                                                  'المشاهدات',
-                                                              count: "${controller.views}"
+                                                              'المشاهدات',
+                                                              count: "${controller
+                                                                  .views}"
                                                                   .toFormatNumberK()),
                                                           _buildWidget(
                                                               title:
-                                                                  'مسحوبات الأرباح',
+                                                              'مسحوبات الأرباح',
                                                               count:
-                                                                  "${controller.myWins}"),
+                                                              "${controller
+                                                                  .myWins}"),
                                                         ],
                                                       ),
                                                       20.verticalSpace,
                                                       MaterialButton(
                                                         shape: RoundedRectangleBorder(
                                                             borderRadius:
-                                                                BorderRadiusGeometry
-                                                                    .circular(
-                                                                        30.r)),
+                                                            BorderRadiusGeometry
+                                                                .circular(
+                                                                30.r)),
                                                         onPressed: () {
                                                           Get.back();
                                                         },
                                                         child: Text(
                                                           "إغلاق",
                                                           style:
-                                                              H3WhiteTextStyle,
+                                                          H3WhiteTextStyle,
                                                         ),
                                                         color: PrimaryColor,
                                                       )
@@ -689,57 +779,58 @@ class ProfilePage2 extends StatelessWidget {
                                       Icons.more_vert,
                                       color: Colors.black,
                                     ),
-                                    itemBuilder: (context) => [
-                                          PopupMenuItem(
-                                            value: 'profile',
-                                            child: Text(
-                                              "تعديل الملف الشخصي",
-                                              style: H3BlackTextStyle,
-                                            ),
-                                          ),
-                                          PopupMenuItem(
-                                            value: 'new-post',
-                                            child: Text(
-                                              "نشر جديد",
-                                              style: H3BlackTextStyle,
-                                            ),
-                                          ),
-                                          PopupMenuItem(
-                                            value: 'shipping',
-                                            child: Text(
-                                              "طلب خدمة شحن",
-                                              style: H3BlackTextStyle,
-                                            ),
-                                          ),
-                                          PopupMenuItem(
-                                            value: 'plan',
-                                            child: Text(
-                                              "ترقية الحساب",
-                                              style: H3BlackTextStyle,
-                                            ),
-                                          ),
-                                          PopupMenuItem(
-                                            value: 'invoice',
-                                            child: Text(
-                                              "مبيعاتي",
-                                              style: H3BlackTextStyle,
-                                            ),
-                                          ),
-                                          PopupMenuItem(
-                                            value: 'statistics',
-                                            child: Text(
-                                              "الإحصائيات",
-                                              style: H3BlackTextStyle,
-                                            ),
-                                          ),
-                                          PopupMenuItem(
-                                            value: 'advice',
-                                            child: Text(
-                                              "إعلانات ممولة",
-                                              style: H3BlackTextStyle,
-                                            ),
-                                          ),
-                                        ]),
+                                    itemBuilder: (context) =>
+                                    [
+                                      PopupMenuItem(
+                                        value: 'profile',
+                                        child: Text(
+                                          "تعديل الملف الشخصي",
+                                          style: H3BlackTextStyle,
+                                        ),
+                                      ),
+                                      PopupMenuItem(
+                                        value: 'new-post',
+                                        child: Text(
+                                          "نشر جديد",
+                                          style: H3BlackTextStyle,
+                                        ),
+                                      ),
+                                      PopupMenuItem(
+                                        value: 'shipping',
+                                        child: Text(
+                                          "طلب خدمة شحن",
+                                          style: H3BlackTextStyle,
+                                        ),
+                                      ),
+                                      PopupMenuItem(
+                                        value: 'plan',
+                                        child: Text(
+                                          "ترقية الحساب",
+                                          style: H3BlackTextStyle,
+                                        ),
+                                      ),
+                                      PopupMenuItem(
+                                        value: 'invoice',
+                                        child: Text(
+                                          "مبيعاتي",
+                                          style: H3BlackTextStyle,
+                                        ),
+                                      ),
+                                      PopupMenuItem(
+                                        value: 'statistics',
+                                        child: Text(
+                                          "الإحصائيات",
+                                          style: H3BlackTextStyle,
+                                        ),
+                                      ),
+                                      PopupMenuItem(
+                                        value: 'advice',
+                                        child: Text(
+                                          "إعلانات ممولة",
+                                          style: H3BlackTextStyle,
+                                        ),
+                                      ),
+                                    ]),
                               ),
                             )
                           ],
@@ -774,7 +865,7 @@ class ProfilePage2 extends StatelessWidget {
                               value: controller.categoryId.value,
                               borderRadius: BorderRadius.circular(20.r),
                               padding:
-                                  EdgeInsets.symmetric(horizontal: 0.01.sw),
+                              EdgeInsets.symmetric(horizontal: 0.01.sw),
                               dropdownColor: color,
                               icon: Icon(
                                 Icons.arrow_drop_down,
@@ -782,18 +873,19 @@ class ProfilePage2 extends StatelessWidget {
                               ),
                               items: [
                                 ...List.generate(controller.categories.length,
-                                    (index) {
-                                  return DropdownMenuItem(
-                                    value: controller.categories[index].id,
-                                    child: Text(
-                                      "${controller.categories[index].name}",
-                                      maxLines: 1,
-                                      style: H3WhiteTextStyle.copyWith(
-                                          fontWeight: FontWeight.w900,
-                                          overflow: TextOverflow.ellipsis),
-                                    ),
-                                  );
-                                })
+                                        (index) {
+                                      return DropdownMenuItem(
+                                        value: controller.categories[index].id,
+                                        child: Text(
+                                          "${controller.categories[index]
+                                              .name}",
+                                          maxLines: 1,
+                                          style: H3WhiteTextStyle.copyWith(
+                                              fontWeight: FontWeight.w900,
+                                              overflow: TextOverflow.ellipsis),
+                                        ),
+                                      );
+                                    })
                               ],
                               onChanged: (value) {
                                 controller.categoryId.value = value!;
@@ -843,7 +935,7 @@ class ProfilePage2 extends StatelessWidget {
             ];
           },
           body: Obx(
-            () {
+                () {
               if (controller.products.length > 0 &&
                   controller.loading.value == false) {
                 return Padding(
@@ -858,7 +950,8 @@ class ProfilePage2 extends StatelessWidget {
                     ),
                     children: [
                       ...List.generate(controller.products.length,
-                          (i) => _ProductCard(product: controller.products[i]))
+                              (i) =>
+                              _ProductCard(product: controller.products[i]))
                     ],
                   ),
                 );
@@ -876,8 +969,12 @@ class ProfilePage2 extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text('أضف منتجك الأول من هنا',style: H3WhiteTextStyle.copyWith(fontSize: 50.sp,fontWeight: FontWeight.w900,color: color),),
-                      Text('+',style: H3WhiteTextStyle.copyWith(fontSize: 200.sp,fontWeight: FontWeight.w900,color: color),)
+                      Text('أضف منتجك الأول من هنا',
+                        style: H3WhiteTextStyle.copyWith(fontSize: 50.sp,
+                            fontWeight: FontWeight.w900,
+                            color: color),),
+                      Text('+', style: H3WhiteTextStyle.copyWith(fontSize: 200
+                          .sp, fontWeight: FontWeight.w900, color: color),)
                     ],
 
                   ),

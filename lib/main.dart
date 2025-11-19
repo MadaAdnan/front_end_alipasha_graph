@@ -20,6 +20,7 @@ import 'firebase_options.dart';
 
 
 final metaSdk = FlutterMetaSdk();
+
 /// https://www.figma.com/design/px6a4uJqQMFINZtOZtSPDP/ali-pasha-home?node-id=0-1&t=VcJBc4HEx3FehtIf-1
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -67,10 +68,10 @@ class _MyAppState extends State<MyApp> {
   GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 
-  Future<void> setupMessages(
-      BuildContext context, NavigatorState navigator) async {
+  Future<void> setupMessages(BuildContext context,
+      NavigatorState navigator) async {
     RemoteMessage? message =
-        await FirebaseMessaging.instance.getInitialMessage();
+    await FirebaseMessaging.instance.getInitialMessage();
 
     if (message != null) {
       handleNavigation(message, context, navigator);
@@ -81,8 +82,8 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  void handleNavigation(
-      RemoteMessage message, BuildContext context, NavigatorState navigator) {
+  void handleNavigation(RemoteMessage message, BuildContext context,
+      NavigatorState navigator) {
     if (message.data['type'] == 'request') {
       Get.toNamed(NOTIFICATION_PAGE);
     }
@@ -106,7 +107,7 @@ class _MyAppState extends State<MyApp> {
       metaSdk.setAdvertiserTracking(enabled: true);
 
 
-     /* await facebookAppEvents.setAdvertiserTracking(enabled: true);
+      /* await facebookAppEvents.setAdvertiserTracking(enabled: true);
       await facebookAppEvents.setAutoLogAppEventsEnabled(true);
       await facebookAppEvents.logEvent(name: 'fb_mobile_activate_app');*/
       print("Facebook SDK successfully");
@@ -117,29 +118,33 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: ScreenUtilInit(
-        designSize: Size(1080, 2225),
-        useInheritedMediaQuery: true,
-        minTextAdapt: true,
-        enableScaleText: () => false,
-        builder: (_, child) => GetMaterialApp(
-          navigatorKey: navigatorKey,
-          defaultTransition: Transition.native,
-          transitionDuration: Duration(milliseconds: 50),
-          initialBinding: MainBinding(),
-          title: 'علي باشا',
-          locale: Locale('ar'),
-          getPages: AppPages.pages,
-          initialRoute: HOME_PAGE,
-          debugShowCheckedModeBanner: false,
-          useInheritedMediaQuery: true,
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            useMaterial3: true,
+    return MediaQuery(
+data:MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+        child: SafeArea(
+          child: ScreenUtilInit(
+            designSize: Size(1080, 2225),
+            useInheritedMediaQuery: true,
+            minTextAdapt: true,
+            enableScaleText: () => false,
+            builder: (_, child) =>
+                GetMaterialApp(
+                  navigatorKey: navigatorKey,
+                  defaultTransition: Transition.native,
+                  transitionDuration: Duration(milliseconds: 50),
+                  initialBinding: MainBinding(),
+                  title: 'علي باشا',
+                  locale: Locale('ar'),
+                  getPages: AppPages.pages,
+                  initialRoute: HOME_PAGE,
+                  debugShowCheckedModeBanner: false,
+                  useInheritedMediaQuery: true,
+                  theme: ThemeData(
+                    colorScheme: ColorScheme.fromSeed(
+                        seedColor: Colors.deepPurple),
+                    useMaterial3: true,
+                  ),
+                ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }

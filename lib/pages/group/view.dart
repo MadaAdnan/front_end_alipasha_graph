@@ -628,7 +628,7 @@ class GroupPage extends StatelessWidget {
                           style: H2RedTextStyle,
                         );
                       } else {
-                        return TextSpan(text: ' $el ', style: H4RegularDark);
+                        return TextSpan(text: ' $el ', style: H2RegularDark);
                       }
                     })
                   ]),
@@ -806,7 +806,7 @@ class GroupPage extends StatelessWidget {
                             style: H2RedTextStyle,
                           );
                         } else {
-                          return TextSpan(text: ' $el ', style: H4RegularDark);
+                          return TextSpan(text: ' $el ', style: H2RegularDark);
                         }
                       })
                     ]),
