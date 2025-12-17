@@ -6,6 +6,7 @@ import 'package:ali_pasha_graph/components/product_components/job_card.dart';
 import 'package:ali_pasha_graph/components/product_components/news_card.dart';
 import 'package:ali_pasha_graph/components/product_components/post_card.dart';
 import 'package:ali_pasha_graph/components/product_components/post_card_loading.dart';
+import 'package:ali_pasha_graph/components/product_components/post_home_item.dart';
 import 'package:ali_pasha_graph/components/progress_loading.dart';
 import 'package:ali_pasha_graph/components/sections_components/section_home_card.dart';
 import 'package:ali_pasha_graph/components/seller_component/seller_home_page_card.dart';
@@ -79,12 +80,14 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         floatingActionButton: _buildFloatingActions(),
         floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-        backgroundColor: WhiteColor,
+        backgroundColor: Colors.white,
         body: Column(
           children: [
             HomeAppBarComponent(),
             Expanded(
               child: RefreshIndicator(
+                color: Colors.white,
+                backgroundColor: Colors.white,
                 onRefresh: _onRefresh,
                 child: _buildContent(),
               ),
@@ -147,21 +150,25 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildContent() {
-    return NotificationListener<ScrollNotification>(
-      onNotification: _handleScrollNotification,
-      child: CustomScrollView(
-        cacheExtent: 300,
-        controller: _scrollController,
-        physics: const AlwaysScrollableScrollPhysics(),
-        slivers: [
-          SliverToBoxAdapter(child: _buildUserHeader()),
-          SliverToBoxAdapter(child: _buildCategoriesSection()),
-          SliverToBoxAdapter(child: _buildSellersSection()),
-          const SliverToBoxAdapter(
-              child: Divider(color: GrayDarkColor, height: 1)),
-          _buildProductsSliverList(),
-          SliverToBoxAdapter(child: _buildNoMoreResults()),
-        ],
+    return Padding(
+      padding:  EdgeInsets.symmetric(horizontal: 0.034.sw),
+      child: NotificationListener<ScrollNotification>(
+        onNotification: _handleScrollNotification,
+        child: CustomScrollView(
+          cacheExtent: 300,
+          controller: _scrollController,
+          physics: const AlwaysScrollableScrollPhysics(),
+
+          slivers: [
+            SliverToBoxAdapter(child: _buildUserHeader()),
+            SliverToBoxAdapter(child: _buildCategoriesSection()),
+            SliverToBoxAdapter(child: _buildSellersSection()),
+            const SliverToBoxAdapter(
+                child: Divider(color: Colors.white, height: 1)),
+            _buildProductsSliverList(),
+            SliverToBoxAdapter(child: _buildNoMoreResults()),
+          ],
+        ),
       ),
     );
   }
@@ -418,6 +425,7 @@ class _HomePageState extends State<HomePage> {
       // عرض المنتجات باستخدام SliverList.builder للأداء الأفضل
       return SliverList(
         delegate: SliverChildBuilderDelegate(
+
               (context, index) {
             if (index < logic.products.length) {
               return _buildProductItem(index);
@@ -449,11 +457,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildProductItem(int index) {
-    final product = logic.products[index];
+
     final widgets = <Widget>[];
 
     // إضافة البطاقة الرئيسية
-    widgets.add(_buildProductCard(product));
+    widgets.add(_buildProductCard(logic.products[index]));
 
     // إضافة الإعلانات كل 5 منتجات
     if (index % 5 == 0 && _currentAdviceIndex < mainController.advices.length) {
@@ -480,7 +488,7 @@ class _HomePageState extends State<HomePage> {
       case 'news':
         return NewsCard(post: product);
       default:
-        return PostCard(post: product);
+        return PostHomeItem(post: product);
     }
   }
 
@@ -572,8 +580,14 @@ class _HomePageState extends State<HomePage> {
         _buildSectionHeader(title, icon, iconColor),
         Container(
           height: isSeller ? 0.3.sh : 0.51.sh,
-          color: Colors.white,
+width: 0.96.sw,
+          decoration: BoxDecoration(
+            color: Colors.white,
+
+          ),
           child: ListView.builder(
+
+            padding: EdgeInsets.symmetric(horizontal: 0.02.sw,vertical: 0.01.sh),
             cacheExtent: 200,
             scrollDirection: Axis.horizontal,
             physics: const ClampingScrollPhysics(),
@@ -656,6 +670,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _onRefresh() async {
+    logic.cityHome.value=null;
+    logic.categoryHome.value=null;
     if (logic.page.value > 1) {
       logic.page.value = 1;
     } else {

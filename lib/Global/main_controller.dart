@@ -71,6 +71,8 @@ class MainController extends GetxController {
   /*Global Key For CoachMArk*/
   RxList<CartModel> carts = RxList<CartModel>([]);
   RxnString token = RxnString(null);
+
+
   Rxn<UserModel> authUser = Rxn<UserModel>(null);
   NetworkManager dio_manager = NetworkManager();
   GetStorage storage = GetStorage('ali-pasha');
@@ -89,7 +91,7 @@ class MainController extends GetxController {
   RxList<SliderModel> sliders = RxList<SliderModel>([]);
   RxList<CountryModel> countries = RxList<CountryModel>([]);
   RxList<PricingModel> pricing = RxList([]);
-  String versionAPK = "3.3.3";
+  String versionAPK = "3.3.4";
   RxInt communityNotification = RxInt(0);
   RxBool startApp = RxBool(true); //for fill data from storage
   Rx<SettingModel> settings =

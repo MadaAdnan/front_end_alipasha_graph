@@ -109,8 +109,7 @@ class PostCard extends StatelessWidget {
                         if (mainController.authUser.value != null) {
                           // Check Is Follower
                           if (mainController.authUser.value != null &&
-                              mainController.authUser.value!.followers !=
-                                  null &&
+                              mainController.authUser.value!.followers?.length!=0 &&
                               post.user != null &&
                               post.user!.id != null) {
                             int index = mainController

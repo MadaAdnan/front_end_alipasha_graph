@@ -79,10 +79,12 @@ class PlanPage extends StatelessWidget {
                           ),
                         ),
                         10.horizontalSpace,
-                        Text(
-                          '${getName()}',
-                          style: H3GrayTextStyle,
-                          overflow: TextOverflow.ellipsis,
+                        Flexible(
+                          child: Text(
+                            '${getName()}',
+                            style: H3GrayTextStyle,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         )
                       ],
                     ),

@@ -49,11 +49,17 @@ class PlanCardComponent extends StatelessWidget {
                   height: 0.75.sh,
                   child: Container(
                     constraints: BoxConstraints.expand(height: 0.7.sh),
-                    child: Card(
-                      elevation: 0,
-                      color: index > -1
-                          ? Colors.green.withOpacity(0.6)
-                          : Colors.deepPurple.withOpacity(0.8),
+                    child: Container(
+margin: EdgeInsets.symmetric(horizontal: 0.008.sw,vertical: 0.005.sh),
+                     decoration: BoxDecoration(
+                       color: index > -1
+                           ? GoldColor
+                           : Colors.white,
+                       borderRadius: BorderRadius.circular(20.r),
+                       border: Border.all(
+                              color:ScafoldColor
+                       )
+                     ),
                       child: Container(
                         padding: EdgeInsets.symmetric(vertical: 0.01.sh),
                         width: MediaQuery.of(context).size.width * 0.8,
@@ -72,7 +78,7 @@ class PlanCardComponent extends StatelessWidget {
                                 TextSpan(
                                     text:
                                         " ( ${plan.duration!.planDuration()} ) ",
-                                    style: H4WhiteTextStyle),
+                                    style: index > -1 ? H4WhiteTextStyle:H4RegularDark),
                               ])),
                             ),
                             Container(
@@ -80,7 +86,7 @@ class PlanCardComponent extends StatelessWidget {
                                   vertical: 0.01.sh, horizontal: 0.02.sw),
                               child: Text(
                                 "${plan.info}",
-                                style: H3WhiteTextStyle,
+                                style: index > -1 ? H3WhiteTextStyle:H3RegularDark,
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -122,17 +128,17 @@ class PlanCardComponent extends StatelessWidget {
                                     Icon(
                                         plan.items![i].active == true
                                             ? FontAwesomeIcons.solidCircleCheck
-                                            : FontAwesomeIcons.ban,
+                                            : FontAwesomeIcons.close,
                                         color: plan.items![i].active == true
                                             ? Colors.green
                                             : PrimaryColor,
-                                        size: 0.07.sw),
+                                        size: 60.r),
                                     10.horizontalSpace,
                                     SizedBox(
                                       width: 0.655.sw,
                                       child: Text(
                                         "${plan.items![i].item}",
-                                        style: H2WhiteTextStyle,
+                                        style: index > -1 ? H2WhiteTextStyle:H2RegularDark,
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 3,
                                         softWrap: true,

@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 const Color PrimaryColor = Color(0xFFFF3B30);//Color.fromRGBO(226, 6, 19, 1.0);
 const Color SecondaryColor = Color(0xFFff5f57);
 const Color WhiteColor = Color.fromRGBO(255, 255, 255, 1);
-const Color ScafoldColor = Color.fromRGBO(229, 229, 229, 1);
+const Color ScafoldColor = Color(0xFFF0EFEF);
 const Color GrayLightColor = Color.fromRGBO(229, 229, 229, 1);
 const Color GrayWhiteColor = Color.fromRGBO(229, 229, 229, 0.5);
 const Color GrayDarkColor = Color.fromRGBO(178, 178, 178, 1);
 const Color SubTitleColor = Color.fromRGBO(84, 84, 84, 0.64);
 const Color DarkColor = Color.fromRGBO(45, 44, 44, 0.6);
 const Color IconColor = Color.fromRGBO(77, 77, 77, 1);
-const Color GoldColor = Color.fromRGBO(238, 205, 73, 1.0);
+const Color GoldColor =Color(0xFFFFCC00);
 // const Color OrangeColor = Color.fromRGBO(250, 173, 23, 1.0);
 
 

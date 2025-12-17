@@ -35,6 +35,7 @@ class ProductPage extends StatelessWidget {
   MainController mainController = Get.find<MainController>();
   ScrollController controller = ScrollController();
   RxBool loadingFollow = RxBool(false);
+  RxBool isWhatsApp = RxBool(false);
   RxBool loadingMsg = RxBool(false);
 
   @override
@@ -479,131 +480,143 @@ class ProductPage extends StatelessWidget {
                             width: 0.03.sw,
                           ),
                           Obx(() {
-                            if(loadingMsg.value==false && mainController.createCommunityLodaing.value==false){
+                            if (loadingMsg.value == false &&
+                                mainController.createCommunityLodaing.value ==
+                                    false) {
                               return InkWell(
-                                onTap: () async {
-                                  loadingMsg.value = true;
-                                  try {
-                                    if (mainController.authUser.value?.id ==
-                                        null) {
-                                      mainController.showToast(
-                                          text: "يرجى تسجيل الدخول أولاً",
-                                          type: "error");
-                                      return;
-                                    }
-                                    if (mainController.authUser.value
-                                        ?.is_active !=
-                                        true) {
-                                      mainController.showToast(
-                                          type: 'error',
-                                          text:
-                                          'حسابكم محظور الرجاء التواصل مع الدعم الفني');
-                                      return;
-                                    }
-                                    if (!mainController
-                                        .createCommunityLodaing.value) {
-                                      StringBuffer message = StringBuffer();
-                                      message.writeln(
-                                          "${mainController.settings.value
-                                              .footerOrder}");
-                                      message.write("\n");
-                                      message.write(
-                                          "السلام عليكم ورحمة الله وبركاته ");
-                                      message.write("\n");
-                                      message.write("اريد الإستفسار عن بضاعة");
-                                      message.write("\n");
-                                      message.write(
-                                          "معرف المنتج : ${logic.product.value!
-                                              .id}");
-                                      message.write("\n");
-                                      message.write(
-                                          "المنتج :${logic.product.value!
-                                              .name} ");
-                                      message.write("\n");
-                                      message.write(
-                                          "سعر الوحدة : ${logic.product.value
-                                              ?.is_discount == true ? logic
-                                              .product.value?.discount : logic
-                                              .product.value?.price}");
-                                      message.write("\n");
 
-                                      await mainController.clickWhatsApp(
-                                          productId: logic.product.value!.id!);
+                              onTap:
+                              () async {
 
-                                      openUrl(
-                                          url:
-                                          "https://wa.me/${logic.product.value
-                                              ?.user?.full_phone}?text=${Uri
-                                              .encodeComponent(
-                                              '${message!.toString()}')}");
-                                      /* HelperClass.connectWithSeller(
+
+                                if(loadingMsg.value)
+                                {
+                                  return;
+                                }
+
+                                try {
+                                  if (mainController.authUser.value?.id ==
+                                      null) {
+                                    mainController.showToast(
+                                        text: "يرجى تسجيل الدخول أولاً",
+                                        type: "error");
+                                    return;
+                                  }
+                                  if (mainController.authUser.value
+                                      ?.is_active !=
+                                      true) {
+                                    mainController.showToast(
+                                        type: 'error',
+                                        text:
+                                        'حسابكم محظور الرجاء التواصل مع الدعم الفني');
+                                    return;
+                                  }
+                                  if (!mainController
+                                      .createCommunityLodaing.value) {
+                                    loadingMsg.value = true;
+                                    StringBuffer message = StringBuffer();
+                                    message.writeln(
+                                        "${mainController.settings.value
+                                            .footerOrder}");
+                                    message.write("\n");
+                                    message.write(
+                                        "السلام عليكم ورحمة الله وبركاته ");
+                                    message.write("\n");
+                                    message.write("اريد الإستفسار عن بضاعة");
+                                    message.write("\n");
+                                    message.write(
+                                        "معرف المنتج : ${logic.product.value!
+                                            .id}");
+                                    message.write("\n");
+                                    message.write(
+                                        "المنتج :${logic.product.value!
+                                            .name} ");
+                                    message.write("\n");
+                                    message.write(
+                                        "سعر الوحدة : ${logic.product.value
+                                            ?.is_discount == true ? logic
+                                            .product.value?.discount : logic
+                                            .product.value?.price}");
+                                    message.write("\n");
+
+                                    await mainController.clickWhatsApp(
+                                        productId: logic.product.value!.id!);
+
+                                    openUrl(
+                                        url:
+                                        "https://wa.me/${logic.product.value
+                                            ?.user?.full_phone}?text=${Uri
+                                            .encodeComponent(
+                                            '${message!.toString()}')}");
+                                    /* HelperClass.connectWithSeller(
                                     phone:
                                     logic.product.value!.user!.phone!,
                                     sellerId:
                                     logic.product.value!.user!.id!,
                                     message: message);*/
-                                    }
-                                  } catch (e) {}
-                                  loadingMsg.value = false;
-                                },
-                                child: Container(
-                                  width: 0.35.sw,
-                                  height: 0.06.sh,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    color: PrimaryColor,
-                                    borderRadius: BorderRadius.circular(30.r),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'مراسلة التاجر',
-                                        style: H3WhiteTextStyle,
-                                      ),
-                                      SizedBox(
-                                        width: 0.02.sw,
-                                      ),
-                                      Icon(
-                                        FontAwesomeIcons.comments,
-                                        color: WhiteColor,
-                                        size: 0.04.sw,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              );
+                                  }
+                                } catch (e) {}
+                                loadingMsg.value = false;
+                              },
+                            child: Container(
+                            width: 0.35.sw,
+                            height: 0.06.sh,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                            color: PrimaryColor,
+                            borderRadius: BorderRadius.circular(30.r),
+                            ),
+                            child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                            Text(
+                            'مراسلة التاجر',
+                            style: H3WhiteTextStyle,
+                            ),
+                            SizedBox(
+                            width: 0.02.sw,
+                            ),
+                            Icon(
+                            FontAwesomeIcons.comments,
+                            color: WhiteColor,
+                            size: 0.04.sw,
+                            )
+                            ],
+                            ),
+                            ),
+                            );
                             }
                             return InkWell(
-                              onTap: ()  {
+                            onTap: () {
 
-                              },
-                              child: Container(
-                                width: 0.35.sw,
-                                height: 0.06.sh,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: PrimaryColor,
-                                  borderRadius: BorderRadius.circular(30.r),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'جاري الإنتقال',
-                                      style: H3WhiteTextStyle,
-                                    ),
-                                    SizedBox(
-                                      width: 0.02.sw,
-                                    ),
-                                    Icon(
-                                      FontAwesomeIcons.comments,
-                                      color: WhiteColor,
-                                      size: 0.04.sw,
-                                    )
-                                  ],
-                                ),
-                              ),
+                            },
+                            child: Container(
+                            width: 0.35.sw,
+                            height: 0.06.sh,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                            color: PrimaryColor,
+                            borderRadius: BorderRadius.circular(30.r),
+                            ),
+                            child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                            Text(
+                            'جاري الإنتقال',
+                            style: H3WhiteTextStyle,
+                            ),
+                            SizedBox(
+                            width: 0.02.sw,
+                            ),
+                            Icon(
+                            FontAwesomeIcons.comments,
+                            color: WhiteColor,
+                            size: 0.04.sw,
+                            )
+                            ],
+                            ),
+                            )
+                            ,
                             );
                           })
                         ],

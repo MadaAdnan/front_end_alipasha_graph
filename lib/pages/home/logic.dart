@@ -12,6 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:get_storage/get_storage.dart';
 import 'package:logger/logger.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
@@ -40,6 +41,8 @@ class HomeLogic extends GetxController {
   Rxn<TutorialCoachMark> tutorialCoachMark = Rxn(null);
   final ScrollController scrollControllerCategories = ScrollController();
 
+  RxnInt categoryHome=RxnInt(null);
+  RxnInt cityHome=RxnInt(null);
   @override
   void onInit() {
     super.onInit();
@@ -70,6 +73,29 @@ class HomeLogic extends GetxController {
       page,
       (value) {
         getProduct();
+      },
+    );
+
+    ever(
+      categoryHome,
+          (value) {
+            if(page.value!=1){
+              page.value=1;
+            }
+            else{
+              getProduct();
+            }
+      },
+    );
+    ever(
+      cityHome,
+          (value) {
+          if(page.value!=1){
+            page.value=1;
+          }
+          else{
+            getProduct();
+          }
       },
     );
   }
@@ -591,7 +617,15 @@ class HomeLogic extends GetxController {
 
   getProduct() async {
     loading.value = true;
-
+    if(page.value==1){
+      products.clear();
+    }
+/*
+*
+HobbiesProduct(first:24, page: ${page.value}) {
+          $dataString
+      }
+* */
     String dataString = '''data {
             id
             name
@@ -650,21 +684,20 @@ class HomeLogic extends GetxController {
                 name
             }
             category {
+            id
                 name
             }
         }
         paginatorInfo {
             hasMorePages
         } ''';
-    mainController.query('''
+    String query='''
     query Products {
-      SpecialProduct(first:6, page: ${page.value}) {
+      SpecialProduct(first:6, page: ${page.value} ${categoryHome.value != null ? ',category_id:${categoryHome.value}' : ''} ${cityHome.value != null ? ',city_id:${cityHome.value}' : ''}) {
           $dataString
       }
-      HobbiesProduct(first:24, page: ${page.value}) {
-          $dataString
-      }
-       LatestProduct(first:30, page: ${page.value}) {
+     
+       LatestProduct(first:30, page: ${page.value} ${categoryHome.value != null ? ',category_id:${categoryHome.value}' : ''} ${cityHome.value != null ? ',city_id:${cityHome.value}' : ''}) {
           $dataString
       }
    
@@ -719,11 +752,12 @@ class HomeLogic extends GetxController {
    
   
 }
-    ''');
+    ''';
+    mainController.query(query);
 
     try {
       dio.Response? res = await mainController.fetchData();
-
+Logger().e(res?.data);
       loading.value = false;
       if (res?.data?['data']?['LatestProduct']?['paginatorInfo']
               ?['hasMorePages'] !=
@@ -738,9 +772,9 @@ class HomeLogic extends GetxController {
         for (var item in res?.data?['data']?['SpecialProduct']?['data']) {
           products.add(ProductModel.fromJson(item));
         }
-        for (var item in res?.data?['data']?['HobbiesProduct']?['data']) {
+       /* for (var item in res?.data?['data']?['HobbiesProduct']?['data']) {
           products.add(ProductModel.fromJson(item));
-        }
+        }*/
 
         for (var item in res?.data?['data']?['LatestProduct']?['data']) {
           products.add(ProductModel.fromJson(item));
@@ -797,9 +831,10 @@ class HomeLogic extends GetxController {
         mainController.storage
             .write('specialSeller', res?.data?['data']?['specialSeller']);
       }
-    } catch (e) {
-      mainController.logger.w('ERRORPRO');
-      mainController.logger.w('$e');
+    } catch (e,s) {
+
+     Logger().w('${e}');
+     Logger().i('${s}');
     }
 
     loading.value = false;
@@ -841,9 +876,11 @@ class HomeLogic extends GetxController {
               is_verified
             }
             city{
+            id
             name
             }
             category{
+            id
             name
             }
           
