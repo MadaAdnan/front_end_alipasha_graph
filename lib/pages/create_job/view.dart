@@ -961,7 +961,7 @@ height: 1.sh,
 
                               SizedBox(height: 0.01.sh,),
                               Text(
-                                'لم يعد بإمكانك نشر المزيد من المنتجات , الرجاء توثيق الحساب لتتمكن من معاودة النشر.',style: H3BlackTextStyle.copyWith(height: 2),),
+                                'وصلت لحد النشر المسموح لك شهريا انتظر للشهر القادم او قم بترقية حسابك لتحصل على النشر المفتوح',style: H3BlackTextStyle.copyWith(height: 2),),
                               SizedBox(height: 0.07.sh,),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

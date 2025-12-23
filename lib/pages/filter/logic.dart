@@ -7,6 +7,9 @@ import 'package:ali_pasha_graph/routes/routes_url.dart';
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:dio/dio.dart' as dio;
+import 'package:get_storage/get_storage.dart';
+import 'package:logger/logger.dart';
 
 class FilterLogic extends GetxController {
   MainController mainController = Get.find<MainController>();
@@ -16,7 +19,7 @@ class FilterLogic extends GetxController {
   Rxn<CityModel> cityModel = Rxn<CityModel>(null);
   RxList<ColorModel> colors = RxList<ColorModel>([]);
   Rx<RangeValues> priceRange = Rx<RangeValues>(RangeValues(0, 10000));
-  RxString type = RxString(Get.arguments??'product');
+  RxString type = RxString(Get.arguments ?? 'product');
   RxnString typeJob = RxnString('job');
 
   Rx<SingleSelectController<CategoryModel>> categoryController =
@@ -52,15 +55,42 @@ class FilterLogic extends GetxController {
 
   search() {
     FilterModel filterModel = FilterModel(
-      colors: colorController.value.value.map((el)=>int.parse("${el.id}")).toList(),
+      colors: colorController.value.value
+          .map((el) => int.parse("${el.id}"))
+          .toList(),
       categoryId: categoryController.value.value?.id,
       sub1Id: subController.value.value?.id,
       search: searchController.text,
-      type: type.value=='job'?typeJob.value:type.value,
+      type: type.value == 'job' ? typeJob.value : type.value,
       cityId: cityController.value.value?.id,
       startPrice: priceRange.value.start,
       endPrice: priceRange.value.end,
     );
     Get.offAndToNamed(SEARCH_PAGE, arguments: filterModel);
+  }
+
+  RxList<String> names = RxList<String>([]);
+  RxBool loading = RxBool(false);
+
+  Future<List<String>> suggestions(String query) async {
+    loading.value = true;
+
+    mainController.query.value = '''
+    query Suggestions {
+    suggestions(search: "$query",type:"${type.value}")
+    }
+     ''';
+    try {
+      dio.Response? res = await mainController.fetchData();
+      names.clear();
+      for (String item in res?.data?['data']?['suggestions']) {
+        names.add("$item");
+      }
+    } catch (e, s) {
+      Logger().e("ERROR");
+      Logger().e(s);
+    }
+    loading.value = false;
+    return names as List<String>;
   }
 }

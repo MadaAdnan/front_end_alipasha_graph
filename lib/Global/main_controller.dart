@@ -91,7 +91,7 @@ class MainController extends GetxController {
   RxList<SliderModel> sliders = RxList<SliderModel>([]);
   RxList<CountryModel> countries = RxList<CountryModel>([]);
   RxList<PricingModel> pricing = RxList([]);
-  String versionAPK = "3.3.4";
+  String versionAPK = "3.3.5";
   RxInt communityNotification = RxInt(0);
   RxBool startApp = RxBool(true); //for fill data from storage
   Rx<SettingModel> settings =
@@ -147,6 +147,17 @@ class MainController extends GetxController {
         communitySubscribe('private-user.${authUser.value?.id}');
       }
     });
+    getCities();
+
+  }
+
+  getCities(){
+    var c=storage.read('mainCity');
+    if(c!=null){
+      for(var item in c){
+        mainCities.add(CityModel.fromJson(item));
+      }
+    }
   }
 
   @override
@@ -1014,7 +1025,8 @@ Future<void> getMe() async {
     dio.Response? res = await fetchData();
 
     if (res?.data?['data']?['me'] != null) {
-      // Logger().e(res?.data?['data']?['me']);
+     Logger().e("ME: ");
+     Logger().e(res?.data?['data']?['me']);
       pusher.value = null;
       await setUserJson(json: res?.data?['data']?['me']);
      // communityNotification.value=int.tryParse("${res?.data?['data']?['me']?['unread_notifications_count']}")??0;

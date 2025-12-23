@@ -25,6 +25,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../helpers/components.dart';
@@ -41,7 +42,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final MainController mainController = Get.find<MainController>();
   final HomeLogic logic = Get.find<HomeLogic>();
-  final ScrollController _scrollController = ScrollController();
+  
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
 
   bool _exit = false;
@@ -54,9 +55,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _setupScrollListener() {
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels >=
-          _scrollController.position.maxScrollExtent * 0.80 &&
+    logic.scrollController.addListener(() {
+      if (logic.scrollController.position.pixels >=
+          logic.scrollController.position.maxScrollExtent * 0.80 &&
           !mainController.loading.value &&
           logic.hasMorePage.value) {
         logic.nextPage();
@@ -66,7 +67,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
-    _scrollController.dispose();
+    logic.scrollController.dispose();
     super.dispose();
   }
 
@@ -156,13 +157,17 @@ class _HomePageState extends State<HomePage> {
         onNotification: _handleScrollNotification,
         child: CustomScrollView(
           cacheExtent: 300,
-          controller: _scrollController,
+          controller: logic.scrollController,
           physics: const AlwaysScrollableScrollPhysics(),
 
           slivers: [
             SliverToBoxAdapter(child: _buildUserHeader()),
             SliverToBoxAdapter(child: _buildCategoriesSection()),
+          if(logic.sellers.length>0)
             SliverToBoxAdapter(child: _buildSellersSection()),
+            SliverToBoxAdapter(
+              child: _buildCitiesCard(),
+            ),
             const SliverToBoxAdapter(
                 child: Divider(color: Colors.white, height: 1)),
             _buildProductsSliverList(),
@@ -189,7 +194,224 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+  // build cities
+Widget _buildCitiesCard(){
+  return Obx(() {
 
+    final cities = mainController.mainCities;
+    final isLoading = logic.loading.value;
+
+
+      return Container(
+      height: 0.06.sh,
+      color: WhiteColor,
+      child: ListView(
+        // ← استبدال ListView بـ ListView.builder
+        cacheExtent: 200,
+        padding: EdgeInsets.symmetric(vertical: 10.h),
+        scrollDirection: Axis.horizontal,
+        addAutomaticKeepAlives: false,
+        addRepaintBoundaries: true,
+       children:cities.isEmpty && isLoading ? [
+         Shimmer.fromColors(
+           baseColor: GrayLightColor,
+           highlightColor: GrayWhiteColor,
+           child: Container(
+             width: 0.27.sw,
+             margin: EdgeInsets.symmetric(horizontal: 10.w),
+             decoration: BoxDecoration(
+               color: GrayLightColor,
+               borderRadius: BorderRadius.circular(15.r),
+             ),
+             child: Container(
+               padding: EdgeInsets.only(top: 20.h, right: 20.w),
+               alignment: Alignment.topRight,
+               child: CircleAvatar(
+                 backgroundColor: WhiteColor,
+                 radius: 40.r,
+               ),
+             ),
+           ),
+         ),
+         Shimmer.fromColors(
+           baseColor: GrayLightColor,
+           highlightColor: GrayWhiteColor,
+           child: Container(
+             width: 0.27.sw,
+             margin: EdgeInsets.symmetric(horizontal: 10.w),
+             decoration: BoxDecoration(
+               color: GrayLightColor,
+               borderRadius: BorderRadius.circular(15.r),
+             ),
+             child: Container(
+               padding: EdgeInsets.only(top: 20.h, right: 20.w),
+               alignment: Alignment.topRight,
+               child: CircleAvatar(
+                 backgroundColor: WhiteColor,
+                 radius: 40.r,
+               ),
+             ),
+           ),
+         ),
+         Shimmer.fromColors(
+           baseColor: GrayLightColor,
+           highlightColor: GrayWhiteColor,
+           child: Container(
+             width: 0.27.sw,
+             margin: EdgeInsets.symmetric(horizontal: 10.w),
+             decoration: BoxDecoration(
+               color: GrayLightColor,
+               borderRadius: BorderRadius.circular(15.r),
+             ),
+             child: Container(
+               padding: EdgeInsets.only(top: 20.h, right: 20.w),
+               alignment: Alignment.topRight,
+               child: CircleAvatar(
+                 backgroundColor: WhiteColor,
+                 radius: 40.r,
+               ),
+             ),
+           ),
+         ),
+         Shimmer.fromColors(
+           baseColor: GrayLightColor,
+           highlightColor: GrayWhiteColor,
+           child: Container(
+             width: 0.27.sw,
+             margin: EdgeInsets.symmetric(horizontal: 10.w),
+             decoration: BoxDecoration(
+               color: GrayLightColor,
+               borderRadius: BorderRadius.circular(15.r),
+             ),
+             child: Container(
+               padding: EdgeInsets.only(top: 20.h, right: 20.w),
+               alignment: Alignment.topRight,
+               child: CircleAvatar(
+                 backgroundColor: WhiteColor,
+                 radius: 40.r,
+               ),
+             ),
+           ),
+         ),
+         Shimmer.fromColors(
+           baseColor: GrayLightColor,
+           highlightColor: GrayWhiteColor,
+           child: Container(
+             width: 0.27.sw,
+             margin: EdgeInsets.symmetric(horizontal: 10.w),
+             decoration: BoxDecoration(
+               color: GrayLightColor,
+               borderRadius: BorderRadius.circular(15.r),
+             ),
+             child: Container(
+               padding: EdgeInsets.only(top: 20.h, right: 20.w),
+               alignment: Alignment.topRight,
+               child: CircleAvatar(
+                 backgroundColor: WhiteColor,
+                 radius: 40.r,
+               ),
+             ),
+           ),
+         ),
+         Shimmer.fromColors(
+           baseColor: GrayLightColor,
+           highlightColor: GrayWhiteColor,
+           child: Container(
+             width: 0.27.sw,
+             margin: EdgeInsets.symmetric(horizontal: 10.w),
+             decoration: BoxDecoration(
+               color: GrayLightColor,
+               borderRadius: BorderRadius.circular(15.r),
+             ),
+             child: Container(
+               padding: EdgeInsets.only(top: 20.h, right: 20.w),
+               alignment: Alignment.topRight,
+               child: CircleAvatar(
+                 backgroundColor: WhiteColor,
+                 radius: 40.r,
+               ),
+             ),
+           ),
+         ),
+       ]:[
+         InkWell(
+             onTap: (){
+               logic.cityHome.value=null;
+             },
+             child: Container(
+               padding: EdgeInsets.symmetric(horizontal: 5, vertical: 4),
+               margin: EdgeInsets.symmetric(horizontal: 3, ),
+               decoration: BoxDecoration(
+                 color: logic.cityHome.value==null?PrimaryColor :Colors.grey[100],
+                 borderRadius: BorderRadius.circular(12),
+               ),
+               child: Row(
+                 mainAxisSize: MainAxisSize.min,
+                 children: [
+                   Flexible(
+                     child: AutoSizeText(
+                       'الكل',
+                       style: TextStyle(
+                         fontSize: 12,
+                         color:logic.cityHome.value==null? Colors.white: Colors.grey[700],
+                         overflow: TextOverflow.ellipsis,
+                       ),
+                     ),
+                   ),
+                   SizedBox(
+                     width: 0.007.sw,
+                   ),
+                   Icon(
+                     Icons.location_on_outlined,
+                     size: 12,
+                     color: logic.cityHome.value==null? Colors.white: Colors.grey[600],
+                   ),
+                 ],
+               ),
+             )),
+         ...mainController.mainCities.map((city) {
+           return InkWell(
+               onTap: (){
+                 logic.cityHome.value=city.id;
+               },
+               child: Container(
+                 padding: EdgeInsets.symmetric(horizontal: 5, vertical: 4),
+                 margin: EdgeInsets.symmetric(horizontal: 3, ),
+                 decoration: BoxDecoration(
+                   color: logic.cityHome.value==city.id?PrimaryColor :Colors.grey[100],
+                   borderRadius: BorderRadius.circular(12),
+                 ),
+                 child: Row(
+                   mainAxisSize: MainAxisSize.min,
+                   children: [
+                     Flexible(
+                       child: AutoSizeText(
+                         '${city.name}',
+                         style: TextStyle(
+                           fontSize: 12,
+                           color:logic.cityHome.value==city.id? Colors.white: Colors.grey[700],
+                           overflow: TextOverflow.ellipsis,
+                         ),
+                       ),
+                     ),
+                     SizedBox(
+                       width: 0.007.sw,
+                     ),
+                     Icon(
+                       Icons.location_on_outlined,
+                       size: 12,
+                       color: logic.cityHome.value==city.id? Colors.white: Colors.grey[600],
+                     ),
+                   ],
+                 ),
+               ));
+         }).toList()
+       ],
+
+      ),
+    );
+  });
+}
   Widget _buildUserAvatar() {
     return InkWell(
         onTap: () {
@@ -683,7 +905,7 @@ width: 0.96.sw,
     if (_exit) {
       return Future.value(true);
     } else {
-      _scrollController.animateTo(0,
+      logic.scrollController.animateTo(0,
           duration: const Duration(milliseconds: 100), curve: Curves.linear);
       _exit = true;
       return Future.value(false);

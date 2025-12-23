@@ -176,7 +176,7 @@ query MainCategories {
       dio.Response res = await mainController.dio_manager
           .executeGraphQLQueryWithFile(json.encode(datajson),
               map: map, files: data);
-      mainController.logger.e(res.data);
+
       if (res.data?['data']?['createJob'] != null) {
         infoProduct.clear();
         startDateController.clear();
@@ -204,10 +204,11 @@ query MainCategories {
         // جلب أول قيمة من الكائن بغض النظر عن ال key
         String firstErrorMessage = validation.values.first.first;
 
-        showAutoCloseDialog(
-            title: 'فشل العملية',
-            message: "$firstErrorMessage",
-            isSuccess: false);
+        mainController.showToast(type: 'error',
+            text: "$firstErrorMessage",
+           );
+      }else if(res.data?['errors']?[0]?['message']!=null){
+        mainController.showToast(type: 'error', text: '${res.data['errors'][0]['message']}');
       }
     } catch (e) {
       mainController.logger.e("Error get Profile $e");

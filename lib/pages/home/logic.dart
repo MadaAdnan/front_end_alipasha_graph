@@ -2,6 +2,7 @@ import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/helpers/colors.dart';
 import 'package:ali_pasha_graph/helpers/queries.dart';
 import 'package:ali_pasha_graph/helpers/style.dart';
+import 'package:ali_pasha_graph/models/advice_model.dart';
 
 import 'package:ali_pasha_graph/models/category_model.dart';
 import 'package:ali_pasha_graph/models/city_model.dart';
@@ -41,8 +42,9 @@ class HomeLogic extends GetxController {
   Rxn<TutorialCoachMark> tutorialCoachMark = Rxn(null);
   final ScrollController scrollControllerCategories = ScrollController();
 
-  RxnInt categoryHome=RxnInt(null);
-  RxnInt cityHome=RxnInt(null);
+  RxnInt categoryHome = RxnInt(null);
+  RxnInt cityHome = RxnInt(null);
+
   @override
   void onInit() {
     super.onInit();
@@ -78,24 +80,22 @@ class HomeLogic extends GetxController {
 
     ever(
       categoryHome,
-          (value) {
-            if(page.value!=1){
-              page.value=1;
-            }
-            else{
-              getProduct();
-            }
+      (value) {
+        if (page.value != 1) {
+          page.value = 1;
+        } else {
+          getProduct();
+        }
       },
     );
     ever(
       cityHome,
-          (value) {
-          if(page.value!=1){
-            page.value=1;
-          }
-          else{
-            getProduct();
-          }
+      (value) {
+        if (page.value != 1) {
+          page.value = 1;
+        } else {
+          getProduct();
+        }
       },
     );
   }
@@ -262,7 +262,7 @@ class HomeLogic extends GetxController {
           ),
         ],
       ),
-     /* TargetFocus(
+      /* TargetFocus(
         identify: "job",
         keyTarget: jobKey,
         contents: [
@@ -415,7 +415,7 @@ class HomeLogic extends GetxController {
       TargetFocus(
         shape: ShapeLightFocus.RRect,
         identify: "what",
-        keyTarget:mainController. whatsThink,
+        keyTarget: mainController.whatsThink,
         contents: [
           TargetContent(
             align: ContentAlign.bottom,
@@ -604,8 +604,6 @@ class HomeLogic extends GetxController {
   void onReady() {
     // TODO: implement onReady
     super.onReady();
-
-
   }
 
   nextPage() {
@@ -613,13 +611,79 @@ class HomeLogic extends GetxController {
     // getProduct();
   }
 
-
+  final ScrollController scrollController = ScrollController();
 
   getProduct() async {
     loading.value = true;
-    if(page.value==1){
-      products.clear();
+String category= '';
+if(page.value==1){
+  category=r'''
+    mainCategories{
+        name
+        color
+        type
+        has_color
+        id
+        image
+      children{
+        id
+        name
+        children{
+          id
+          name
+          children{
+            id
+            name
+         }
+        }
+      }
     }
+    
+    
+    specialSeller{
+      id
+      name
+      seller_name
+      image
+      custom
+    }
+    mainCity{
+      id
+      name
+      is_delivery
+      children{
+       id
+      name
+      is_delivery
+      code_city
+      level
+      }
+    }
+    
+      colors{
+      name
+      id
+    }
+    
+    
+   ''';
+}
+if(mainController.advices.length==0){
+  category+=r'''
+     advices {
+        name
+        user {
+            id
+            name
+            seller_name
+            full_phone
+        }
+        url
+        image
+        id
+    }
+    ''';
+}
 /*
 *
 HobbiesProduct(first:24, page: ${page.value}) {
@@ -691,7 +755,7 @@ HobbiesProduct(first:24, page: ${page.value}) {
         paginatorInfo {
             hasMorePages
         } ''';
-    String query='''
+    String query = '''
     query Products {
       SpecialProduct(first:6, page: ${page.value} ${categoryHome.value != null ? ',category_id:${categoryHome.value}' : ''} ${cityHome.value != null ? ',city_id:${cityHome.value}' : ''}) {
           $dataString
@@ -701,54 +765,7 @@ HobbiesProduct(first:24, page: ${page.value}) {
           $dataString
       }
    
-   ${page.value == 1 ? r'''
-    mainCategories{
-        name
-        color
-        type
-        has_color
-        id
-        image
-      children{
-        id
-        name
-        children{
-          id
-          name
-          children{
-            id
-            name
-         }
-        }
-      }
-    }
-    specialSeller{
-      id
-      name
-      seller_name
-      image
-      custom
-    }
-    mainCity{
-      id
-      name
-      is_delivery
-      children{
-       id
-      name
-      is_delivery
-      code_city
-      level
-      }
-    }
-    
-      colors{
-      name
-      id
-    }
-    
-    
-   ''' : ''}
+   ${page.value == 1 ?"$category": ''}
    
   
 }
@@ -757,8 +774,13 @@ HobbiesProduct(first:24, page: ${page.value}) {
 
     try {
       dio.Response? res = await mainController.fetchData();
-Logger().e(res?.data);
-      loading.value = false;
+
+
+      if (res?.data?['data']?['advices'] != null && mainController.advices.length==0) {
+        for (var item in res?.data['data']['advices']) {
+          mainController.advices.add(AdviceModel.fromJson(item));
+        }
+      }
       if (res?.data?['data']?['LatestProduct']?['paginatorInfo']
               ?['hasMorePages'] !=
           null) {
@@ -772,7 +794,7 @@ Logger().e(res?.data);
         for (var item in res?.data?['data']?['SpecialProduct']?['data']) {
           products.add(ProductModel.fromJson(item));
         }
-       /* for (var item in res?.data?['data']?['HobbiesProduct']?['data']) {
+        /* for (var item in res?.data?['data']?['HobbiesProduct']?['data']) {
           products.add(ProductModel.fromJson(item));
         }*/
 
@@ -810,9 +832,11 @@ Logger().e(res?.data);
       }
 
       if (res?.data?['data']?['mainCity'] != null) {
+        mainController.mainCities.clear();
         for (var item in res?.data['data']?['mainCity']) {
           mainController.mainCities.add(CityModel.fromJson(item));
         }
+        mainController.storage.write('mainCity', res?.data['data']['mainCity']);
       }
 
       if (res?.data?['data']?['colors'] != null) {
@@ -820,6 +844,7 @@ Logger().e(res?.data);
           mainController.colors.add(ColorModel.fromJson(item));
         }
       }
+
 
       if (res?.data?['data']?['specialSeller'] != null) {
         if (page.value == 1) {
@@ -831,10 +856,12 @@ Logger().e(res?.data);
         mainController.storage
             .write('specialSeller', res?.data?['data']?['specialSeller']);
       }
-    } catch (e,s) {
-
-     Logger().w('${e}');
-     Logger().i('${s}');
+    } catch (e, s) {
+      Logger().e('Error Home');
+      Logger().e('${e}');
+      Logger().e('${s}');
+    }finally {
+      loading.value = false;
     }
 
     loading.value = false;
@@ -886,7 +913,7 @@ Logger().e(res?.data);
           
         }
         ''';
-    String dataUser=''' {
+    String dataUser = ''' {
      id
               name
               is_verified
@@ -950,7 +977,6 @@ specials $dataProduct
           activitySeller.add(UserModel.fromJson(item));
         }
       }
-
     } catch (e) {
       mainController.logger.w('ERRORPRO');
       mainController.logger.w('$e');
@@ -975,29 +1001,25 @@ specials $dataProduct
   }
 
   follow({required int sellerId}) async {
-
-      try {
-        mainController.query.value = '''
+    try {
+      mainController.query.value = '''
       mutation FollowAccount {
     followAccount(id: "${sellerId}") {
        $AUTH_FIELDS
     }
 }
       ''';
-        dio.Response? res = await mainController.fetchData();
-        //  mainController.logger.e(res?.data);
-        if (res?.data?['data']?['followAccount'] != null) {
-          mainController.setUserJson(
-              json: res?.data?['data']?['followAccount']);
-        }
-        if (res?.data?['errors']?[0]?['message'] != null) {
-          mainController.showToast(
-              text: '${res?.data['errors'][0]['message']}', type: 'error');
-        }
-      } catch (e) {
-        mainController.logger.e(e);
+      dio.Response? res = await mainController.fetchData();
+      //  mainController.logger.e(res?.data);
+      if (res?.data?['data']?['followAccount'] != null) {
+        mainController.setUserJson(json: res?.data?['data']?['followAccount']);
       }
-
-
+      if (res?.data?['errors']?[0]?['message'] != null) {
+        mainController.showToast(
+            text: '${res?.data['errors'][0]['message']}', type: 'error');
+      }
+    } catch (e) {
+      mainController.logger.e(e);
+    }
   }
 }

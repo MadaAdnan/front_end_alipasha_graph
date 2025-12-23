@@ -16,6 +16,7 @@ import 'package:form_builder_image_picker/form_builder_image_picker.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:logger/logger.dart';
 
 import '../../helpers/components.dart';
 import '../../helpers/helper_class.dart';
@@ -34,6 +35,7 @@ class CreateProductPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Logger().i(mainController.authUser.value?.toJson());
     return Scaffold(
       backgroundColor: WhiteColor,
       body: Obx(() {
@@ -1167,7 +1169,7 @@ class CreateProductPage extends StatelessWidget {
 
                             SizedBox(height: 0.01.sh,),
                             Text(
-                              'لم يعد بإمكانك نشر المزيد من المنتجات , الرجاء توثيق الحساب لتتمكن من معاودة النشر.',style: H3BlackTextStyle.copyWith(height: 2),),
+                              'وصلت لحد النشر المسموح لك شهريا انتظر للشهر القادم او قم بترقية حسابك لتحصل على النشر المفتوح',style: H3BlackTextStyle.copyWith(height: 2),),
                             SizedBox(height: 0.07.sh,),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,

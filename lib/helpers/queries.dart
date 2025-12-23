@@ -98,7 +98,7 @@ const AUTH_FIELDS = '''
               close_time
               total_views
               special_product_count
-advices_count
+              advices_count
               is_available_create
               is_active
               communities{
@@ -150,6 +150,7 @@ advices_count
                 type
                 ads_count
                 special_count
+                products_count
                 pivot{
                   expired_date
                   subscription_date

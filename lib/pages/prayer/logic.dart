@@ -2,6 +2,7 @@ import 'package:ali_pasha_graph/Global/main_controller.dart';
 import 'package:ali_pasha_graph/models/prayer_model.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:logger/logger.dart';
 
 class PrayerLogic extends GetxController {
   RxBool loading = RxBool(false);
@@ -16,8 +17,8 @@ class PrayerLogic extends GetxController {
     super.onInit();
     connect = dio.Dio(dio.BaseOptions(
       baseUrl: 'https://api.aladhan.com/v1/timingsByCity',
-      connectTimeout: const Duration(seconds: 20),
-      receiveTimeout: const Duration(seconds: 20),
+      connectTimeout: const Duration(seconds: 120),
+      receiveTimeout: const Duration(seconds: 30),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -36,7 +37,8 @@ class PrayerLogic extends GetxController {
     loading.value = true;
     try {
       dio.Response idlibP = await connect.get(
-          '/${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}}?city=Idlib&country=Syria&method=3');
+          '/${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}?city=Idlib&country=Syria&method=3');
+      Logger().e(idlibP.data);
       if (idlibP.data?['data'] != null) {
         idlib.value = PrayerModel.fromJson(idlibP.data?['data']);
       }
@@ -47,7 +49,7 @@ class PrayerLogic extends GetxController {
 
     try {
       dio.Response izazP = await connect.get(
-          '/${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}}?city=Izaz&country=Syria&method=3');
+          '/${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}?city=Izaz&country=Syria&method=3');
       if (izazP.data?['data'] != null) {
         izaz.value = PrayerModel.fromJson(izazP.data?['data']);
       }

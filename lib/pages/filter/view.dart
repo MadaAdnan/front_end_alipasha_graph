@@ -4,9 +4,13 @@ import 'package:ali_pasha_graph/helpers/style.dart';
 import 'package:ali_pasha_graph/models/category_model.dart';
 import 'package:ali_pasha_graph/models/product_model.dart';
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
+import 'package:field_suggestion/box_controller.dart';
+import 'package:field_suggestion/field_suggestion.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:logger/logger.dart';
 
 import '../../models/city_model.dart';
 import 'logic.dart';
@@ -15,9 +19,11 @@ class FilterPage extends StatelessWidget {
   FilterPage({Key? key}) : super(key: key);
 
   final logic = Get.find<FilterLogic>();
+  final boxController = BoxController();
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: WhiteColor,
       body: SingleChildScrollView(
@@ -51,8 +57,9 @@ class FilterPage extends StatelessWidget {
                               color: logic.type == 'product'
                                   ? PrimaryColor
                                   : GrayDarkColor),
-                          color:
-                              logic.type == 'product' ? PrimaryColor : WhiteColor),
+                          color: logic.type == 'product'
+                              ? PrimaryColor
+                              : WhiteColor),
                       child: Text(
                         'منتج',
                         style: logic.type == 'product'
@@ -74,8 +81,9 @@ class FilterPage extends StatelessWidget {
                               color: logic.type == 'seller'
                                   ? PrimaryColor
                                   : GrayDarkColor),
-                          color:
-                              logic.type == 'seller' ? PrimaryColor : WhiteColor),
+                          color: logic.type == 'seller'
+                              ? PrimaryColor
+                              : WhiteColor),
                       child: Text(
                         'متجر',
                         style: logic.type == 'seller'
@@ -97,7 +105,8 @@ class FilterPage extends StatelessWidget {
                               color: logic.type == 'job'
                                   ? PrimaryColor
                                   : GrayDarkColor),
-                          color: logic.type == 'job' ? PrimaryColor : WhiteColor),
+                          color:
+                              logic.type == 'job' ? PrimaryColor : WhiteColor),
                       child: Text(
                         'وظائف',
                         style: logic.type == 'job'
@@ -119,8 +128,9 @@ class FilterPage extends StatelessWidget {
                               color: logic.type == 'tender'
                                   ? PrimaryColor
                                   : GrayDarkColor),
-                          color:
-                              logic.type == 'tender' ? PrimaryColor : WhiteColor),
+                          color: logic.type == 'tender'
+                              ? PrimaryColor
+                              : WhiteColor),
                       child: Text(
                         'مناقصات',
                         style: logic.type == 'tender'
@@ -142,8 +152,9 @@ class FilterPage extends StatelessWidget {
                               color: logic.type == 'service'
                                   ? PrimaryColor
                                   : GrayDarkColor),
-                          color:
-                              logic.type == 'service' ? PrimaryColor : WhiteColor),
+                          color: logic.type == 'service'
+                              ? PrimaryColor
+                              : WhiteColor),
                       child: Text(
                         'خدمات',
                         style: logic.type == 'service'
@@ -165,7 +176,8 @@ class FilterPage extends StatelessWidget {
                               color: logic.type == 'news'
                                   ? PrimaryColor
                                   : GrayDarkColor),
-                          color: logic.type == 'news' ? PrimaryColor : WhiteColor),
+                          color:
+                              logic.type == 'news' ? PrimaryColor : WhiteColor),
                       child: Text(
                         'الأخبار',
                         style: logic.type == 'news'
@@ -184,7 +196,52 @@ class FilterPage extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
               margin: EdgeInsets.only(bottom: 0.03.sh),
               child: Obx(() {
-                return InputComponent(
+                return FieldSuggestion<String>.network(
+                  boxStyle: BoxStyle(backgroundColor: GrayLightColor),
+                  builder: (context,AsyncSnapshot<List<String>> snapshot){
+
+                    if(snapshot.hasData){
+                     return ListView.builder(
+                        itemCount: snapshot.data?.length,
+                        itemBuilder: (context, index) {
+
+                          return ListTile(
+                          tileColor: GrayWhiteColor,
+
+                            onTap: () {
+                               logic.searchController.text = "${snapshot.data?[index]}";
+                             boxController.close?.call();
+                            },
+                            title:  Text("${snapshot.data?[index]}"),
+                          );
+                        },
+                      );
+                    }
+                    return ListTile(title:  Center(child: CircularProgressIndicator()),tileColor: GrayWhiteColor,);
+                   },
+
+                  inputDecoration: InputDecoration(
+                    hintText: logic.type.value == 'seller'
+                        ? 'ابحث باسم المتجر'
+                        : 'بحث', // optional
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.r),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.r),
+                    )
+                  ),
+
+                  textController: logic.searchController,
+                  boxController: boxController,
+                  future: (String input)async {
+                   return await logic.suggestions(input);
+                    },
+
+                  // optional
+
+                );
+                /* return  InputComponent(
                   fill: WhiteColor,
                   width: 1.sw,
                   height: 0.07.sh,
@@ -193,7 +250,7 @@ class FilterPage extends StatelessWidget {
                   controller: logic.searchController,
                   textInputType: TextInputType.text,
 
-                );
+                );*/
               }),
             ),
             Obx(() {
@@ -238,118 +295,133 @@ class FilterPage extends StatelessWidget {
               );
             }),
             Obx(() {
-              return Visibility(child: Container(
-                width: 0.92.sw,
-                alignment: Alignment.center,
-                padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
-                margin: EdgeInsets.only(bottom: 0.03.sh),
-                decoration: BoxDecoration(
-                    border: Border.all(color: DarkColor),
-                    borderRadius: BorderRadius.circular(15.r)),
-                child: CustomDropdown<CategoryModel>.search(
-                  controller: logic.categoryController.value,
-                  noResultFoundBuilder: (context, text) => Text(
-                    "$text",
-                    style: H3BlackTextStyle,
-                  ),
-                  noResultFoundText: 'لم يتم العثور على نتائج',
-                  searchHintText: 'إبحث عن تصنيف',
-                  hintText: 'إختر التصنيف',
-                  hintBuilder: (context, hint, enabled) => Text(
-                    "$hint",
-                    style: H3BlackTextStyle,
-                  ),
-                  items: logic.mainController.categories
-                      .where((category) => category.type == logic.type.value)
-                      .toList(),
-                  listItemBuilder: (context, item, isSelected, onItemSelect) =>
-                      Text(
-                        '${item.name}',
-                        style: H3BlackTextStyle,
-                      ),
-                  headerBuilder: (context, selectedItem, enabled) => Text(
-                    '${selectedItem.name}',
-                    style: H3BlackTextStyle,
-                  ),
-                  onChanged: (value) {
-                    logic.categoryModel.value = value;
-                  },
-                ),
-              ),visible: logic.type.value!='seller',);
-            }),
-
-              Obx(() {
-                if(logic.type=='job'){
-                  return Container(
-                    width: 0.92.sw,
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
-                    margin: EdgeInsets.only(bottom: 0.03.sh),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: DarkColor),
-                        borderRadius: BorderRadius.circular(15.r)),
-                    child:Row(
-                      children: [
-                        Row(
-                          children: [
-                            Text('يبحث عن وظيفة',style: H4RegularDark,),
-                            Radio(value: 'job', groupValue: logic.typeJob.value, onChanged: (value){
-                              logic.typeJob.value=value;
-                            },),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text('شاغر وظيفي',style: H4RegularDark),
-                            Radio(value: 'search_job', groupValue:  logic.typeJob.value, onChanged: (value){
-                              logic.typeJob.value=value;
-                            },)
-                          ],
-                        )
-
-                      ],
+              return Visibility(
+                child: Container(
+                  width: 0.92.sw,
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
+                  margin: EdgeInsets.only(bottom: 0.03.sh),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: DarkColor),
+                      borderRadius: BorderRadius.circular(15.r)),
+                  child: CustomDropdown<CategoryModel>.search(
+                    controller: logic.categoryController.value,
+                    noResultFoundBuilder: (context, text) => Text(
+                      "$text",
+                      style: H3BlackTextStyle,
                     ),
-                  );
-                }
-                return Container();
-              }),
-            Obx(() {
-              return Visibility(child: Container(
-                width: 0.92.sw,
-                alignment: Alignment.center,
-                padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
-                margin: EdgeInsets.only(bottom: 0.03.sh),
-                decoration: BoxDecoration(
-                    border: Border.all(color: DarkColor),
-                    borderRadius: BorderRadius.circular(15.r)),
-                child: CustomDropdown<CategoryModel>.search(
-                  controller: logic.subController.value,
-                  noResultFoundBuilder: (context, text) => Text(
-                    "$text",
-                    style: H3BlackTextStyle,
+                    noResultFoundText: 'لم يتم العثور على نتائج',
+                    searchHintText: 'إبحث عن تصنيف',
+                    hintText: 'إختر التصنيف',
+                    hintBuilder: (context, hint, enabled) => Text(
+                      "$hint",
+                      style: H3BlackTextStyle,
+                    ),
+                    items: logic.mainController.categories
+                        .where((category) => category.type == logic.type.value)
+                        .toList(),
+                    listItemBuilder:
+                        (context, item, isSelected, onItemSelect) => Text(
+                      '${item.name}',
+                      style: H3BlackTextStyle,
+                    ),
+                    headerBuilder: (context, selectedItem, enabled) => Text(
+                      '${selectedItem.name}',
+                      style: H3BlackTextStyle,
+                    ),
+                    onChanged: (value) {
+                      logic.categoryModel.value = value;
+                    },
                   ),
-                  noResultFoundText: 'لم يتم العثور على نتائج',
-                  searchHintText: 'إبحث عن قسم',
-                  hintText: 'إختر القسم',
-                  hintBuilder: (context, hint, enabled) => Text(
-                    "$hint",
-                    style: H3BlackTextStyle,
-                  ),
-                  items: logic.categoryModel.value?.children,
-                  listItemBuilder: (context, item, isSelected, onItemSelect) =>
-                      Text(
-                        '${item.name}',
-                        style: H3BlackTextStyle,
-                      ),
-                  headerBuilder: (context, selectedItem, enabled) => Text(
-                    '${selectedItem.name}',
-                    style: H3BlackTextStyle,
-                  ),
-                  onChanged: (value) {
-                    logic.sub1Model.value = value;
-                  },
                 ),
-              ),visible: logic.type.value!='seller',);
+                visible: logic.type.value != 'seller',
+              );
+            }),
+            Obx(() {
+              if (logic.type == 'job') {
+                return Container(
+                  width: 0.92.sw,
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
+                  margin: EdgeInsets.only(bottom: 0.03.sh),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: DarkColor),
+                      borderRadius: BorderRadius.circular(15.r)),
+                  child: Row(
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            'يبحث عن وظيفة',
+                            style: H4RegularDark,
+                          ),
+                          Radio(
+                            value: 'job',
+                            groupValue: logic.typeJob.value,
+                            onChanged: (value) {
+                              logic.typeJob.value = value;
+                            },
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text('شاغر وظيفي', style: H4RegularDark),
+                          Radio(
+                            value: 'search_job',
+                            groupValue: logic.typeJob.value,
+                            onChanged: (value) {
+                              logic.typeJob.value = value;
+                            },
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                );
+              }
+              return Container();
+            }),
+            Obx(() {
+              return Visibility(
+                child: Container(
+                  width: 0.92.sw,
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
+                  margin: EdgeInsets.only(bottom: 0.03.sh),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: DarkColor),
+                      borderRadius: BorderRadius.circular(15.r)),
+                  child: CustomDropdown<CategoryModel>.search(
+                    controller: logic.subController.value,
+                    noResultFoundBuilder: (context, text) => Text(
+                      "$text",
+                      style: H3BlackTextStyle,
+                    ),
+                    noResultFoundText: 'لم يتم العثور على نتائج',
+                    searchHintText: 'إبحث عن قسم',
+                    hintText: 'إختر القسم',
+                    hintBuilder: (context, hint, enabled) => Text(
+                      "$hint",
+                      style: H3BlackTextStyle,
+                    ),
+                    items: logic.categoryModel.value?.children,
+                    listItemBuilder:
+                        (context, item, isSelected, onItemSelect) => Text(
+                      '${item.name}',
+                      style: H3BlackTextStyle,
+                    ),
+                    headerBuilder: (context, selectedItem, enabled) => Text(
+                      '${selectedItem.name}',
+                      style: H3BlackTextStyle,
+                    ),
+                    onChanged: (value) {
+                      logic.sub1Model.value = value;
+                    },
+                  ),
+                ),
+                visible: logic.type.value != 'seller',
+              );
             }),
             Obx(() {
               return Visibility(

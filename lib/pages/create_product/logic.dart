@@ -193,7 +193,7 @@ query MainCategories {
       dio.Response res = await mainController.dio_manager
           .executeGraphQLQueryWithFile(json.encode(datajson),
               map: map, files: data);
-     // mainController.logger.e(res.data);
+     Logger().e(res.data);
       if (res.data?['data']?['createProduct'] != null) {
         infoProduct.clear();
         priceController.clear();
@@ -209,6 +209,8 @@ query MainCategories {
         colorIds.clear();
         showAutoCloseDialog(
             message: "تم إرسال المنتج للمراجعة بنجاح", isSuccess: true);
+      }else if(res.data?['errors']?[0]?['message']!=null){
+        mainController.showToast(type: 'error', text: '${res.data['errors'][0]['message']}');
       }
     } catch (e) {
       mainController.logger.e("Error get Profile $e");
