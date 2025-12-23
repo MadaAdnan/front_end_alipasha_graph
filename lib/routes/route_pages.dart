@@ -9,6 +9,7 @@ import 'package:ali_pasha_graph/pages/agree_privacy/view.dart';
 import 'package:ali_pasha_graph/pages/asks/binding.dart';
 import 'package:ali_pasha_graph/pages/asks/view.dart';
 
+
 import 'package:ali_pasha_graph/pages/balance/binding.dart';
 import 'package:ali_pasha_graph/pages/balance/view.dart';
 import 'package:ali_pasha_graph/pages/cart_item/binding.dart';
@@ -141,6 +142,8 @@ import '../pages/following/view.dart';
 import '../pages/forget_password/binding.dart';
 import '../pages/forget_password/view.dart';
 
+import '../pages/identity_verification/binding.dart';
+import '../pages/identity_verification/identity_verification_page.dart';
 import '../pages/invoices/binding.dart';
 import '../pages/invoices/view.dart';
 import '../pages/my_advice/view.dart';
@@ -607,6 +610,12 @@ class AppPages {
       name: SERVICE_DETAILS,
       page: () => ServiceDetailsPage(),
       binding: ServiceDetailsBinding(),
+    ),
+    GetPage(
+      name: IDENTITY_VERIFICATION_PAGE,
+      page: () => IdentityVerificationPage(),
+      binding: IdentityVerificationBinding(),
+      middlewares: [IsLoggedIn(), VerifyEmailMiddleware()],
     ),
   ];
 }

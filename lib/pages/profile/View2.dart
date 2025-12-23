@@ -12,6 +12,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../components/progress_loading.dart';
@@ -448,10 +449,14 @@ class ProfilePage2 extends StatelessWidget {
                                                         .circular(
                                                         20.r)),
                                                 onPressed: () {
+                                                  Logger().e("TEST ##");
+                                                  Get.toNamed(IDENTITY_VERIFICATION_PAGE);
+                                                  return;
                                                   HelperClass
                                                       .requestVerified(
                                                       onConfirm: () {
                                                         if (isAuth()) {
+
                                                           String message =
                                                               "ID:${mainController
                                                               .authUser.value
