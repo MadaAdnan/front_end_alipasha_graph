@@ -449,8 +449,11 @@ class ProfilePage2 extends StatelessWidget {
                                                         .circular(
                                                         20.r)),
                                                 onPressed: () {
-                                                  Logger().e("TEST ##");
-                                                  Get.toNamed(IDENTITY_VERIFICATION_PAGE);
+    if (isAuth()) {
+      Get.toNamed(IDENTITY_VERIFICATION_PAGE);
+    }else{
+      Get.toNamed(LOGIN_PAGE);
+    }
                                                   return;
                                                   HelperClass
                                                       .requestVerified(

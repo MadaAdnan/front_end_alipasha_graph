@@ -47,6 +47,11 @@
 
 
 	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>نحتاج إلى إذن الموقع للوصول إلى موقعك</string>
+	<key>NSCameraUsageDescription</key>
+	<string>نحتاج إلى إذن الكاميرا لالتقاط صور الهوية</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>نحتاج إلى إذن الوصول إلى معرض الصور لاختيار صور الهوية</string>
 	<key>UIBackgroundModes</key>
 
 	<key>LSApplicationQueriesSchemes</key>

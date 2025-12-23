@@ -717,7 +717,12 @@ class CreateServicePage extends StatelessWidget {
                                     Get.offNamed(PROFILE_PAGE);
                                   },child: Text('الملف الشخصي',style: H3WhiteTextStyle,),color: SecondaryColor,),
                                   MaterialButton(onPressed: (){
-                                    // Get.back();
+                                    if (isAuth()) {
+                                      Get.toNamed(IDENTITY_VERIFICATION_PAGE);
+                                    }else{
+                                      Get.toNamed(LOGIN_PAGE);
+                                    }
+                                    return;
                                     HelperClass.requestVerified(onConfirm: (){
                                       if(isAuth()){
                                         String message="ID:${mainController.authUser.value?.id} - اسم المتجر : ${mainController.authUser.value?.seller_name} - نوع الطلب توثيق الحساب";

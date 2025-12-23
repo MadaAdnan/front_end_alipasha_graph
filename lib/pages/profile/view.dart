@@ -488,6 +488,12 @@ class ProfilePage extends StatelessWidget {
                                 true)
                               InkWell(
                                   onTap: () {
+                                    if (isAuth()) {
+                                      Get.toNamed(IDENTITY_VERIFICATION_PAGE);
+                                    }else{
+                                      Get.toNamed(LOGIN_PAGE);
+                                    }
+                                    return;
                                     HelperClass.requestVerified(onConfirm: () {
                                       if (isAuth()) {
                                         String message =

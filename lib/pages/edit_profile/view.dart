@@ -109,6 +109,12 @@ class EditProfilePage extends StatelessWidget {
                     if (logic.user.value?.is_verified != true)
                       InkWell(
                           onTap: () {
+                            if (isAuth()) {
+                              Get.toNamed(IDENTITY_VERIFICATION_PAGE);
+                            }else{
+                              Get.toNamed(LOGIN_PAGE);
+                            }
+                            return;
                             HelperClass.requestVerified(onConfirm: () {
                               if (isAuth()) {
                                 String message =

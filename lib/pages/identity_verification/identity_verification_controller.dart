@@ -1,78 +1,193 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:ali_pasha_graph/Global/main_controller.dart';
+import 'package:ali_pasha_graph/helpers/queries.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'identity_verification_model.dart';
-import '../../helpers/dio_network_manager.dart';
-import 'package:dio/dio.dart' as dio;
-class IdentityVerificationController extends GetxController {
-  final IdentityVerificationModel _model = IdentityVerificationModel();
- MainController mainController=Get.find<MainController>();
+import 'package:logger/logger.dart';
 
-  IdentityVerificationModel get model => _model;
+import 'package:dio/dio.dart' as dio;
+import 'package:flutter/material.dart';
+
+class IdentityVerificationController extends GetxController {
+  MainController mainController = Get.find<MainController>();
+  Rxn<XFile> backImage = Rxn<XFile>();
+  Rxn<XFile> frontImage = Rxn<XFile>();
+  RxBool isUploading = RxBool(false);
+  RxBool loading = RxBool(false);
+  RxBool isVerified = RxBool(false);
+
+  @override
+  void onInit() {
+    super.onInit();
+    getIdentity();
+  }
 
   Future<void> pickFrontImage() async {
-    final pickedFile = await _pickImageFromSource(ImageSource.gallery);
-    if (pickedFile != null) {
-      _model.frontImage = File(pickedFile.path);
-      update();
-    }
+    await _showImageSourceSelectionDialog(
+      onCameraSelected: () =>
+          _pickImageFromSource(ImageSource.camera, imageType: 'front'),
+      onGallerySelected: () =>
+          _pickImageFromSource(ImageSource.gallery, imageType: 'front'),
+    );
   }
 
   Future<void> pickBackImage() async {
-    final pickedFile = await _pickImageFromSource(ImageSource.gallery);
-    if (pickedFile != null) {
-      _model.backImage = File(pickedFile.path);
-      update();
+    await _showImageSourceSelectionDialog(
+      onCameraSelected: () =>
+          _pickImageFromSource(ImageSource.camera, imageType: 'back'),
+      onGallerySelected: () =>
+          _pickImageFromSource(ImageSource.gallery, imageType: 'back'),
+    );
+  }
+
+  Future<void> _showImageSourceSelectionDialog({
+    required VoidCallback onCameraSelected,
+    required VoidCallback onGallerySelected,
+  }) async {
+    await Get.defaultDialog(
+      title: "اختر مصدر الصورة",
+      content: Column(
+        children: [
+          ListTile(
+            leading: Icon(Icons.camera_alt),
+            title: Text("الكاميرا"),
+            onTap: () {
+              Get.back();
+              onCameraSelected();
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.image),
+            title: Text("المعرض"),
+            onTap: () {
+              Get.back();
+              onGallerySelected();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _pickImageFromSource(ImageSource source,
+      {required String imageType}) async {
+    if (imageType == 'front') {
+      mainController.pickImage(
+          imagSource: source,
+          aspectRatio: CropAspectRatio(ratioX: 4, ratioY: 2.5),
+          onChange: (XFile? file, int? size) {
+            frontImage.value = file;
+          });
+    } else {
+      mainController.pickImage(
+          imagSource: source,
+          aspectRatio: CropAspectRatio(ratioX: 4, ratioY: 2.5),
+          onChange: (XFile? file, int? size) {
+            backImage.value = file;
+          });
     }
   }
 
-  Future<XFile?> _pickImageFromSource(ImageSource source) async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(
-      source: source,
-      imageQuality: 80,
-    );
-    return pickedFile;
+  getIdentity() async {
+    loading.value = true;
+    mainController.query.value = '''
+    query{
+      identities{
+        ${AUTH_USER}
+        identity{
+          id
+          status
+        }
+      }
+    }
+    ''';
+    try {
+      dio.Response? response = await mainController.fetchData();
+      if(response?.data?['data']?['identities']?['user']!=null){
+        mainController.setUserJson(json: response?.data?['data']?['identities']?['user']);
+      }
+
+        isVerified.value=response?.data?['data']?['identities']?['identity']!=null;
+
+
+    } catch (e) {
+      mainController.showToast(type: "error", text: "حدث خطأ: ${e.toString()}");
+    }finally {
+      loading.value = false;
+    }
   }
 
   Future<void> uploadIdentityImages() async {
-    if (_model.frontImage == null || _model.backImage == null) {
-      Get.snackbar("خطأ", "الرجاء اختيار صورتي الهوية الأمامية والخلفية");
+    if (frontImage.value == null || backImage.value == null) {
+      mainController.showToast(type: "error", text:"الرجاء اختيار صورتي الهوية الأمامية والخلفية");
       return;
     }
+    Map<String, dynamic> datajson = {
+      "query": r" mutation VerifyIdentity($input:VerifyIdentityInput!) { "
+          r"verifyIdentity(input:$input)"
+          "{${AUTH_USER},identity{id,status} }"
+          r"}",
+      "variables": <String, dynamic>{
+        "input": {
+          "imageBack": null,
+          "imageFront": null,
+        },
+      }
+    };
+
+    String map = '''
+    {
+  "imageFront": ["variables.input.imageFront"],
+  "imageBack": ["variables.input.imageBack"]
+}
+    ''';
+
+    Map<String, XFile?> data = {
+      if (frontImage.value != null) 'imageFront': frontImage.value,
+      if (backImage.value != null) 'imageBack': backImage.value,
+    };
 
     try {
-      _model.isUploading = true;
-      update();
+      isUploading.value = true;
 
-      // Upload images to server
-      dio.Response? response = await mainController.fetchData();
+      // Create dio form data to upload images
+      dio.Response response = await mainController.dio_manager
+          .executeGraphQLQueryWithFile(json.encode(datajson),
+              map: map, files: data);
 
-      if (response != null ) {
-        _model.isVerified = true;
-        Get.snackbar("نجاح", "تم رفع صور الهوية بنجاح، سيتم مراجعتها قريباً");
+      if (response.data?['data']?['verifyIdentity']?['identity'] != null) {
+        await mainController.storage.write("verified", true);
+        isVerified.value = true;
+        mainController.showToast(
+            type: "success",
+            text: "تم رفع صور الهوية بنجاح، سيتم مراجعتها قريباً");
+        frontImage.value = null;
+        backImage.value = null;
+      } else if (response.data?['errors'][0]['message'] != null) {
+        mainController.showToast(
+            type: "error", text: response.data?['errors'][0]['message']);
       } else {
-        Get.snackbar("خطأ", "حدث خطأ أثناء رفع صور الهوية");
+        mainController.showToast(
+            type: "error", text: "حدث خطأ أثناء رفع صور الهوية");
       }
-    } catch (e) {
-      Get.snackbar("خطأ", "حدث خطأ: ${e.toString()}");
+      if(response.data?['data']?['verifyIdentity']?['user'] != null){
+        mainController.setUserJson(json: response.data?['data']?['verifyIdentity']?['user']);
+      }
+    } catch (e, s) {
+      mainController.showToast(type: "error", text: "حدث خطأ: ${s.toString()}");
     } finally {
-      _model.isUploading = false;
-      update();
+      isUploading.value = false;
     }
   }
 
   String? getFrontImagePath() {
-    return _model.frontImage?.path;
+    return frontImage.value?.path;
   }
 
   String? getBackImagePath() {
-    return _model.backImage?.path;
+    return backImage.value?.path;
   }
-
-  RxBool hasFrontImage = RxBool(false);
-  Rxn<XFile> hasBackImage =Rxn<XFile>(null);
- RxBool isUploading = RxBool(false);
-RxBool isVerified =RxBool(false);
 }
