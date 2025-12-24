@@ -449,11 +449,7 @@ class ProfilePage2 extends StatelessWidget {
                                                         .circular(
                                                         20.r)),
                                                 onPressed: () {
-    if (isAuth()) {
-      Get.toNamed(IDENTITY_VERIFICATION_PAGE);
-    }else{
-      Get.toNamed(LOGIN_PAGE);
-    }
+                                                  Get.toNamed( CHOOSE_VERIFICATION_PAGE);
                                                   return;
                                                   HelperClass
                                                       .requestVerified(
@@ -1195,7 +1191,7 @@ class ProfilePage2 extends StatelessWidget {
                   if (product.user?.is_verified == true) SizedBox(width: 4),
                   Expanded(
                     child: AutoSizeText(
-                      "${product.user?.seller_name}",
+                      "${product.user?.seller_name ?? product.user?.name}",
                       maxLines: 1,
                       style: H4RedTextStyle.copyWith(
                           overflow: TextOverflow.ellipsis),

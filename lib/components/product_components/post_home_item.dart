@@ -100,7 +100,7 @@ class PostHomeItem extends StatelessWidget {
                                     Icon(
                                       Icons.verified,
                                       color: Color(0xFF1DA1F2),
-                                      size: 30.r,
+                                      size: 50.r,
                                     ),
                                 ],
                               ),
@@ -312,12 +312,12 @@ class PostHomeItem extends StatelessWidget {
                             ),
                             child: Row(
                               children: [
-                                Text('ممول', style: H5WhiteTextStyle),
+                                Text('ممول', style: H4WhiteTextStyle),
                                 SizedBox(width: 5),
                                 Icon(
                                   FontAwesomeIcons.star,
                                   color: Colors.white,
-                                  size: 30,
+                                  size: 50.r,
                                 ),
                               ],
                             ),

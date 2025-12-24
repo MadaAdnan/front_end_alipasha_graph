@@ -1,3 +1,4 @@
+
 import 'package:ali_pasha_graph/middlewares/active_privacy.dart';
 import 'package:ali_pasha_graph/middlewares/complete_profile_middleware.dart';
 import 'package:ali_pasha_graph/middlewares/guest_middleware.dart';
@@ -134,6 +135,9 @@ import 'package:get/get.dart';
 import '../pages/agree_privacy/binding.dart';
 import '../pages/ask/binding.dart';
 import '../pages/ask/view.dart';
+import '../pages/chose_verified/binding.dart';
+import '../pages/chose_verified/view.dart';
+
 import '../pages/create_tender/binding.dart';
 import '../pages/create_tender/view.dart';
 
@@ -615,6 +619,12 @@ class AppPages {
       name: IDENTITY_VERIFICATION_PAGE,
       page: () => IdentityVerificationPage(),
       binding: IdentityVerificationBinding(),
+      middlewares: [IsLoggedIn(), VerifyEmailMiddleware()],
+    ),
+    GetPage(
+      name: CHOOSE_VERIFICATION_PAGE,
+      page: () => ChooseVerifiedPage(),
+      binding: ChooseVerifiedBinding(),
       middlewares: [IsLoggedIn(), VerifyEmailMiddleware()],
     ),
   ];

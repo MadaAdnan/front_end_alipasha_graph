@@ -109,11 +109,7 @@ class EditProfilePage extends StatelessWidget {
                     if (logic.user.value?.is_verified != true)
                       InkWell(
                           onTap: () {
-                            if (isAuth()) {
-                              Get.toNamed(IDENTITY_VERIFICATION_PAGE);
-                            }else{
-                              Get.toNamed(LOGIN_PAGE);
-                            }
+                            Get.toNamed( CHOOSE_VERIFICATION_PAGE);
                             return;
                             HelperClass.requestVerified(onConfirm: () {
                               if (isAuth()) {
@@ -200,6 +196,7 @@ class EditProfilePage extends StatelessWidget {
                       hint: 'الاسم',
                       controller: logic.nameController,
                       fill: WhiteColor,
+                      enabled: !(logic.user.value?.is_verified==true),
                       textInputType: TextInputType.text,
                       validation: (text) {
                         if (text == '' || text == null) {
@@ -212,7 +209,6 @@ class EditProfilePage extends StatelessWidget {
                     ),
                     InputComponent(
                       name: 'seller_name',
-                      isRequired: true,
                       width: 1.sw,
                       radius: 30.r,
                       hint: 'اسم المتجر',
@@ -489,8 +485,8 @@ class EditProfilePage extends StatelessWidget {
                         width: 1.sw,
                         radius: 30.r,
                         hint: 'العنوان التفصيلي',
-                        helperText:
-                            'مثال : دمشق - ساحة المرجة - جانب حلويات أمية',
+                        /*helperText:
+                            'مثال : دمشق - ساحة المرجة - جانب حلويات أمية',*/
                         controller: logic.addressController,
                         fill: WhiteColor,
                         textInputType: TextInputType.text,
@@ -500,12 +496,10 @@ class EditProfilePage extends StatelessWidget {
                           }
                           return null;
                         }),
-                    SizedBox(
-                      height: 0.02.sh,
-                    ),
+
                     InputComponent(
                       name: 'open_at',
-                      isRequired: true,
+
                       width: 1.sw,
                       radius: 30.r,
                       hint: 'يفتح الساعة',
@@ -516,7 +510,7 @@ class EditProfilePage extends StatelessWidget {
                     ),
                     InputComponent(
                       name: 'close_at',
-                      isRequired: true,
+
                       width: 1.sw,
                       radius: 30.r,
                       hint: 'يغلق الساعة',
@@ -527,13 +521,13 @@ class EditProfilePage extends StatelessWidget {
                     ),
                     Column(
                       children: [
-                        if (mainController.authUser.value?.is_verified != true)
+                        if (mainController.authUser.value?.is_social != true)
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
                             child: Row(
                               children: [
                                 Text(
-                                  'مطلوب توثيق الحساب لفتح هذه الميزة',
+                                  'مطلوب ترقية الحساب لفتح هذه الميزة',
                                   style: H4RegularDark.copyWith(
                                       color: Colors.black),
                                 ),
@@ -559,19 +553,19 @@ class EditProfilePage extends StatelessWidget {
                           radius: 15.r,
                           hint: 'وصف مختصر عن المتجر',
                           controller: logic.infoController,
-                          enabled: logic.user.value?.is_verified == true,
-                          fill: logic.user.value?.is_verified == true
+                          enabled: logic.user.value?.is_social == true,
+                          fill: logic.user.value?.is_social == true
                               ? WhiteColor
                               : GrayLightColor,
                           textInputType: TextInputType.multiline,
                         ),
-                        if (mainController.authUser.value?.is_verified != true)
+                        if (mainController.authUser.value?.is_social != true)
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
                             child: Row(
                               children: [
                                 Text(
-                                  'مطلوب توثيق الحساب لفتح هذه الميزة',
+                                  'مطلوب ترقية الحساب لفتح هذه الميزة',
                                   style: H4RegularDark.copyWith(
                                       color: Colors.black),
                                 ),
@@ -597,20 +591,20 @@ class EditProfilePage extends StatelessWidget {
                             hint: 'رابط فيسبوك',
                             suffixIcon: FontAwesomeIcons.facebook,
                             radius: 30.r,
-                            enabled: logic.user.value?.is_verified == true,
-                            fill: logic.user.value?.is_verified == true
+                            enabled: logic.user.value?.is_social == true,
+                            fill: logic.user.value?.is_social == true
                                 ? WhiteColor
                                 : GrayLightColor,
                           ),
                         ),
                         25.verticalSpace,
-                        if (mainController.authUser.value?.is_verified != true)
+                        if (mainController.authUser.value?.is_social != true)
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
                             child: Row(
                               children: [
                                 Text(
-                                  'مطلوب توثيق الحساب لفتح هذه الميزة',
+                                  'مطلوب ترقية الحساب لفتح هذه الميزة',
                                   style: H4RegularDark.copyWith(
                                       color: Colors.black),
                                 ),
@@ -636,20 +630,20 @@ class EditProfilePage extends StatelessWidget {
                             suffixIcon: FontAwesomeIcons.instagram,
                             hint: 'رابط إنستغرام',
                             radius: 30.r,
-                            enabled: logic.user.value?.is_verified == true,
-                            fill: logic.user.value?.is_verified == true
+                            enabled: logic.user.value?.is_social == true,
+                            fill: logic.user.value?.is_social == true
                                 ? WhiteColor
                                 : GrayLightColor,
                           ),
                         ),
                         25.verticalSpace,
-                        if (mainController.authUser.value?.is_verified != true)
+                        if (mainController.authUser.value?.is_social != true)
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
                             child: Row(
                               children: [
                                 Text(
-                                  'مطلوب توثيق الحساب لفتح هذه الميزة',
+                                  'مطلوب ترقية الحساب لفتح هذه الميزة',
                                   style: H4RegularDark.copyWith(
                                       color: Colors.black),
                                 ),
@@ -675,20 +669,20 @@ class EditProfilePage extends StatelessWidget {
                             suffixIcon: FontAwesomeIcons.xTwitter,
                             hint: 'رابط تويتر',
                             radius: 30.r,
-                            enabled: logic.user.value?.is_verified == true,
-                            fill: logic.user.value?.is_verified == true
+                            enabled: logic.user.value?.is_social == true,
+                            fill: logic.user.value?.is_social == true
                                 ? WhiteColor
                                 : GrayLightColor,
                           ),
                         ),
                         25.verticalSpace,
-                        if (mainController.authUser.value?.is_verified != true)
+                        if (mainController.authUser.value?.is_social != true)
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
                             child: Row(
                               children: [
                                 Text(
-                                  'مطلوب توثيق الحساب لفتح هذه الميزة',
+                                  'مطلوب ترقية الحساب لفتح هذه الميزة',
                                   style: H4RegularDark.copyWith(
                                       color: Colors.black),
                                 ),
@@ -714,20 +708,20 @@ class EditProfilePage extends StatelessWidget {
                             suffixIcon: FontAwesomeIcons.linkedin,
                             hint: 'رابط لينكد إن',
                             radius: 30.r,
-                            enabled: logic.user.value?.is_verified == true,
-                            fill: logic.user.value?.is_verified == true
+                            enabled: logic.user.value?.is_social == true,
+                            fill: logic.user.value?.is_social == true
                                 ? WhiteColor
                                 : GrayLightColor,
                           ),
                         ),
                         25.verticalSpace,
-                        if (mainController.authUser.value?.is_verified != true)
+                        if (mainController.authUser.value?.is_social != true)
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
                             child: Row(
                               children: [
                                 Text(
-                                  'مطلوب توثيق الحساب لفتح هذه الميزة',
+                                  'مطلوب ترقية الحساب لفتح هذه الميزة',
                                   style: H4RegularDark.copyWith(
                                       color: Colors.black),
                                 ),
@@ -753,20 +747,20 @@ class EditProfilePage extends StatelessWidget {
                             suffixIcon: FontAwesomeIcons.tiktok,
                             hint: 'رابط تيكتوك',
                             radius: 30.r,
-                            enabled: logic.user.value?.is_verified == true,
-                            fill: logic.user.value?.is_verified == true
+                            enabled: logic.user.value?.is_social == true,
+                            fill: logic.user.value?.is_social == true
                                 ? WhiteColor
                                 : GrayLightColor,
                           ),
                         ),
-                        25.verticalSpace,
-                        if (mainController.authUser.value?.is_verified != true)
+    /* 25.verticalSpace,
+                        if (mainController.authUser.value?.is_social != true)
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
                             child: Row(
                               children: [
                                 Text(
-                                  'مطلوب توثيق الحساب لفتح هذه الميزة',
+                                  'مطلوب ترقية الحساب لفتح هذه الميزة',
                                   style: H4RegularDark.copyWith(
                                       color: Colors.black),
                                 ),
@@ -783,10 +777,10 @@ class EditProfilePage extends StatelessWidget {
                                 )
                               ],
                             ),
-                          ),
-                        GestureDetector(
+                          ),*/
+                        /*GestureDetector(
                           onTap: () {
-                            if (mainController.authUser.value?.is_verified !=
+                            if (mainController.authUser.value?.is_social !=
                                 true) {
                               return;
                             }
@@ -816,15 +810,15 @@ class EditProfilePage extends StatelessWidget {
                               ],
                             ),
                           ),
-                        ),
+                        ),*/
                         25.verticalSpace,
-                        if (mainController.authUser.value?.is_verified != true)
+                        if (mainController.authUser.value?.is_social != true)
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: 0.02.sw),
                             child: Row(
                               children: [
                                 Text(
-                                  'مطلوب توثيق الحساب لفتح هذه الميزة',
+                                  'مطلوب ترقية الحساب لفتح هذه الميزة',
                                   style: H4RegularDark.copyWith(
                                       color: Colors.black),
                                 ),
@@ -842,7 +836,7 @@ class EditProfilePage extends StatelessWidget {
                               ],
                             ),
                           ),
-                        if (mainController.authUser.value?.is_verified != true)
+                        if (mainController.authUser.value?.is_social != true)
                           SizedBox(
                             height: 0.01.sh,
                           ),
@@ -861,7 +855,7 @@ class EditProfilePage extends StatelessWidget {
                               border: Border.all(
                                   color: Colors.black, width: 0.001.sw),
                               color:
-                                  mainController.authUser.value?.is_verified ==
+                                  mainController.authUser.value?.is_social ==
                                           true
                                       ? WhiteColor
                                       : GrayLightColor),
@@ -876,7 +870,7 @@ class EditProfilePage extends StatelessWidget {
                                     GestureDetector(
                                       onTap: () {
                                         if (mainController
-                                                .authUser.value?.is_verified !=
+                                                .authUser.value?.is_social !=
                                             true) return;
                                         logic.colorIdController.value =
                                             const TextEditingValue(
@@ -910,7 +904,7 @@ class EditProfilePage extends StatelessWidget {
                                     GestureDetector(
                                       onTap: () {
                                         if (mainController
-                                                .authUser.value?.is_verified !=
+                                                .authUser.value?.is_social !=
                                             true) return;
                                         logic.colorIdController.value =
                                             const TextEditingValue(
@@ -944,7 +938,7 @@ class EditProfilePage extends StatelessWidget {
                                     GestureDetector(
                                       onTap: () {
                                         if (mainController
-                                                .authUser.value?.is_verified !=
+                                                .authUser.value?.is_social !=
                                             true) return;
                                         logic.colorIdController.value =
                                             const TextEditingValue(
@@ -978,7 +972,7 @@ class EditProfilePage extends StatelessWidget {
                                     GestureDetector(
                                       onTap: () {
                                         if (mainController
-                                                .authUser.value?.is_verified !=
+                                                .authUser.value?.is_social !=
                                             true) return;
                                         logic.colorIdController.value =
                                             const TextEditingValue(
@@ -1012,7 +1006,7 @@ class EditProfilePage extends StatelessWidget {
                                     GestureDetector(
                                       onTap: () {
                                         if (mainController
-                                                .authUser.value?.is_verified !=
+                                                .authUser.value?.is_social !=
                                             true) return;
                                         logic.colorIdController.value =
                                             const TextEditingValue(
@@ -1381,7 +1375,7 @@ class EditProfilePage extends StatelessWidget {
                       ),
                     ),
                     25.verticalSpace,
-                    Row(
+                    /*Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         if (logic.user.value?.is_seller == true)
@@ -1432,7 +1426,7 @@ class EditProfilePage extends StatelessWidget {
                             ],
                           )
                       ],
-                    ),
+                    ),*/
                   ],
                 ),
               ),
@@ -1442,6 +1436,8 @@ class EditProfilePage extends StatelessWidget {
             height: 0.002.sh,
           ),
           Container(
+            width: 0.9.sw,
+            margin: EdgeInsets.symmetric(vertical: 0.02.sh),
             alignment: Alignment.center,
             child: InkWell(
               onTap: () {

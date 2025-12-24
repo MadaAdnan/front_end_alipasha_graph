@@ -72,7 +72,7 @@ RxnString phoneCode =RxnString(null);
         addressController.value =
             TextEditingValue(text: "${user.value!.address }");
         sellerNameController.value =
-            TextEditingValue(text: "${user.value!.seller_name }");
+            TextEditingValue(text: "${user.value!.seller_name}");
         openTimeController.value =
             TextEditingValue(text: "${user.value!.open_time }");
         closeTimeController.value =

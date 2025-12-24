@@ -78,6 +78,7 @@ dependencies:
   flutter_meta_sdk: ^1.0.5
   expanded_text_custom: ^0.0.1
   field_suggestion: ^0.2.6
+  easy_radio: ^0.0.3
 
 #  flutter_sound: ^9.6.0
 #  audio_session: ^0.1.20

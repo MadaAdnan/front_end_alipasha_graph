@@ -2,6 +2,7 @@ const AUTH_USER = '''
  user {
               id
               name
+              is_social
               is_verified
               id_color
               info
@@ -89,6 +90,7 @@ advices_count
 const AUTH_FIELDS = '''
               id
               name
+                is_social
               is_verified
               invoices_count
               invoices_seller_count

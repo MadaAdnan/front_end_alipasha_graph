@@ -87,3 +87,4 @@ const String RESTAURANT_PAGE = '/restaurant_page';
 const String PAYMENT_PAGE = '/payment_page';
 
 const String IDENTITY_VERIFICATION_PAGE = '/identity_verification_page';
+const String CHOOSE_VERIFICATION_PAGE = '/choose_verification_page';

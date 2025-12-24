@@ -970,11 +970,7 @@ height: 1.sh,
                                     Get.offNamed(PROFILE_PAGE);
                                   },child: Text('الملف الشخصي',style: H3WhiteTextStyle,),color: SecondaryColor,),
                                   MaterialButton(onPressed: (){
-                                    if (isAuth()) {
-                                      Get.toNamed(IDENTITY_VERIFICATION_PAGE);
-                                    }else{
-                                      Get.toNamed(LOGIN_PAGE);
-                                    }
+                                    Get.toNamed( CHOOSE_VERIFICATION_PAGE);
                                     return;
                                     HelperClass.requestVerified(onConfirm: (){
                                       if(isAuth()){

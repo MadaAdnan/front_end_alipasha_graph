@@ -46,6 +46,7 @@ class UserModel {
   List<DataImageModel>? gallery;
   bool? can_create_group;
   bool? can_create_channel;
+  bool? is_social;
   RxInt unread_notifications_count;
   List<CommunityModel>? communities;
   SocialModel? social;
@@ -53,6 +54,7 @@ class UserModel {
   int? invoicesSeller_count;
   int? special_product_count;
   int? advices_count;
+
   UserModel({
     this.name,
     this.id,
@@ -99,6 +101,7 @@ class UserModel {
     this.phone_code,
     this.advices_count,
     this.special_product_count,
+    this.is_social,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> data) {
@@ -151,27 +154,28 @@ class UserModel {
       id: int.tryParse("${data['id']}"),
       invoices_count: int.tryParse("${data['invoices_count']}") ?? 0,
       invoicesSeller_count:
-      int.tryParse("${data['invoices_seller_count']}") ?? 0,
+          int.tryParse("${data['invoices_seller_count']}") ?? 0,
       followingCount: int.tryParse("${data['following_count']}") ?? 0,
       total_views: int.tryParse("${data['total_views']}") ?? 0,
       unread_notifications_count: RxInt(
         int.tryParse("${data['unread_notifications_count']}") ?? 0,
       ),
       special_product_count:
-      int.tryParse("${data['special_product_count']}") ?? 0,
+          int.tryParse("${data['special_product_count']}") ?? 0,
       advices_count: int.tryParse("${data['advices_count']}") ?? 0,
       info: "${data['info'] ?? ''}",
       full_phone: fullPhone,
       phone_code: phoneCode,
       affiliate: "${data['affiliate'] ?? ''}",
       is_special: bool.tryParse("${data['is_special']}") ?? false,
+      is_social: bool.tryParse("${data['is_social']}") ?? false,
       isAvailableCreate:
-      bool.tryParse("${data['is_available_create']}") ?? false,
+          bool.tryParse("${data['is_available_create']}") ?? false,
       trust: bool.tryParse("${data['trust']}") ?? false,
       is_verified: bool.tryParse("${data['is_verified']}") ?? false,
       can_create_group: bool.tryParse("${data['can_create_group']}") ?? false,
       can_create_channel:
-      bool.tryParse("${data['can_create_channel']}") ?? false,
+          bool.tryParse("${data['can_create_channel']}") ?? false,
       is_restaurant: bool.tryParse("${data['is_restaurant']}") ?? false,
       is_delivery: bool.tryParse("${data['is_delivery']}") ?? false,
       is_active: bool.tryParse("${data['is_active']}") ?? false,
@@ -183,7 +187,7 @@ class UserModel {
       address: "${data['address'] ?? ''}",
       phone: "${data['phone'] ?? ''}",
       email: "${data['email'] ?? ''}",
-      seller_name: "${data['seller_name'] ?? ''}",
+      seller_name: "${data['seller_name'] ?? data['name'] ?? ''}",
       name: "${data['name'] ?? ''}",
       logo: "${data['logo'] ?? ''}",
       customImg: "${data['custom'] ?? ''}",
@@ -193,9 +197,8 @@ class UserModel {
       email_verified_at: "${data['email_verified_at'] ?? ''}",
       city: data['city'] != null ? CityModel.fromJson(data['city']) : null,
       area: data['area'] != null ? CityModel.fromJson(data['area']) : null,
-      social: data['social'] != null
-          ? SocialModel.fromJson(data['social'])
-          : null,
+      social:
+          data['social'] != null ? SocialModel.fromJson(data['social']) : null,
       products: listProducts.toList(),
       plans: listPlans.toList(),
       followers: listFollowers.toList(),
@@ -208,7 +211,7 @@ class UserModel {
     Map<String, dynamic> data = {
       'name': name,
       'id': id,
-      'seller_name': seller_name,
+      'seller_name': seller_name ?? name,
       'email': email,
       'email_verified_at': email_verified_at,
       'phone': phone,
@@ -242,6 +245,7 @@ class UserModel {
       'is_available_create': isAvailableCreate,
       "advices_count": advices_count,
       "special_product_count": special_product_count,
+      'is_social': is_social,
     };
     return data;
   }
@@ -256,9 +260,8 @@ class FollowerModel {
   factory FollowerModel.fromJson(Map<String, dynamic> data) {
     return FollowerModel(
       user: data['user'] != null ? UserModel.fromJson(data['user']) : null,
-      seller: data['seller'] != null
-          ? UserModel.fromJson(data['seller'])
-          : null,
+      seller:
+          data['seller'] != null ? UserModel.fromJson(data['seller']) : null,
     );
   }
 
