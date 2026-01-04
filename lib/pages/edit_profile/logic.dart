@@ -205,18 +205,23 @@ RxnString phoneCode =RxnString(null);
         user.value=UserModel.fromJson( res.data['data']['updateUser']);
         mainController.setUserJson(json: res.data['data']['updateUser']);
 
-        messageBox(
-            title: 'نجاح العملية',
-            message: 'تم تعديل الملف الشخصي بنجاح',
-            isError: false);
+        mainController.showToast(
+            text: 'تم تعديل الملف الشخصي بنجاح',
+            type: 'success');
         // mainController.authUser.value=UserModel.fromJson(res.data['data']['updateUser']);
       }
       //mainController.logger.e(res.data);
       if (res.data['errors'][0]['message'] != null) {
+        mainController.showToast(
+            text: '${res.data['errors'][0]['message']}',
+            type: 'error');
         // mainController.logger.i(res.data['errors'][0]['message']);
       }
     } catch (e) {
-      mainController.logger.e("Error get Profile $e");
+      mainController.showToast(
+          text: '$e',
+          type: 'error');
+
     }
     loading.value = false;
   }

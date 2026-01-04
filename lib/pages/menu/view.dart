@@ -61,36 +61,40 @@ class MenuPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Container(
-                            padding: EdgeInsets.all(0.005.sw),
-                            decoration: const BoxDecoration(
-                                color: GrayDarkColor, shape: BoxShape.circle),
-                            child: CircleAvatar(
-                              backgroundColor: WhiteColor,
-                              minRadius: 0.05.sw,
-                              maxRadius: 0.07.sw,
-                              child: Container(
-                                width: 0.15.sw,
-                                height: 0.13.sw,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: GrayDarkColor,
-                                  image: DecorationImage(
-                                      image: mainController.authUser.value?.image != null
-                                          ? CachedNetworkImageProvider(
-                                              '${mainController.authUser.value?.image}',
-                                            )
-                                          : getUserImage(),
-                                      fit: BoxFit.cover),
+                          Flexible(
+                            child: Container(
+                              padding: EdgeInsets.all(0.005.sw),
+                              decoration: const BoxDecoration(
+                                  color: GrayDarkColor, shape: BoxShape.circle),
+                              child: CircleAvatar(
+                                backgroundColor: WhiteColor,
+                                minRadius: 0.05.sw,
+                                maxRadius: 0.07.sw,
+                                child: Container(
+                                  width: 0.15.sw,
+                                  height: 0.13.sw,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: GrayDarkColor,
+                                    image: DecorationImage(
+                                        image: mainController.authUser.value?.image != null
+                                            ? CachedNetworkImageProvider(
+                                                '${mainController.authUser.value?.image}',
+                                              )
+                                            : getUserImage(),
+                                        fit: BoxFit.cover),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                          10.horizontalSpace,
-                          Text(
-                            '${getName()}',
-                            style: H3GrayTextStyle,
-                            overflow: TextOverflow.ellipsis,
+                          5.horizontalSpace,
+                          Flexible(
+                            child: Text(
+                              '${getName()}',
+                              style: H3GrayTextStyle,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           )
                         ],
                       ),

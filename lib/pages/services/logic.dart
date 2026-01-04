@@ -4,6 +4,7 @@ import 'package:ali_pasha_graph/models/setting_model.dart';
 import 'package:ali_pasha_graph/models/slider_model.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:logger/logger.dart';
 
 import '../../models/weather_model.dart';
 
@@ -150,6 +151,7 @@ class ServicesLogic extends GetxController {
 
     }
   }
+  RxString nameCity=RxString('دمشق');
 
   getWeather() async {
     List<Map<String, dynamic>> weatherStorage = [];
@@ -176,10 +178,17 @@ class ServicesLogic extends GetxController {
 
     loading.value = true;
     String setting_weather = "${mainController.settings.value.weather_api}";
+    double? latitude = 33.5151444;
+    double? longitude = 36.3931354;
+    if (mainController.authUser.value?.city?.latitude != null) {
+      latitude = mainController.authUser.value?.city?.latitude;
+      longitude = mainController.authUser.value?.city?.longitude;
+      nameCity.value = mainController.authUser.value!.city!.name!;
+    }
     try {
       dio.Response resIdlib =
-          await connect.get('?key=$setting_weather&q=Idlib&days=3');
-     // mainController.logger.e(resIdlib.data);
+          await connect.get('?key=$setting_weather&q=${latitude},${longitude}&days=3');
+     // Logger().e(resIdlib.data);
       if (resIdlib.data['forecast']['forecastday'] != null) {
         for (var item in resIdlib.data['forecast']['forecastday']) {
           WeatherModel weatherModel = WeatherModel.fromJson(item);

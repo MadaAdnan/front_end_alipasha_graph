@@ -72,6 +72,8 @@ advices_count
                 name
                 id
                  city_id
+                  latitude
+                  longitude
               }
               area {
                 name
@@ -164,6 +166,8 @@ const AUTH_FIELDS = '''
                   id
                   code_city
                   level
+                  latitude
+                  longitude
                   children{
                     id 
                     code_city 
