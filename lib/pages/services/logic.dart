@@ -73,7 +73,7 @@ class ServicesLogic extends GetxController {
         }
         dollar {
             idlib {
-                usd {
+                syr {
                     sale
                     bay
                 }

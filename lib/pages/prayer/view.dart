@@ -27,6 +27,7 @@ class PrayerPage extends StatelessWidget {
               style: H3WhiteTextStyle,
             ),
           ),
+
           Expanded(
             child: Obx(() {
               if (logic.loading.value) {
@@ -38,22 +39,21 @@ class PrayerPage extends StatelessWidget {
                 controller: pageController,
                 onPageChanged: (i) => index.value = i,
                 children: [
+
                   _idlib(),
-                  _izaz(),
+                /*  _izaz(),*/
                 ],
               );
             }),
           ),
-         Obx(() {
-           return  Text('${logic.idlib.value?.hijri?.dayName} - ${logic.idlib.value?.hijri?.day} - ${logic.idlib.value?.hijri?.monthName} - ${logic.idlib.value?.hijri?.year}',style: H3GrayTextStyle,);
-         }),
+
           30.verticalSpace,
           Container(
             width: 0.9.sw,
             height: 0.1.sh,
             child: Column(
               children: [
-                Obx(() {
+              /*  Obx(() {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -61,7 +61,9 @@ class PrayerPage extends StatelessWidget {
                         width: 0.03.sw,
                         height: 0.03.sw,
                         decoration: BoxDecoration(
-                            color: index.value == 0 ? PrimaryColor : GrayLightColor,
+                            color: index.value == 0
+                                ? PrimaryColor
+                                : GrayLightColor,
                             shape: BoxShape.circle),
                       ),
                       10.horizontalSpace,
@@ -69,14 +71,16 @@ class PrayerPage extends StatelessWidget {
                         width: 0.03.sw,
                         height: 0.03.sw,
                         decoration: BoxDecoration(
-                            color: index.value == 1 ? PrimaryColor : GrayLightColor,
+                            color: index.value == 1
+                                ? PrimaryColor
+                                : GrayLightColor,
                             shape: BoxShape.circle),
                       )
                     ],
                   );
-                }),
-                25.verticalSpace,
-                Row(
+                }),*/
+                /*25.verticalSpace,*/
+              /*  Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     InkWell(
@@ -114,7 +118,7 @@ class PrayerPage extends StatelessWidget {
                       ),
                     )
                   ],
-                ),
+                ),*/
               ],
             ),
           ),
@@ -128,6 +132,7 @@ class PrayerPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+
           Container(
             width: 1.sw,
             height: 0.15.sh,
@@ -141,20 +146,28 @@ class PrayerPage extends StatelessWidget {
                   border: Border.all(color: DarkColor,),
                   borderRadius: BorderRadius.circular(15.r),
                   color: GrayWhiteColor),
-              child: RichText(
-                text: TextSpan(children: [
-                  TextSpan(
-                      text: "مواقيت الصلاة في مدينة ", style: H3BlackTextStyle),
-                  TextSpan(
-                    text: "إدلب ",
-                    style: H2RedTextStyle.copyWith(
-                        decoration: TextDecoration.underline),
-                  ),
-                  TextSpan(text: "وما حولها", style: H3BlackTextStyle),
-                ]),
-              ),
+              child: Obx(() {
+                return RichText(
+                  text: TextSpan(children: [
+                    TextSpan(
+                        text: "مواقيت الصلاة في  ", style: H3BlackTextStyle),
+                    TextSpan(
+                      text: "${logic.nameCity} ",
+                      style: H2RedTextStyle,
+                    ),
+
+                  ]),
+                );
+              }),
             ),
           ),
+          Obx(() {
+            return Text(
+              '${logic.idlib.value?.hijri?.dayName} - ${logic.idlib.value?.hijri
+                  ?.day} - ${logic.idlib.value?.hijri?.monthName} - ${logic
+                  .idlib.value?.hijri?.year}', style: H3GrayTextStyle.copyWith(color: PrimaryColor),);
+          }),
+          SizedBox(height: 0.01.sh,),
           Expanded(
             child: ListView(
               children: [
@@ -225,7 +238,7 @@ class PrayerPage extends StatelessWidget {
                     ],
                   ),
                 if (logic.idlib.value?.hijri?.month == "9")
-                10.verticalSpace,
+                  10.verticalSpace,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -440,12 +453,12 @@ class PrayerPage extends StatelessWidget {
             width: 1.sw,
             height: 0.15.sh,
             alignment: Alignment.center,
-            child:Container(
+            child: Container(
               alignment: Alignment.center,
               width: 0.96.sw,
               height: 0.07.sh,
               decoration: BoxDecoration(
-                border: Border.all(color: DarkColor,),
+                  border: Border.all(color: DarkColor,),
                   borderRadius: BorderRadius.circular(15.r),
                   color: GrayWhiteColor),
               child: RichText(

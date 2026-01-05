@@ -1,3 +1,5 @@
+import 'package:logger/logger.dart';
+
 class PrayerModel {
   String? fajr;
   String? sunrice;
@@ -20,17 +22,19 @@ class PrayerModel {
   });
 
   factory PrayerModel.fromJson(Map<String,dynamic> data){
-    print(data);
-    return PrayerModel(
-      fajr: "${data['timings']?['Fajr']??''}",
-      sunrice: "${data['timings']?['Sunrise']??''}",
-      duhur: "${data['timings']?['Dhuhr']??''}",
-      asr: "${data['timings']?['Asr']??''}",
-      magrib: "${data['timings']?['Maghrib']??''}",
-      isha: "${data['timings']?['Isha']??''}",
-      imsak: "${data['timings']?['Imsak']??''}",
+     Logger().w(data);
+    PrayerModel p= PrayerModel(
+      fajr: "${data['timings']?['Fajr']??''}".replaceFirst("(+03)", ''),
+      sunrice: "${data['timings']?['Sunrise']??''}".replaceFirst("(+03)", ''),
+      duhur: "${data['timings']?['Dhuhr']??''}".replaceFirst("(+03)", ''),
+      asr: "${data['timings']?['Asr']??''}".replaceFirst("(+03)", ''),
+      magrib: "${data['timings']?['Maghrib']??''}".replaceFirst("(+03)", ''),
+      isha: "${data['timings']?['Isha']??''}".replaceFirst("(+03)", ''),
+      imsak: "${data['timings']?['Imsak']??''}".replaceFirst("(+03)", ''),
       hijri: data['date']?['hijri'] !=null ?HijriDate.fromJson(data['date']?['hijri']) :null,
     );
+    Logger().w(p.fajr);
+    return p;
   }
 }
 

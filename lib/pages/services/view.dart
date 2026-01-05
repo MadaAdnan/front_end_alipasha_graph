@@ -139,7 +139,7 @@ class ServicesPage extends StatelessWidget {
                                               SizedBox(height: 0.002.sh),
                                               Text(
                                                 '${logic.dollar.value?.idlib
-                                                    ?.usd?.sale} \$',
+                                                    ?.syr?.sale} ل.س',
                                                 style: H3BlackTextStyle
                                                     .copyWith(
                                                     color: Colors.black,
@@ -157,7 +157,7 @@ class ServicesPage extends StatelessWidget {
                                               SizedBox(height: 0.002.sh),
                                               Text(
                                                 '${logic.dollar.value?.idlib
-                                                    ?.usd?.bay} \$',
+                                                    ?.syr?.bay} ل.س',
                                                 style: H3BlackTextStyle
                                                     .copyWith(
                                                     color: Colors.black,

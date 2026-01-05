@@ -136,7 +136,7 @@ class GoldPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
+            /*  Container(
                 padding: EdgeInsets.symmetric(
                     horizontal: 0.02.sw, vertical: 0.02.sh),
                 width: 0.96.sw,
@@ -160,7 +160,7 @@ class GoldPage extends StatelessWidget {
                   ],
                 ),
               ),
-              30.verticalSpace,
+              30.verticalSpace,*/
 
               /// Header
               Row(
@@ -404,7 +404,7 @@ class GoldPage extends StatelessWidget {
           ),
         ),
         70.verticalSpace,
-        Divider(),
+       /* Divider(),
         70.verticalSpace,
         Container(
           width: 0.9.sw,
@@ -679,7 +679,7 @@ class GoldPage extends StatelessWidget {
               })
             ],
           ),
-        ),
+        ),*/
       ],
     );
   }
@@ -695,7 +695,7 @@ class GoldPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
+             /* Container(
                 padding: EdgeInsets.symmetric(
                     horizontal: 0.02.sw, vertical: 0.02.sh),
                 width: 0.96.sw,
@@ -719,7 +719,7 @@ class GoldPage extends StatelessWidget {
                   ],
                 ),
               ),
-              30.verticalSpace,
+              30.verticalSpace,*/
 
               /// Header
               Row(
@@ -918,7 +918,7 @@ class GoldPage extends StatelessWidget {
             ],
           ),
         ),
-        70.verticalSpace,
+       /* 70.verticalSpace,
         Divider(),
         70.verticalSpace,
         Container(
@@ -1150,7 +1150,7 @@ class GoldPage extends StatelessWidget {
               })
             ],
           ),
-        ),
+        ),*/
       ],
     );
   }
@@ -1166,7 +1166,7 @@ class GoldPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
+            /*  Container(
                 padding: EdgeInsets.symmetric(
                     horizontal: 0.02.sw, vertical: 0.02.sh),
                 width: 0.96.sw,
@@ -1190,7 +1190,7 @@ class GoldPage extends StatelessWidget {
                   ],
                 ),
               ),
-              30.verticalSpace,
+              30.verticalSpace,*/
 
               /// Header
               Row(
@@ -1305,7 +1305,7 @@ class GoldPage extends StatelessWidget {
             ],
           ),
         ),
-        70.verticalSpace,
+       /* 70.verticalSpace,
         Divider(),
         70.verticalSpace,
         Container(
@@ -1453,7 +1453,7 @@ class GoldPage extends StatelessWidget {
               })
             ],
           ),
-        ),
+        ),*/
       ],
     );
   }
